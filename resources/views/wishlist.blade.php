@@ -86,12 +86,18 @@
 
     
 </style>
-
 <h2 class="mb-2">My Wishlist</h2>
 <p class="item-desc text-muted">
     You have {{ is_countable($wishlistProducts) ? count($wishlistProducts) : 0 }} 
     {{ (is_countable($wishlistProducts) && count($wishlistProducts) === 1) ? 'item' : 'items' }}
 </p>
+
+@if (session('success'))
+    <div class="alert alert-success text-center mx-5 mb-4"
+         style="background-color: #fce4ec; color: #e91e63; border: 1px solid #f8bbd0; border-radius: 8px;">
+        {{ session('success') }}
+    </div>
+@endif
 
 @if (isset($wishlistProducts) && count($wishlistProducts) > 0)
     <div class="wishlist-container">
@@ -112,7 +118,7 @@
                                     <i class="fas fa-shopping-cart"></i>
                                 </button>
                             </form>
-                            <form method="POST" action="{{ url('/wishlist/remove') }}" onsubmit="return confirm('Are you sure you want to remove this item from your wishlist?');">
+                            <form method="POST" action="{{ route('wishlist.remove') }}" onsubmit="return confirm('Remove this item from your wishlist?');">
                                 @csrf
                                 <input type="hidden" name="product_id" value="{{ $item->id }}">
                                 <button type="submit" class="btn btn-outline-danger btn-sm" title="Remove from Wishlist">

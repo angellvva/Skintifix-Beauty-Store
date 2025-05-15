@@ -37,7 +37,7 @@ class WishlistController extends Controller
 
         DB::table('wishlists')
             ->where('product_id', $productId)
-            ->where('id', $userId)
+            ->where('user_id', $userId)
             ->delete();
 
         return back()->with('success', 'Product removed from wishlist.');
