@@ -136,8 +136,8 @@
     <div class="empty-wishlist-container">
         <i class="fas fa-heart empty-wishlist-icon mb-3"></i>
         <h4 class="empty-wishlist-text">Your wishlist is empty😢</h4>
-        <p class="text-muted mb-3">Save your favorite items here for later</p>
-        <a href="{{ route('catalog') }}" class="btn btn-primary px-4">Browse Products</a>
+        <p class="text-muted mb-3">Save your favorite items here for later...</p>
+        <a href="{{ route('catalog') }}" class="btn px-4" style="background-color: #e965a7; color: white;">Browse All Products</a>
     </div>
 @endif
 @endsection
