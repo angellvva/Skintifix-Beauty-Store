@@ -54,3 +54,6 @@ Route::post('reset-password', [PasswordController::class, 'reset'])
 //Route untuk button add cart dan wishlist di product page
 Route::post('/cart/add/{id}', [HomeController::class, 'addToCart'])->name('cart.add');
 Route::post('/wishlist/add/{id}', [HomeController::class, 'addToWishlist'])->name('wishlist.add');
+
+Route::get('/contact', [ContactController::class, 'contact'])->name('contact');
+Route::post('/contact', [ContactController::class, 'store']);
