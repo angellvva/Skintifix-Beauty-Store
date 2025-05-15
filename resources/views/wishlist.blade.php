@@ -1,7 +1,7 @@
 @extends('base.base')
 
 @section('content')
-<h2 class="mb-4">Your Wishlist</h2>
+<h2 class="mb-4">My Wishlist</h2>
 
 @if (isset($wishlist) && count($wishlist) > 0)
     <div class="row row-cols-1 row-cols-md-3 g-4">
