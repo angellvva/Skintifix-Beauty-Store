@@ -20,6 +20,8 @@ Route::get('/cart', function () {
     return view('cart');
 })->name('cart');
 
+Route::get('/cart', [CartController::class, 'index'])->name('cart');
+
 // route untuk catalog
 Route::get('/catalog', function () {
     return view('catalog');

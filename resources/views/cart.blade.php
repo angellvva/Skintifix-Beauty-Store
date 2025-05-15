@@ -1,7 +1,7 @@
 @extends ('base.base')
 
 @section('content')
-ini halaman cart
+<h2> ini halaman cart</h2>
 {{-- <div class="container py-5">
     <h2 class="fw-bold mb-4" style="color: #e965a7;">Keranjang Belanja</h2>
 
