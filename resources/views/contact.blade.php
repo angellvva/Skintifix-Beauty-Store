@@ -93,7 +93,7 @@
                         </div>
                         <div>
                             <h5 class="mb-1">Email</h5>
-                            <p class="mb-0">skintifix@gmail.com</p>
+                            <p class="mb-0">skintificbeautystore@gmail.com</p>
                         </div>
                     </div>
 

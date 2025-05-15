@@ -29,7 +29,7 @@
                 <div class="footer-item">
                     <h4 class="text-white mb-3">Contact</h4>
                     <p class="text-white">Address: Universitas Ciputra, Surabaya, IDN</p>
-                    <p class="text-white">Email: skintifix@gmail.com</p>
+                    <p class="text-white">Email: skintificbeautystore@gmail.com</p>
                     <p class="text-white">Phone: +62 812 3456 7890</p>
                     <p class="text-white mb-1">Payment Accepted</p>
                     <img src="{{ asset('images/payment.png') }}" class="img-fluid" alt="Payment Methods">
