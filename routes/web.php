@@ -24,6 +24,7 @@ Route::get('/cart', [CartController::class, 'index'])->name('cart');
 Route::get('/catalog', [HomeController::class, 'allProducts'])
 ->name('catalog');
 
+
 // route untuk login
 Route::get('/login', function (){
     return view('auth.login');
