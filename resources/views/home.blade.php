@@ -116,6 +116,60 @@
 
             </div>
         </div>
+
+        <!-- Featurs Section Start -->
+        <div class="container-fluid featurs py-2" style="background-color: #fff0f5;">
+            <div class="container py-5">
+                <div class="row g-4">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="featurs-item text-center rounded bg-white p-4 shadow-sm">
+                            <div class="featurs-icon rounded-circle d-flex align-items-center justify-content-center mb-4 mx-auto"
+                                style="background-color: #e965a7; width: 80px; height: 80px;">
+                                <i class="fas fa-truck fa-lg text-white"></i>
+                            </div>
+                            <h5 class="fw-bold">Free Shipping</h5>
+                            <p class="mb-0">For all orders above Rp300.000</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3">
+                        <div class="featurs-item text-center rounded bg-white p-4 shadow-sm">
+                            <div class="featurs-icon rounded-circle d-flex align-items-center justify-content-center mb-4 mx-auto"
+                                style="background-color: #e965a7; width: 80px; height: 80px;">
+                                <i class="fas fa-truck fa-lg text-white"></i>
+                            </div>
+                            <h5 class="fw-bold">Secure Payment</h5>
+                            <p class="mb-0">Trusted & encrypted checkout</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3">
+                        <div class="featurs-item text-center rounded bg-white p-4 shadow-sm">
+                            <div class="featurs-icon rounded-circle d-flex align-items-center justify-content-center mb-4 mx-auto"
+                                style="background-color: #e965a7; width: 80px; height: 80px;">
+                                <i class="fas fa-truck fa-lg text-white"></i>
+                            </div>
+                            <h5 class="fw-bold">Easy Returns</h5>
+                            <p class="mb-0">7-day return guarantee</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3">
+                        <div class="featurs-item text-center rounded bg-white p-4 shadow-sm">
+                            <div class="featurs-icon rounded-circle d-flex align-items-center justify-content-center mb-4 mx-auto"
+                                style="background-color: #e965a7; width: 80px; height: 80px;">
+                                <i class="fas fa-truck fa-lg text-white"></i>
+                            </div>
+                            <h5 class="fw-bold">Beauty Support</h5>
+                            <p class="mb-0">Live chat & email 24/7</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Featurs Section End -->
+
+
     @endsection
 </body>
 </html>
