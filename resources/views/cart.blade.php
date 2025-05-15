@@ -4,6 +4,13 @@
 <div class="container py-5">
     <h2 class="fw-bold mb-4" style="color: #e965a7;">Your shopping cart</h2>
 
+    @if(session('success'))
+        <div class="alert alert-success text-center mx-5 mb-4"
+            style="background-color: #fce4ec; color: #e91e63; border: 1px solid #f8bbd0; border-radius: 8px;">
+            {{ session('success') }}
+        </div>
+    @endif
+
     @if(isset($cartItems) && $cartItems->count() > 0)
     <div class="table-responsive shadow-sm border rounded">
         <table class="table align-middle mb-0">
