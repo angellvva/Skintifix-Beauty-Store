@@ -2,18 +2,18 @@
 
 @section('content')
 <div class="container py-5">
-    <h2 class="fw-bold mb-4" style="color: #e965a7;">Keranjang Belanja</h2>
+    <h2 class="fw-bold mb-4" style="color: #e965a7;">Your shopping cart</h2>
 
     @if(count($cartItems) > 0)
     <div class="table-responsive shadow-sm border rounded">
         <table class="table align-middle mb-0">
             <thead class="table-light">
                 <tr>
-                    <th scope="col">Produk</th>
-                    <th scope="col">Harga</th>
-                    <th scope="col" style="width: 120px;">Jumlah</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Price</th>
+                    <th scope="col" style="width: 120px;">Amount</th>
                     <th scope="col">Subtotal</th>
-                    <th scope="col" style="width: 100px;">Aksi</th>
+                    <th scope="col" style="width: 100px;">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -40,7 +40,7 @@
                         <td class="align-middle fw-semibold">Rp {{ number_format($subtotal, 0, ',', '.') }}</td>
                         <td class="align-middle">
                             <button class="btn btn-outline-danger btn-sm" title="Hapus produk">
-                                <i class="bi bi-trash"></i> Hapus
+                                <i class="bi bi-trash"></i> Delete
                             </button>
                         </td>
                     </tr>
@@ -58,10 +58,10 @@
 
     <div class="d-flex justify-content-between mt-4">
         <a href="{{ route('catalog') }}" class="btn btn-outline-secondary rounded-pill px-4" style="border-color: #e965a7; color: #e965a7;">
-            &lsaquo; Lanjut Belanja
+            &lsaquo; Continue Shopping
         </a>
         <a href="{{ route('checkout') }}" class="btn rounded-pill px-4" style="background-color: #e965a7; color: #fff;">
-            Lanjut ke Checkout
+            Checkout
         </a>
     </div>
 

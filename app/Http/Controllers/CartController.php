@@ -10,18 +10,18 @@ class CartController extends Controller
     {
         $cartItems = [
             [
-                'name' => 'Produk A',
+                'name' => 'Sensitive Skin Hydration Moisturizer 40ml',
                 'price' => 100000,
                 'quantity' => 2,
-                'image' => 'produk-a.jpg',
-                'description' => 'Deskripsi produk A',
+                'image' => 'https://skintific.com/cdn/shop/files/1_8ba35f6c-6216-44df-b8ca-1c361b4ec24a.png?v=1741776053&width=1200',
+                'description' => 'Soothes redness in 5 minutes. Design for sensitive skin',
             ],
             [
-                'name' => 'Produk B',
+                'name' => 'Symwhite 377 Dark Spot Serum 20ml',
                 'price' => 150000,
                 'quantity' => 1,
-                'image' => 'produk-b.jpg',
-                'description' => 'Deskripsi produk B',
+                'image' => 'https://www.eace.com.my/image/cache/data/SKINTIFIC/ST17-P-480x480.png',
+                'description' => 'Enriched SymWhite377 serum with lightweight texture and low',
             ],
         ];
 
