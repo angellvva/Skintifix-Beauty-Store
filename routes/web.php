@@ -17,7 +17,7 @@ Route::get('/wishlist', function () {
     return view('wishlist');
 })->name('wishlist');
 
-// route untuk cart
+// // route untuk cart
 Route::get('/cart', [CartController::class, 'index'])->name('cart');
 
 // route untuk catalog

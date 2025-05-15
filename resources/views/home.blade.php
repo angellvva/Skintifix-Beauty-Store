@@ -117,6 +117,29 @@
             </div>
         </div>
 
+        <!-- Nourishing Beauty Section Start -->
+        <div class="container py-5 text-center" style="background-color: #fff0f6;">
+            <h1 class="fw-bold mb-3" style="color: #333;">NOURISHING BEAUTY, NATURALLY</h1>
+            <p class="mb-5 mx-auto" style="max-width: 750px; color: #555;">
+                Skintifix Beauty Store is your modern haven for conscious beauty. Born from the belief that glowing skin starts with gentle care, our collection features clean, cruelty-free, and skin-loving products that elevate your daily routine. At Skintifix, we celebrate beauty in all forms—pure, empowering, and joyfully yours.
+            </p>
+
+            <div class="ratio ratio-16x9 mb-4" style="max-width: 800px; margin: 0 auto;">
+                <iframe src="https://www.youtube.com/embed/FLpOzbdncHw?si=DCbus7x9Ed65pnuS"
+                        title="Skintifix Video"
+                        allowfullscreen
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        style="border-radius: 10px;"></iframe>
+            </div>
+
+            <a href="https://youtu.be/FLpOzbdncHw?si=DCbus7x9Ed65pnuS" target="_blank"
+            class="btn text-white fw-semibold py-3 px-4"
+            style="background-color: #e965a7; border-radius: 0; max-width: 400px; width: 100%;">
+                <i class="fas fa-volume-up me-2"></i> VIEW “SKINTIFIX” CLEAN FORMULA
+            </a>
+        </div>
+        <!-- Nourishing Beauty Section End -->
+
         <!-- Featurs Section Start -->
         <div class="container-fluid featurs py-2" style="background-color: #fff0f5;">
             <div class="container py-5">
