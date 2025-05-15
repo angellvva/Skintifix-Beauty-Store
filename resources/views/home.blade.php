@@ -91,7 +91,7 @@
                     </div>
                 </div>
 
-                <!-- Carousel -->
+                <!-- Carousel Start-->
                 <div id="categoryCarousel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         @foreach ($product_categories->chunk(4) as $chunkIndex => $chunk)
@@ -113,7 +113,7 @@
                         @endforeach
                     </div>
                 </div>
-
+                <!-- Carousel End-->
             </div>
         </div>
 
