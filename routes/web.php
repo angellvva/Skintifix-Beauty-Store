@@ -1,26 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\CheckoutController;
-=======
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PasswordController;
->>>>>>> Stashed changes
-=======
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PasswordController;
->>>>>>> Stashed changes
-
 
 Route::get('/', function () {
     return view('home');
@@ -68,8 +54,6 @@ Route::get('reset-password/{token}', [PasswordController::class, 'showResetForm'
 Route::post('reset-password', [PasswordController::class, 'reset'])
 ->name('password.update');
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 //Route untuk button add cart dan wishlist di product page
 Route::post('/cart/add/{id}', [HomeController::class, 'addToCart'])->name('cart.add');
 Route::post('/wishlist/add/{id}', [HomeController::class, 'addToWishlist'])->name('wishlist.add');
@@ -94,16 +78,8 @@ Route::post('/login', [App\Http\Controllers\LoginController::class, 'LoginAction
 Route::post('/logout', [App\Http\Controllers\LoginController::class, 'Logout'])->name('logout');
 
 
-
-=======
-=======
->>>>>>> Stashed changes
 // Route untuk menampilkan form register
 Route::get('register', [AuthController::class, 'showRegisterForm'])->name('register');
 
 // Route untuk menangani registrasi pengguna
 Route::post('register', [AuthController::class, 'register'])->name('register.submit');
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
