@@ -89,4 +89,12 @@
 <!-- Copyright End -->
 
 
+<<<<<<< Updated upstream
+=======
+  <!-- Copyright -->
+  <div class="text-center text-white p-3" style="background-color: #e965a7;">
+    © 2025 Skintifix Beauty Store. All rights reservedaaaaaaaaaaaaa. 
+  </div>
+  <!-- Copyright -->
+>>>>>>> Stashed changes
 </footer>
