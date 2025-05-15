@@ -118,7 +118,7 @@
         </div>
 
         <!-- Nourishing Beauty Section Start -->
-        <div class="container py-5 text-center" style="background-color: #fff0f6;">
+        <div class="container py-5 text-center mb-5" style="background-color: #fff0f6;">
             <h1 class="fw-bold mb-3" style="color: #333;">NOURISHING BEAUTY, NATURALLY</h1>
             <p class="mb-5 mx-auto" style="max-width: 750px; color: #555;">
                 Skintifix Beauty Store is your modern haven for conscious beauty. Born from the belief that glowing skin starts with gentle care, our collection features clean, cruelty-free, and skin-loving products that elevate your daily routine. At Skintifix, we celebrate beauty in all forms—pure, empowering, and joyfully yours.
@@ -141,7 +141,7 @@
         <!-- Nourishing Beauty Section End -->
 
         <!-- Featurs Section Start -->
-        <div class="container-fluid featurs py-2" style="background-color: #fff0f5;">
+        <div class="container-fluid featurs py-2" style="background-color: #ffcee2; ">
             <div class="container py-5">
                 <div class="row g-4">
                     <div class="col-md-6 col-lg-3">
