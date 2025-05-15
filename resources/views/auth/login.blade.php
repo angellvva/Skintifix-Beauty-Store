@@ -100,10 +100,10 @@
         <!-- Icon for Account Login / Signup -->
         <div class="logo">Skintifix <span style="color: #000000;">Beauty Store</span></div>
         <h2>Account Sign In</h2>
-        <p>New to Skintifix Beauty Store? <a href="create-account.html">Create your account</a> and start earning rewards today!</p>
+        <p>New to Skintifix Beauty Store? <a href="{{ route('register') }}">Create your account</a> and start earning rewards today!</p>
         <p>Welcome back! Please sign in below to access your account and view your previous order history and earned points.</p>
 
-        <form action="auth.php" method="POST">
+        <form action="{{ route('home') }}" method="GET">
             <input type="text" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
             <button type="submit">SIGN IN</button>

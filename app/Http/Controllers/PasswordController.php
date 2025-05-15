@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Password;
 
 class PasswordController extends Controller
 {
-    //
     // Menampilkan form forgot password
     public function showForgotPasswordForm()
     {
@@ -33,10 +32,10 @@ class PasswordController extends Controller
         return back()->withErrors(['email' => 'We can\'t find a user with that e-mail address.']);
     }
 
-    // Menampilkan form reset password
+    // Menampilkan form reset password hanya dengan tombol
     public function showResetForm($token)
     {
-        return view('auth.reset-password', ['token' => $token]);
+        return view('auth.password', ['token' => $token]);
     }
 
     // Menangani reset password
