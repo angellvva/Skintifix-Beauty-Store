@@ -10,3 +10,8 @@ Route::get('/', function () {
 Route::get('/', [HomeController::class, 'show'])
 ->name('home');
 
+// route untuk wishlist
+Route::get('/wishlist', function () {
+    return view('wishlist');
+})->name('wishlist');
+
