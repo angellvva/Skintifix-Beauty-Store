@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         .brand-name {
             color: #e965a7;
@@ -116,9 +117,32 @@
                                     <i class="fas fa-heart"></i>
                                 </a>
 
-                                <a href="#" class="icon-btn" style="text-decoration: none; color: #e965a7;">
+                                {{-- <a href="#" class="icon-btn" style="text-decoration: none; color: #e965a7;">
                                     <i class="fas fa-user"></i>
-                                </a>
+                                </a> --}}
+
+                                 @if(session()->has('id_cust'))
+                                    <div class="dropdown">
+                                        <button class="icon-btn dropdown-toggle" type="button" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none; color: #e965a7;">
+                                            <i class="fas fa-user"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="dropdownUser">
+                                            <li><a class="dropdown-item" href="#">Edit Profile</a></li>
+                                            <li><a class="dropdown-item" href="{{ url('/forget') }}">Change Password</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <form method="POST" action="{{ route('logout') }}">
+                                                    @csrf
+                                                    <button type="submit" class="dropdown-item text-danger">Logout</button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                @else
+                                    <a href="{{ route('login') }}" class="icon-btn" style="text-decoration: none; color: #e965a7;">
+                                        <i class="fas fa-user"></i>
+                                    </a>
+                                @endif
                             </div>
                         </div>
                     </div>
