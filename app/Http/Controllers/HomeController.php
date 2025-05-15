@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
+use App\Models\Cart;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Wishlist;
 
 class HomeController extends Controller
 {
@@ -24,37 +27,56 @@ class HomeController extends Controller
     public function addToCart($id, Request $request)
 {
     $product = Product::findOrFail($id);
+    $user = Auth::user();
 
-    $cart = session()->get('cart', []);
+    // Check if this product is already in user's cart
+    $cartItem = Cart::where('user_id', $user->id)
+                    ->where('product_id', $id)
+                    ->first();
 
-    if (isset($cart[$id])) {
-        $cart[$id]['quantity']++;
+    if ($cartItem) {
+        $cartItem->quantity += 1;
+        $cartItem->save();
     } else {
-        $cart[$id] = [
-            "name" => $product->name,
-            "quantity" => 1,
-            "price" => $product->price,
-            "image" => $product->image
-        ];
+        Cart::create([
+            'user_id' => $user->id,
+            'product_id' => $id,
+            'quantity' => 1,
+        ]);
     }
 
-    session()->put('cart', $cart);
     return back()->with('success', 'Product added to cart!');
 }
 
 public function addToWishlist($id)
 {
     $product = Product::findOrFail($id);
+    $user = Auth::user();
 
-    $wishlist = session()->get('wishlist', []);
+    // Only add if not already in wishlist
+    $exists = Wishlist::where('user_id', $user->id)
+                      ->where('product_id', $id)
+                      ->exists();
 
-    $wishlist[$id] = [
-        "name" => $product->name,
-        "price" => $product->price,
-        "image" => $product->image
-    ];
+    if (!$exists) {
+        Wishlist::create([
+            'user_id' => $user->id,
+            'product_id' => $id,
+        ]);
+    }
 
-    session()->put('wishlist', $wishlist);
     return back()->with('success', 'Product added to wishlist!');
 }
+
+public function viewCart()
+    {
+        $cart = session('cart', []);
+        return view('cart', compact('cart'));
+    }
+
+public function viewWishlist()
+    {
+        $wishlist = session('wishlist', []);
+        return view('wishlist', compact('wishlist'));
+    }
 }

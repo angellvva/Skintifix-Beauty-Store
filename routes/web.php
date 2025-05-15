@@ -58,11 +58,22 @@ Route::post('reset-password', [PasswordController::class, 'reset'])
 Route::post('/cart/add/{id}', [HomeController::class, 'addToCart'])->name('cart.add');
 Route::post('/wishlist/add/{id}', [HomeController::class, 'addToWishlist'])->name('wishlist.add');
 
+Route::get('/cart', [HomeController::class, 'viewCart'])->name('cart.view');
+Route::get('/wishlist', [HomeController::class, 'viewWishlist'])->name('wishlist.view');
+
+//Route contact
 Route::get('/contact', [ContactController::class, 'contact'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store']);
 
 //checkout
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+
+// Login Routes
+Route::get('/login', [App\Http\Controllers\LoginController::class, 'Login'])->name('login');
+Route::post('/login', [App\Http\Controllers\LoginController::class, 'LoginAction'])->name('login.action');
+
+// Logout Route
+Route::post('/logout', [App\Http\Controllers\LoginController::class, 'Logout'])->name('logout');
 
 
 
