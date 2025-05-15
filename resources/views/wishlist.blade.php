@@ -20,7 +20,7 @@
 @endphp
 
 <style>
-    h2 {
+    #head2 {
         margin-left: 60px;
         margin-top: 20px;
     }
@@ -62,7 +62,7 @@
     }
 </style>
 
-<h2 class="mb-2">My Wishlist</h2>
+<h2 id="head2" class="mb-2">My Wishlist</h2>
 <p class="item-desc text-muted">
     You have {{ is_countable($wishlist) ? count($wishlist) : 0 }} 
     {{ (is_countable($wishlist) && count($wishlist) === 1) ? 'item' : 'items' }}
