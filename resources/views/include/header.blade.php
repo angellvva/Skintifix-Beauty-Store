@@ -87,20 +87,14 @@
                                     </ul>
                                 </li>
                                 
-                                <!-- Categories Dropdown -->
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown">
-                                        Categories
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">Best Seller</a></li>
-                                        <li><a class="dropdown-item" href="#">New Arrival</a></li>
-                                        <li><a class="dropdown-item" href="#">Sale & Clearance</a></li>
-                                        <li><hr class="dropdown-divider"></li>
-                                        <li><a class="dropdown-item fw-semibold" href="#">View All Categories</a></li>
-                                    </ul>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Best Seller</a>
                                 </li>
-                                
+
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">New Arrival</a>
+                                </li>
+
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">Contact</a>
                                 </li>
