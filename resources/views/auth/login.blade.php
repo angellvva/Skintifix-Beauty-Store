@@ -109,7 +109,7 @@
             <button type="submit">SIGN IN</button>
         </form>
 
-        <p><a href="#">Forgot your password?</a></p>
+        <p><a href="{{ route('forget-password') }}">Forgot your password?</a></p>
     </div>
 
 </body>

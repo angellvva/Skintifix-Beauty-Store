@@ -1,23 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forgot Password</title>
-</head>
-<body>
-    <form action="{{ route('forgot.password.send') }}" method="POST">
-        @csrf
-        <h2>Forgot your password?</h2>
-        <p>Enter your email address to receive a password reset link.</p>
+@extends('base.base')
 
-        @if(session('status'))
-            <p style="color: green;">{{ session('status') }}</p>
+@section('content')
+    <div class="container">
+        <h2>Forgot Password</h2>
+        @if (session('status'))
+            <div class="alert alert-success">
+                {{ session('status') }}
+            </div>
         @endif
-
-        <label for="email">Email Address:</label>
-        <input type="email" name="email" id="email" required>
-        <button type="submit">Submit</button>
-    </form>
-</body>
-</html>
+        <form method="POST" action="{{ route('password.email') }}">
+            @csrf
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Send Password Reset Link</button>
+        </form>
+    </div>
+@endsection

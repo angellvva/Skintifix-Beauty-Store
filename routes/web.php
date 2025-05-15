@@ -28,11 +28,11 @@ Route::get('/login', function (){
 })->name('login');
 
 // Route untuk menampilkan form forgot password
-Route::get('forgot-password', [PasswordController::class, 'showForgotPasswordForm'])
-->name('password.request');
+Route::get('forget-password', [PasswordController::class, 'showForgotPasswordForm'])
+->name('forget-password');
 
 // Route untuk mengirim permintaan reset password
-Route::post('forgot-password', [PasswordController::class, 'sendResetLinkEmail'])
+Route::post('forget-password', [PasswordController::class, 'sendResetLinkEmail'])
 ->name('password.email');
 
 // Route untuk menampilkan form reset password
