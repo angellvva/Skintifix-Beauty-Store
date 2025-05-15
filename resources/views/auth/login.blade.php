@@ -105,6 +105,7 @@
 
         <form action="auth.php" method="POST">
             <input type="text" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
             <button type="submit">SIGN IN</button>
         </form>
 
