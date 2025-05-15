@@ -29,3 +29,8 @@ Route::get('/catalog', function () {
 Route::get('/login', function (){
     return view('auth.login');
 })->name('login');
+
+// route untuk contact
+Route::get('/contact', function (){
+    return view('contact');
+})->name('contact');
