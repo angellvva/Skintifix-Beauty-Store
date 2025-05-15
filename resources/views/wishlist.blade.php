@@ -2,8 +2,6 @@
 
 @section('content')
 
-{{-- Sample data for wishlist --}}
-{{-- In a real application, this data would be fetched from the database --}}
 @php
     $wishlist = [
         [
@@ -26,27 +24,57 @@
         margin-left: 60px;
         margin-top: 20px;
     }
+
     .item-desc {
         margin-left: 60px;
+        margin-bottom: 30px;
     }
 
+    .wishlist-container {
+        margin-left: 60px;
+        margin-right: 20px;
+        margin-bottom: 60px;
+    }
+
+    .wishlist-card {
+        border: 2px solid #e965a7 !important;
+        transition: all 0.3s ease;
+        width: 260px;
+        border-radius: 8px;
+    }
+
+    .wishlist-card:hover {
+        box-shadow: 0 0 15px rgba(233, 101, 167, 0.5); /* lebih jelas */
+        transform: translateY(-5px); /* efek geser */
+        z-index: 1;
+    }
+
+    .wishlist-img {
+        height: 160px;
+        object-fit: contain;
+        margin-bottom: 1rem;
+    }
+
+    .wishlist-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px 10px; /* tighter vertical + horizontal spacing */
+    }
 </style>
 
-
 <h2 class="mb-2">My Wishlist</h2>
-<p class="item-desc text-muted mb-4 text-start">
+<p class="item-desc text-muted">
     You have {{ is_countable($wishlist) ? count($wishlist) : 0 }} 
     {{ (is_countable($wishlist) && count($wishlist) === 1) ? 'item' : 'items' }}
 </p>
 
-
 @if (isset($wishlist) && count($wishlist) > 0)
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        @foreach ($wishlist as $item)
-            <div class="col">
-                <div class="card h-100 border-0 shadow-sm p-3">
+    <div class="wishlist-container">
+        <div class="wishlist-grid">
+            @foreach ($wishlist as $item)
+                <div class="card wishlist-card border-0 shadow-sm p-3">
                     <img src="{{ asset('images/category/' . $item['image']) }}"
-                         class="card-img-top mx-auto d-block" style="height: 200px; width: auto; object-fit: contain;"
+                         class="card-img-top wishlist-img mx-auto d-block"
                          alt="{{ $item['name'] }}">
                     <div class="card-body text-center">
                         <h5 class="card-title">{{ $item['name'] }}</h5>
@@ -64,12 +92,13 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        @endforeach
+            @endforeach
+        </div>
     </div>
 @else
     <div class="alert alert-warning text-center" role="alert">
         Your wishlist is empty 😢
     </div>
 @endif
+
 @endsection
