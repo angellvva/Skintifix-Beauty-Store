@@ -28,7 +28,7 @@
 
   <!-- Copyright -->
   <div class="text-center text-white p-3" style="background-color: #e965a7;">
-    © 2025 Skintifix Beauty Store. All rights reserved. HHAHAHAHAHAHHA
+    © 2025 Skintifix Beauty Store. All rights reserved. 
   </div>
   <!-- Copyright -->
 </footer>
