@@ -64,7 +64,7 @@
                         <div class="collapse navbar-collapse" id="navbarContent">
                             <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-0 gap-lg-4">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Home</a>
+                                    <a class="nav-link" href="{{ route('home') }}">Home</a>
                                 </li>
                                 
                                 <!-- Products Dropdown -->
@@ -83,7 +83,7 @@
                                         <li><a class="dropdown-item" href="#">Mask</a></li>
                                         <li><a class="dropdown-item" href="#">Eye Care</a></li>
                                         <li><hr class="dropdown-divider"></li>
-                                        <li><a class="dropdown-item fw-semibold" href="#">View All Products</a></li>
+                                        <li><a class="dropdown-item fw-semibold" href="{{ route('catalog') }}">View All Products</a></li>
                                     </ul>
                                 </li>
                                 
@@ -96,7 +96,7 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Contact</a>
+                                    <a class="nav-link" href="{{ route('contact') }}">Contact</a>
                                 </li>
                             </ul>
                             
