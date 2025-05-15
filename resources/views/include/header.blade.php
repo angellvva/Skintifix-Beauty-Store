@@ -123,7 +123,7 @@
 
                                  @if(session()->has('id'))
                                     <div class="dropdown">
-                                        <button class="icon-btn dropdown-toggle" type="button" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none; color: #e965a7;">
+                                        <button class="icon-btn dropdown-toggle" type="button" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none; border: none; color: #e965a7; background: transparent;">
                                             <i class="fas fa-user"></i>
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="dropdownUser">
