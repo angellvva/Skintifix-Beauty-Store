@@ -96,7 +96,7 @@
 </head>
 <body>
     <div class="login-container">
-        <h1>Skintifix Beauty Store</h1>
+        <h1>Log In</h1>
         <p>Welcome back! Please log in to your account</p>
         
         <form action="your-login-script.php" method="POST">
