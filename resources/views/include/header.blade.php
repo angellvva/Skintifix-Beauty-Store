@@ -108,11 +108,11 @@
                                     <input type="text" class="form-control border-0 p-0" placeholder="Search products..." style="box-shadow: none; font-size: 14px; width: 180px;" />
                                 </form>
 
-                                <a href="#" class="icon-btn" style="text-decoration: none; color: #e965a7;">
+                                <a href="{{ route('cart') }}" class="icon-btn" style="text-decoration: none; color: #e965a7;">
                                     <i class="fas fa-shopping-cart"></i>
                                 </a>
 
-                                <a href="#" class="icon-btn" style="text-decoration: none; color: #e965a7;">
+                                <a href="{{ route('wishlist') }}" class="icon-btn" style="text-decoration: none; color: #e965a7;">
                                     <i class="fas fa-heart"></i>
                                 </a>
 

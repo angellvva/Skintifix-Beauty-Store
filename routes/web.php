@@ -15,3 +15,8 @@ Route::get('/wishlist', function () {
     return view('wishlist');
 })->name('wishlist');
 
+// route untuk cart
+Route::get('/cart', function () {
+    return view('cart');
+})->name('cart');
+
