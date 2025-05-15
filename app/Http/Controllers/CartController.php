@@ -1,6 +1,10 @@
 <?php
 
+<<<<<<< Updated upstream
 namespace App\Http\Controllers;
+=======
+namespace App\Http\Controllers; // pastikan ini ada
+>>>>>>> Stashed changes
 
 use Illuminate\Http\Request;
 

@@ -37,6 +37,7 @@ Route::get('/contact', function (){
     return view('contact');
 })->name('contact');
 
+<<<<<<< Updated upstream
 // Route untuk menampilkan form forgot password
 Route::get('forget-password', [PasswordController::class, 'showForgotPasswordForm'])
 ->name('forget-password');
@@ -62,3 +63,10 @@ Route::post('/contact', [ContactController::class, 'store']);
 
 //checkout
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+=======
+// route untuk checkout
+Route::get('/checkout', function () {
+    return view('checkout'); 
+})->name('checkout');
+
+>>>>>>> Stashed changes
