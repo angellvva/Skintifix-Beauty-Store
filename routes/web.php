@@ -21,9 +21,8 @@ Route::get('/cart', function () {
 })->name('cart');
 
 // route untuk catalog
-Route::get('/catalog', function () {
-    return view('catalog');
-})->name('catalog');
+Route::get('/catalog', [HomeController::class, 'allProducts'])
+->name('catalog');
 
 // route untuk login
 Route::get('/login', function (){
