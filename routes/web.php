@@ -58,3 +58,6 @@ Route::post('/wishlist/add/{id}', [HomeController::class, 'addToWishlist'])->nam
 
 Route::get('/contact', [ContactController::class, 'contact'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store']);
+
+//checkout
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
