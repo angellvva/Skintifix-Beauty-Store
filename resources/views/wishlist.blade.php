@@ -1,26 +1,8 @@
 @extends('base.base')
 
 @section('content')
-
-@php
-    $wishlist = [
-        [
-            'id' => 1,
-            'name' => 'Cleanser',
-            'price' => 145000,
-            'image' => 'Cleanser.jpg'
-        ],
-        [
-            'id' => 2,
-            'name' => 'Hydrating Toner',
-            'price' => 89000,
-            'image' => 'Toner.jpg'
-        ]
-    ];
-@endphp
-
 <style>
-    #head2 {
+    h2 {
         margin-left: 60px;
         margin-top: 20px;
     }
@@ -44,8 +26,8 @@
     }
 
     .wishlist-card:hover {
-        box-shadow: 0 0 15px rgba(233, 101, 167, 0.5); /* lebih jelas */
-        transform: translateY(-5px); /* efek geser */
+        box-shadow: 0 0 15px rgba(233, 101, 167, 0.5);
+        transform: translateY(-5px);
         z-index: 1;
     }
 
@@ -58,33 +40,49 @@
     .wishlist-grid {
         display: flex;
         flex-wrap: wrap;
-        gap: 20px 10px; /* tighter vertical + horizontal spacing */
+        gap: 20px 10px;
+    }
+
+    .empty-wishlist-icon {
+        font-size: 60px;
+        color: #ccc;
+    }
+
+    .empty-wishlist-text {
+        font-weight: 500;
+        color: #555;
+    }
+
+    .empty-wishlist-container {
+        padding-top: 100px;
+        padding-bottom: 100px;
+        text-align: center;
     }
 </style>
 
-<h2 id="head2" class="mb-2">My Wishlist</h2>
+<h2 class="mb-2">My Wishlist</h2>
 <p class="item-desc text-muted">
-    You have {{ is_countable($wishlist) ? count($wishlist) : 0 }} 
-    {{ (is_countable($wishlist) && count($wishlist) === 1) ? 'item' : 'items' }}
+    You have {{ is_countable($wishlistProducts) ? count($wishlistProducts) : 0 }} 
+    {{ (is_countable($wishlistProducts) && count($wishlistProducts) === 1) ? 'item' : 'items' }}
 </p>
 
-@if (isset($wishlist) && count($wishlist) > 0)
+@if (isset($wishlistProducts) && count($wishlistProducts) > 0)
     <div class="wishlist-container">
         <div class="wishlist-grid">
-            @foreach ($wishlist as $item)
+            @foreach ($wishlistProducts as $item)
                 <div class="card wishlist-card border-0 shadow-sm p-3">
-                    <img src="{{ asset('images/category/' . $item['image']) }}"
+                    <img src="{{ asset('images/category/' . $item->image) }}"
                          class="card-img-top wishlist-img mx-auto d-block"
-                         alt="{{ $item['name'] }}">
+                         alt="{{ $item->name }}">
                     <div class="card-body text-center">
-                        <h5 class="card-title">{{ $item['name'] }}</h5>
-                        <p class="card-text text-danger fw-bold">Rp{{ number_format($item['price'], 0, ',', '.') }}</p>
+                        <h5 class="card-title">{{ $item->name }}</h5>
+                        <p class="card-text text-danger fw-bold">Rp{{ number_format($item->price, 0, ',', '.') }}</p>
                         <div class="d-flex justify-content-center gap-2">
-                            <a href="{{ url('/customer/product/' . $item['id']) }}" class="btn btn-outline-secondary btn-sm">View</a>
+                            <a href="{{ url('/customer/product/' . $item->id) }}" class="btn btn-outline-secondary btn-sm">View</a>
                             <a href="{{ url('/customer/cart') }}" class="btn btn-success btn-sm">Add to Cart</a>
-                            <form method="POST" action="{{ url('/wishlist/remove/' . $item['id']) }}" onsubmit="return confirm('Are you sure you want to remove this item from your wishlist?');">
+                            <form method="POST" action="{{ url('/wishlist/remove') }}" onsubmit="return confirm('Are you sure you want to remove this item from your wishlist?');">
                                 @csrf
-                                @method('DELETE')
+                                <input type="hidden" name="product_id" value="{{ $item->id }}">
                                 <button type="submit" class="btn btn-outline-danger btn-sm" title="Remove from Wishlist">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
@@ -95,10 +93,13 @@
             @endforeach
         </div>
     </div>
+
 @else
-    <div class="alert alert-warning text-center" role="alert">
-        Your wishlist is empty 😢
+    <div class="empty-wishlist-container">
+        <i class="fas fa-heart empty-wishlist-icon mb-3"></i>
+        <h4 class="empty-wishlist-text">Your wishlist is empty😢</h4>
+        <p class="text-muted mb-3">Save your favorite items here for later</p>
+        <a href="{{ route('catalog') }}" class="btn btn-primary px-4">Browse Products</a>
     </div>
 @endif
-
 @endsection

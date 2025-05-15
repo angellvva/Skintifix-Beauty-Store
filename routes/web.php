@@ -60,6 +60,8 @@ Route::post('/wishlist/add/{id}', [HomeController::class, 'addToWishlist'])->nam
 
 Route::get('/cart', [HomeController::class, 'viewCart'])->name('cart.view');
 Route::get('/wishlist', [HomeController::class, 'viewWishlist'])->name('wishlist.view');
+Route::get('/wishlist', [App\Http\Controllers\WishlistController::class, 'Wishlist'])->name('wishlist');
+Route::post('/wishlist/remove', [App\Http\Controllers\WishlistController::class, 'removeFromWishlist']);
 
 //Route contact
 Route::get('/contact', [ContactController::class, 'contact'])->name('contact');
