@@ -1,111 +1,116 @@
 <!-- views/login.php -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skintifix Beauty Store - Login</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>Account Sign In</title>
+    <link rel="stylesheet" href="css/style.css">
     <style>
-        /* General Styles */
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #F8E1F4;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
-        }
-        
-        .login-container {
-            background: white;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            animation: fadeIn 1s ease-out;
+            background-color: #ffe2ee; /* Soft pink background */
         }
 
-        /* Header Text */
-        h1 {
-            font-size: 2.5rem;
-            color: #D9576A; /* Soft Pink */
+        .login-modal {
+            background-color: #fff;
+            width: 380px;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .login-modal img {
+            width: 50px;
+            height: 50px;
             margin-bottom: 20px;
         }
 
-        .login-container p {
-            font-size: 1rem;
-            color: #777;
-            margin-bottom: 30px;
+        .login-modal h2 {
+            font-size: 24px;
+            color: #080808;
+            margin-bottom: 10px;
         }
 
-        /* Input Fields */
-        input[type="text"], input[type="password"] {
+        .login-modal p {
+            font-size: 14px;
+            color: #090909;
+            margin-bottom: 20px;
+        }
+
+        .login-modal input[type="text"],
+        .login-modal input[type="password"] {
             width: 100%;
             padding: 15px;
-            margin: 10px 0;
-            border-radius: 5px;
+            margin: 12px 0;
             border: 1px solid #ddd;
-            font-size: 1rem;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .login-modal input[type="text"]:focus,
+        .login-modal input[type="password"]:focus {
+            border-color: #e965a7;
             outline: none;
-            transition: border-color 0.3s ease;
         }
 
-        input[type="text"]:focus, input[type="password"]:focus {
-            border-color: #D9576A; /* Soft Pink */
-        }
-
-        /* Submit Button */
-        button {
+        .login-modal button {
             width: 100%;
             padding: 15px;
-            background-color: #D9576A; /* Soft Pink */
-            color: white;
-            font-size: 1.1rem;
+            background-color: #e965a7;
             border: none;
-            border-radius: 5px;
+            color: #fff;
+            font-weight: bold;
+            border-radius: 8px;
             cursor: pointer;
+            font-size: 16px;
             transition: background-color 0.3s ease;
         }
 
-        button:hover {
-            background-color: #C14D5C;
+        .login-modal button:hover {
+            background-color: #e965a7;
         }
 
-        /* Animation */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .login-modal p a {
+            color: #e965a7;
+            text-decoration: none;
         }
 
-        /* Footer Text */
-        .footer-text {
-            margin-top: 20px;
-            font-size: 1rem;
-            color: #D9576A;
-            font-weight: 500;
+        .login-modal p a:hover {
+            text-decoration: underline;
+        }
+
+       .logo {
+            font-size: 36px;
+            font-weight: bold;
+            color: #e965a7; /* Pink color for Skintifix */
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <h1>Log In</h1>
-        <p>Welcome back! Please log in to your account</p>
-        
-        <form action="your-login-script.php" method="POST">
-            <input type="text" name="username" placeholder="Username" required>
+
+    <div class="login-modal">
+        <!-- Icon for Account Login / Signup -->
+        <div class="logo">Skintifix <span style="color: #000000;">Beauty Store</span></div>
+        <h2>Account Sign In</h2>
+        <p>New to Skintifix Beauty Store? <a href="create-account.html">Create your account</a> and start earning rewards today!</p>
+        <p>Welcome back! Please sign in below to access your account and view your previous order history and earned points.</p>
+
+        <form action="auth.php" method="POST">
+            <input type="text" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
-            <button type="submit">Log In</button>
+            <button type="submit">SIGN IN</button>
         </form>
 
-        <p class="footer-text">Skintifix Beauty Store</p>
+        <p><a href="{{ route('forget-password') }}">Forgot your password?</a></p>
     </div>
+
 </body>
 </html>
