@@ -159,7 +159,7 @@
                         <div class="featurs-item text-center rounded bg-white p-4 shadow-sm">
                             <div class="featurs-icon rounded-circle d-flex align-items-center justify-content-center mb-4 mx-auto"
                                 style="background-color: #e965a7; width: 80px; height: 80px;">
-                                <i class="fas fa-truck fa-lg text-white"></i>
+                                <i class="fas fa-user-shield fa-lg text-white"></i>
                             </div>
                             <h5 class="fw-bold">Secure Payment</h5>
                             <p class="mb-0">Trusted & encrypted checkout</p>
@@ -170,7 +170,7 @@
                         <div class="featurs-item text-center rounded bg-white p-4 shadow-sm">
                             <div class="featurs-icon rounded-circle d-flex align-items-center justify-content-center mb-4 mx-auto"
                                 style="background-color: #e965a7; width: 80px; height: 80px;">
-                                <i class="fas fa-truck fa-lg text-white"></i>
+                                <i class="fas fa-exchange-alt fa-lg text-white"></i>
                             </div>
                             <h5 class="fw-bold">Easy Returns</h5>
                             <p class="mb-0">7-day return guarantee</p>
@@ -181,7 +181,7 @@
                         <div class="featurs-item text-center rounded bg-white p-4 shadow-sm">
                             <div class="featurs-icon rounded-circle d-flex align-items-center justify-content-center mb-4 mx-auto"
                                 style="background-color: #e965a7; width: 80px; height: 80px;">
-                                <i class="fas fa-truck fa-lg text-white"></i>
+                                <i class="fas fa-phone-alt fa-lg text-white"></i>
                             </div>
                             <h5 class="fw-bold">Beauty Support</h5>
                             <p class="mb-0">Live chat & email 24/7</p>

@@ -58,6 +58,33 @@
         padding-bottom: 100px;
         text-align: center;
     }
+
+    .btn-cart-pink {
+    border: 1px solid #e965a7;
+    border-radius: 8px;
+    background: none;
+    width: 33px;
+    height: 31px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.btn-cart-pink i {
+    color: #e965a7;
+    transition: color 0.3s ease;
+}
+
+.btn-cart-pink:hover {
+    background-color: #e965a7;
+}
+
+.btn-cart-pink:hover i {
+    color: white;
+}
+
+    
 </style>
 
 <h2 class="mb-2">My Wishlist</h2>
@@ -81,8 +108,8 @@
                             <a href="{{ url('/customer/product/' . $item->id) }}" class="btn btn-outline-secondary btn-sm">View</a>
                             <form action="{{ route('cart.add', $item->id) }}" method="POST">
                                 @csrf
-                                <button type="submit" title="Add to Cart" style="background: none; border-color:#e965a7; border-radius: 8px; cursor: pointer;">
-                                    <i class="fas fa-shopping-cart" style="color: #e965a7;"></i>
+                                <button type="submit" class="btn-cart-pink" title="Add to cart">
+                                    <i class="fas fa-shopping-cart"></i>
                                 </button>
                             </form>
                             <form method="POST" action="{{ url('/wishlist/remove') }}" onsubmit="return confirm('Are you sure you want to remove this item from your wishlist?');">
