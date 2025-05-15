@@ -55,16 +55,6 @@
                     <p class="mb-4 text-white">Our products are meticulously crafted with premium ingredients, ensuring the highest quality standards for your skincare and beauty regimen. Experience transformative beauty with our curated collection.</p>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="d-flex flex-column text-start footer-item">
-                    <h4 class="text-white mb-3">Account</h4>
-                    <a class="btn-link text-white" href="{{ route('cart') }}">Shopping Cart</a>
-                    <a class="btn-link text-white" href="{{ route('wishlist') }}">Wishlist</a>
-                    <a class="btn-link text-white" href="{{ route('logout') }}"
-                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Log Out</a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
-                </div>
-            </div>
             <div class="col-lg-3 col-md-6">
                 <div class="footer-item">
                     <h4 class="text-white mb-3">Contact</h4>
