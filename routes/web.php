@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
+
 
 Route::get('/', function () {
     return view('home');
@@ -16,10 +18,6 @@ Route::get('/wishlist', function () {
 })->name('wishlist');
 
 // route untuk cart
-Route::get('/cart', function () {
-    return view('cart');
-})->name('cart');
-
 Route::get('/cart', [CartController::class, 'index'])->name('cart');
 
 // route untuk catalog
