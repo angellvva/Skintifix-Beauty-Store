@@ -52,7 +52,7 @@
                         <!-- Brand -->
                         <a class="navbar-brand" href="#">
                             <span class="brand-name">Skintifix</span>
-                            <span>Beauty Store</span>
+                            <span>Beauty Store HAIIIIIIIIIIIII</span>
                         </a>
                         
                         <!-- Toggle Button for Mobile -->
