@@ -4,7 +4,7 @@
         <div class="pb-4 mb-4 border-bottom border-light">
             <div class="row g-4">
                 <div class="col-lg-3">
-                        <h2 class="text-white mb-0" style="white-space: nowrap;">Skintifix Beauty Storeaaaa</h2>
+                        <h2 class="text-white mb-0" style="white-space: nowrap;">Skintifix Beauty Store</h2>
                         <p class="text-white mb-0 text-decoration-none">Discover Your Natural Beauty!</p>
                 </div>
                 <div class="col-lg-9">
