@@ -1,5 +1,5 @@
 <footer style="background-color: #e965a7;">
-  <div class="container-fluid text-white-50 pt-5">
+  <div class="container-fluid text-white-50 pt-1">
     <div class="container py-5">
         <div class="pb-4 mb-4 border-bottom border-light">
             <div class="row g-4">
