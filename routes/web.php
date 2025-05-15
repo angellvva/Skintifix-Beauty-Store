@@ -17,7 +17,9 @@ Route::get('/', [HomeController::class, 'show'])
 // route untuk cart
 // Route::get('/cart', [CartController::class, 'index'])->name('cart');
 Route::post('/cart/add/{id}', [HomeController::class, 'addToCart'])->name('cart.add');
-Route::get('/cart', [HomeController::class, 'viewCart'])->name('cart.view');
+Route::get('/cart', [CartController::class, 'index'])->name('cart.view');
+Route::put('/cart/update/{id}', [CartController::class, 'updateQuantity'])->name('cart.update');
+Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 
 // route untuk catalog
 Route::get('/catalog', [HomeController::class, 'allProducts'])
