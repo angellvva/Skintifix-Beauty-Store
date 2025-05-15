@@ -39,7 +39,7 @@
                         <h1 class="display-3 fw-bold mb-5">Discover Your Natural Beauty!</h1>
                         <div class="position-relative mx-auto">
                             <a type="button"
-                                href="" class="fw-semibold btn py-2 rounded-pill text-white w-50 shadow-sm" style="background-color: #e965a7">
+                                href="{{ route('catalog') }}" class="fw-semibold btn py-2 rounded-pill text-white w-50 shadow-sm" style="background-color: #e965a7">
                                 Start Shopping Now
                             </a>
                         </div>
