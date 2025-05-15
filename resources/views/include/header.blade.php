@@ -50,7 +50,7 @@
                 <nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
                     <div class="container-fluid">
                         <!-- Brand -->
-                        <a class="navbar-brand" href="#">
+                        <a class="navbar-brand" href="{{ route('home') }}">
                             <span class="brand-name">Skintifix</span>
                             <span>Beauty Store</span>
                         </a>
