@@ -20,3 +20,7 @@ Route::get('/cart', function () {
     return view('cart');
 })->name('cart');
 
+// route untuk login
+Route::get('/login', function (){
+    return view('auth.login');
+})->name('login');
