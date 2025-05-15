@@ -30,7 +30,7 @@ class HomeController extends Controller
     $user = Auth::user();
 
     // Check if this product is already in user's cart
-    $cartItem = Cart::where('user_id', $user->id)
+    $cartItem = Cart::where('id', $user->id)
                     ->where('product_id', $id)
                     ->first();
 
@@ -39,7 +39,7 @@ class HomeController extends Controller
         $cartItem->save();
     } else {
         Cart::create([
-            'user_id' => $user->id,
+            'id' => $user->id,
             'product_id' => $id,
             'quantity' => 1,
         ]);
@@ -51,19 +51,22 @@ class HomeController extends Controller
 public function addToWishlist($id)
 {
     $product = Product::findOrFail($id);
-    $user = Auth::user();
+    $userId = session('id'); // atau session('id_cust') jika kamu konsisten pakai itu
 
-    // Only add if not already in wishlist
-    $exists = Wishlist::where('user_id', $user->id)
-                      ->where('product_id', $id)
-                      ->exists();
+        if (!$userId) {
+            return redirect()->route('login')->with('error', 'Please login first');
+        }
 
-    if (!$exists) {
-        Wishlist::create([
-            'user_id' => $user->id,
-            'product_id' => $id,
-        ]);
-    }
+        $exists = Wishlist::where('user_id', $userId)
+                        ->where('product_id', $id)
+                        ->exists();
+
+        if (!$exists) {
+            Wishlist::create([
+                'user_id' => $userId,
+                'product_id' => $id,
+            ]);
+        }
 
     return back()->with('success', 'Product added to wishlist!');
 }

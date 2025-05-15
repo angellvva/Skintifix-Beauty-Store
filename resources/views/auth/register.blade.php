@@ -1,30 +1,3 @@
-<?php
-// register.php
-
-// Proses registrasi akan ditangani di sini (validasi dan simpan data pengguna)
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Ambil data dari form
-    $name = $_POST['name'];
-    $phone = $_POST['phone'];
-    $email = $_POST['email'];
-    $address = $_POST['address'];
-    $password = $_POST['password'];
-
-    // Validasi dan simpan data pengguna (gantilah dengan kode untuk menyimpan ke database)
-    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        // Hash password sebelum disimpan
-        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-
-        // Simulasi menyimpan data ke database (Ganti dengan query database nyata)
-        // INSERT INTO users (name, phone, email, address, password) VALUES ('$name', '$phone', '$email', '$address', '$hashedPassword');
-
-        echo "Account created successfully! <a href='login.php'>Login here</a>";
-    } else {
-        echo "Invalid email format.";
-    }
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -136,12 +109,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <p>Sign up your account</p>
 
         <!-- Form untuk registrasi -->
-       <form action="{{ route('login') }}" method="GET">
+       <form action="{{ route('register.submit') }}" method="POST">
+            @csrf
             <input type="text" name="name" placeholder="Name" required>
             <input type="tel" name="phone" placeholder="Phone Number" required>
             <input type="email" name="email" placeholder="Email Address" required>
             <input type="text" name="address" placeholder="Address" required>
             <input type="password" name="password" placeholder="Password" required>
+            <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
             <button type="submit">Sign Up</button>
         </form>
 

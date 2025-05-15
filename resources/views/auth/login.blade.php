@@ -103,7 +103,8 @@
         <p>New to Skintifix Beauty Store? <a href="{{ route('register') }}">Create your account</a> and start earning rewards today!</p>
         <p>Welcome back! Please sign in below to access your account and view your previous order history and earned points.</p>
 
-        <form action="{{ route('home') }}" method="GET">
+        <form action="{{ route('login.action') }}" method="POST">
+            @csrf
             <input type="text" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
             <button type="submit">SIGN IN</button>

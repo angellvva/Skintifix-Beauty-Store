@@ -11,7 +11,7 @@ class WishlistController extends Controller
     //
     public function Wishlist()
     {
-        $userId = session('id_cust', Cookie::get('id_cust'));
+        $userId = session('id', Cookie::get('id'));
 
         if (!$userId) {
             return redirect()->route('login')->with('error', "Please log in first.");
@@ -29,7 +29,7 @@ class WishlistController extends Controller
     public function removeFromWishlist(Request $request)
     {
         $productId = $request->input('product_id');
-        $userId = session('id_cust', Cookie::get('id_cust'));
+        $userId = session('id', Cookie::get('id'));
 
         if (!$userId) {
             return redirect()->route('login')->with('error', "Please log in first.");
@@ -37,7 +37,7 @@ class WishlistController extends Controller
 
         DB::table('wishlists')
             ->where('product_id', $productId)
-            ->where('user_id', $userId)
+            ->where('id', $userId)
             ->delete();
 
         return back()->with('success', 'Product removed from wishlist.');

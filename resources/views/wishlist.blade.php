@@ -71,7 +71,7 @@
         <div class="wishlist-grid">
             @foreach ($wishlistProducts as $item)
                 <div class="card wishlist-card border-0 shadow-sm p-3">
-                    <img src="{{ asset('images/category/' . $item->image) }}"
+                    <img src="{{ $item->image }}"
                          class="card-img-top wishlist-img mx-auto d-block"
                          alt="{{ $item->name }}">
                     <div class="card-body text-center">

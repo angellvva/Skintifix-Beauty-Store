@@ -121,7 +121,7 @@
                                     <i class="fas fa-user"></i>
                                 </a> --}}
 
-                                 @if(session()->has('id_cust'))
+                                 @if(session()->has('id'))
                                     <div class="dropdown">
                                         <button class="icon-btn dropdown-toggle" type="button" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none; color: #e965a7;">
                                             <i class="fas fa-user"></i>
