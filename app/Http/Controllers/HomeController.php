@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-use App\Models\ProductCategory;
-use Illuminate\Http\Request;
 use App\Models\Cart;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Product;
 use App\Models\Wishlist;
+use Illuminate\Http\Request;
+use App\Models\ProductCategory;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 
 class HomeController extends Controller
 {
@@ -27,10 +28,11 @@ class HomeController extends Controller
     public function addToCart($id, Request $request)
 {
     $product = Product::findOrFail($id);
-    $user = Auth::user();
+    // $user = Auth::user();
+    $user = session('id', Cookie::get('id'));
 
     // Check if this product is already in user's cart
-    $cartItem = Cart::where('id', $user->id)
+    $cartItem = Cart::where('user_id',$user)
                     ->where('product_id', $id)
                     ->first();
 
@@ -39,7 +41,7 @@ class HomeController extends Controller
         $cartItem->save();
     } else {
         Cart::create([
-            'id' => $user->id,
+            'user_id' => $user,
             'product_id' => $id,
             'quantity' => 1,
         ]);

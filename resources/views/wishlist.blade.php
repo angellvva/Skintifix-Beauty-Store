@@ -79,7 +79,12 @@
                         <p class="card-text text-danger fw-bold">Rp{{ number_format($item->price, 0, ',', '.') }}</p>
                         <div class="d-flex justify-content-center gap-2">
                             <a href="{{ url('/customer/product/' . $item->id) }}" class="btn btn-outline-secondary btn-sm">View</a>
-                            <a href="{{ url('/customer/cart') }}" class="btn btn-success btn-sm">Add to Cart</a>
+                            <form action="{{ route('cart.add', $item->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" title="Add to Cart" style="background: none; border-color:#e965a7; border-radius: 8px; cursor: pointer;">
+                                    <i class="fas fa-shopping-cart" style="color: #e965a7;"></i>
+                                </button>
+                            </form>
                             <form method="POST" action="{{ url('/wishlist/remove') }}" onsubmit="return confirm('Are you sure you want to remove this item from your wishlist?');">
                                 @csrf
                                 <input type="hidden" name="product_id" value="{{ $item->id }}">
