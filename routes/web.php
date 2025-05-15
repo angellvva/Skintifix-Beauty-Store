@@ -33,3 +33,19 @@ Route::get('/login', function (){
 Route::get('/contact', function (){
     return view('contact');
 })->name('contact');
+
+// Route untuk menampilkan form forgot password
+Route::get('forget-password', [PasswordController::class, 'showForgotPasswordForm'])
+->name('forget-password');
+
+// Route untuk mengirim permintaan reset password
+Route::post('forget-password', [PasswordController::class, 'sendResetLinkEmail'])
+->name('password.email');
+
+// Route untuk menampilkan form reset password
+Route::get('reset-password/{token}', [PasswordController::class, 'showResetForm'])
+->name('password.reset');
+
+// Route untuk menangani pengaturan ulang password
+Route::post('reset-password', [PasswordController::class, 'reset'])
+->name('password.update');
