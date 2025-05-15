@@ -1,121 +1,111 @@
 <!-- views/login.php -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Login - Innisfree Clone</title>
-    <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skintifix Beauty Store - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
+        /* General Styles */
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Poppins', sans-serif;
+            background-color: #F8E1F4;
             display: flex;
-            height: 100vh;
-        }
-
-        .left-side {
-            flex: 1;
-            background-color: #fff;
-            display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-
-        .right-side {
-            flex: 1;
-            background-color: #ffe6ec; /* Soft pink */
-        }
-
-        .login-box {
-            width: 300px;
+        
+        .login-container {
+            background: white;
             padding: 40px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            animation: slideIn 1s ease-out;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        .login-box h2 {
-            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
             text-align: center;
+            animation: fadeIn 1s ease-out;
         }
 
-        .login-box input[type="text"],
-        .login-box input[type="password"] {
+        /* Header Text */
+        h1 {
+            font-size: 2.5rem;
+            color: #D9576A; /* Soft Pink */
+            margin-bottom: 20px;
+        }
+
+        .login-container p {
+            font-size: 1rem;
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        /* Input Fields */
+        input[type="text"], input[type="password"] {
             width: 100%;
-            padding: 12px;
+            padding: 15px;
             margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
         }
 
-        .login-box button {
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: #D9576A; /* Soft Pink */
+        }
+
+        /* Submit Button */
+        button {
             width: 100%;
-            padding: 12px;
-            background-color: #4e944f;
+            padding: 15px;
+            background-color: #D9576A; /* Soft Pink */
+            color: white;
+            font-size: 1.1rem;
             border: none;
-            color: #fff;
-            font-weight: bold;
-            border-radius: 4px;
+            border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
 
-        .login-box button:hover {
-            background-color: #3d7d3e;
+        button:hover {
+            background-color: #C14D5C;
         }
 
-        .error {
-            background-color: #ffe0e0;
-            color: red;
-            padding: 10px;
-            margin-bottom: 15px;
-            text-align: center;
-            border-radius: 4px;
+        /* Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        @media screen and (max-width: 768px) {
-            body {
-                flex-direction: column;
-            }
-            .right-side {
-                height: 30vh;
-            }
-            .left-side {
-                height: 70vh;
-            }
+        /* Footer Text */
+        .footer-text {
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #D9576A;
+            font-weight: 500;
         }
     </style>
 </head>
 <body>
-
-<div class="left-side">
-    <div class="login-box">
-        <h2>Sign In</h2>
-        <?php if (isset($_SESSION['error'])): ?>
-            <div class="error"><?php echo $_SESSION['error']; unset($_SESSION['error']); ?></div>
-        <?php endif; ?>
-        <form action="auth.php" method="POST">
-            <input type="text" name="username" placeholder="Email or Username" required>
+    <div class="login-container">
+        <h1>Skintifix Beauty Store</h1>
+        <p>Welcome back! Please log in to your account</p>
+        
+        <form action="your-login-script.php" method="POST">
+            <input type="text" name="username" placeholder="Username" required>
             <input type="password" name="password" placeholder="Password" required>
-            <button type="submit">Sign In</button>
+            <button type="submit">Log In</button>
         </form>
-        <p style="text-align:center;"><a href="#">Forgot your password?</a></p>
+
+        <p class="footer-text">Skintifix Beauty Store</p>
     </div>
-</div>
-
-<div class="right-side"></div>
-
 </body>
 </html>
