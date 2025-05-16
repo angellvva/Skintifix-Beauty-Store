@@ -129,16 +129,17 @@
                     </a>
                 </div>
             @else
-                <div class="alert alert-info text-center" role="alert" style="border: 1px solid #e965a7; color: #e965a7;">
-                    Keranjang belanja Anda kosong.
-                </div>
-                <div class="text-center">
-                    <a href="{{ route('catalog') }}" class="btn rounded-pill px-4"
-                        style="background-color: #e965a7; color: #fff;">
-                        Kembali ke Katalog
-                    </a>
-                </div>
-            @endif
+            <div class="table-responsive shadow-sm rounded bg-white p-5 text-center" 
+                style="border: 1px solid #e965a7;">
+                <i class="fas fa-shopping-cart fa-4x mb-4" style="color: #e965a7;"></i>
+                <h4 class="mb-3" style="color: #e965a7;">Your cart is empty.</h4>
+                <p class="text-muted mb-4">Looks like you haven’t added anything to your cart yet.</p>
+                <a href="{{ route('catalog') }}" class="btn rounded-pill px-4 shadow-sm"
+                    style="background-color: #e965a7; color: white;">
+                    Browse Products
+                </a>
+            </div>
+        @endif
         </div>
     </div>
 
