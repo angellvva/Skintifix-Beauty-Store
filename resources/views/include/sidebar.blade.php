@@ -147,9 +147,9 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('admin.contacts') }}"
-                class="nav-link {{ request()->routeIs('admin.contacts') ? 'active' : '' }}">
-                <i class="bi bi-phone"></i> Contacts
+            <a href="{{ route('admin.messages') }}"
+                class="nav-link {{ request()->routeIs('admin.messages') ? 'active' : '' }}">
+                <i class="bi bi-envelope-open-heart"></i> Messages
             </a>
         </li>
     </ul>
@@ -162,7 +162,7 @@
                     <i class="bi bi-person fs-4 text-secondary" style="margin-right: 12px;"></i>
                     <div>
                         <div class="fw-bold">Admin User</div>
-                        <div class="text-muted small">admin@skintifix.com</div>
+                        <div class="text-muted small">admin@admin.com</div>
                     </div>
                 </div>
 

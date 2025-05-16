@@ -97,7 +97,7 @@ Route::get('/admin/products', [AdminController::class, 'products'])->name('admin
 // route admin order
 Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');
 // route admin contact
-Route::get('/admin/contacts', [AdminController::class, 'contacts'])->name('admin.contacts');
+Route::get('/admin/messages', [AdminController::class, 'contacts'])->name('admin.messages');
 
 //Route untuk create review
 Route::get('/products/{id}/review', [ReviewController::class, 'create'])->name('reviews.create');
