@@ -46,6 +46,8 @@
             @endif
 
             @if (isset($cartItems) && $cartItems->count() > 0)
+            <form action="{{ route('checkout.selected') }}" method="POST">
+            @csrf
                 <div class="table-responsive shadow-sm border rounded">
                     <table class="table align-middle mb-0">
                         <thead class="table-light">
@@ -55,6 +57,7 @@
                                 <th scope="col" style="width: 120px;">Amount</th>
                                 <th scope="col">Subtotal</th>
                                 <th scope="col" style="width: 100px;">Action</th>
+                                <th scope="col" style="width: 100px;">Checkout</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -102,12 +105,15 @@
                                             </button>
                                         </form>
                                     </td>
+                                    <td class="align-middle text-center">
+                                        <input type="checkbox" name="selected_items[]" value="{{ $item->cart_id }}">
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="5">
+                                <td colspan="6">
                                     <div class="d-flex justify-content-end pe-3">
                                         <span class="fw-bold me-2" style="color: #e965a7;">Total:</span>
                                         <span class="fw-bold">Rp {{ number_format($total, 0, ',', '.') }}</span>
@@ -128,6 +134,7 @@
                         Checkout
                     </a>
                 </div>
+            </form>
             @else
                 <div class="table-responsive shadow-sm rounded bg-white p-5 text-center" style="border: 1px solid #e965a7;">
                     <i class="fas fa-shopping-cart fa-4x mb-4" style="color: #e965a7;"></i>
