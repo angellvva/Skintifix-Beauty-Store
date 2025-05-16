@@ -20,6 +20,7 @@
 
     <title>Skintifix Beauty Store</title>
 </head>
+@stack('scripts')
 <body>
     @include('include.header')
     <div style="min-width:100%; margin:0 auto;">

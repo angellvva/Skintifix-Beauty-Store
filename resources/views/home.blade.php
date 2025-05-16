@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
     <style>
         .category .card {
             transition: box-shadow 0.3s ease;
@@ -73,6 +76,27 @@
             font-size: 12px;
             z-index: 10;
         }
+
+        /* .swiper-container {
+            padding: 10px 0;
+        }
+
+        .swiper-slide {
+            width: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .swiper-slide:hover {
+            transform: scale(1.03);
+        } */
+    .most-wanted-slider {
+        padding: 10px 0;
+    }
+    .swiper-slide {
+        width: auto;
+        max-width: 200px;
+        padding: 10px;
+    }
     </style>
 </head>
 <body>
@@ -178,6 +202,21 @@
                     </div>
                 </div>
                 <!-- Carousel End-->
+            </div>
+
+            {{-- Our Products Swiper --}}
+            <div class="container my-5">
+                <h2 class="text-center fw-bold mb-4">OUR PRODUCTS</h2>
+                    <div class="swiper most-wanted-slider">
+                        <div class="swiper-wrapper">
+                            @foreach ($products as $product)
+                                <div class="swiper-slide text-center">
+                                    <img src="{{ $product->image }}" alt="{{ $product->name }}" style="height: 180px; object-fit: contain;">
+                                    <h6 class="mt-2 fw-semibold">{{ $product->name }}</h6>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
             </div>
 
             {{-- New Arrival --}}
@@ -312,6 +351,20 @@
             </div>
         </div>
         <!-- Featurs Section End -->
+
+        <!-- Swiper JS -->
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+        <script>
+            new Swiper('.most-wanted-slider', {
+                slidesPerView: 'auto',
+                spaceBetween: 30,
+                loop: true,
+                autoplay: {
+                    delay: 2000,
+                    disableOnInteraction: false,
+                },
+            });
+        </script>
 
 
     @endsection
