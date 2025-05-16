@@ -117,32 +117,32 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('admin.orders') }}"
-                class="nav-link {{ request()->routeIs('admin.orders') ? 'active' : '' }}">
+            <a href="{{ route('admin.customers') }}"
+                class="nav-link {{ request()->routeIs('admin.customers') ? 'active' : '' }}">
                 <i class="bi bi-people"></i> Customers
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('admin.orders') }}"
-                class="nav-link {{ request()->routeIs('admin.orders') ? 'active' : '' }}">
+            <a href="{{ route('admin.categories') }}"
+                class="nav-link {{ request()->routeIs('admin.categories') ? 'active' : '' }}">
                 <i class="bi bi-tag"></i> Categories
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('admin.orders') }}"
-                class="nav-link {{ request()->routeIs('admin.orders') ? 'active' : '' }}">
+            <a href="{{ route('admin.inventory') }}"
+                class="nav-link {{ request()->routeIs('admin.inventory') ? 'active' : '' }}">
                 <i class="bi bi-boxes"></i> Inventory
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('admin.orders') }}"
-                class="nav-link {{ request()->routeIs('admin.orders') ? 'active' : '' }}">
+            <a href="{{ route('admin.promotions') }}"
+                class="nav-link {{ request()->routeIs('admin.promotions') ? 'active' : '' }}">
                 <i class="bi bi-gift"></i> Promotions
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('admin.orders') }}"
-                class="nav-link {{ request()->routeIs('admin.orders') ? 'active' : '' }}">
+            <a href="{{ route('admin.analytics') }}"
+                class="nav-link {{ request()->routeIs('admin.analytics') ? 'active' : '' }}">
                 <i class="bi bi-bar-chart-line"></i> Analytics
             </a>
         </li>
