@@ -2,12 +2,42 @@
 
 @section('content')
 <div class="container py-5">
-    <h2 class="fw-bold mb-4" style="color: #e965a7;">Your shopping cart</h2>
+    <h2 class="fw-bold mb-4" style="color: #e965a7;">Your Shopping Cart</h2>
 
     @if(session('success'))
-        <div class="alert alert-success text-center mx-5 mb-4"
-            style="background-color: #fce4ec; color: #e91e63; border: 1px solid #f8bbd0; border-radius: 8px;">
-            {{ session('success') }}
+        <div id="cart-notification" class="alert alert-success" 
+            style="
+                position: fixed;
+                top: 120px;
+                right: 313px;
+                background-color: #d4edda;  /* hijau muda */
+                color: #155724;             /* hijau gelap */
+                border: 1px solid #c3e6cb; /* border hijau */
+                border-radius: 8px;
+                padding: 10px 20px 10px 15px;
+                z-index: 9999;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                opacity: 1;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                min-width: 250px;
+            ">
+            <span>{{ session('success') }}</span>
+            <button id="close-notification" 
+                style="
+                    background: transparent;
+                    border: none;
+                    color: #155724;
+                    font-weight: bold;
+                    font-size: 20px;
+                    line-height: 1;
+                    cursor: pointer;
+                    padding: 0 5px;
+                    margin-left: 15px;
+                "
+                aria-label="Close notification"
+                >&times;</button>
         </div>
     @endif
 
@@ -31,9 +61,9 @@
                         $total += $subtotal;
                     @endphp
                     <tr>
-                        <td>
-                            <div class="d-flex align-items-center gap-3">
-                                <img src="{{ $item->image }}" alt="{{ $item->name}}" class="rounded" style="width: 80px; height: 80px; object-fit: cover;">
+                        <td style="max-width: 600px; white-space: normal;">
+                            <div class="d-flex align-items-center gap-3" style="margin-right: 10px;">
+                                <img src="{{ $item->image }}" alt="{{ $item->name}}" class="rounded" style="width: 80px; height: 80px; object-fit: cover; margin-left: 10px;">
                                 <div>
                                     <h5 class="mb-1 fw-semibold" style="color: #e965a7;">{{ $item->name}}</h5>
                                     <small class="text-muted">{{ $item->description ?? '' }}</small>
@@ -45,10 +75,10 @@
                             <form action="{{ route('cart.update', $item->cart_id) }}" method="POST" class="d-flex align-items-center">
                                 @csrf
                                 @method('PUT')
-                                <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" class="form-control form-control-sm" style="max-width: 60px;">
-                                <button type="submit" class="btn btn-sm ms-1" style="background-color: #e965a7; color: white;">
+                                <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" class="form-control form-control-sm" style="max-width: 60px;" onchange="this.form.submit()">
+                                {{-- <button type="submit" class="btn btn-sm ms-1" style="background-color: #e965a7; color: white;">
                                     <i class="fas fa-sync-alt"></i>
-                                </button>
+                                </button> --}}
                             </form>
                         </td>
                         <td class="align-middle fw-semibold">Rp {{ number_format($subtotal, 0, ',', '.') }}</td>
@@ -73,7 +103,7 @@
                         </div>
                     </td>
                 </tr>
-</tfoot>
+            </tfoot>
         </table>
     </div>
 
@@ -97,4 +127,36 @@
     </div>
     @endif
 </div>
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const notification = document.getElementById('cart-notification');
+    const closeBtn = document.getElementById('close-notification');
+    if (!notification) return;
+
+    const displayTime = 2000;  // waktu tampil sebelum fade out otomatis
+    const fadeDuration = 500; // durasi fade out
+
+    // Fungsi fade out dan sembunyikan elemen
+    function fadeOutAndHide() {
+      notification.style.transition = `opacity ${fadeDuration}ms ease`;
+      notification.style.opacity = 0;
+      setTimeout(() => {
+        notification.style.display = 'none';
+      }, fadeDuration);
+    }
+
+    // Auto fade out setelah waktu tampil
+    const timeoutId = setTimeout(fadeOutAndHide, displayTime);
+
+    // Jika user klik tombol close, hentikan timeout dan fade out segera
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        clearTimeout(timeoutId);
+        fadeOutAndHide();
+      });
+    }
+  });
+</script>
+
 @endsection

@@ -2,19 +2,11 @@
 
 @section('content')
 <style>
-    .wishlist {
-        margin-left: 60px;
-        margin-top: 20px;
-    }
-
     .item-desc {
-        margin-left: 60px;
         margin-bottom: 30px;
     }
 
     .wishlist-container {
-        margin-left: 60px;
-        margin-right: 20px;
         margin-bottom: 60px;
     }
 
@@ -60,84 +52,143 @@
     }
 
     .btn-cart-pink {
-    border: 1px solid #e965a7;
-    border-radius: 8px;
-    background: none;
-    width: 33px;
-    height: 31px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
+        border: 1px solid #e965a7;
+        border-radius: 8px;
+        background: none;
+        width: 33px;
+        height: 31px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
 
-.btn-cart-pink i {
-    color: #e965a7;
-    transition: color 0.3s ease;
-}
+    .btn-cart-pink i {
+        color: #e965a7;
+        transition: color 0.3s ease;
+    }
 
-.btn-cart-pink:hover {
-    background-color: #e965a7;
-}
+    .btn-cart-pink:hover {
+        background-color: #e965a7;
+    }
 
-.btn-cart-pink:hover i {
-    color: white;
-}
-
-    
+    .btn-cart-pink:hover i {
+        color: white;
+    }
 </style>
-<h2 class="mb-2 wishlist">My Wishlist</h2>
-<p class="item-desc text-muted">
-    You have {{ is_countable($wishlistProducts) ? count($wishlistProducts) : 0 }} 
-    {{ (is_countable($wishlistProducts) && count($wishlistProducts) === 1) ? 'item' : 'items' }}
-</p>
+<div class="container py-5">
+    <h2 class="fw-bold" style="color: #e965a7;">My Wishlist</h2>
+    <p class="item-desc text-muted mb-4">
+        You have {{ is_countable($wishlistProducts) ? count($wishlistProducts) : 0 }} 
+        {{ (is_countable($wishlistProducts) && count($wishlistProducts) === 1) ? 'item' : 'items' }}
+    </p>
 
-@if (session('success'))
-    <div class="alert alert-success text-center mx-5 mb-4"
-         style="background-color: #fce4ec; color: #e91e63; border: 1px solid #f8bbd0; border-radius: 8px;">
-        {{ session('success') }}
-    </div>
-@endif
+        @if(session('success'))
+            <div id="cart-notification" class="alert alert-success" 
+                style="
+                    position: fixed;
+                    top: 120px;
+                    right: 313px;
+                    background-color: #d4edda;  /* hijau muda */
+                    color: #155724;             /* hijau gelap */
+                    border: 1px solid #c3e6cb; /* border hijau */
+                    border-radius: 8px;
+                    padding: 10px 20px 10px 15px;
+                    z-index: 9999;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                    opacity: 1;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    min-width: 250px;
+                ">
+                <span>{{ session('success') }}</span>
+                <button id="close-notification" 
+                    style="
+                        background: transparent;
+                        border: none;
+                        color: #155724;
+                        font-weight: bold;
+                        font-size: 20px;
+                        line-height: 1;
+                        cursor: pointer;
+                        padding: 0 5px;
+                        margin-left: 15px;
+                    "
+                    aria-label="Close notification"
+                    >&times;</button>
+            </div>
+        @endif
 
-@if (isset($wishlistProducts) && count($wishlistProducts) > 0)
-    <div class="wishlist-container">
-        <div class="wishlist-grid">
-            @foreach ($wishlistProducts as $item)
-                <div class="card wishlist-card border-0 shadow-sm p-3">
-                    <img src="{{ $item->image }}"
-                         class="card-img-top wishlist-img mx-auto d-block"
-                         alt="{{ $item->name }}">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">{{ $item->name }}</h5>
-                        <p class="card-text text-danger fw-bold">Rp{{ number_format($item->price, 0, ',', '.') }}</p>
-                        <div class="d-flex justify-content-center gap-2">
-                            <a href="{{ url('/customer/product/' . $item->id) }}" class="btn btn-outline-secondary btn-sm">View</a>
-                            <form action="{{ route('cart.add', $item->id) }}" method="POST">
-                                @csrf
-                                <button type="submit" class="btn-cart-pink" title="Add to cart">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </button>
-                            </form>
-                            <form method="POST" action="{{ route('wishlist.remove') }}" onsubmit="return confirm('Remove this item from your wishlist?');">
-                                @csrf
-                                <input type="hidden" name="product_id" value="{{ $item->id }}">
-                                <button type="submit" class="btn btn-outline-danger btn-sm" title="Remove from Wishlist">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </form>
+    @if (isset($wishlistProducts) && count($wishlistProducts) > 0)
+        <div class="wishlist-container">
+            <div class="wishlist-grid">
+                @foreach ($wishlistProducts as $item)
+                    <div class="card wishlist-card border-0 shadow-sm p-3">
+                        <img src="{{ $item->image }}"
+                            class="card-img-top wishlist-img mx-auto d-block"
+                            alt="{{ $item->name }}">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{ $item->name }}</h5>
+                            <p class="card-text text-danger fw-bold">Rp{{ number_format($item->price, 0, ',', '.') }}</p>
+                            <div class="d-flex justify-content-center gap-2">
+                                <a href="{{ url('/customer/product/' . $item->id) }}" class="btn btn-outline-secondary btn-sm">View</a>
+                                <form action="{{ route('cart.add', $item->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn-cart-pink" title="Add to cart">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </button>
+                                </form>
+                                <form method="POST" action="{{ route('wishlist.remove') }}" onsubmit="return confirm('Remove this item from your wishlist?');">
+                                    @csrf
+                                    <input type="hidden" name="product_id" value="{{ $item->id }}">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm" title="Remove from Wishlist">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+            </div>
         </div>
-    </div>
 
-@else
-    <div class="empty-wishlist-container">
-        <i class="fas fa-heart empty-wishlist-icon mb-3"></i>
-        <h4 class="empty-wishlist-text">Your wishlist is empty😢</h4>
-        <p class="text-muted mb-3">Save your favorite items here for later...</p>
-        <a href="{{ route('catalog') }}" class="btn px-4" style="background-color: #e965a7; color: white;">Browse All Products</a>
-    </div>
-@endif
+    @else
+        <div class="empty-wishlist-container">
+            <i class="fas fa-heart empty-wishlist-icon mb-3"></i>
+            <h4 class="empty-wishlist-text">Your wishlist is empty😢</h4>
+            <p class="text-muted mb-3">Save your favorite items here for later...</p>
+            <a href="{{ route('catalog') }}" class="btn px-4" style="background-color: #e965a7; color: white;">Browse All Products</a>
+        </div>
+    @endif
+</div>
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const notification = document.getElementById('cart-notification');
+    const closeBtn = document.getElementById('close-notification');
+    if (!notification) return;
+
+    const displayTime = 4000;  // durasi tampil notifikasi sebelum auto fade
+    const fadeDuration = 1000; // durasi animasi fade out
+
+    function fadeOutAndHide() {
+      notification.style.transition = `opacity ${fadeDuration}ms ease`;
+      notification.style.opacity = 0;
+      setTimeout(() => {
+        notification.style.display = 'none';
+      }, fadeDuration);
+    }
+
+    const timeoutId = setTimeout(fadeOutAndHide, displayTime);
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        clearTimeout(timeoutId);
+        fadeOutAndHide();
+      });
+    }
+  });
+</script>
+
 @endsection

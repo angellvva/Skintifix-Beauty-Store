@@ -51,6 +51,12 @@
         font-size: 18px;
         margin-bottom: 8px;
         color: #333;
+
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .product-stock {
@@ -69,6 +75,12 @@
         font-size: 14px;
         color: #666;
         margin-bottom: 10px;
+
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .icon-btns form {
@@ -130,17 +142,7 @@
                     <div class="product-name">{{ $product->name }}</div>
                     <div class="product-stock">Stock: {{ $product->stock }}</div>
                     <div class="product-price">Rp{{ number_format($product->price, 0, ',', '.') }}</div>
-                    <div class="product-description">{{ Str::limit($product->description, 60) }}</div>
-                    <div class="icon-btns">
-                        <form action="{{ route('cart.add', $product->id) }}" method="POST">
-                            @csrf
-                            <button type="submit" title="Add to Cart"><i class="fas fa-shopping-cart"></i></button>
-                        </form>
-                        <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
-                            @csrf
-                            <button type="submit" title="Add to Wishlist"><i class="fas fa-heart"></i></button>
-                        </form>
-                    </div>
+                    <div class="product-description">{{ $product->description, 60 }}</div>
                 </div>
             @empty
                 <p style="text-align: center; width: 100%; color: #888;">No products found.</p>
