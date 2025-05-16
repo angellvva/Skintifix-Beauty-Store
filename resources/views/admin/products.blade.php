@@ -173,7 +173,12 @@
 
         <div class="d-flex justify-content-between align-items-center mb-2">
             <div>
-                Showing {{ $products->firstItem() }} to {{ $products->lastItem() }} of {{ $products->total() }} entries
+                @if ($products->total() == 0)
+                    Showing 0 entries
+                @else
+                    Showing {{ $products->firstItem() }} to {{ $products->lastItem() }} of {{ $products->total() }}
+                    entries
+                @endif
             </div>
 
             {{-- Pagination links --}}

@@ -95,25 +95,47 @@ class AdminController extends Controller
 
     public function orders()
     {
-        $orders = Order::with('user')->latest()->paginate(10);
-        return view('admin.orders', compact('orders'));
+        $products = Product::latest()->paginate(10);
+        return view('admin.orders', compact('products'));
     }
 
     public function customers(Request $request)
     {
-        // Ambil semua data user dengan relasi orders
-        $query = User::withCount('orders')
-            ->with(['orders' => function ($q) {
-                $q->latest();
-            }]);
+        $query = User::with('orders')
+            ->where('name', '!=', 'admin')
+            ->whereHas('orders');
 
-        // Filter search
+        // Filter search berdasarkan nama
         if ($request->filled('search')) {
-            $query->where(function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->search . '%')
-                ->orWhere('email', 'like', '%' . $request->search . '%');
-            });
+            $search = $request->input('search');
+            $query->where('name', 'like', "%{$search}%");
         }
+
+        // Sorting berdasarkan status dropdown
+        switch ($request->input('status')) {
+            case 'highest_spend':
+                // Menghitung total spent per user menggunakan withSum
+                $query->withSum('orders', 'total_amount')->orderBy('orders_sum_total_amount', 'desc');
+                break;
+
+            case 'most_orders':
+                $query->withCount('orders')
+                    ->withSum('orders', 'total_amount')
+                    ->orderBy('orders_count', 'desc')
+                    ->orderBy('orders_sum_total_amount', 'desc');
+                break;
+        }
+
+        $customers = $query->paginate(10)->withQueryString();
+
+        return view('admin.customers', compact('customers'));
+    }
+
+
+    public function categories()
+    {
+        $products = Product::latest()->paginate(10);
+        return view('admin.categories', compact('products'));
 
         // Filter type
         if ($request->type == 'new') {
@@ -153,7 +175,8 @@ class AdminController extends Controller
         $totalCustomers = User::count();
         $newCustomers = User::whereDate('created_at', '>=', now()->subMonth())->count();
         $repeatCustomers = round(
-            User::has('orders', '>=', 2)->count() / max($totalCustomers, 1) * 100, 1
+            User::has('orders', '>=', 2)->count() / max($totalCustomers, 1) * 100,
+            1
         );
         $avgOrderValue = \App\Models\Order::avg('total_amount') ?? 0;
 
