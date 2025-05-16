@@ -167,7 +167,7 @@
                 </div>
 
                 <button type="submit" class="btn p-0">
-                    <i class="bi bi-box-arrow-right p-0"></i>
+                    <i class="bi bi-box-arrow-right p-0" style="color: red;"></i>
                 </button>
             </div>
         </form>

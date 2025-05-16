@@ -4,7 +4,7 @@
     <div class="container my-4">
         <div class="row mb-4">
             <div class="col-12">
-                <h1 class="fw-bold">Dashboard</h1>
+                <h2 class="fw-bold">Dashboard</h2>
                 <p class="text-muted">Overview of your store performance</p>
             </div>
         </div>
