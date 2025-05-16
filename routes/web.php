@@ -6,13 +6,15 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\WishlistController;
-use App\Http\Controllers\ReviewController;
+
 
 // ROUTE HOME
 // Route::get('/', function () {return view('home');});
@@ -113,3 +115,7 @@ Route::get('/admin/messages', [AdminController::class, 'messages'])->name('admin
 Route::get('/products/{id}/review', [ReviewController::class, 'create'])->name('reviews.create');
 // Handle the review form submission
 Route::post('/products/{id}/review', [ReviewController::class, 'store'])->name('reviews.store');
+
+//Route untuk my orders
+// Route to show the user's orders
+Route::get('/myorders', [OrderController::class, 'index'])->name('myorders');
