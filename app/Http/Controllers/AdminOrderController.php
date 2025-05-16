@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class AdminOrderController extends Controller
 {
     //
-     public function index()
+    public function index()
     {
         $orders = Order::with('user', 'orderItems')->latest()->paginate(10);
         return view('admin.orders', compact('orders'));
@@ -31,5 +31,19 @@ class AdminOrderController extends Controller
         $order->save();
 
         return redirect()->route('admin.orders')->with('success', 'Order updated successfully.');
+    }
+
+    public function orders(Request $request)
+    {
+        $query = Order::with('user', 'orderItems');
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $sort = $request->input('sort', 'desc'); // default: newest first
+        $orders = $query->orderBy('order_date', $sort)->paginate(10);
+
+        return view('admin.orders', compact('orders'));
     }
 }
