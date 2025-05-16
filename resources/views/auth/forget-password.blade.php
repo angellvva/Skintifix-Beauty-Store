@@ -42,12 +42,13 @@
         .forgot-password-modal input[type="text"],
         .forgot-password-modal input[type="password"] {
             width: 100%;
-            padding: 15px;
-            margin: 12px 0;
+            padding: 12px;
+            margin: 6px 0;
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 16px;
             transition: all 0.3s ease;
+            box-sizing: border-box;
         }
 
         .forgot-password-modal input[type="email"]:focus,
@@ -59,7 +60,7 @@
 
         .forgot-password-modal button {
             width: 100%;
-            padding: 15px;
+            padding: 12px;
             background-color: #e965a7;
             border: none;
             color: #fff;
@@ -68,6 +69,8 @@
             cursor: pointer;
             font-size: 16px;
             transition: background-color 0.3s ease;
+            box-sizing: border-box;
+            margin-top: 14px;
         }
 
         .forgot-password-modal button:hover {
@@ -89,6 +92,16 @@
             color: #e965a7;
             margin-bottom: 20px;
         }
+
+        .forgot-password-modal label {
+            text-align: left;
+            display: block;
+            margin-top: 6px;
+        }
+
+        .forgot-password-modal .gray-text {
+            color: gray;
+        }
     </style>
 </head>
 <body>
@@ -99,19 +112,24 @@
         
         <h2>Forgot Password</h2>
         
-        <p>Enter your email address and we’ll send you a link to reset your password.</p>
+        <p class="gray-text">Enter your email address and we’ll send you a link<br>to reset your password.</br></p>
 
         <!-- Form untuk reset password -->
         <form method="POST" action="{{ route('password.update') }}">
             @csrf
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="text" name="phone" placeholder="Phone Number" required>
-            <input type="password" name="password" placeholder="New Password" required>
-            <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
+            <label for="email">Email</label>
+            <input type="email" name="email" placeholder="name@example.com" required>
+
+            <label for="password">Password</label>
+            <input type="password" name="password" placeholder="" required>
+
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password" name="password_confirmation" placeholder="" required>
+
             <button type="submit">Reset Password</button>
         </form>
 
-        <p><a href="{{ route('login') }}">Back to Login</a></p>
+        <p><a href="{{ route('login') }}"><b>Back to Login</b></a></p>
     </div>
 
 </body>

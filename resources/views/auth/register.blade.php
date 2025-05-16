@@ -43,12 +43,13 @@
         .register-modal input[type="password"],
         .register-modal input[type="tel"] {
             width: 100%;
-            padding: 15px;
-            margin: 12px 0;
+            padding: 12px;
+            margin: 6px 0;
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 16px;
             transition: all 0.3s ease;
+            box-sizing: border-box;
         }
 
         .register-modal input[type="text"]:focus,
@@ -61,7 +62,7 @@
 
         .register-modal button {
             width: 100%;
-            padding: 15px;
+            padding: 12px;
             background-color: #e965a7;
             border: none;
             color: #fff;
@@ -70,6 +71,8 @@
             cursor: pointer;
             font-size: 16px;
             transition: background-color 0.3s ease;
+            box-sizing: border-box;
+            margin-top: 14px;
         }
 
         .register-modal button:hover {
@@ -96,6 +99,16 @@
             font-size: 14px;
             margin-top: 20px;
         }
+
+        .register-modal label {
+            text-align: left;
+            display: block;
+            margin-top: 6px;
+        }
+
+        .register-modal .gray-text {
+            color: gray;
+        }
     </style>
 </head>
 <body>
@@ -104,24 +117,36 @@
         <!-- Logo -->
         <div class="logo">Skintifix <span style="color: #000000;">Beauty Store</span></div>
         
-        <h2>Register</h2>
+        <h2>Account Register</h2>
         
-        <p>Sign up your account</p>
+        <p class="gray-text">Enter your information to create an account</p>
 
         <!-- Form untuk registrasi -->
        <form action="{{ route('register.submit') }}" method="POST">
             @csrf
-            <input type="text" name="name" placeholder="Name" required>
-            <input type="tel" name="phone" placeholder="Phone Number" required>
-            <input type="email" name="email" placeholder="Email Address" required>
-            <input type="text" name="address" placeholder="Address" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
-            <button type="submit">Sign Up</button>
+            <label for="name">Name</label>
+            <input type="text" name="name" placeholder="" required>
+
+            <label for="phone">Phone Number</label>
+            <input type="tel" name="phone" placeholder="" required>
+
+            <label for="email">Email</label>
+            <input type="email" name="email" placeholder="name@example.com" required>
+
+            <label for="address">Address</label>
+            <input type="text" name="address" placeholder="" required>
+
+            <label for="password">Password</label>
+            <input type="password" name="password" placeholder="" required>
+
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password" name="password_confirmation" placeholder="" required>
+
+            <button type="submit">Register</button>
         </form>
 
         <!-- Link untuk kembali ke halaman login jika sudah punya akun -->
-        <p class="bottom-link">Already have an account? <a href="{{ route('login') }}">Login here</a></p>
+        <p class="bottom-link gray-text" style="margin-top: 20px; margin-bottom: 14px;">Already have an account? <a href="{{ route('login') }}"><b>Login here</b></a></p>
     </div>
 
 </body>

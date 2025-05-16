@@ -56,7 +56,7 @@ Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 
 // Login Routes
 Route::get('/login', [App\Http\Controllers\LoginController::class, 'Login'])->name('login');
-Route::post('/login', [App\Http\Controllers\LoginController::class, 'LoginAction'])->name('login.action');
+Route::post('/login', [App\Http\Controllers\LoginController::class, 'LoginAction'])->name('login');
 // Logout Route
 Route::post('/logout', [App\Http\Controllers\LoginController::class, 'Logout'])->name('logout');
 

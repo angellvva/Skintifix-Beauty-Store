@@ -46,12 +46,13 @@
         .login-modal input[type="text"],
         .login-modal input[type="password"] {
             width: 100%;
-            padding: 15px;
-            margin: 12px 0;
+            padding: 12px;
+            margin: 6px 0;
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 16px;
             transition: all 0.3s ease;
+            box-sizing: border-box;
         }
 
         .login-modal input[type="text"]:focus,
@@ -62,7 +63,7 @@
 
         .login-modal button {
             width: 100%;
-            padding: 15px;
+            padding: 12px;
             background-color: #e965a7;
             border: none;
             color: #fff;
@@ -71,6 +72,8 @@
             cursor: pointer;
             font-size: 16px;
             transition: background-color 0.3s ease;
+            box-sizing: border-box;
+            margin-top: 14px;
         }
 
         .login-modal button:hover {
@@ -92,6 +95,16 @@
             color: #e965a7; /* Pink color for Skintifix */
             margin-bottom: 20px;
         }
+
+        .login-modal label {
+            text-align: left;
+            display: block;
+            margin-top: 6px;
+        }
+
+        .login-modal .gray-text {
+            color: gray;
+        }
     </style>
 </head>
 <body>
@@ -100,17 +113,23 @@
         <!-- Icon for Account Login / Signup -->
         <div class="logo">Skintifix <span style="color: #000000;">Beauty Store</span></div>
         <h2>Account Sign In</h2>
-        <p>New to Skintifix Beauty Store? <a href="{{ route('register') }}">Create your account</a> and start earning rewards today!</p>
-        <p>Welcome back! Please sign in below to access your account and view your previous order history and earned points.</p>
+        <p class="gray-text">Welcome back! Please sign in below to access your account and view your previous order history and earned points.</p>
 
-        <form action="{{ route('login.action') }}" method="POST">
+        <form action="{{ route('login') }}" method="POST">
             @csrf
-            <input type="text" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit">SIGN IN</button>
+            <label for="email">Email</label>
+            <input type="text" name="email" placeholder="name@example.com" required>
+
+            <label for="password">Password</label>
+            <input type="password" name="password" placeholder="" required>
+
+            <button type="submit">Sign In</button>
         </form>
 
         <p><a href="{{ route('forget-password') }}">Forgot your password?</a></p>
+        
+
+        <p class="gray-text" style="margin-top: 20px; margin-bottom: 14px;">New to Skintifix Beauty Store? <a href="{{ route('register') }}"><b>Create your account</b></a> <br>and start earning rewards today!</br></p>
     </div>
 
 </body>
