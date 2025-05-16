@@ -90,6 +90,9 @@ Route::get('/catalog/{category}', [ProductController::class, 'categoryCatalog'])
 Route::get('/edit-profile', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::post('/edit-profile', [ProfileController::class, 'update'])->name('profile.update');
 
+// route my orders
+Route::get('/my-orders', [ProfileController::class, 'orders'])->name('my-orders');
+
 // route admin dashboard
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 // route admin product
