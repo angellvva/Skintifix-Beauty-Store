@@ -1,11 +1,11 @@
 <!-- views/login.php -->
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Account Sign In</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
-
         body {
             margin: 0;
             padding: 0;
@@ -14,14 +14,18 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-image: url('{{ asset('images/background/flower.jpg') }}'); /* Update with the correct image path */
-            background-size: cover;  /* Ensures the image covers the entire background */
-            background-position: center; /* Center the image */
-            background-repeat: no-repeat; /* Prevents the image from repeating */
+            background-image: url('{{ asset('images/background/flower.jpg') }}');
+            /* Update with the correct image path */
+            background-size: cover;
+            /* Ensures the image covers the entire background */
+            background-position: center;
+            /* Center the image */
+            background-repeat: no-repeat;
+            /* Prevents the image from repeating */
         }
 
         .login-modal {
-            background-color: rgba(255, 255, 255, 0.9); 
+            background-color: rgba(255, 255, 255, 0.9);
             width: 380px;
             padding: 40px;
             border-radius: 12px;
@@ -93,10 +97,11 @@
             text-decoration: underline;
         }
 
-       .logo {
+        .logo {
             font-size: 36px;
             font-weight: bold;
-            color: #e965a7; /* Pink color for Skintifix */
+            color: #e965a7;
+            /* Pink color for Skintifix */
             margin-bottom: 20px;
         }
 
@@ -111,13 +116,15 @@
         }
     </style>
 </head>
+
 <body>
 
     <div class="login-modal">
         <!-- Icon for Account Login / Signup -->
         <div class="logo">Skintifix <span style="color: #000000;">Beauty Store</span></div>
         <h2>Account Sign In</h2>
-        <p class="gray-text">Welcome back! Please sign in below to access your account and view your previous order history and earned points.</p>
+        <p class="gray-text">Welcome back! Please sign in below to access your account and view your previous order
+            history and earned points.</p>
 
         <form action="{{ route('login') }}" method="POST">
             @csrf
@@ -131,10 +138,13 @@
         </form>
 
         <p><a href="{{ route('forget-password') }}">Forgot your password?</a></p>
-        
 
-        <p class="gray-text" style="margin-top: 20px; margin-bottom: 14px;">New to Skintifix Beauty Store? <a href="{{ route('register') }}"><b>Create your account</b></a> <br>and start earning rewards today!</br></p>
+
+        <p class="gray-text" style="margin-top: 20px; margin-bottom: 14px;">New to Skintifix Beauty Store? <a
+                href="{{ route('register') }}"><b>Create your account</b></a> <br>and start earning rewards today!</br>
+        </p>
     </div>
 
 </body>
+
 </html>

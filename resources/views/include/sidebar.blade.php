@@ -79,6 +79,14 @@
         background-color: #dc3545;
         color: #fff;
     }
+
+    .gray-text {
+        color: gray;
+    }
+
+    .shadow-top {
+        box-shadow: 0 -4px 6px -2px rgba(0, 0, 0, 0.1);
+    }
 </style>
 
 <!-- SIDEBAR HTML -->
@@ -93,7 +101,7 @@
         <li class="nav-item">
             <a href="{{ route('admin.dashboard') }}"
                 class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                <i class="bi bi-speedometer2"></i> Dashboard
+                <i class="bi bi-house"></i> Dashboard
             </a>
         </li>
         <li class="nav-item">
@@ -109,6 +117,36 @@
             </a>
         </li>
         <li class="nav-item">
+            <a href="{{ route('admin.orders') }}"
+                class="nav-link {{ request()->routeIs('admin.orders') ? 'active' : '' }}">
+                <i class="bi bi-people"></i> Customers
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('admin.orders') }}"
+                class="nav-link {{ request()->routeIs('admin.orders') ? 'active' : '' }}">
+                <i class="bi bi-tag"></i> Categories
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('admin.orders') }}"
+                class="nav-link {{ request()->routeIs('admin.orders') ? 'active' : '' }}">
+                <i class="bi bi-boxes"></i> Inventory
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('admin.orders') }}"
+                class="nav-link {{ request()->routeIs('admin.orders') ? 'active' : '' }}">
+                <i class="bi bi-gift"></i> Promotions
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('admin.orders') }}"
+                class="nav-link {{ request()->routeIs('admin.orders') ? 'active' : '' }}">
+                <i class="bi bi-bar-chart-line"></i> Analytics
+            </a>
+        </li>
+        <li class="nav-item">
             <a href="{{ route('admin.contacts') }}"
                 class="nav-link {{ request()->routeIs('admin.contacts') ? 'active' : '' }}">
                 <i class="bi bi-phone"></i> Contacts
@@ -116,14 +154,22 @@
         </li>
     </ul>
 
-    <div class="position-absolute bottom-0 start-0 w-100 mb-3 px-3">
+    <div class="position-absolute bottom-0 start-0 w-100 px-3 shadow-top" style="background-color: white;">
         <form action="{{ route('logout') }}" method="POST" class="w-100">
             @csrf
-            <button type="submit"
-                class="btn btn-sm btn-outline-danger d-flex align-items-center gap-2 w-100 justify-content-center logout-btn">
-                <i class="bi bi-box-arrow-left"></i>
-                <span>Sign Out</span>
-            </button>
+            <div class="d-flex align-items-center justify-content-between m-3">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-person fs-4 text-secondary" style="margin-right: 12px;"></i>
+                    <div>
+                        <div class="fw-bold">Admin User</div>
+                        <div class="text-muted small">admin@skintifix.com</div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn p-0">
+                    <i class="bi bi-box-arrow-right p-0"></i>
+                </button>
+            </div>
         </form>
     </div>
 </div>
