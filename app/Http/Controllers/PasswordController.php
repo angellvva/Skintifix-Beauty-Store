@@ -3,63 +3,39 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\DB;
 
 class PasswordController extends Controller
 {
-    // Menampilkan form forgot password
-    public function showForgotPasswordForm()
+    // Show the form to reset the password (no token needed)
+    public function showForgetPasswordForm()
     {
-        return view('auth.forget-password');
+        return view('auth.forget-password');  // Directly show the reset password form
     }
 
-    // Mengirimkan email untuk reset password
-    public function sendResetLinkEmail(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-        ]);
-
-        $response = Password::sendResetLink(
-            $request->only('email')
-        );
-
-        if ($response == Password::RESET_LINK_SENT) {
-            return back()->with('status', 'We have e-mailed your password reset link!');
-        }
-
-        return back()->withErrors(['email' => 'We can\'t find a user with that e-mail address.']);
-    }
-
-    // Menampilkan form reset password hanya dengan tombol
-    public function showResetForm($token)
-    {
-        return view('auth.password', ['token' => $token]);
-    }
-
-    // Menangani reset password
+    // Handle the password reset (without email or token validation)
     public function reset(Request $request)
     {
-        $request->validate([
+        // Validate the request (email and new password)
+        $validated = $request->validate([
             'email' => 'required|email',
             'password' => 'required|confirmed|min:8',
-            'token' => 'required',
         ]);
 
-        $response = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user) use ($request) {
-                $user->forceFill([
-                    'password' => Hash::make($request->password),
-                ])->save();
-            }
-        );
+        // Find the user by email
+        $user = User::where('email', $validated['email'])->first();
 
-        if ($response == Password::PASSWORD_RESET) {
-            return redirect()->route('login')->with('status', 'Your password has been reset!');
+        if (!$user) {
+            return back()->withErrors(['email' => 'We can\'t find a user with that e-mail address.']);
         }
 
-        return back()->withErrors(['email' => 'This password reset token is invalid.']);
+        // Update the user's password
+        $user->password = Hash::make($validated['password']);
+        $user->save();
+
+        // Redirect to login page with success message
+        return redirect()->route('login')->with('status', 'Your password has been reset!');
     }
 }

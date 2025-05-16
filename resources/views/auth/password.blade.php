@@ -134,7 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <p>Enter your email address and we’ll send you a link to reset your password.</p>
 
         <!-- Form untuk reset password -->
-        <form action="{{ route('password.reset') }}" method="GET">
+        <form action="{{ route('password.email') }}" method="GET">
             <input type="email" name="email" placeholder="Email" required>
             <button type="submit">Send Password Reset Link</button>
         </form>
