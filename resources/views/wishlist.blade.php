@@ -2,7 +2,7 @@
 
 @section('content')
 <style>
-    h2 {
+    .wishlist {
         margin-left: 60px;
         margin-top: 20px;
     }
@@ -86,7 +86,7 @@
 
     
 </style>
-<h2 class="mb-2">My Wishlist</h2>
+<h2 class="mb-2 wishlist">My Wishlist</h2>
 <p class="item-desc text-muted">
     You have {{ is_countable($wishlistProducts) ? count($wishlistProducts) : 0 }} 
     {{ (is_countable($wishlistProducts) && count($wishlistProducts) === 1) ? 'item' : 'items' }}
