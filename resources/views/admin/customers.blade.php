@@ -1,4 +1,3 @@
-@ -1,6 +1,38 @@
 @extends('layouts.admin')
 
 @section('content')
@@ -38,7 +37,7 @@
         <div class="row mb-4">
             <div class="col-12">
                 <h2 class="fw-bold">Customers</h2>
-                <p class="text-muted">Lalalala</p>
+                <p class="text-muted">Monitor your customers effectively to boost satisfaction and increase sales</p>
             </div>
         </div>
 

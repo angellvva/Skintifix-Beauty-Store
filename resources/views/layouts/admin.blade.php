@@ -17,8 +17,6 @@
             transition: all 0.3s;
         }
     </style>
-
-
 </head>
 
 <body class="sticky-top bg-light">
