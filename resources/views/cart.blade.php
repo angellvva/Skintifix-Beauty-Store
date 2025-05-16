@@ -49,8 +49,8 @@
                 <div class="table-responsive shadow-sm border rounded">
                     <table class="table align-middle mb-0">
                         <thead class="table-light">
-                            <tr>
-                                <th scope="col">Product</th>
+                            <tr style="text-align: center;">
+                                <th style="text-align:start;" scope="col">Product</th>
                                 <th scope="col">Price</th>
                                 <th scope="col" style="width: 120px;">Amount</th>
                                 <th scope="col">Subtotal</th>
@@ -76,7 +76,8 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="align-middle">Rp {{ number_format($item->price, 0, ',', '.') }}</td>
+                                    <td class="align-middle text-center">Rp {{ number_format($item->price, 0, ',', '.') }}
+                                    </td>
                                     <td class="align-middle">
                                         <form action="{{ route('cart.update', $item->cart_id) }}" method="POST"
                                             class="d-flex align-items-center">
@@ -85,20 +86,19 @@
                                             <input type="number" name="quantity" value="{{ $item->quantity }}"
                                                 min="1" class="form-control form-control-sm" style="max-width: 60px;"
                                                 onchange="this.form.submit()">
-                                            {{-- <button type="submit" class="btn btn-sm ms-1" style="background-color: #e965a7; color: white;">
-                                    <i class="fas fa-sync-alt"></i>
-                                </button> --}}
                                         </form>
                                     </td>
-                                    <td class="align-middle fw-semibold">Rp {{ number_format($subtotal, 0, ',', '.') }}</td>
-                                    <td class="align-middle">
+                                    <td class="align-middle text-center fw-semibold">Rp
+                                        {{ number_format($subtotal, 0, ',', '.') }}</td>
+                                    <td class="align-middle text-center">
                                         <form action="{{ route('cart.remove', $item->cart_id) }}" method="POST"
+                                            class="m-0" style="display:inline-block;"
                                             onsubmit="return confirm('Are you sure you want to remove this item?');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-outline-danger btn-sm"
                                                 title="Hapus produk">
-                                                <i class="bi bi-trash"></i> Delete
+                                                <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
                                     </td>

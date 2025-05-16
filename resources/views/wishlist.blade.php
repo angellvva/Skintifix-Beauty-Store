@@ -1,194 +1,204 @@
 @extends('base.base')
 
 @section('content')
-<style>
-    .item-desc {
-        margin-bottom: 30px;
-    }
+    <style>
+        .product-section {
+            background-color: #fff0f6;
+        }
 
-    .wishlist-container {
-        margin-bottom: 60px;
-    }
+        .item-desc {
+            margin-bottom: 30px;
+        }
 
-    .wishlist-card {
-        border: 2px solid #e965a7 !important;
-        transition: all 0.3s ease;
-        width: 260px;
-        border-radius: 8px;
-    }
+        .wishlist-container {
+            margin-bottom: 60px;
+        }
 
-    .wishlist-card:hover {
-        box-shadow: 0 0 15px rgba(233, 101, 167, 0.5);
-        transform: translateY(-5px);
-        z-index: 1;
-    }
+        .wishlist-card {
+            border: 2px solid #e965a7 !important;
+            transition: all 0.3s ease;
+            width: 260px;
+            border-radius: 8px;
+        }
 
-    .wishlist-img {
-        height: 160px;
-        object-fit: contain;
-        margin-bottom: 1rem;
-    }
+        .wishlist-card:hover {
+            box-shadow: 0 0 15px rgba(233, 101, 167, 0.5);
+            transform: translateY(-5px);
+            z-index: 1;
+        }
 
-    .wishlist-grid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px 10px;
-    }
+        .wishlist-img {
+            height: 160px;
+            object-fit: contain;
+            margin-bottom: 1rem;
+        }
 
-    .empty-wishlist-icon {
-        font-size: 60px;
-        color: #ccc;
-    }
+        .wishlist-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px 10px;
+        }
 
-    .empty-wishlist-text {
-        font-weight: 500;
-        color: #555;
-    }
+        .empty-wishlist-icon {
+            font-size: 60px;
+            color: #ccc;
+        }
 
-    .empty-wishlist-container {
-        padding-top: 100px;
-        padding-bottom: 100px;
-        text-align: center;
-    }
+        .empty-wishlist-text {
+            font-weight: 500;
+            color: #555;
+        }
 
-    .btn-cart-pink {
-        border: 1px solid #e965a7;
-        border-radius: 8px;
-        background: none;
-        width: 33px;
-        height: 31px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s ease;
-    }
+        .empty-wishlist-container {
+            padding-top: 100px;
+            padding-bottom: 100px;
+            text-align: center;
+        }
 
-    .btn-cart-pink i {
-        color: #e965a7;
-        transition: color 0.3s ease;
-    }
+        .btn-cart-pink {
+            border: 1px solid #e965a7;
+            border-radius: 8px;
+            background: none;
+            width: 33px;
+            height: 31px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
 
-    .btn-cart-pink:hover {
-        background-color: #e965a7;
-    }
+        .btn-cart-pink i {
+            color: #e965a7;
+            transition: color 0.3s ease;
+        }
 
-    .btn-cart-pink:hover i {
-        color: white;
-    }
-</style>
-<div class="container py-5">
-    <h2 class="fw-bold" style="color: #e965a7;">My Wishlist</h2>
-    <p class="item-desc text-muted mb-4">
-        You have {{ is_countable($wishlistProducts) ? count($wishlistProducts) : 0 }} 
-        {{ (is_countable($wishlistProducts) && count($wishlistProducts) === 1) ? 'item' : 'items' }}
-    </p>
+        .btn-cart-pink:hover {
+            background-color: #e965a7;
+        }
 
-        @if(session('success'))
-            <div id="cart-notification" class="alert alert-success" 
-                style="
-                    position: fixed;
-                    top: 120px;
-                    right: 313px;
-                    background-color: #d4edda;  /* hijau muda */
-                    color: #155724;             /* hijau gelap */
-                    border: 1px solid #c3e6cb; /* border hijau */
-                    border-radius: 8px;
-                    padding: 10px 20px 10px 15px;
-                    z-index: 9999;
-                    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-                    opacity: 1;
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    min-width: 250px;
-                ">
-                <span>{{ session('success') }}</span>
-                <button id="close-notification" 
+        .btn-cart-pink:hover i {
+            color: white;
+        }
+    </style>
+    <div class="product-section">
+        <div class="container py-5">
+            <h2 class="fw-bold" style="color: #e965a7;">My Wishlist</h2>
+            <p class="item-desc text-muted mb-4">
+                You have {{ is_countable($wishlistProducts) ? count($wishlistProducts) : 0 }}
+                {{ is_countable($wishlistProducts) && count($wishlistProducts) === 1 ? 'item' : 'items' }}
+            </p>
+
+            @if (session('success'))
+                <div id="cart-notification" class="alert alert-success"
                     style="
-                        background: transparent;
-                        border: none;
-                        color: #155724;
-                        font-weight: bold;
-                        font-size: 20px;
-                        line-height: 1;
-                        cursor: pointer;
-                        padding: 0 5px;
-                        margin-left: 15px;
-                    "
-                    aria-label="Close notification"
-                    >&times;</button>
-            </div>
-        @endif
+                        position: fixed;
+                        top: 120px;
+                        right: 313px;
+                        background-color: #d4edda;  /* hijau muda */
+                        color: #155724;             /* hijau gelap */
+                        border: 1px solid #c3e6cb; /* border hijau */
+                        border-radius: 8px;
+                        padding: 10px 20px 10px 15px;
+                        z-index: 9999;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                        opacity: 1;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        min-width: 250px;
+                    ">
+                    <span>{{ session('success') }}</span>
+                    <button id="close-notification"
+                        style="
+                            background: transparent;
+                            border: none;
+                            color: #155724;
+                            font-weight: bold;
+                            font-size: 20px;
+                            line-height: 1;
+                            cursor: pointer;
+                            padding: 0 5px;
+                            margin-left: 15px;
+                        "
+                        aria-label="Close notification">&times;</button>
+                </div>
+            @endif
 
-    @if (isset($wishlistProducts) && count($wishlistProducts) > 0)
-        <div class="wishlist-container">
-            <div class="wishlist-grid">
-                @foreach ($wishlistProducts as $item)
-                    <div class="card wishlist-card border-0 shadow-sm p-3">
-                        <img src="{{ $item->image }}"
-                            class="card-img-top wishlist-img mx-auto d-block"
-                            alt="{{ $item->name }}">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">{{ $item->name }}</h5>
-                            <p class="card-text text-danger fw-bold">Rp{{ number_format($item->price, 0, ',', '.') }}</p>
-                            <div class="d-flex justify-content-center gap-2">
-                                <a href="{{ url('/customer/product/' . $item->id) }}" class="btn btn-outline-secondary btn-sm">View</a>
-                                <form action="{{ route('cart.add', $item->id) }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="btn-cart-pink" title="Add to cart">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </button>
-                                </form>
-                                <form method="POST" action="{{ route('wishlist.remove') }}" onsubmit="return confirm('Remove this item from your wishlist?');">
-                                    @csrf
-                                    <input type="hidden" name="product_id" value="{{ $item->id }}">
-                                    <button type="submit" class="btn btn-outline-danger btn-sm" title="Remove from Wishlist">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </form>
+            @if (isset($wishlistProducts) && count($wishlistProducts) > 0)
+                <div class="wishlist-container">
+                    <div class="wishlist-grid">
+                        @foreach ($wishlistProducts as $item)
+                            <div class="card wishlist-card border-0 shadow-sm p-3">
+                                <img src="{{ $item->image }}" class="card-img-top wishlist-img mx-auto d-block"
+                                    alt="{{ $item->name }}">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">{{ $item->name }}</h5>
+                                    <p class="card-text text-danger fw-bold">
+                                        Rp{{ number_format($item->price, 0, ',', '.') }}
+                                    </p>
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <a href="{{ url('/customer/product/' . $item->id) }}"
+                                            class="btn btn-outline-secondary btn-sm">View</a>
+                                        <form action="{{ route('cart.add', $item->id) }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="btn-cart-pink" title="Add to cart">
+                                                <i class="fas fa-shopping-cart"></i>
+                                            </button>
+                                        </form>
+                                        <form method="POST" action="{{ route('wishlist.remove') }}"
+                                            onsubmit="return confirm('Remove this item from your wishlist?');">
+                                            @csrf
+                                            <input type="hidden" name="product_id" value="{{ $item->id }}">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm"
+                                                title="Remove from Wishlist">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        @endforeach
                     </div>
-                @endforeach
-            </div>
+                </div>
+            @else
+                <div class="empty-wishlist-container">
+                    <i class="fas fa-heart empty-wishlist-icon mb-3"></i>
+                    <h4 class="empty-wishlist-text">Your wishlist is empty😢</h4>
+                    <p class="text-muted mb-3">Save your favorite items here for later...</p>
+                    <a href="{{ route('catalog') }}" class="btn px-4"
+                        style="background-color: #e965a7; color: white;">Browse
+                        All Products</a>
+                </div>
+            @endif
         </div>
+    </div>
 
-    @else
-        <div class="empty-wishlist-container">
-            <i class="fas fa-heart empty-wishlist-icon mb-3"></i>
-            <h4 class="empty-wishlist-text">Your wishlist is empty😢</h4>
-            <p class="text-muted mb-3">Save your favorite items here for later...</p>
-            <a href="{{ route('catalog') }}" class="btn px-4" style="background-color: #e965a7; color: white;">Browse All Products</a>
-        </div>
-    @endif
-</div>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const notification = document.getElementById('cart-notification');
+            const closeBtn = document.getElementById('close-notification');
+            if (!notification) return;
 
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    const notification = document.getElementById('cart-notification');
-    const closeBtn = document.getElementById('close-notification');
-    if (!notification) return;
+            const displayTime = 4000; // durasi tampil notifikasi sebelum auto fade
+            const fadeDuration = 1000; // durasi animasi fade out
 
-    const displayTime = 4000;  // durasi tampil notifikasi sebelum auto fade
-    const fadeDuration = 1000; // durasi animasi fade out
+            function fadeOutAndHide() {
+                notification.style.transition = `opacity ${fadeDuration}ms ease`;
+                notification.style.opacity = 0;
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, fadeDuration);
+            }
 
-    function fadeOutAndHide() {
-      notification.style.transition = `opacity ${fadeDuration}ms ease`;
-      notification.style.opacity = 0;
-      setTimeout(() => {
-        notification.style.display = 'none';
-      }, fadeDuration);
-    }
+            const timeoutId = setTimeout(fadeOutAndHide, displayTime);
 
-    const timeoutId = setTimeout(fadeOutAndHide, displayTime);
-
-    if (closeBtn) {
-      closeBtn.addEventListener('click', () => {
-        clearTimeout(timeoutId);
-        fadeOutAndHide();
-      });
-    }
-  });
-</script>
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    clearTimeout(timeoutId);
+                    fadeOutAndHide();
+                });
+            }
+        });
+    </script>
 
 @endsection
