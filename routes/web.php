@@ -122,3 +122,5 @@ Route::post('/products/{id}/review', [ReviewController::class, 'store'])->name('
 //Route untuk my orders
 // Route to show the user's orders
 Route::get('/myorders', [OrderController::class, 'index'])->name('myorders');
+
+Route::post('/checkout/selected', [CheckoutController::class, 'checkoutSelected'])->name('checkout.selected');
