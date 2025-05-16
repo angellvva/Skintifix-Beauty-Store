@@ -39,7 +39,7 @@ class AdminController extends Controller
         ->get();
 
         $lowStockProducts = DB::table('products')
-            ->where('stock', '<=', 3)
+            ->where('stock', '<=', 10)
             ->get();
 
         return view('admin.dashboard', compact(
@@ -66,7 +66,7 @@ class AdminController extends Controller
 
     public function contacts()
     {
-        $messages = DB::table('contacts')->latest()->paginate(10);
+        $messages = DB::table('messages')->latest()->paginate(10);
         return view('admin.contacts', compact('messages'));
     }
 }
