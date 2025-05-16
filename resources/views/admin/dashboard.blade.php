@@ -146,9 +146,9 @@
         }
 
         .btn-pink {
-            background-color: #e965a7;
-            color: white;
-            border: none;
+            color: #e965a7;
+            background-color: white;
+            border: 1px solid #e965a7;
         }
 
         .btn-pink:hover {
