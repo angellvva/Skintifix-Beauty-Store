@@ -16,8 +16,8 @@ class AdminController extends Controller
         $totalOrders = DB::table('orders')->count();
 
         $totalRevenue = DB::table('order_items')
-        ->select(DB::raw('SUM(price * quantity) as total'))
-        ->value('total');
+            ->select(DB::raw('SUM(price * quantity) as total'))
+            ->value('total');
 
         $totalProducts = DB::table('products')->count();
 
@@ -26,17 +26,17 @@ class AdminController extends Controller
             ->count();
 
         $recentOrders = DB::table('orders')
-        ->join('users', 'orders.user_id', '=', 'users.id')
-        ->select(
-            'orders.id',
-            'users.name as customer',
-            'orders.order_date',
-            'orders.total_amount',
-            'users.name as customer_name'
-        )
-        ->orderByDesc('orders.order_date','desc')
-        ->limit(3)
-        ->get();
+            ->join('users', 'orders.user_id', '=', 'users.id')
+            ->select(
+                'orders.id',
+                'users.name as customer',
+                'orders.order_date',
+                'orders.total_amount',
+                'users.name as customer_name'
+            )
+            ->orderByDesc('orders.order_date', 'desc')
+            ->limit(3)
+            ->get();
 
         $lowStockProducts = DB::table('products')
             ->where('stock', '<=', 10)
@@ -52,16 +52,46 @@ class AdminController extends Controller
         ));
     }
 
+    public function products()
+    {
+        $products = Product::latest()->paginate(10);
+        return view('admin.products', compact('products'));
+    }
+
     public function orders()
     {
         $orders = Order::with('user')->latest()->paginate(10);
         return view('admin.orders', compact('orders'));
     }
 
-    public function products()
+    public function customers()
     {
         $products = Product::latest()->paginate(10);
-        return view('admin.products', compact('products'));
+        return view('admin.customers', compact('products'));
+    }
+
+    public function categories()
+    {
+        $products = Product::latest()->paginate(10);
+        return view('admin.categories', compact('products'));
+    }
+
+    public function inventory()
+    {
+        $products = Product::latest()->paginate(10);
+        return view('admin.inventory', compact('products'));
+    }
+
+    public function promotions()
+    {
+        $products = Product::latest()->paginate(10);
+        return view('admin.promotions', compact('products'));
+    }
+
+    public function analytics()
+    {
+        $products = Product::latest()->paginate(10);
+        return view('admin.analytics', compact('products'));
     }
 
     public function messages()

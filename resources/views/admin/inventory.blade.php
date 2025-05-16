@@ -4,8 +4,8 @@
     <div class="container my-4">
         <div class="row mb-4">
             <div class="col-12">
-                <h2 class="fw-bold">Orders</h2>
-                <p class="text-muted">Track and process customer orders efficiently</p>
+                <h2 class="fw-bold">Inventory</h2>
+                <p class="text-muted">Keep an eye on stock levels and manage supply</p>
             </div>
         </div>
     </div>

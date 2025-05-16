@@ -17,7 +17,7 @@ use App\Http\Controllers\ReviewController;
 // ROUTE HOME
 // Route::get('/', function () {return view('home');});
 Route::get('/', [HomeController::class, 'show'])
-->name('home');
+    ->name('home');
 
 // route untuk cart
 // Route::get('/cart', [CartController::class, 'index'])->name('cart');
@@ -28,24 +28,24 @@ Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('car
 
 // route untuk catalog
 Route::get('/catalog', [HomeController::class, 'allProducts'])
-->name('catalog');
+    ->name('catalog');
 
 // ROUTE PASSWORD RESET
 // Route untuk menampilkan form forgot password
 Route::get('/forget-password', [PasswordController::class, 'showForgetPasswordForm'])
-->name('forget-password');
+    ->name('forget-password');
 
 // Route untuk mengirim permintaan reset password
 Route::post('/forget-password', [PasswordController::class, 'sendResetLinkEmail'])
-->name('password.email');
+    ->name('password.email');
 
 // Route untuk menampilkan form reset password
 Route::get('/reset-password/{token}', [PasswordController::class, 'showResetForm'])
-->name('password.reset');
+    ->name('password.reset');
 
 // Route untuk menangani pengaturan ulang password
 Route::post('/reset-password', [PasswordController::class, 'reset'])
-->name('password.update');
+    ->name('password.update');
 
 //Route untuk button add cart dan wishlist di product page
 Route::post('/wishlist/add/{id}', [HomeController::class, 'addToWishlist'])->name('wishlist.add');
@@ -72,19 +72,19 @@ Route::post('/register', [AuthController::class, 'register'])->name('register.su
 
 // Route untuk menampilkan best seller products
 Route::get('/best-seller', [HomeController::class, 'viewBestSeller'])
-->name('best-seller');
+    ->name('best-seller');
 
 // Route untuk menampilkan new arrival products
 Route::get('/new-arrival', [HomeController::class, 'viewNewArrival'])
-->name('new-arrival');
+    ->name('new-arrival');
 
 // Route untuk menampilkan product details
 Route::get('/product/{id}', [ProductController::class, 'detail'])
-->name('product.detail');
+    ->name('product.detail');
 
 // Route untuk menampilkan product berdasarkan category
 Route::get('/catalog/{category}', [ProductController::class, 'categoryCatalog'])
-->name('category.catalog');
+    ->name('category.catalog');
 
 // Route untuk ke view edit profile saat pencet button edit profile
 Route::get('/edit-profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -96,8 +96,18 @@ Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('adm
 Route::get('/admin/products', [AdminController::class, 'products'])->name('admin.products');
 // route admin order
 Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');
-// route admin contact
-Route::get('/admin/messages', [AdminController::class, 'contacts'])->name('admin.messages');
+// route admin customer
+Route::get('/admin/customers', [AdminController::class, 'customers'])->name('admin.customers');
+// route admin categories
+Route::get('/admin/categories', [AdminController::class, 'categories'])->name('admin.categories');
+// route admin inventory
+Route::get('/admin/inventory', [AdminController::class, 'inventory'])->name('admin.inventory');
+// route admin promotion
+Route::get('/admin/promotions', [AdminController::class, 'promotions'])->name('admin.promotions');
+// route admin analytics
+Route::get('/admin/analytics', [AdminController::class, 'analytics'])->name('admin.analytics');
+// route admin messages
+Route::get('/admin/messages', [AdminController::class, 'messages'])->name('admin.messages');
 
 //Route untuk create review
 Route::get('/products/{id}/review', [ReviewController::class, 'create'])->name('reviews.create');
