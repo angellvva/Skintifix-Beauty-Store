@@ -15,19 +15,24 @@ class HomeController extends Controller
     //
     public function show() {
         return view('home',[
-            'order_items'=>OrderItem::where('quantity', '>', 0)
+            'order_items'=>OrderItem::where('quantity', '>', 1)
             ->with(['product', 'category'])
             ->get(),
 
-            'products'=>Product::where('created_at', '>=', now()->subDays(7))
-            ->with(['category'])
+            'products'=>Product::with(['category'])
+            ->get(),
+
+            'order_itemss'=>OrderItem::where('quantity', '>', 0)
+            ->with(['product', 'category'])
+            ->orderBy('created_at', 'desc')
+            ->limit(8)
             ->get()
         ]);
     }
 
     public function viewBestSeller() {
         return view('best-seller',[
-            'order_items'=>OrderItem::where('quantity', '>', 0)
+            'order_items'=>OrderItem::where('quantity', '>', 1)
             ->with(['product'])
             ->get()
         ]);
@@ -35,7 +40,10 @@ class HomeController extends Controller
 
     public function viewNewArrival() {
         return view('new-arrival', [
-            'products'=>Product::where('created_at', '>=', now()->subDays(7))
+            'order_items'=>OrderItem::where('quantity', '>', 0)
+            ->with(['product', 'category'])
+            ->orderBy('created_at', 'desc')
+            ->limit(8)
             ->get()
         ]);
     }

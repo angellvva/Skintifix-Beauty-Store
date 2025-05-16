@@ -50,6 +50,11 @@
             font-size: 14px;
         }
 
+        .product-unit-sold {
+            color: #888;
+            font-size: 14px;
+        }
+
         .product-price {
             font-size: 16px;
             color: #e965a7;
@@ -213,23 +218,13 @@
                                                     </div>
 
                                                     <h5 class="card-title product-name">{{ $item->product->name }}</h5>
-                                                    <div class="product-stock">Stock: {{ $item->product->stock }}</div>
-                                                    <div class="product-price">
-                                                        Rp{{ number_format($item->product->price, 0, ',', '.') }}</div>
 
-                                                    <div class="icon-btns">
-                                                        <form action="{{ route('cart.add', $item->product->id) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            <button type="submit" title="Add to Cart"><i
-                                                                    class="fas fa-shopping-cart"></i></button>
-                                                        </form>
-                                                        <form action="{{ route('wishlist.add', $item->product->id) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            <button type="submit" title="Add to Wishlist"><i
-                                                                    class="fas fa-heart"></i></button>
-                                                        </form>
+                                                    <div class="product-unit-sold">Units Sold:
+                                                        {{ $order_items->where('product_id', $item->product->id)->sum('quantity') }}
+                                                    </div>
+
+                                                    <div class="product-price">
+                                                        Rp{{ number_format($item->product->price, 0, ',', '.') }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -262,40 +257,32 @@
                 </div>
 
                 <!-- Carousel Start-->
+                <!-- Carousel Start-->
                 <div id="categoryCarousel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
-                        @foreach ($products->chunk(4) as $chunkIndex => $chunk)
+                        @foreach ($order_itemss->chunk(4) as $chunkIndex => $chunk)
                             <div class="carousel-item {{ $chunkIndex == 0 ? 'active' : '' }}">
                                 <div class="row row-cols-1 row-cols-md-4 g-4 text-center">
-                                    @foreach ($chunk as $product)
+                                    @foreach ($chunk as $item)
                                         <div class="col">
                                             <div class="card h-100">
-                                                <div class="card-body shadow-sm">
-                                                    <img src="{{ $product->image }}" alt="{{ $product->name }}"
-                                                        class="img-fluid">
+                                                <div class="card-body shadow-sm position-relative">
+                                                    <img src="{{ $item->product->image }}"
+                                                        alt="{{ $item->product->name }}" class="img-fluid">
 
+                                                    <!-- Label kategori -->
                                                     <div class="product-category-label">
-                                                        {{ $product->category->name }}
+                                                        {{ $item->product->category->name }}
                                                     </div>
 
-                                                    <h5 class="card-title product-name">{{ $product->name }}</h5>
-                                                    <div class="product-stock">Stock: {{ $product->stock }}</div>
-                                                    <div class="product-price">
-                                                        Rp{{ number_format($product->price, 0, ',', '.') }}</div>
+                                                    <h5 class="card-title product-name">{{ $item->product->name }}</h5>
 
-                                                    <div class="icon-btns">
-                                                        <form action="{{ route('cart.add', $product->id) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            <button type="submit" title="Add to Cart"><i
-                                                                    class="fas fa-shopping-cart"></i></button>
-                                                        </form>
-                                                        <form action="{{ route('wishlist.add', $product->id) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            <button type="submit" title="Add to Wishlist"><i
-                                                                    class="fas fa-heart"></i></button>
-                                                        </form>
+                                                    <div class="product-unit-sold">Units Sold:
+                                                        {{ $order_items->where('product_id', $item->product->id)->sum('quantity') }}
+                                                    </div>
+
+                                                    <div class="product-price">
+                                                        Rp{{ number_format($item->product->price, 0, ',', '.') }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -308,6 +295,8 @@
                 </div>
                 <!-- Carousel End-->
             </div>
+            <!-- Carousel End-->
+        </div>
         </div>
 
         <!-- Nourishing Beauty Section Start -->

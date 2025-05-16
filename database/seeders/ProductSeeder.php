@@ -17,7 +17,7 @@ class ProductSeeder extends Seeder
         DB::table('products')->insert([
             [
                 'name' => 'Sensitive Skin Hydration Moisturizer 40ml',
-                'description' => 'Soothes redness in 5 minutes. Design for sensitive skin',
+                'description' => 'Soothes redness in 5 minutes. Design for sensitive skin.',
                 'image' => 'https://skintific.id/cdn/shop/files/1_8ba35f6c-6216-44df-b8ca-1c361b4ec24a.png?v=1745227769&width=700',
                 'price' => 149000,
                 'stock' =>150,

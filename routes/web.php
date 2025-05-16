@@ -63,7 +63,6 @@ Route::post('/login', [LoginController::class, 'LoginAction'])->name('login');
 // Logout Route
 Route::post('/logout', [LoginController::class, 'Logout'])->name('logout');
 
-
 // Route untuk menampilkan form register
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 // Route untuk menangani registrasi pengguna

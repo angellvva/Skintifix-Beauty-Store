@@ -123,26 +123,35 @@
             font-size: 12px;
             z-index: 10;
         }
+
+        .product-unit-sold {
+            color: #888;
+            font-size: 14px;
+        }
     </style>
 
     <div class="product-section">
         <div class="container">
             <h1>New Arrival Products</h1>
             <div class="product-grid">
-                @forelse ($products as $product)
+                @forelse ($order_items as $item)
                     <div class="product-card position-relative" style="cursor: pointer;"
-                        onclick="window.location='{{ route('product.detail', $product->id) }}'">
-                        <img src="{{ $product->image }}" alt="{{ $product->name }}">
+                        onclick="window.location='{{ route('product.detail', $item->product->id) }}'">
+                        <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}">
 
                         <!-- Label kategori -->
                         <div class="product-category-label">
-                            {{ $product->category->name }}
+                            {{ $item->product->category->name }}
                         </div>
 
-                        <div class="product-name">{{ $product->name }}</div>
-                        <div class="product-stock">Stock: {{ $product->stock }}</div>
-                        <div class="product-price">Rp{{ number_format($product->price, 0, ',', '.') }}</div>
-                        <div class="product-description">{{ $product->description }}</div>
+                        <div class="product-name">{{ $item->product->name }}</div>
+
+                        <div class="product-unit-sold">Units Sold:
+                            {{ $order_items->where('product_id', $item->product->id)->sum('quantity') }}
+                        </div>
+
+                        <div class="product-price">Rp{{ number_format($item->product->price, 0, ',', '.') }}</div>
+                        <div class="product-description">{{ $item->product->description }}</div>
                     </div>
                 @empty
                     <p style="text-align: center; width: 100%; color: #888;">No products found.</p>

@@ -123,6 +123,11 @@
             font-size: 12px;
             z-index: 10;
         }
+
+        .product-unit-sold {
+            color: #888;
+            font-size: 14px;
+        }
     </style>
 
     <div class="product-section">
@@ -140,7 +145,11 @@
                         </div>
 
                         <div class="product-name">{{ $item->product->name }}</div>
-                        <div class="product-stock">Stock: {{ $item->product->stock }}</div>
+
+                        <div class="product-unit-sold">Units Sold:
+                            {{ $order_items->where('product_id', $item->product->id)->sum('quantity') }}
+                        </div>
+
                         <div class="product-price">Rp{{ number_format($item->product->price, 0, ',', '.') }}</div>
                         <div class="product-description">{{ $item->product->description, 60 }}</div>
                     </div>
