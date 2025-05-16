@@ -2,19 +2,18 @@
 
 @section('content')
 <div class="product-section">
-    <div class="container mt-5 white-container position-relative" style="background-color: white; padding: 30px; border-radius: 16px;">
-    <!-- Back Button -->
-    <a href="{{ url()->previous() }}" 
-       class="icon-btn-bordered back-btn" 
-       title="Back to products">
-        <i class="fas fa-arrow-left"></i>
-    </a>
+    <div class="container mt-5 white-container position-relative" style="background-color: white; padding: 40px 30px 30px 30px; border-radius: 16px;">
 
-    <div class="row g-4 align-items-center justify-content-center">
-        <!-- Product Image -->
-        <div class="product-image-wrapper mx-auto">
-            <img src="{{ $product->image }}" alt="{{ $product->name }}" class="img-fluid rounded">
-        </div>
+        <!-- Back Button -->
+        <a href="{{ url()->previous() }}" class="back-btn" title="Back to products">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+
+        <div class="row g-4 align-items-center justify-content-center">
+            <!-- Product Image -->
+            <div class="product-image-wrapper mx-auto mt-3">
+                <img src="{{ $product->image }}" alt="{{ $product->name }}" class="img-fluid rounded">
+            </div>
 
             <!-- Product Info -->
             <div class="col-md-6">
@@ -90,6 +89,28 @@
         background-color: #e965a7;
         color: white;
         border-color: #e965a7;
+    }
+
+    .back-btn {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: none;
+        border: none;
+        border-radius: 12px;
+        padding: 10px;
+        color: #e965a7;
+        font-size: 24px; /* Increased size */
+        cursor: pointer;
+        transition: color 0.3s ease-in-out;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+    }
+
+    .back-btn:hover {
+        color: #c44c8f;
     }
 </style>
 @endsection
