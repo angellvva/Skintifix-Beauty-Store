@@ -158,8 +158,8 @@
                                             aria-labelledby="dropdownUser">
                                             <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Edit
                                                     Profile</a></li>
-                                            <li><a class="dropdown-item" href="{{ url('/forget') }}">Change
-                                                    Password</a></li>
+                                            <li><a class="dropdown-item" href="{{ route('myorders') }}">My Orders
+                                                    </a></li>
                                             <li>
                                                 <hr class="dropdown-divider">
                                             </li>
