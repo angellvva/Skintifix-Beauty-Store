@@ -109,7 +109,7 @@
                             @foreach ($lowStockProducts as $product)
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     {{ $product->name }}
-                                    <span class="badge bg-{!! $product->stock <= 0 ? 'danger' : ($product->stock <= 10 ? 'warning' : 'success') !!}">
+                                    <span class="badge bg-{!! $product->stock <= 0 ? 'danger' : ($product->stock <= 20 ? 'warning' : 'success') !!}">
                                         {{ $product->stock }} left
                                     </span>
                                 </li>
