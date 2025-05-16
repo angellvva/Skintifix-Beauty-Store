@@ -56,15 +56,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-image: url('{{ asset('images/background/flower-water.jpg') }}'); /* Update with the correct image path */
+            background-image: url('{{ asset('images/background/flower.jpg') }}'); /* Update with the correct image path */
             background-size: cover;  /* Ensures the image covers the entire background */
             background-position: center; /* Center the image */
             background-repeat: no-repeat; /* Prevents the image from repeating */
-            background-image: rgba(255, 255, 255, 0.5);
         }
 
         .forgot-password-modal {
-            background-color: #fff;
+            background-color: rgba(255, 255, 255, 0.9); 
             width: 380px;
             padding: 40px;
             border-radius: 12px;
