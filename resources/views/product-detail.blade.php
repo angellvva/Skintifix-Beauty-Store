@@ -2,14 +2,19 @@
 
 @section('content')
 <div class="product-section">
-    <div class="container mt-5" style="background-color: white; padding: 30px;">
-        <div class="row g-4 align-items-center">
-            <!-- Product Image -->
-            <div class="col-md-6 text-center">
-                <div class="product-image-wrapper shadow-sm rounded" style="background: #ffe8f0; padding: 25px;">
-                    <img src="{{ $product->image }}" alt="{{ $product->name }}" class="img-fluid rounded" style="max-height: 400px; object-fit: contain;">
-                </div>
-            </div>
+    <div class="container mt-5 white-container position-relative" style="background-color: white; padding: 30px; border-radius: 16px;">
+    <!-- Back Button -->
+    <a href="{{ url()->previous() }}" 
+       class="icon-btn-bordered back-btn" 
+       title="Back to products">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+
+    <div class="row g-4 align-items-center justify-content-center">
+        <!-- Product Image -->
+        <div class="product-image-wrapper mx-auto">
+            <img src="{{ $product->image }}" alt="{{ $product->name }}" class="img-fluid rounded">
+        </div>
 
             <!-- Product Info -->
             <div class="col-md-6">
@@ -32,18 +37,20 @@
 
                 <p class="mb-4" style="color: #6f2a48;">{{ $product->description }}</p>
 
-                <div class="d-flex gap-3">
-                    <form action="{{ route('cart.add', $product->id) }}" method="POST" class="d-inline">
+                <div class="d-flex align-items-center gap-3">
+                    <!-- Add to Cart -->
+                    <form action="{{ route('cart.add', $product->id) }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-pink btn-lg px-4 text-white" style="background-color: #e75480; border:none;">
-                            <i class="bi bi-cart3 me-2"></i> Add to Cart
+                        <button type="submit" title="Add to Cart" class="icon-btn-bordered">
+                            <i class="fas fa-shopping-cart"></i>
                         </button>
                     </form>
 
-                    <form action="{{ route('wishlist.add', $product->id) }}" method="POST" class="d-inline">
+                    <!-- Add to Wishlist -->
+                    <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-outline-pink btn-lg px-4" style="border-color: #e75480; color: #e75480;">
-                            <i class="bi bi-heart me-2"></i> Add to Wishlist
+                        <button type="submit" title="Add to Wishlist" class="icon-btn-bordered">
+                            <i class="fas fa-heart"></i>
                         </button>
                     </form>
                 </div>
@@ -53,26 +60,36 @@
 </div>
 
 <style>
-    .product-image-wrapper {
-        background: #ffe8f0;
-        padding: 25px;
-        border-radius: 12px;
-    }
-
-    .btn-pink:hover {
-        background-color: #c74370 !important;
-    }
-
-    .btn-outline-pink:hover {
-        background-color: #e75480 !important;
-        color: white !important;
-        border-color: #e75480 !important;
-    }
-
     .product-section {
         background-color: #fff0f6;
-        padding-top: 1px;
-        padding-bottom: 48px;
+        padding: 50px 0;
+    }
+
+    .product-image-wrapper {
+        border: 2px solid #e965a7;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        background-color: #fff;
+        max-width: 400px;
+        margin: auto;
+    }
+
+    .icon-btn-bordered {
+        background: none;
+        border: 2px solid #e965a7;
+        border-radius: 12px;
+        padding: 10px 16px;
+        color: #e965a7;
+        font-size: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .icon-btn-bordered:hover {
+        background-color: #e965a7;
+        color: white;
+        border-color: #e965a7;
     }
 </style>
 @endsection
