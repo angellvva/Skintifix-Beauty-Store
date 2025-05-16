@@ -47,4 +47,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class);
     }
+    
+    public function getTotalSpentAttribute()
+    {
+        return $this->orders->sum('total_amount');
+    }
+
+    public function getLastOrderAttribute()
+    {
+        return optional($this->orders->sortByDesc('order_date')->first())->order_date;
+    }
 }

@@ -99,39 +99,70 @@ class AdminController extends Controller
         return view('admin.orders', compact('orders'));
     }
 
-    public function customers()
+    public function customers(Request $request)
     {
-        $products = Product::latest()->paginate(10);
-        return view('admin.customers', compact('products'));
-    }
+        // Ambil semua data user dengan relasi orders
+        $query = User::withCount('orders')
+            ->with(['orders' => function ($q) {
+                $q->latest();
+            }]);
 
-    public function categories()
-    {
-        $products = Product::latest()->paginate(10);
-        return view('admin.categories', compact('products'));
-    }
+        // Filter search
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                ->orWhere('email', 'like', '%' . $request->search . '%');
+            });
+        }
 
-    public function inventory()
-    {
-        $products = Product::latest()->paginate(10);
-        return view('admin.inventory', compact('products'));
-    }
+        // Filter type
+        if ($request->type == 'new') {
+            $query->whereDate('created_at', '>=', now()->subMonth());
+        } elseif ($request->type == 'repeat') {
+            $query->has('orders', '>=', 2);
+        }
 
-    public function promotions()
-    {
-        $products = Product::latest()->paginate(10);
-        return view('admin.promotions', compact('products'));
-    }
+        // Ambil semua dulu (karena sort 'total_spent' harus dilakukan di memory)
+        $customers = $query->get()->map(function ($user) {
+            $user->total_spent = $user->orders->sum('total_amount');
+            $user->last_order = optional($user->orders->first())->order_date;
+            return $user;
+        });
 
-    public function analytics()
-    {
-        $products = Product::latest()->paginate(10);
-        return view('admin.analytics', compact('products'));
-    }
+        // Sorting logic
+        if ($request->sort == 'orders') {
+            $customers = $customers->sortByDesc('orders_count');
+        } elseif ($request->sort == 'spent') {
+            $customers = $customers->sortByDesc('total_spent');
+        } else {
+            $customers = $customers->sortByDesc('created_at');
+        }
 
-    public function messages()
-    {
-        $messages = DB::table('messages')->latest()->paginate(10);
-        return view('admin.messages', compact('messages'));
+        // Manual pagination (karena ini bukan Query Builder)
+        $page = $request->get('page', 1);
+        $perPage = 10;
+        $paginated = new \Illuminate\Pagination\LengthAwarePaginator(
+            $customers->forPage($page, $perPage),
+            $customers->count(),
+            $perPage,
+            $page,
+            ['path' => url()->current(), 'query' => $request->query()]
+        );
+
+        // Aggregate data
+        $totalCustomers = User::count();
+        $newCustomers = User::whereDate('created_at', '>=', now()->subMonth())->count();
+        $repeatCustomers = round(
+            User::has('orders', '>=', 2)->count() / max($totalCustomers, 1) * 100, 1
+        );
+        $avgOrderValue = \App\Models\Order::avg('total_amount') ?? 0;
+
+        return view('admin.customers', [
+            'customers' => $paginated,
+            'totalCustomers' => $totalCustomers,
+            'newCustomers' => $newCustomers,
+            'repeatCustomers' => $repeatCustomers,
+            'avgOrderValue' => $avgOrderValue,
+        ]);
     }
 }
