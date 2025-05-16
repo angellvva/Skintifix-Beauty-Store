@@ -5,7 +5,6 @@
         .product-section {
             background-color: #fff0f6;
             padding: 50px 20px;
-            min-height: 100vh;
         }
 
         .product-section h1 {
