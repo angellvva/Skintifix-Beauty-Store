@@ -99,6 +99,36 @@ class AdminController extends Controller
         return view('admin.orders', compact('orders'));
     }
 
+    public function categories()
+    {
+        $products = Product::latest()->paginate(10);
+        return view('admin.categories', compact('products'));
+    }
+
+    public function inventory()
+    {
+        $products = Product::latest()->paginate(10);
+        return view('admin.inventory', compact('products'));
+    }
+
+    public function analytics()
+    {
+        $products = Product::latest()->paginate(10);
+        return view('admin.analytics', compact('products'));
+    }
+
+    public function messages()
+    {
+        $messages = DB::table('messages')->latest()->paginate(10);
+        return view('admin.messages', compact('messages'));
+    }
+
+    public function promotions()
+    {
+        $products = Product::latest()->paginate(10);
+        return view('admin.promotions', compact('products'));
+    }
+
     public function customers(Request $request)
     {
         // Ambil semua data user dengan relasi orders
