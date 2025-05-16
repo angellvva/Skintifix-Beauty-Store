@@ -68,6 +68,14 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
+        .btn-reset {
+            border: 1px solid #dee2e6;
+            color: black;
+            background-color: white;
+            width: 100%;
+            box-sizing: border-box;
+        }
     </style>
     <div class="container my-4">
         <div class="row mb-4">
@@ -80,34 +88,46 @@
             </div>
         </div>
 
-        <div class="row g-3 mb-3 align-items-center">
-            <div class="col-md-4">
-                <div class="input-group">
-                    <span class="input-group-text" id="basic-addon1">
-                        <i class="bi bi-search"></i>
-                    </span>
-                    <input type="text" class="form-control" placeholder="Search products..." aria-label="Search"
-                        aria-describedby="basic-addon1" />
+        <form id="filterForm" method="GET" action="{{ url()->current() }}">
+            <div class="row g-3 mb-3 align-items-center">
+                <div class="col-md-5">
+                    <div class="input-group">
+                        <span class="input-group-text" id="basic-addon1">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input type="text" name="search" class="form-control" placeholder="Search products..."
+                            aria-label="Search" aria-describedby="basic-addon1" value="{{ request('search') }}" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select name="category" class="form-select" onchange="document.getElementById('filterForm').submit()">
+                        <option value="all" {{ request('category', 'all') == 'all' ? 'selected' : '' }}>All Categories
+                        </option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}"
+                                {{ request('category') == $category->id ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select name="status" class="form-select" onchange="document.getElementById('filterForm').submit()">
+                        <option value="all" {{ request('status', 'all') == 'all' ? 'selected' : '' }}>All Status</option>
+                        <option value="in_stock" {{ request('status') == 'in_stock' ? 'selected' : '' }}>In Stock</option>
+                        <option value="low_stock" {{ request('status') == 'low_stock' ? 'selected' : '' }}>Low Stock
+                        </option>
+                        <option value="out_of_stock" {{ request('status') == 'out_of_stock' ? 'selected' : '' }}>Out of
+                            Stock</option>
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <a href="{{ url()->current() }}" class="btn btn-reset" title="Reset Filter">
+                        <i class="bi bi-arrow-clockwise"></i> Reset
+                    </a>
                 </div>
             </div>
-            <div class="col-md-4">
-                <select class="form-select">
-                    <option selected>All Categories</option>
-                    {{-- loop kategori dinamis di sini --}}
-                    @foreach ($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-4">
-                <select class="form-select">
-                    <option selected>All Status</option>
-                    <option>In Stock</option>
-                    <option>Low Stock</option>
-                    <option>Out of Stock</option>
-                </select>
-            </div>
-        </div>
+        </form>
 
         <table class="table align-middle">
             <thead>

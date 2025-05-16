@@ -159,7 +159,7 @@
             @csrf
             <div class="d-flex align-items-center justify-content-between m-3">
                 <div class="d-flex align-items-center">
-                    <i class="bi bi-person fs-4 text-secondary" style="margin-right: 12px;"></i>
+                    <i class="bi bi-person fs-4 text-secondary" style="margin-right: 18px;"></i>
                     <div>
                         <div class="fw-bold">Admin User</div>
                         <div class="text-muted small">admin@admin.com</div>

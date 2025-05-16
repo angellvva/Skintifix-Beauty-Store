@@ -53,16 +53,45 @@ class AdminController extends Controller
         ));
     }
 
-    public function products()
+    public function products(Request $request)
     {
-        return view('admin.products', [
-            'products' => Product::latest()
-                ->with('category')
-                ->paginate(10),
+        $categoryId = $request->query('category');
+        $status = $request->query('status');
+        $search = $request->query('search');
 
-            'categories' => ProductCategory::all()
-        ]);
+        $query = Product::with('category');
+
+        // Filter kategori
+        if ($categoryId && $categoryId != 'all') {
+            $query->where('category_id', $categoryId);
+        }
+
+        // Filter status stok
+        if ($status && $status != 'all') {
+            if ($status === 'in_stock') {
+                $query->where('stock', '>', 20);
+            } elseif ($status === 'low_stock') {
+                $query->whereBetween('stock', [1, 20]);
+            } elseif ($status === 'out_of_stock') {
+                $query->where('stock', 0);
+            }
+        }
+
+        // Filter search nama produk (case insensitive)
+        if ($search) {
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        // Sorting terbaru
+        $query->latest();
+
+        $products = $query->paginate(10)->appends($request->except('page'));
+
+        $categories = ProductCategory::all();
+
+        return view('admin.products', compact('products', 'categories'));
     }
+
 
     public function orders()
     {
