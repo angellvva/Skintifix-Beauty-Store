@@ -84,7 +84,9 @@
                     <h2 class="fw-bold">Products</h2>
                     <p class="text-muted">Manage and monitor all products available in your store</p>
                 </div>
-                <button type="button" class="btn text-white add-product"><i class="bi bi-plus-lg"></i> Add Product</button>
+                <button type="button" class="btn text-white add-product"
+                    onclick="window.location='{{ route('admin.add-product') }}'"><i class="bi bi-plus-lg"></i> Add
+                    Product</button>
             </div>
         </div>
 

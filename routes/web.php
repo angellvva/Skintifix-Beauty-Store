@@ -15,7 +15,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\AdminOrderController;
-
+use App\Http\Controllers\AdminProductController;
 
 // ROUTE HOME
 // Route::get('/', function () {return view('home');});
@@ -100,10 +100,15 @@ Route::get('/my-orders', [OrderController::class, 'index'])->name('my-orders');
 
 // route admin dashboard
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+
 // route admin product
-Route::get('/admin/products', [AdminController::class, 'products'])->name('admin.products');
+Route::get('/admin/products', [AdminProductController::class, 'products'])->name('admin.products');
+// route admin add product
+Route::get('/admin/add-product', [AdminProductController::class, 'add_product'])->name('admin.add-product');
+
 // route admin order
 Route::get('/admin/orders', [AdminOrderController::class, 'orders'])->name('admin.orders');
+
 // route admin customer
 Route::get('/admin/customers', [AdminController::class, 'customers'])->name('admin.customers');
 // route admin categories
