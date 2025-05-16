@@ -2,12 +2,23 @@
 
 @section('content')
     <style>
-        .btn {
+        .add-product {
             background-color: #e965a7;
         }
 
-        .btn:hover {
+        .add-product:hover {
             background-color: #da5195;
+        }
+
+        .btn-edit {
+            color: #e965a7;
+            background-color: white;
+            border: 1px solid #e965a7;
+        }
+
+        .btn-edit:hover {
+            color: white;
+            background-color: #e965a7;
         }
     </style>
     <div class="container my-4">
@@ -17,7 +28,7 @@
                     <h2 class="fw-bold mb-0">Products</h2>
                     <p class="text-muted mb-0">Manage and monitor all products available in your store</p>
                 </div>
-                <button type="button" class="btn text-white"><i class="bi bi-plus-lg"></i> Add Product</button>
+                <button type="button" class="btn text-white add-product"><i class="bi bi-plus-lg"></i> Add Product</button>
             </div>
         </div>
 
@@ -73,7 +84,9 @@
                             <form action="" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn btn-delete" onclick="return confirm('Are you sure?')">Delete</button>
+                                <button type="submit" class="btn btn-outline-danger" title="Hapus produk">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                             </form>
                         </td>
                     </tr>
