@@ -79,3 +79,7 @@ Route::get('/new-arrival', [HomeController::class, 'viewNewArrival'])
 // Route untuk menampilkan product details
 Route::get('/product/{id}', [ProductController::class, 'detail'])
 ->name('product.detail');
+
+// Route untuk menampilkan product berdasarkan category
+Route::get('/catalog/{category}', [ProductController::class, 'categoryCatalog'])
+->name('category.catalog');

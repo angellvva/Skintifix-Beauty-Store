@@ -116,16 +116,11 @@
 
 <div class="product-section">
     <div class="container">
-        <h1>New Arrival Products</h1>
+        <h1>{{ $category }}</h1>
         <div class="product-grid">
             @forelse ($products as $product)
                 <div class="product-card position-relative" style="cursor: pointer;" onclick="window.location='{{ route('product.detail', $product->id) }}'">
                     <img src="{{ $product->image }}" alt="{{ $product->name }}">
-
-                    <!-- Label kategori -->
-                    <div class="product-category-label">
-                        {{ $product->category->name }}
-                    </div>
 
                     <div class="product-name">{{ $product->name }}</div>
                     <div class="product-stock">Stock: {{ $product->stock }}</div>
@@ -147,7 +142,5 @@
             @endforelse
         </div>
     </div>
-    
-</div>
 </div>
 @endsection

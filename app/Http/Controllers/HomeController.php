@@ -16,10 +16,11 @@ class HomeController extends Controller
     public function show() {
         return view('home',[
             'order_items'=>OrderItem::where('quantity', '>', 0)
-            ->with(['product'])
+            ->with(['product', 'category'])
             ->get(),
 
             'products'=>Product::where('created_at', '>=', now()->subDays(7))
+            ->with(['category'])
             ->get()
         ]);
     }

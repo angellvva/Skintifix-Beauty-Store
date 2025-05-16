@@ -60,6 +60,19 @@
         .icon-btns button:hover {
             color: #c44c8f;
         }
+
+        .product-category-label {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #e965a7;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 12px;
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
@@ -133,8 +146,14 @@
                                     @foreach ($chunk as $item)
                                         <div class="col">
                                             <div class="card h-100">
-                                                <div class="card-body shadow-sm">
+                                                <div class="card-body shadow-sm position-relative">
                                                     <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}" class="img-fluid">
+                                                    
+                                                    <!-- Label kategori -->
+                                                    <div class="product-category-label">
+                                                        {{ $item->product->category->name }}
+                                                    </div>
+                                                    
                                                     <h5 class="card-title product-name">{{ $item->product->name }}</h5>
                                                     <div class="product-stock">Stock: {{ $item->product->stock }}</div>
                                                     <div class="product-price">Rp{{ number_format($item->product->price, 0, ',', '.') }}</div>
@@ -187,6 +206,11 @@
                                             <div class="card h-100">
                                                 <div class="card-body shadow-sm">
                                                     <img src="{{ $product->image }}" alt="{{ $product->name }}" class="img-fluid">
+
+                                                    <div class="product-category-label">
+                                                        {{ $product->category->name }}
+                                                    </div>
+
                                                     <h5 class="card-title product-name">{{ $product->name }}</h5>
                                                     <div class="product-stock">Stock: {{ $product->stock }}</div>
                                                     <div class="product-price">Rp{{ number_format($product->price, 0, ',', '.') }}</div>

@@ -75,14 +75,14 @@
                                     </a>
                                     <ul class="dropdown-menu">
                                         {{-- nanti diubah pake foreach dari category database --}}
-                                        <li><a class="dropdown-item" href="#">Moisturizer</a></li>
-                                        <li><a class="dropdown-item" href="#">Serum & Essence</a></li>
-                                        <li><a class="dropdown-item" href="#">Sunscreen</a></li>
-                                        <li><a class="dropdown-item" href="#">Makeup</a></li>
-                                        <li><a class="dropdown-item" href="#">Cleanser</a></li>
-                                        <li><a class="dropdown-item" href="#">Toner</a></li>
-                                        <li><a class="dropdown-item" href="#">Mask</a></li>
-                                        <li><a class="dropdown-item" href="#">Eye Care</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('category.catalog', ['category' => 'Moisturizer']) }}">Moisturizer</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('category.catalog', ['category' => 'Serum & Essence']) }}">Serum & Essence</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('category.catalog', ['category' => 'Sunscreen']) }}">Sunscreen</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('category.catalog', ['category' => 'Makeup']) }}">Makeup</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('category.catalog', ['category' => 'Cleanser']) }}">Cleanser</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('category.catalog', ['category' => 'Toner']) }}">Toner</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('category.catalog', ['category' => 'Mask']) }}">Mask</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('category.catalog', ['category' => 'Eye Care']) }}">Eye Care</a></li>
                                         <li><hr class="dropdown-divider"></li>
                                         <li><a class="dropdown-item fw-semibold" href="{{ route('catalog') }}">View All Products</a></li>
                                     </ul>

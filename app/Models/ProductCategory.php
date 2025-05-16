@@ -12,4 +12,9 @@ class ProductCategory extends Model
     {
         return $this->hasMany(Product::class, 'category_id');
     }
+
+    public function order_items():HasMany
+    {
+        return $this->hasMany(OrderItem::class, 'category_id');
+    }
 }

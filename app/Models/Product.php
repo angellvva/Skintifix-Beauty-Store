@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Product extends Model
 {
     //
-    public function product_category():BelongsTo
+    public function category():BelongsTo
     {
         return $this->belongsTo(ProductCategory::class, 'category_id');
     }

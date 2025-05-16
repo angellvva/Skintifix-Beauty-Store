@@ -16,4 +16,13 @@ class ProductController extends Controller
         // Kirim data produk ke view product-detail.blade.php
         return view('product-detail', compact('product'));
     }
+
+    public function categoryCatalog($category)
+    {
+        $products = Product::whereHas('category', function($query) use ($category) {
+            $query->where('name', $category);
+        })->get();
+
+        return view('category-catalog', compact('products', 'category'));
+    }
 }

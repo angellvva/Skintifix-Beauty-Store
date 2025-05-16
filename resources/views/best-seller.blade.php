@@ -99,6 +99,19 @@
             width: 100%;
         }
     }
+
+    .product-category-label {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background-color: #e965a7;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 12px;
+        z-index: 10;
+    }
 </style>
 
 <div class="product-section">
@@ -106,8 +119,14 @@
         <h1>Best Seller Products</h1>
         <div class="product-grid">
             @forelse ($order_items as $item)
-                <div class="product-card" style="cursor: pointer;" onclick="window.location='{{ route('product.detail', $item->product->id) }}'">
+                <div class="product-card position-relative" style="cursor: pointer;" onclick="window.location='{{ route('product.detail', $item->product->id) }}'">
                     <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}">
+
+                    <!-- Label kategori -->
+                    <div class="product-category-label">
+                        {{ $item->product->category->name }}
+                    </div>
+
                     <div class="product-name">{{ $item->product->name }}</div>
                     <div class="product-stock">Stock: {{ $item->product->stock }}</div>
                     <div class="product-price">Rp{{ number_format($item->product->price, 0, ',', '.') }}</div>
