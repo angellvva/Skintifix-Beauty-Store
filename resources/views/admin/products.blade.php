@@ -32,6 +32,42 @@
             color: white;
             background-color: #da5195;
         }
+
+        table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+        }
+
+        thead th:nth-child(1) {
+            width: 45%;
+        }
+
+        thead th:nth-child(2) {
+            width: 15%;
+        }
+
+        thead th:nth-child(3) {
+            width: 10%;
+        }
+
+        thead th:nth-child(4) {
+            width: 10%;
+        }
+
+        thead th:nth-child(5) {
+            width: 10%;
+        }
+
+        thead th:nth-child(6) {
+            width: 10%;
+        }
+
+        tbody td {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     </style>
     <div class="container my-4">
         <div class="row mb-4">
@@ -115,19 +151,26 @@
             </tbody>
         </table>
 
-        {{-- Pagination links --}}
-        <div class="d-flex justify-content-end">
-            @if ($products->onFirstPage())
-                <button class="btn btn-secondary" disabled>Prev</button>
-            @else
-                <a href="{{ $products->previousPageUrl() }}" class="btn btn-prev-next">Prev</a>
-            @endif
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <div>
+                Showing {{ $products->firstItem() }} to {{ $products->lastItem() }} of {{ $products->total() }} entries
+            </div>
 
-            @if ($products->hasMorePages())
-                <a href="{{ $products->nextPageUrl() }}" class="btn btn-prev-next">Next</a>
-            @else
-                <button class="btn btn-secondary" disabled>Next</button>
-            @endif
+            {{-- Pagination links --}}
+            <div class="d-flex justify-content-end">
+                @if ($products->onFirstPage())
+                    <button class="btn btn-secondary me-1" disabled>Prev</button>
+                @else
+                    <a href="{{ $products->previousPageUrl() }}" class="btn btn-prev-next me-1"
+                        style="margin-right: 4px;">Prev</a>
+                @endif
+
+                @if ($products->hasMorePages())
+                    <a href="{{ $products->nextPageUrl() }}" class="btn btn-prev-next ms-1">Next</a>
+                @else
+                    <button class="btn btn-secondary ms-1" disabled>Next</button>
+                @endif
+            </div>
         </div>
     </div>
 @endsection
