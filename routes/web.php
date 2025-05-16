@@ -4,11 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ContactController;
-use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\WishlistController;
 
 // ROUTE HOME
@@ -83,3 +84,7 @@ Route::get('/product/{id}', [ProductController::class, 'detail'])
 // Route untuk menampilkan product berdasarkan category
 Route::get('/catalog/{category}', [ProductController::class, 'categoryCatalog'])
 ->name('category.catalog');
+
+// Route untuk ke view edit profile saat pencet button edit profile
+Route::get('/edit-profile', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::post('/edit-profile', [ProfileController::class, 'update'])->name('profile.update');

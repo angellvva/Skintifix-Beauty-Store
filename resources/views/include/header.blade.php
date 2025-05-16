@@ -127,7 +127,7 @@
                                             <i class="fas fa-user"></i>
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="dropdownUser">
-                                            <li><a class="dropdown-item" href="#">Edit Profile</a></li>
+                                            <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Edit Profile</a></li>
                                             <li><a class="dropdown-item" href="{{ url('/forget') }}">Change Password</a></li>
                                             <li><hr class="dropdown-divider"></li>
                                             <li>
