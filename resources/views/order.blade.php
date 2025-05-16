@@ -146,7 +146,7 @@
                                                 <i class="fas fa-arrow-right"></i>
                                             </button>
                                         </form>
-                                        <form method="POST" action="{{ route('order.remove') }}"
+                                        <form method="POST" action="{{ route('my-orders') }}"
                                             onsubmit="return confirm('Remove this order from your list?');">
                                             @csrf
                                             <input type="hidden" name="order_id" value="{{ $order->id }}">
@@ -165,11 +165,10 @@
                 <div class="table-responsive shadow-sm rounded bg-white p-5 text-center"
                     style="border: 1px solid #e965a7;">
                     <i class="fas fa-shopping-cart fa-4x mb-4" style="color: #e965a7;"></i>
-                    <h4 class="mb-3" style="color: #e965a7;">Your orders are empty.</h4>
-                    <p class="text-muted mb-4">Complete your order by going to checkout...</p>
+                    <h4 class="mb-3" style="color: #e965a7;">you haven't checked out yet</h4>
                     <a href="{{ route('catalog') }}" class="btn rounded-pill px-4 shadow-sm"
                         style="background-color: #e965a7; color: white;">
-                        Browse Products
+                        Checkout Now
                     </a>
                 </div>
             @endif
