@@ -12,6 +12,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\ReviewController;
 
 // ROUTE HOME
 // Route::get('/', function () {return view('home');});
@@ -100,3 +101,5 @@ Route::get('/admin/contact', [AdminController::class, 'contact'])->name('admin.c
 
 //Route untuk create review
 Route::get('/products/{id}/review', [ReviewController::class, 'create'])->name('reviews.create');
+// Handle the review form submission
+Route::post('/products/{id}/review', [ReviewController::class, 'store'])->name('reviews.store');
