@@ -85,7 +85,7 @@
                     </div>
                 @endforeach
             @else
-                <div class="empty-review-container text-center py-5">
+                <div class="empty-review-container text-center py-5" style="background: transparent; border: none; box-shadow: none;">
                     <i class="fas fa-comments fa-3x mb-3" style="color: #e965a7;"></i>
                     <p class="mb-0" style="color: #e965a7; font-weight: 600; font-size: 1.2rem;">
                         No review yet. Be the first to write a review!
