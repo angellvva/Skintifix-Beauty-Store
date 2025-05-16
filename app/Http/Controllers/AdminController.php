@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\ProductCategory;
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
@@ -54,10 +55,13 @@ class AdminController extends Controller
 
     public function products()
     {
-        $products = Product::latest()
-            ->with('category')
-            ->paginate(10);
-        return view('admin.products', compact('products'));
+        return view('admin.products', [
+            'products' => Product::latest()
+                ->with('category')
+                ->paginate(10),
+
+            'categories' => ProductCategory::all()
+        ]);
     }
 
     public function orders()

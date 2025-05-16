@@ -39,7 +39,10 @@
             <div class="col-md-4">
                 <select class="form-select">
                     <option selected>All Categories</option>
-                    {{-- Bisa loop kategori dinamis di sini --}}
+                    {{-- loop kategori dinamis di sini --}}
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="col-md-4">

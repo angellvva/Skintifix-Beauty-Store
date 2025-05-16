@@ -78,30 +78,14 @@
                                     </a>
                                     <ul class="dropdown-menu">
                                         {{-- nanti diubah pake foreach dari category database --}}
-                                        <li><a class="dropdown-item"
-                                                href="{{ route('category.catalog', ['category' => 'Moisturizer']) }}">Moisturizer</a>
-                                        </li>
-                                        <li><a class="dropdown-item"
-                                                href="{{ route('category.catalog', ['category' => 'Serum & Essence']) }}">Serum
-                                                & Essence</a></li>
-                                        <li><a class="dropdown-item"
-                                                href="{{ route('category.catalog', ['category' => 'Sunscreen']) }}">Sunscreen</a>
-                                        </li>
-                                        <li><a class="dropdown-item"
-                                                href="{{ route('category.catalog', ['category' => 'Makeup']) }}">Makeup</a>
-                                        </li>
-                                        <li><a class="dropdown-item"
-                                                href="{{ route('category.catalog', ['category' => 'Cleanser']) }}">Cleanser</a>
-                                        </li>
-                                        <li><a class="dropdown-item"
-                                                href="{{ route('category.catalog', ['category' => 'Toner']) }}">Toner</a>
-                                        </li>
-                                        <li><a class="dropdown-item"
-                                                href="{{ route('category.catalog', ['category' => 'Mask']) }}">Mask</a>
-                                        </li>
-                                        <li><a class="dropdown-item"
-                                                href="{{ route('category.catalog', ['category' => 'Eye Care']) }}">Eye
-                                                Care</a></li>
+                                        @foreach ($categories as $category)
+                                            <li>
+                                                <a class="dropdown-item"
+                                                    href="{{ route('category.catalog', ['category' => $category->name]) }}">
+                                                    {{ $category->name }}
+                                                </a>
+                                            </li>
+                                        @endforeach
                                         <li>
                                             <hr class="dropdown-divider">
                                         </li>
