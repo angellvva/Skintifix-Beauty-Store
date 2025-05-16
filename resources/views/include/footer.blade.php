@@ -4,7 +4,7 @@
         <div class="pb-4 mb-4 border-bottom border-light">
             <div class="row g-4">
                 <div class="col-lg-3">
-                        <h2 class="text-white mb-0" style="white-space: nowrap;">Skintifix Beauty Store</h2>
+                        <h2 class="text-white mb-0" style="white-space: nowrap;"><b>Skintifix</b> Beauty Store</h2>
                         <p class="text-white mb-0 text-decoration-none">Discover Your Natural Beauty!</p>
                 </div>
                 <div class="col-lg-9">
@@ -41,7 +41,7 @@
   <!-- Copyright -->
   <div class="text-center text-white p-3" style="background-color: #e965a7;">
     <span class="text-light">
-      <a href="#" style="color: #ffc0cb;"><i class="fas fa-copyright me-2"></i>2025 Skintifix Beauty Store</a>, All rights reserved.
+      <a href="#" style="color: #ffc0cb;"><i class="fas fa-copyright me-2"></i>2025 Skintifix Beauty Store</a>. All rights reserved.
     </span>
 </div>
   <!-- Copyright -->

@@ -103,7 +103,7 @@
 
 <div class="product-section">
     <div class="container">
-        <h1>All Products</h1>
+        <h1>New Arrival Products</h1>
         <div class="product-grid">
             @forelse ($products as $product)
                 <div class="product-card">
@@ -128,5 +128,7 @@
             @endforelse
         </div>
     </div>
+    
+</div>
 </div>
 @endsection

@@ -89,11 +89,11 @@
                                 </li>
                                 
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Best Seller</a>
+                                    <a class="nav-link" href="{{ route('best-seller') }}">Best Seller</a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">New Arrival</a>
+                                    <a class="nav-link" href="{{ route('new-arrival') }}">New Arrival</a>
                                 </li>
 
                                 <li class="nav-item">

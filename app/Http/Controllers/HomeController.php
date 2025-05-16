@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
-use App\Models\ProductCategory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 
@@ -15,7 +15,27 @@ class HomeController extends Controller
     //
     public function show() {
         return view('home',[
-            'product_categories'=>ProductCategory::with(['products'])->get()
+            'order_items'=>OrderItem::where('quantity', '>', 0)
+            ->with(['product'])
+            ->get(),
+
+            'products'=>Product::where('created_at', '>=', now()->subDays(7))
+            ->get()
+        ]);
+    }
+
+    public function viewBestSeller() {
+        return view('best-seller',[
+            'order_items'=>OrderItem::where('quantity', '>', 0)
+            ->with(['product'])
+            ->get()
+        ]);
+    }
+
+    public function viewNewArrival() {
+        return view('new-arrival', [
+            'products'=>Product::where('created_at', '>=', now()->subDays(7))
+            ->get()
         ]);
     }
 
@@ -53,7 +73,7 @@ class HomeController extends Controller
 public function addToWishlist($id)
 {
     $product = Product::findOrFail($id);
-    $userId = session('id'); // atau session('id_cust') jika kamu konsisten pakai itu
+    $userId = session('id');
 
         if (!$userId) {
             return redirect()->route('login')->with('error', 'Please login first');

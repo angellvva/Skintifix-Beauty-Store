@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <style>
-
         .category .card {
             transition: box-shadow 0.3s ease;
             border: 1px solid #e965a7; /* border pink */
@@ -24,6 +23,42 @@
         .category .btn-outline-secondary:hover {
             background-color: #e965a7 !important;
             color: white !important;
+        }
+
+        .product-name {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .product-stock {
+            color: #888;
+            font-size: 14px;
+        }
+
+        .product-price {
+            font-size: 16px;
+            color: #e965a7;
+            font-weight: bold;
+            margin: 10px 0;
+        }    
+        
+        .icon-btns form {
+            display: inline-block;
+            margin: 0 5px;
+        }
+
+        .icon-btns button {
+            background: none;
+            border: none;
+            color: #e965a7;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .icon-btns button:hover {
+            color: #c44c8f;
         }
     </style>
 </head>
@@ -74,36 +109,98 @@
         </div>
 
         <div class="container">
+            {{-- Best Seller --}}
             <div class="p-4 category">
                 <!-- Judul dan Button Nav Carousel -->
+                <h2 class="fw-bold">Best Seller Products</h2>
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <div>
-                        <h2 class="fw-bold">Shop by Category</h2>
-                        <p class="mb-0 text-muted">Browse our wide range of skincare categories to find exactly what your skin needs</p>
+                        <p class="mb-0 text-muted">Discover our best seller products and find the perfect essentials tailored to your skin’s unique needs</p>
                     </div>
                     <div class="d-flex gap-2">
-                        <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-target="#categoryCarousel" data-bs-slide="prev">
-                            ‹ Prev
-                        </button>
-                        <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-target="#categoryCarousel" data-bs-slide="next">
-                            Next ›
-                        </button>
+                        <a href="{{ route('best-seller') }}" class="btn btn-outline-secondary btn-sm">
+                            See All
+                        </a>
                     </div>
                 </div>
 
                 <!-- Carousel Start-->
                 <div id="categoryCarousel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
-                        @foreach ($product_categories->chunk(4) as $chunkIndex => $chunk)
+                        @foreach ($order_items->chunk(4) as $chunkIndex => $chunk)
                             <div class="carousel-item {{ $chunkIndex == 0 ? 'active' : '' }}">
                                 <div class="row row-cols-1 row-cols-md-4 g-4 text-center">
-                                    @foreach ($chunk as $pc)
+                                    @foreach ($chunk as $item)
                                         <div class="col">
                                             <div class="card h-100">
                                                 <div class="card-body shadow-sm">
-                                                    <img src="{{ asset('images/category/' . $pc->images) }}" class="card-img-top" alt="{{ $pc->name }}">
-                                                    <h5 class="card-title">{{ $pc->name }}</h5>
-                                                    <p class="card-text">{{ $pc->products->count() }} products</p>
+                                                    <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}" class="img-fluid">
+                                                    <h5 class="card-title product-name">{{ $item->product->name }}</h5>
+                                                    <div class="product-stock">Stock: {{ $item->product->stock }}</div>
+                                                    <div class="product-price">Rp{{ number_format($item->product->price, 0, ',', '.') }}</div>
+
+                                                    <div class="icon-btns">
+                                                        <form action="{{ route('cart.add', $item->product->id) }}" method="POST">
+                                                            @csrf
+                                                            <button type="submit" title="Add to Cart"><i class="fas fa-shopping-cart"></i></button>
+                                                        </form>
+                                                        <form action="{{ route('wishlist.add', $item->product->id) }}" method="POST">
+                                                            @csrf
+                                                            <button type="submit" title="Add to Wishlist"><i class="fas fa-heart"></i></button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                <!-- Carousel End-->
+            </div>
+
+            {{-- New Arrival --}}
+            <div class="p-4 category">
+                <!-- Judul dan Button Nav Carousel -->
+                <h2 class="fw-bold">New Arrival Products</h2>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <p class="mb-0 text-muted">Explore our latest arrivals and be the first to enjoy fresh, innovative products designed to elevate your skin</p>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a href="{{ route('new-arrival') }}" class="btn btn-outline-secondary btn-sm">
+                            See All
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Carousel Start-->
+                <div id="categoryCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        @foreach ($products->chunk(4) as $chunkIndex => $chunk)
+                            <div class="carousel-item {{ $chunkIndex == 0 ? 'active' : '' }}">
+                                <div class="row row-cols-1 row-cols-md-4 g-4 text-center">
+                                    @foreach ($chunk as $product)
+                                        <div class="col">
+                                            <div class="card h-100">
+                                                <div class="card-body shadow-sm">
+                                                    <img src="{{ $product->image }}" alt="{{ $product->name }}" class="img-fluid">
+                                                    <h5 class="card-title product-name">{{ $product->name }}</h5>
+                                                    <div class="product-stock">Stock: {{ $product->stock }}</div>
+                                                    <div class="product-price">Rp{{ number_format($product->price, 0, ',', '.') }}</div>
+
+                                                    <div class="icon-btns">
+                                                        <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                                                            @csrf
+                                                            <button type="submit" title="Add to Cart"><i class="fas fa-shopping-cart"></i></button>
+                                                        </form>
+                                                        <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
+                                                            @csrf
+                                                            <button type="submit" title="Add to Wishlist"><i class="fas fa-heart"></i></button>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

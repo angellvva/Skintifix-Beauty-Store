@@ -103,21 +103,21 @@
 
 <div class="product-section">
     <div class="container">
-        <h1>All Products</h1>
+        <h1>Best Seller Products</h1>
         <div class="product-grid">
-            @forelse ($products as $product)
+            @forelse ($order_items as $item)
                 <div class="product-card">
-                    <img src="{{ $product->image }}" alt="{{ $product->name }}">
-                    <div class="product-name">{{ $product->name }}</div>
-                    <div class="product-stock">Stock: {{ $product->stock }}</div>
-                    <div class="product-price">Rp{{ number_format($product->price, 0, ',', '.') }}</div>
-                    <div class="product-description">{{ Str::limit($product->description, 60) }}</div>
+                    <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}">
+                    <div class="product-name">{{ $item->product->name }}</div>
+                    <div class="product-stock">Stock: {{ $item->product->stock }}</div>
+                    <div class="product-price">Rp{{ number_format($item->product->price, 0, ',', '.') }}</div>
+                    <div class="product-description">{{ Str::limit($item->product->description, 60) }}</div>
                     <div class="icon-btns">
-                        <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                        <form action="{{ route('cart.add', $item->product->id) }}" method="POST">
                             @csrf
                             <button type="submit" title="Add to Cart"><i class="fas fa-shopping-cart"></i></button>
                         </form>
-                        <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
+                        <form action="{{ route('wishlist.add', $item->product->id) }}" method="POST">
                             @csrf
                             <button type="submit" title="Add to Wishlist"><i class="fas fa-heart"></i></button>
                         </form>
@@ -128,5 +128,7 @@
             @endforelse
         </div>
     </div>
+    
+</div>
 </div>
 @endsection

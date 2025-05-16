@@ -6,6 +6,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\WishlistController;
 
@@ -27,19 +28,19 @@ Route::get('/catalog', [HomeController::class, 'allProducts'])
 
 // ROUTE PASSWORD RESET
 // Route untuk menampilkan form forgot password
-Route::get('forget-password', [PasswordController::class, 'showForgotPasswordForm'])
+Route::get('/forget-password', [PasswordController::class, 'showForgotPasswordForm'])
 ->name('forget-password');
 
 // Route untuk mengirim permintaan reset password
-Route::post('forget-password', [PasswordController::class, 'sendResetLinkEmail'])
+Route::post('/forget-password', [PasswordController::class, 'sendResetLinkEmail'])
 ->name('password.email');
 
 // Route untuk menampilkan form reset password
-Route::get('reset-password/{token}', [PasswordController::class, 'showResetForm'])
+Route::get('/reset-password/{token}', [PasswordController::class, 'showResetForm'])
 ->name('password.reset');
 
 // Route untuk menangani pengaturan ulang password
-Route::post('reset-password', [PasswordController::class, 'reset'])
+Route::post('/reset-password', [PasswordController::class, 'reset'])
 ->name('password.update');
 
 //Route untuk button add cart dan wishlist di product page
@@ -55,13 +56,21 @@ Route::post('/contact', [ContactController::class, 'store']);
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 
 // Login Routes
-Route::get('/login', [App\Http\Controllers\LoginController::class, 'Login'])->name('login');
-Route::post('/login', [App\Http\Controllers\LoginController::class, 'LoginAction'])->name('login');
+Route::get('/login', [LoginController::class, 'Login'])->name('login');
+Route::post('/login', [LoginController::class, 'LoginAction'])->name('login');
 // Logout Route
-Route::post('/logout', [App\Http\Controllers\LoginController::class, 'Logout'])->name('logout');
+Route::post('/logout', [LoginController::class, 'Logout'])->name('logout');
 
 
 // Route untuk menampilkan form register
-Route::get('register', [AuthController::class, 'showRegisterForm'])->name('register');
+Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 // Route untuk menangani registrasi pengguna
-Route::post('register', [AuthController::class, 'register'])->name('register.submit');
+Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+
+// Route untuk menampilkan best seller products
+Route::get('/best-seller', [HomeController::class, 'viewBestSeller'])
+->name('best-seller');
+
+// Route untuk menampilkan new arrival products
+Route::get('/new-arrival', [HomeController::class, 'viewNewArrival'])
+->name('new-arrival');
