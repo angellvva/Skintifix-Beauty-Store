@@ -95,6 +95,7 @@ Route::post('/edit-profile', [ProfileController::class, 'update'])->name('profil
 
 // route my orders
 Route::get('/my-orders', [ProfileController::class, 'orders'])->name('my-orders');
+Route::get('/my-orders', [OrderController::class, 'index'])->name('my-orders');
 
 // route admin dashboard
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
@@ -119,9 +120,5 @@ Route::get('/admin/messages', [AdminController::class, 'messages'])->name('admin
 Route::get('/products/{id}/review', [ReviewController::class, 'create'])->name('reviews.create');
 // Handle the review form submission
 Route::post('/products/{id}/review', [ReviewController::class, 'store'])->name('reviews.store');
-
-//Route untuk my orders
-// Route to show the user's orders
-Route::get('/myorders', [OrderController::class, 'index'])->name('myorders');
 
 Route::post('/checkout/selected', [CheckoutController::class, 'checkoutSelected'])->name('checkout.selected');
