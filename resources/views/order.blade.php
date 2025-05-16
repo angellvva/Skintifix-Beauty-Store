@@ -1,155 +1,207 @@
-<!-- resources/views/myorders.blade.php -->
-<!DOCTYPE html>
-<html lang="en">
+@extends('base.base')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Orders</title>
+@section('content')
     <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .product-section {
+            background-color: #fff0f6;
         }
 
-        th,
-        td {
-            padding: 10px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-
-        th {
-            background-color: #f4f4f4;
-        }
-
-        .order-box {
-            border: 2px solid #e965a7;
-            border-radius: 12px;
-            padding: 40px;
-            text-align: center;
-            background-color: #fff;
-            max-width: 500px;
-            margin-top: 30px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .order-box h2 {
-            color: #e965a7;
-            margin-bottom: 20px;
-        }
-
-        .order-box p {
-            color: #555;
-            font-size: 18px;
-            margin-bottom: 30px;
-        }
-
-        .order-box .btn-checkout {
-            background-color: #e965a7;
-            color: white;
-            padding: 10px 20px;
-            font-size: 16px;
-            text-decoration: none;
-            border-radius: 8px;
-            transition: background-color 0.3s ease;
-        }
-
-        .order-box .btn-checkout:hover {
-            background-color: #c84d85;
+        .order-container {
+            margin-bottom: 60px;
         }
 
         .order-card {
-            border: 1px solid #ddd;
+            border: 2px solid #e965a7 !important;
+            transition: all 0.3s ease;
+            width: 260px;
             border-radius: 8px;
-            padding: 20px;
-            margin-top: 15px;
         }
 
-        .order-card h5 {
-            font-size: 18px;
-            color: #333;
+        .order-card:hover {
+            box-shadow: 0 0 15px rgba(233, 101, 167, 0.5);
+            transform: translateY(-5px);
+            z-index: 1;
         }
 
-        .order-card .list-group-item {
+        .order-img {
+            height: 160px;
+            object-fit: contain;
+            margin-bottom: 1rem;
+        }
+
+        .order-grid {
             display: flex;
-            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px 10px;
         }
 
-        .order-card .btn {
-            padding: 8px 12px;
-            font-size: 14px;
+        .empty-order-icon {
+            font-size: 60px;
+            color: #ccc;
         }
 
-        .order-card .btn-outline-danger {
-            background-color: #f8d7da;
-            color: #721c24;
+        .empty-order-text {
+            font-weight: 500;
+            color: #555;
         }
 
-        .order-card .btn-outline-info {
-            background-color: #d1ecf1;
-            color: #0c5460;
+        .empty-order-container {
+            padding-top: 100px;
+            padding-bottom: 100px;
+            text-align: center;
         }
 
-        .order-card .btn-outline-success {
-            background-color: #d4edda;
-            color: #155724;
+        .btn-checkout {
+            border: 1px solid #e965a7;
+            border-radius: 8px;
+            background: none;
+            width: 33px;
+            height: 31px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
         }
+
+        .btn-checkout i {
+            color: #e965a7;
+            transition: color 0.3s ease;
+        }
+
+        .btn-checkout:hover {
+            background-color: #e965a7;
+        }
+
+        .btn-checkout:hover i {
+            color: white;
+        }
+
         .order-section {
             background-color: #fff0f6;
         }
     </style>
-</head>
+    <div class="product-section">
+        <div class="container py-5">
+            <h2 class="fw-bold mb-4" style="color: #e965a7;">My Orders</h2>
 
-<body>
-    @extends('base.base')
+            @if (session('success'))
+                <p class="item-desc text-muted mb-4">
+                    You have {{ is_countable($orders) ? count($orders) : 0 }}
+                    {{ is_countable($orders) && count($orders) === 1 ? 'order' : 'orders' }}
+                </p>
 
-    @section('content')
-<div class="order-section">
-    <div class="container mt-5">
-        <h2 class="fw-bold mb-4" style="color: #e965a7;">My Order</h2>
+                <div id="order-notification" class="alert alert-success"
+                    style="
+                        position: fixed;
+                        top: 120px;
+                        right: 313px;
+                        background-color: #d4edda;  /* hijau muda */
+                        color: #155724;             /* hijau gelap */
+                        border: 1px solid #c3e6cb; /* border hijau */
+                        border-radius: 8px;
+                        padding: 10px 20px 10px 15px;
+                        z-index: 9999;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                        opacity: 1;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        min-width: 250px;
+                    ">
+                    <span>{{ session('success') }}</span>
+                    <button id="close-order-notification"
+                        style="
+                            background: transparent;
+                            border: none;
+                            color: #155724;
+                            font-weight: bold;
+                            font-size: 20px;
+                            line-height: 1;
+                            cursor: pointer;
+                            padding: 0 5px;
+                            margin-left: 15px;
+                        "
+                        aria-label="Close notification">&times;</button>
+                </div>
+            @endif
 
-        <!-- Check if the user has any orders -->
-        @if($orders->isEmpty())
-        <div class="order-box">
-            <h2>Your Orders</h2>
-            <p>You haven't checked out yet. Please complete your purchase by going to checkout.</p>
-            <a href="{{ route('catalog') }}" class="btn-checkout">Go Checkout</a>
+            @if (isset($orders) && count($orders) > 0)
+                <div class="order-container">
+                    <div class="order-grid">
+                        @foreach ($orders as $order)
+                            <div class="card order-card border-0 shadow-sm p-3">
+                                <img src="{{ $order->image }}" class="card-img-top order-img mx-auto d-block"
+                                    alt="{{ $order->name }}">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">{{ $order->name }}</h5>
+                                    <p class="card-text text-danger fw-bold">
+                                        Rp{{ number_format($order->price, 0, ',', '.') }}
+                                    </p>
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <a href="{{ url('/customer/order/' . $order->id) }}"
+                                            class="btn btn-outline-secondary btn-sm">View</a>
+                                        <form action="{{ route('cart.add', $order->id) }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="btn-checkout" title="Go to checkout">
+                                                <i class="fas fa-arrow-right"></i>
+                                            </button>
+                                        </form>
+                                        <form method="POST" action="{{ route('order.remove') }}"
+                                            onsubmit="return confirm('Remove this order from your list?');">
+                                            @csrf
+                                            <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm"
+                                                title="Remove from Orders">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @else
+                <div class="table-responsive shadow-sm rounded bg-white p-5 text-center"
+                    style="border: 1px solid #e965a7;">
+                    <i class="fas fa-shopping-cart fa-4x mb-4" style="color: #e965a7;"></i>
+                    <h4 class="mb-3" style="color: #e965a7;">Your orders are empty.</h4>
+                    <p class="text-muted mb-4">Complete your order by going to checkout...</p>
+                    <a href="{{ route('catalog') }}" class="btn rounded-pill px-4 shadow-sm"
+                        style="background-color: #e965a7; color: white;">
+                        Browse Products
+                    </a>
+                </div>
+            @endif
         </div>
-        @else
-        <!-- Display orders in a list of cards -->
-        @foreach($orders as $order)
-        <div class="order-card">
-            <h5>Order #{{ $order->id }} <span class="text-muted">- {{ $order->created_at->format('d M Y') }}</span></h5>
-            <!-- List of items in the order -->
-            <ul class="list-group">
-                @foreach($order->items as $item)
-                <li class="list-group-item">
-                    <span>{{ $item->name }}</span>
-                    <span>{{ $item->quantity }} x Rp {{ number_format($item->price, 0, ',', '.') }}</span>
-                </li>
-                @endforeach
-            </ul>
-
-            <!-- Total Price -->
-            <div class="mt-3 d-flex justify-content-between">
-                <h6>Total:</h6>
-                <h6>Rp {{ number_format($order->total, 0, ',', '.') }}</h6>
-            </div>
-
-            <!-- Action buttons (Cancel, View Details, Order Received) -->
-            <div class="d-flex justify-content-between mt-3">
-                <a href="#" class="btn btn-outline-danger">Cancel</a>
-                <a href="{{ route('catalog', ['id' => $order->id]) }}" class="btn btn-outline-info">View Details</a>
-                <a href="#" class="btn btn-outline-success">Order Received</a>
-            </div>
-        </div>
-        @endforeach
-        @endif
     </div>
-</div>
-    @endsection
 
-</body>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const notification = document.getElementById('order-notification');
+            const closeBtn = document.getElementById('close-order-notification');
+            if (!notification) return;
 
-</html>
+            const displayTime = 4000; // durasi tampil notifikasi sebelum auto fade
+            const fadeDuration = 1000; // durasi animasi fade out
+
+            function fadeOutAndHide() {
+                notification.style.transition = `opacity ${fadeDuration}ms ease`;
+                notification.style.opacity = 0;
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, fadeDuration);
+            }
+
+            const timeoutId = setTimeout(fadeOutAndHide, displayTime);
+
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    clearTimeout(timeoutId);
+                    fadeOutAndHide();
+                });
+            }
+        });
+    </script>
+
+@endsection
