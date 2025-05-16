@@ -99,12 +99,6 @@ class AdminController extends Controller
         return view('admin.orders', compact('products'));
     }
 
-    public function categories()
-    {
-        $products = Product::latest()->paginate(10);
-        return view('admin.categories', compact('products'));
-    }
-
     public function inventory()
     {
         $products = Product::latest()->paginate(10);
@@ -160,7 +154,6 @@ class AdminController extends Controller
 
         return view('admin.customers', compact('customers'));
     }
-
 
     public function categories()
     {
