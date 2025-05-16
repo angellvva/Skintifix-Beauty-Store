@@ -28,7 +28,7 @@ class AuthController extends Controller
         ]);
 
         // Membuat pengguna baru
-        $user = User::create([
+        User::create([
             'name' => $validated['name'],
             'phone' => $validated['phone'],
             'email' => $validated['email'],
@@ -41,4 +41,7 @@ class AuthController extends Controller
         // Redirect setelah registrasi berhasil
         return redirect()->route('login')->with('status', 'Registration successful! Please login.');
     }
+
+ 
+
 }

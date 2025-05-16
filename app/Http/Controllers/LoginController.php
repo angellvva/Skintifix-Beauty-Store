@@ -23,6 +23,20 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
+        // Cek login sebagai admin (hardcoded)
+        if (
+            $request->email === 'admin@admin.com' &&
+            $request->password === 'adminadmin'
+        ) {
+            session([
+                'is_admin' => true,
+                'email' => $request->email,
+                'name' => 'Admin',
+            ]);
+
+            return redirect()->route('admin.dashboard')->with('success', 'Welcome, Admin!');
+        }
+
         // Find user from 'users' table
         $user = DB::table('users')->where('email', $credentials['email'])->first();
 

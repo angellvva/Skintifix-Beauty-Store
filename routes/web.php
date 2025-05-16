@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductController;
@@ -87,3 +88,12 @@ Route::get('/catalog/{category}', [ProductController::class, 'categoryCatalog'])
 // Route untuk ke view edit profile saat pencet button edit profile
 Route::get('/edit-profile', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::post('/edit-profile', [ProfileController::class, 'update'])->name('profile.update');
+
+// route admin dashboard
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+// route admin product
+Route::get('/admin/product', [AdminController::class, 'product'])->name('admin.products');
+// route admin order
+Route::get('/admin/order', [AdminController::class, 'order'])->name('admin.orders');
+// route admin contact
+Route::get('/admin/contact', [AdminController::class, 'contact'])->name('admin.contacts');
