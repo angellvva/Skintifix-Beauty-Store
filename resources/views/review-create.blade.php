@@ -30,8 +30,8 @@
 
         <!-- Content -->
         <div class="mb-3">
-            <label for="content" class="form-label fw-bold">Your Review:</label>
-            <textarea name="content" class="form-control" rows="4" required>{{ old('content') }}</textarea>
+            <label for="comment" class="form-label fw-bold">Your Review:</label>
+            <textarea name="comment" class="form-control" rows="4" required>{{ old('comment') }}</textarea>
         </div>
 
         <button type="submit" class="btn" style="background-color: #e965a7; color: white;">Submit Review</button>
