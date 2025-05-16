@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Container\Attributes\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -36,7 +37,7 @@ class AuthController extends Controller
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-
+        
         // Redirect setelah registrasi berhasil
         return redirect()->route('login')->with('status', 'Registration successful! Please login.');
     }

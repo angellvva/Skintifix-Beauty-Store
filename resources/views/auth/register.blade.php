@@ -141,12 +141,12 @@
             <input type="text" name="address" placeholder="" required>
 
             <label for="password">Password</label>
-            <input type="password" name="password" placeholder="" required>
+            <input type="password" name="password" required minlength="8" placeholder="Password (min 8 characters)">
 
             <label for="confirm-password">Confirm Password</label>
             <input type="password" name="password_confirmation" placeholder="" required>
 
-            <button type="submit">Register</button>
+            <button type="submit">Register</button> 
         </form>
 
         <!-- Link untuk kembali ke halaman login jika sudah punya akun -->
