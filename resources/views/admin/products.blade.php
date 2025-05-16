@@ -4,10 +4,12 @@
     <style>
         .btn {
             background-color: #e965a7;
+            color: white;
         }
 
         .btn:hover {
             background-color: #da5195;
+            color: white;
         }
     </style>
     <div class="container my-4">

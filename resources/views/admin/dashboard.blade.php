@@ -92,7 +92,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <a href="{{ route('admin.orders') }}" class="btn btn-sm btn-outline-primary mt-2">View All
+                        <a href="{{ route('admin.orders') }}" class="btn btn-sm btn-pink mt-2">View All
                             Orders</a>
                     </div>
                 </div>
@@ -115,7 +115,7 @@
                                 </li>
                             @endforeach
                         </ul>
-                        <a href="{{ route('admin.products') }}" class="btn btn-sm btn-outline-primary mt-3">Manage
+                        <a href="{{ route('admin.products') }}" class="btn btn-sm btn-pink mt-3">Manage
                             Products</a>
                     </div>
                 </div>
@@ -143,6 +143,17 @@
             border-radius: 50%;
             padding: 15px;
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-pink {
+            background-color: #e965a7;
+            color: white;
+            border: none;
+        }
+
+        .btn-pink:hover {
+            background-color: #da5195;
+            color: white;
         }
     </style>
 @endpush
