@@ -14,6 +14,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\AdminOrderController;
 
 
 // ROUTE HOME
@@ -122,3 +123,5 @@ Route::get('/products/{id}/review', [ReviewController::class, 'create'])->name('
 Route::post('/products/{id}/review', [ReviewController::class, 'store'])->name('reviews.store');
 
 Route::post('/checkout/selected', [CheckoutController::class, 'checkoutSelected'])->name('checkout.selected');
+
+Route::get('/orders/{id}', [AdminOrderController::class, 'show'])->name('orders.show');
