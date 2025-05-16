@@ -32,7 +32,7 @@ class AdminController extends Controller
             'users.name as customer',
             'orders.order_date',
             'orders.total_amount',
-            'users.name as customer_name',
+            'users.name as customer_name'
         )
         ->orderByDesc('orders.order_date','desc')
         ->limit(3)

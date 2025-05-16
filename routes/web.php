@@ -93,11 +93,11 @@ Route::post('/edit-profile', [ProfileController::class, 'update'])->name('profil
 // route admin dashboard
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 // route admin product
-Route::get('/admin/product', [AdminController::class, 'product'])->name('admin.products');
+Route::get('/admin/products', [AdminController::class, 'products'])->name('admin.products');
 // route admin order
-Route::get('/admin/order', [AdminController::class, 'order'])->name('admin.orders');
+Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');
 // route admin contact
-Route::get('/admin/contact', [AdminController::class, 'contact'])->name('admin.contacts');
+Route::get('/admin/contacts', [AdminController::class, 'contacts'])->name('admin.contacts');
 
 //Route untuk create review
 Route::get('/products/{id}/review', [ReviewController::class, 'create'])->name('reviews.create');
