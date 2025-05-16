@@ -161,15 +161,19 @@
                     </div>
                 </div>
             @else
-                <div class="empty-wishlist-container">
-                    <i class="fas fa-heart empty-wishlist-icon mb-3"></i>
-                    <h4 class="empty-wishlist-text">Your wishlist is empty😢</h4>
-                    <p class="text-muted mb-3">Save your favorite items here for later...</p>
-                    <a href="{{ route('catalog') }}" class="btn px-4"
-                        style="background-color: #e965a7; color: white;">Browse
-                        All Products</a>
+                <div class="table-responsive shadow-sm rounded bg-white p-5 text-center" 
+                    style="border: 1px solid #e965a7;">
+                    <i class="fas fa-heart fa-4x mb-4" style="color: #e965a7;"></i>
+                    <h4 class="mb-3" style="color: #e965a7;">Your wishlist is empty.</h4>
+                    <p class="text-muted mb-4">Looks like you haven’t added anything to your cart yet...</p>
+                    <a href="{{ route('catalog') }}" class="btn rounded-pill px-4 shadow-sm"
+                        style="background-color: #e965a7; color: white;">
+                        Browse Products
+                    </a>
                 </div>
             @endif
+
+
         </div>
     </div>
 
