@@ -46,7 +46,7 @@
             @endif
 
             @if (isset($cartItems) && $cartItems->count() > 0)
-            <form action="{{ route('checkout.selected') }}" method="POST">
+            <form action="{{ route('checkout') }}" method="POST">
             @csrf
                 <div class="table-responsive shadow-sm border rounded">
                     <table class="table align-middle mb-0">
@@ -85,7 +85,7 @@
                                         <form action="{{ route('cart.update', $item->cart_id) }}" method="POST"
                                             class="d-flex align-items-center">
                                             @csrf
-                                            @method('PUT')
+                                            {{-- @method('PUT') --}}
                                             <input type="number" name="quantity" value="{{ $item->quantity }}"
                                                 min="1" class="form-control form-control-sm" style="max-width: 60px;"
                                                 onchange="this.form.submit()">
@@ -129,11 +129,12 @@
                         style="border-color: #e965a7; color: #e965a7; background-color: white;">
                         &lsaquo; Continue Shopping
                     </a>
-                    <a href="{{ route('checkout') }}" class="btn rounded-pill px-4 shadow-sm"
+                    <button type="submit" class="btn rounded-pill px-4 shadow-sm"
                         style="background-color: #e965a7; color: #fff;">
                         Checkout
-                    </a>
+                    </button>
                 </div>
+
             </form>
             @else
                 <div class="table-responsive shadow-sm rounded bg-white p-5 text-center" style="border: 1px solid #e965a7;">
