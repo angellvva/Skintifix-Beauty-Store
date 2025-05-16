@@ -207,7 +207,8 @@
                                 <div class="row row-cols-1 row-cols-md-4 g-4 text-center">
                                     @foreach ($chunk as $item)
                                         <div class="col">
-                                            <div class="card h-100">
+                                            <div class="card h-100"
+                                                onclick="window.location='{{ route('product.detail', $item->product->id) }}'">
                                                 <div class="card-body shadow-sm position-relative">
                                                     <img src="{{ $item->product->image }}"
                                                         alt="{{ $item->product->name }}" class="img-fluid">
@@ -257,7 +258,6 @@
                 </div>
 
                 <!-- Carousel Start-->
-                <!-- Carousel Start-->
                 <div id="categoryCarousel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         @foreach ($order_itemss->chunk(4) as $chunkIndex => $chunk)
@@ -265,7 +265,8 @@
                                 <div class="row row-cols-1 row-cols-md-4 g-4 text-center">
                                     @foreach ($chunk as $item)
                                         <div class="col">
-                                            <div class="card h-100">
+                                            <div class="card h-100"
+                                                onclick="window.location='{{ route('product.detail', $item->product->id) }}'">
                                                 <div class="card-body shadow-sm position-relative">
                                                     <img src="{{ $item->product->image }}"
                                                         alt="{{ $item->product->name }}" class="img-fluid">

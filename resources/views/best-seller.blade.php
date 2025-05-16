@@ -7,7 +7,7 @@
             padding: 50px 20px;
         }
 
-        .product-section h1 {
+        .product-section h2 {
             color: #e965a7;
             font-weight: bold;
             text-align: center;
@@ -131,7 +131,7 @@
 
     <div class="product-section">
         <div class="container">
-            <h1>Best Seller Products</h1>
+            <h2>Best Seller Products</h2>
             <div class="product-grid">
                 @forelse ($order_items as $item)
                     <div class="product-card position-relative" style="cursor: pointer;"
