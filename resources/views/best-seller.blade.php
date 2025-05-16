@@ -106,7 +106,7 @@
         <h1>Best Seller Products</h1>
         <div class="product-grid">
             @forelse ($order_items as $item)
-                <div class="product-card">
+                <div class="product-card" style="cursor: pointer;" onclick="window.location='{{ route('product.detail', $item->product->id) }}'">
                     <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}">
                     <div class="product-name">{{ $item->product->name }}</div>
                     <div class="product-stock">Stock: {{ $item->product->stock }}</div>
@@ -128,7 +128,6 @@
             @endforelse
         </div>
     </div>
-    
 </div>
 </div>
 @endsection

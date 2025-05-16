@@ -106,7 +106,7 @@
         <h1>New Arrival Products</h1>
         <div class="product-grid">
             @forelse ($products as $product)
-                <div class="product-card">
+                <div class="product-card" style="cursor: pointer;" onclick="window.location='{{ route('product.detail', $product->id) }}'">
                     <img src="{{ $product->image }}" alt="{{ $product->name }}">
                     <div class="product-name">{{ $product->name }}</div>
                     <div class="product-stock">Stock: {{ $product->stock }}</div>

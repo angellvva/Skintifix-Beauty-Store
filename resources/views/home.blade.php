@@ -162,7 +162,7 @@
             </div>
 
             {{-- New Arrival --}}
-            <div class="p-4 category">
+            <div class="px-4 pt-4 category" style="padding-bottom: 48px;">
                 <!-- Judul dan Button Nav Carousel -->
                 <h2 class="fw-bold">New Arrival Products</h2>
                 <div class="d-flex justify-content-between align-items-center mb-3">

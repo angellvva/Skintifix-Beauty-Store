@@ -8,6 +8,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\WishlistController;
 
 // ROUTE HOME
@@ -74,3 +75,7 @@ Route::get('/best-seller', [HomeController::class, 'viewBestSeller'])
 // Route untuk menampilkan new arrival products
 Route::get('/new-arrival', [HomeController::class, 'viewNewArrival'])
 ->name('new-arrival');
+
+// Route untuk menampilkan product details
+Route::get('/product/{id}', [ProductController::class, 'detail'])
+->name('product.detail');
