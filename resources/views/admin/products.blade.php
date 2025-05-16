@@ -22,6 +22,16 @@
             color: white;
             background-color: #e965a7;
         }
+
+        .btn-prev-next {
+            color: white;
+            background-color: #e965a7;
+        }
+
+        .btn-prev-next:hover {
+            color: white;
+            background-color: #da5195;
+        }
     </style>
     <div class="container my-4">
         <div class="row mb-4">
@@ -36,7 +46,13 @@
 
         <div class="row g-3 mb-3 align-items-center">
             <div class="col-md-4">
-                <input type="text" class="form-control" placeholder="Search products..." />
+                <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input type="text" class="form-control" placeholder="Search products..." aria-label="Search"
+                        aria-describedby="basic-addon1" />
+                </div>
             </div>
             <div class="col-md-4">
                 <select class="form-select">
@@ -100,5 +116,18 @@
         </table>
 
         {{-- Pagination links --}}
+        <div class="d-flex justify-content-end">
+            @if ($products->onFirstPage())
+                <button class="btn btn-secondary" disabled>Prev</button>
+            @else
+                <a href="{{ $products->previousPageUrl() }}" class="btn btn-prev-next">Prev</a>
+            @endif
+
+            @if ($products->hasMorePages())
+                <a href="{{ $products->nextPageUrl() }}" class="btn btn-prev-next">Next</a>
+            @else
+                <button class="btn btn-secondary" disabled>Next</button>
+            @endif
+        </div>
     </div>
 @endsection
