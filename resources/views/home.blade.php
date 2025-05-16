@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +11,8 @@
     <style>
         .category .card {
             transition: box-shadow 0.3s ease;
-            border: 1px solid #e965a7; /* border pink */
+            border: 1px solid #e965a7;
+            /* border pink */
         }
 
         .category .card:hover {
@@ -19,8 +21,10 @@
         }
 
         .category .btn-outline-secondary {
-            border-color: #e965a7 !important; /* border pink */
-            color: #e965a7 !important; /* text pink */
+            border-color: #e965a7 !important;
+            /* border pink */
+            color: #e965a7 !important;
+            /* text pink */
         }
 
         .category .btn-outline-secondary:hover {
@@ -33,6 +37,12 @@
             font-size: 18px;
             margin-bottom: 8px;
             color: #333;
+
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .product-stock {
@@ -45,8 +55,8 @@
             color: #e965a7;
             font-weight: bold;
             margin: 10px 0;
-        }    
-        
+        }
+
         .icon-btns form {
             display: inline-block;
             margin: 0 5px;
@@ -89,19 +99,21 @@
         .swiper-slide:hover {
             transform: scale(1.03);
         } */
-    .most-wanted-slider {
-        padding: 10px 0;
-    }
-    .swiper-slide {
-        width: auto;
-        max-width: 200px;
-        padding: 10px;
-    }
+        .most-wanted-slider {
+            padding: 10px 0;
+        }
+
+        .swiper-slide {
+            width: auto;
+            max-width: 200px;
+            padding: 10px;
+        }
     </style>
 </head>
+
 <body>
     @extends ('base.base')
-    
+
     @section('content')
         <div class="container-fluid py-5" style="background-image: url('{{ asset('images/home/background.jpg') }}');">
             <div class="container py-5">
@@ -110,8 +122,9 @@
                         <h4 style="color: #e965a7;">Premium products for a radiant, healthy glow skin</h4>
                         <h1 class="display-3 fw-bold mb-5">Discover Your Natural Beauty!</h1>
                         <div class="position-relative mx-auto">
-                            <a type="button"
-                                href="{{ route('catalog') }}" class="fw-semibold btn py-2 rounded-pill text-white w-50 shadow-sm" style="background-color: #e965a7">
+                            <a type="button" href="{{ route('catalog') }}"
+                                class="fw-semibold btn py-2 rounded-pill text-white w-50 shadow-sm"
+                                style="background-color: #e965a7">
                                 Start Shopping Now
                             </a>
                         </div>
@@ -120,13 +133,16 @@
                         <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
                             <div class="carousel-inner" role="listbox">
                                 <div class="carousel-item active rounded">
-                                    <img src="{{ asset('images/home/hero-1.jpg') }}" class="img-fluid w-100 h-100 rounded" alt="First slide">
+                                    <img src="{{ asset('images/home/hero-1.jpg') }}" class="img-fluid w-100 h-100 rounded"
+                                        alt="First slide">
                                 </div>
                                 <div class="carousel-item rounded">
-                                    <img src="{{ asset('images/home/hero-2.jpg') }}" class="img-fluid w-100 h-100 rounded" alt="Second slide">
+                                    <img src="{{ asset('images/home/hero-2.jpg') }}" class="img-fluid w-100 h-100 rounded"
+                                        alt="Second slide">
                                 </div>
                                 <div class="carousel-item rounded">
-                                    <img src="{{ asset('images/home/hero-3.jpg') }}" class="img-fluid w-100 h-100 rounded" alt="Second slide">
+                                    <img src="{{ asset('images/home/hero-3.jpg') }}" class="img-fluid w-100 h-100 rounded"
+                                        alt="Second slide">
                                 </div>
                             </div>
                             <button class="carousel-control-prev" type="button" data-bs-target="#carouselId"
@@ -145,6 +161,22 @@
             </div>
         </div>
 
+        {{-- Our Products Swiper --}}
+        <div class="container my-5">
+            <h2 class="text-center fw-bold mb-4">Our Products</h2>
+            <div class="swiper most-wanted-slider">
+                <div class="swiper-wrapper">
+                    @foreach ($products as $product)
+                        <div class="swiper-slide text-center">
+                            <img src="{{ $product->image }}" alt="{{ $product->name }}"
+                                style="height: 180px; object-fit: contain;">
+                            <h6 class="mt-2 fw-semibold">{{ $product->name }}</h6>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+
         <div class="container">
             {{-- Best Seller --}}
             <div class="p-4 category">
@@ -152,7 +184,8 @@
                 <h2 class="fw-bold">Best Seller Products</h2>
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <div>
-                        <p class="mb-0 text-muted">Discover our best seller products and find the perfect essentials tailored to your skin’s unique needs</p>
+                        <p class="mb-0 text-muted">Discover our best seller products and find the perfect essentials
+                            tailored to your skin’s unique needs</p>
                     </div>
                     <div class="d-flex gap-2">
                         <a href="{{ route('best-seller') }}" class="btn btn-outline-secondary btn-sm">
@@ -171,25 +204,31 @@
                                         <div class="col">
                                             <div class="card h-100">
                                                 <div class="card-body shadow-sm position-relative">
-                                                    <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}" class="img-fluid">
-                                                    
+                                                    <img src="{{ $item->product->image }}"
+                                                        alt="{{ $item->product->name }}" class="img-fluid">
+
                                                     <!-- Label kategori -->
                                                     <div class="product-category-label">
                                                         {{ $item->product->category->name }}
                                                     </div>
-                                                    
+
                                                     <h5 class="card-title product-name">{{ $item->product->name }}</h5>
                                                     <div class="product-stock">Stock: {{ $item->product->stock }}</div>
-                                                    <div class="product-price">Rp{{ number_format($item->product->price, 0, ',', '.') }}</div>
+                                                    <div class="product-price">
+                                                        Rp{{ number_format($item->product->price, 0, ',', '.') }}</div>
 
                                                     <div class="icon-btns">
-                                                        <form action="{{ route('cart.add', $item->product->id) }}" method="POST">
+                                                        <form action="{{ route('cart.add', $item->product->id) }}"
+                                                            method="POST">
                                                             @csrf
-                                                            <button type="submit" title="Add to Cart"><i class="fas fa-shopping-cart"></i></button>
+                                                            <button type="submit" title="Add to Cart"><i
+                                                                    class="fas fa-shopping-cart"></i></button>
                                                         </form>
-                                                        <form action="{{ route('wishlist.add', $item->product->id) }}" method="POST">
+                                                        <form action="{{ route('wishlist.add', $item->product->id) }}"
+                                                            method="POST">
                                                             @csrf
-                                                            <button type="submit" title="Add to Wishlist"><i class="fas fa-heart"></i></button>
+                                                            <button type="submit" title="Add to Wishlist"><i
+                                                                    class="fas fa-heart"></i></button>
                                                         </form>
                                                     </div>
                                                 </div>
@@ -203,29 +242,17 @@
                 </div>
                 <!-- Carousel End-->
             </div>
+        </div>
 
-            {{-- Our Products Swiper --}}
-            <div class="container my-5">
-                <h2 class="text-center fw-bold mb-4">OUR PRODUCTS</h2>
-                    <div class="swiper most-wanted-slider">
-                        <div class="swiper-wrapper">
-                            @foreach ($products as $product)
-                                <div class="swiper-slide text-center">
-                                    <img src="{{ $product->image }}" alt="{{ $product->name }}" style="height: 180px; object-fit: contain;">
-                                    <h6 class="mt-2 fw-semibold">{{ $product->name }}</h6>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-            </div>
-
+        <div class="container">
             {{-- New Arrival --}}
             <div class="px-4 pt-4 category" style="padding-bottom: 48px;">
                 <!-- Judul dan Button Nav Carousel -->
                 <h2 class="fw-bold">New Arrival Products</h2>
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <div>
-                        <p class="mb-0 text-muted">Explore our latest arrivals and be the first to enjoy fresh, innovative products designed to elevate your skin</p>
+                        <p class="mb-0 text-muted">Explore our latest arrivals and be the first to enjoy fresh, innovative
+                            products designed to elevate your skin</p>
                     </div>
                     <div class="d-flex gap-2">
                         <a href="{{ route('new-arrival') }}" class="btn btn-outline-secondary btn-sm">
@@ -244,7 +271,8 @@
                                         <div class="col">
                                             <div class="card h-100">
                                                 <div class="card-body shadow-sm">
-                                                    <img src="{{ $product->image }}" alt="{{ $product->name }}" class="img-fluid">
+                                                    <img src="{{ $product->image }}" alt="{{ $product->name }}"
+                                                        class="img-fluid">
 
                                                     <div class="product-category-label">
                                                         {{ $product->category->name }}
@@ -252,16 +280,21 @@
 
                                                     <h5 class="card-title product-name">{{ $product->name }}</h5>
                                                     <div class="product-stock">Stock: {{ $product->stock }}</div>
-                                                    <div class="product-price">Rp{{ number_format($product->price, 0, ',', '.') }}</div>
+                                                    <div class="product-price">
+                                                        Rp{{ number_format($product->price, 0, ',', '.') }}</div>
 
                                                     <div class="icon-btns">
-                                                        <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                                                        <form action="{{ route('cart.add', $product->id) }}"
+                                                            method="POST">
                                                             @csrf
-                                                            <button type="submit" title="Add to Cart"><i class="fas fa-shopping-cart"></i></button>
+                                                            <button type="submit" title="Add to Cart"><i
+                                                                    class="fas fa-shopping-cart"></i></button>
                                                         </form>
-                                                        <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
+                                                        <form action="{{ route('wishlist.add', $product->id) }}"
+                                                            method="POST">
                                                             @csrf
-                                                            <button type="submit" title="Add to Wishlist"><i class="fas fa-heart"></i></button>
+                                                            <button type="submit" title="Add to Wishlist"><i
+                                                                    class="fas fa-heart"></i></button>
                                                         </form>
                                                     </div>
                                                 </div>
@@ -281,20 +314,21 @@
         <div class="container py-5 text-center mb-5" style="background-color: #fff0f6;">
             <h1 class="fw-bold mb-3" style="color: #333;">NOURISHING BEAUTY, NATURALLY</h1>
             <p class="mb-5 mx-auto" style="max-width: 750px; color: #555;">
-                Skintifix Beauty Store is your modern haven for conscious beauty. Born from the belief that glowing skin starts with gentle care, our collection features clean, cruelty-free, and skin-loving products that elevate your daily routine. At Skintifix, we celebrate beauty in all forms—pure, empowering, and joyfully yours.
+                Skintifix Beauty Store is your modern haven for conscious beauty. Born from the belief that glowing skin
+                starts with gentle care, our collection features clean, cruelty-free, and skin-loving products that elevate
+                your daily routine. At Skintifix, we celebrate beauty in all forms—pure, empowering, and joyfully yours.
             </p>
 
             <div class="ratio ratio-16x9 mb-4" style="max-width: 800px; margin: 0 auto;">
-                <iframe src="https://www.youtube.com/embed/FLpOzbdncHw?si=DCbus7x9Ed65pnuS"
-                        title="Skintifix Video"
-                        allowfullscreen
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        style="border-radius: 10px;"></iframe>
+                <iframe src="https://www.youtube.com/embed/FLpOzbdncHw?si=DCbus7x9Ed65pnuS" title="Skintifix Video"
+                    allowfullscreen
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    style="border-radius: 10px;"></iframe>
             </div>
 
             <a href="https://youtu.be/FLpOzbdncHw?si=DCbus7x9Ed65pnuS" target="_blank"
-            class="btn text-white fw-semibold py-3 px-4"
-            style="background-color: #e965a7; border-radius: 0; max-width: 400px; width: 100%;">
+                class="btn text-white fw-semibold py-3 px-4"
+                style="background-color: #e965a7; border-radius: 0; max-width: 400px; width: 100%;">
                 <i class="fas fa-volume-up me-2"></i> VIEW “SKINTIFIX” CLEAN FORMULA
             </a>
         </div>
@@ -358,15 +392,18 @@
             new Swiper('.most-wanted-slider', {
                 slidesPerView: 'auto',
                 spaceBetween: 30,
+                speed: 5000,
                 loop: true,
                 autoplay: {
-                    delay: 2000,
+                    delay: 0,
                     disableOnInteraction: false,
                 },
+                freeMode: true,
+                freeModeMomentum: false,
+                allowTouchMove: false,
             });
         </script>
-
-
     @endsection
 </body>
+
 </html>
