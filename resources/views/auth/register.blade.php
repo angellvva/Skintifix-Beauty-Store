@@ -14,7 +14,12 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #ffe2ee; /* Soft pink background */
+            background-image: url('{{ asset('images/background/flower-water.jpg') }}'); /* Update with the correct image path */
+            background-size: cover;  /* Ensures the image covers the entire background */
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Prevents the image from repeating */
+            background-image: rgba(255, 255, 255, 0.8);
+            /* background-color: #ffe2ee; Soft pink background */
         }
 
         .register-modal {
