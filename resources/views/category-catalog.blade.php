@@ -8,7 +8,7 @@
             min-height: 100vh;
         }
 
-        .product-section h1 {
+        .product-section h2 {
             color: #e965a7;
             font-weight: bold;
             text-align: center;
@@ -127,7 +127,7 @@
 
     <div class="product-section">
         <div class="container">
-            <h1>{{ $category }}</h1>
+            <h2>{{ $category }}</h2>
             <div class="product-grid">
                 @forelse ($products as $product)
                     <div class="product-card position-relative" style="cursor: pointer;"

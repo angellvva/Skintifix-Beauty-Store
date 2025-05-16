@@ -77,7 +77,7 @@
                             </div>
 
                             <!-- Review Content -->
-                            <p class="mt-2 mb-0" style="color: #333;">{{ $review->content }}</p>
+                            <p class="mt-2 mb-0" style="color: #333;">{{ $review->comment }}</p>
                         </div>
                     @endforeach
                 @else

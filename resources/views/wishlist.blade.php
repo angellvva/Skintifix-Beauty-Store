@@ -82,13 +82,14 @@
     </style>
     <div class="product-section">
         <div class="container py-5">
-            <h2 class="fw-bold" style="color: #e965a7;">My Wishlist</h2>
-            <p class="item-desc text-muted mb-4">
-                You have {{ is_countable($wishlistProducts) ? count($wishlistProducts) : 0 }}
-                {{ is_countable($wishlistProducts) && count($wishlistProducts) === 1 ? 'item' : 'items' }}
-            </p>
+            <h2 class="fw-bold mb-4" style="color: #e965a7;">My Wishlist</h2>
 
             @if (session('success'))
+                <p class="item-desc text-muted mb-4">
+                    You have {{ is_countable($wishlistProducts) ? count($wishlistProducts) : 0 }}
+                    {{ is_countable($wishlistProducts) && count($wishlistProducts) === 1 ? 'item' : 'items' }}
+                </p>
+
                 <div id="cart-notification" class="alert alert-success"
                     style="
                         position: fixed;
@@ -161,11 +162,10 @@
                     </div>
                 </div>
             @else
-                <div class="table-responsive shadow-sm rounded bg-white p-5 text-center" 
-                    style="border: 1px solid #e965a7;">
+                <div class="table-responsive shadow-sm rounded bg-white p-5 text-center" style="border: 1px solid #e965a7;">
                     <i class="fas fa-heart fa-4x mb-4" style="color: #e965a7;"></i>
                     <h4 class="mb-3" style="color: #e965a7;">Your wishlist is empty.</h4>
-                    <p class="text-muted mb-4">Looks like you haven’t added anything to your cart yet...</p>
+                    <p class="text-muted mb-4">Save your favorite items here for later...</p>
                     <a href="{{ route('catalog') }}" class="btn rounded-pill px-4 shadow-sm"
                         style="background-color: #e965a7; color: white;">
                         Browse Products

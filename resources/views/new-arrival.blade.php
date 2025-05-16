@@ -8,7 +8,7 @@
             min-height: 100vh;
         }
 
-        .product-section h1 {
+        .product-section h2 {
             color: #e965a7;
             font-weight: bold;
             text-align: center;
@@ -132,7 +132,7 @@
 
     <div class="product-section">
         <div class="container">
-            <h1>New Arrival Products</h1>
+            <h2>New Arrival Products</h2>
             <div class="product-grid">
                 @forelse ($order_items as $item)
                     <div class="product-card position-relative" style="cursor: pointer;"
