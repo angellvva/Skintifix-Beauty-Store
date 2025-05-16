@@ -54,6 +54,45 @@
                     </form>
                 </div>
             </div>
+            <!-- Review Section -->
+            <hr class="my-5" style="border-color: #f8bbd0;">
+
+            <div class="mt-4">
+                <h3 class="fw-bold mb-4" style="color: #e75480;">Customer Reviews</h3>
+
+                @if ($product->reviews->count() > 0)
+                    @foreach ($product->reviews as $review)
+                        <div class="mb-4 p-3 border rounded" style="border-color: #f8bbd0; background-color: #fff7fa;">
+                            <strong style="color: #d6336c;">{{ $review->user->name }}</strong>
+                            <small class="text-muted"> – {{ $review->created_at->diffForHumans() }}</small>
+                            <!-- Star Rating -->
+                            <div class="mb-1">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    @if ($i <= $review->rating)
+                                        <i class="fas fa-star" style="color: #ffc107;"></i>
+                                    @else
+                                        <i class="far fa-star" style="color: #ffc107;"></i>
+                                    @endif
+                                @endfor
+                            </div>
+
+                            <!-- Review Content -->
+                            <p class="mt-2 mb-0" style="color: #333;">{{ $review->content }}</p>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="alert alert-info text-center" style="border: 1px solid #e965a7; color: #e965a7;">
+                        Belum ada review untuk produk ini.
+                    </div>
+                @endif
+
+                <div class="text-center mt-4">
+                    <a href="{{ route('reviews.create', $product->id) }}" class="btn rounded-pill px-4 shadow-sm"
+                        style="background-color: #e965a7; color: white;">
+                        Write a Review
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
