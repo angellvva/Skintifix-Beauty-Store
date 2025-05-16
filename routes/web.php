@@ -32,7 +32,7 @@ Route::get('/catalog', [HomeController::class, 'allProducts'])
 
 // ROUTE PASSWORD RESET
 // Route untuk menampilkan form forgot password
-Route::get('/forget-password', [PasswordController::class, 'showForgotPasswordForm'])
+Route::get('/forget-password', [PasswordController::class, 'showForgetPasswordForm'])
 ->name('forget-password');
 
 // Route untuk mengirim permintaan reset password
