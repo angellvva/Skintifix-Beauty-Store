@@ -67,7 +67,7 @@
                                                 {{-- Edit Button --}}
                                                 <a href="{{ route('categories.edit', ['id' => $category->id]) }}"
                                                 class="btn btn-sm btn-outline-pink">
-                                                    <i class="fas fa-pen"></i>
+                                                    <i class="fas fa-pen" title="Edit Category"></i>
                                                 </a>
                                                 {{-- Delete Button --}}
                                                 <form method="POST" action="{{ route('category.remove') }}"
@@ -75,9 +75,8 @@
                                                     @csrf
                                                     <input type="hidden" name="category_id" value="{{ $category->id }}">
                                                     <button type="submit"
-                                                                class="btn btn-sm btn-outline-red"
-                                                                style="color: #dc3545;">
-                                                            <i class="fas fa-trash"></i>
+                                                                class="btn btn-sm btn-outline-red">
+                                                            <i class="fas fa-trash" title="Delete Category"></i>
                                                         </button>
                                                 </form>
                                             </div>
@@ -130,12 +129,17 @@
 
         .btn-outline-red {
             border: 1px solid red;
-            color: #e965a7;
+            color: red;
             background-color: white;
         }
 
         .btn-outline-pink:hover {
             background-color: #e965a7;
+            color: white;
+        }
+
+        .btn-outline-red:hover {
+            background-color: red;
             color: white;
         }
     </style>

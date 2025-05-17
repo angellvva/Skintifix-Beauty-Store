@@ -167,12 +167,12 @@
                                 </td>
                                 <td>
                                     <a href="" class="btn btn-sm btn-edit me-2">
-                                        <i class="fas fa-pen"></i>
+                                        <i class="fas fa-pen" title="Edit Product"></i>
                                         </a>
                                     <form action="" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus produk">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Product">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>
