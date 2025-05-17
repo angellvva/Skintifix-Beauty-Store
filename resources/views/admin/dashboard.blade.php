@@ -130,14 +130,6 @@
             background: linear-gradient(135deg, #e965a7, #ffb3d6);
         }
 
-        .gradient-green {
-            background: linear-gradient(135deg, #28a745, #218838);
-        }
-
-        .gradient-blue {
-            background: linear-gradient(135deg, #1E90FF, #4682B4);
-        }
-
         .icon-circle {
             background-color: rgba(255, 255, 255, 0.2);
             border-radius: 50%;

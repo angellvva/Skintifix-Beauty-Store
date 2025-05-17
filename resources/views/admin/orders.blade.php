@@ -10,36 +10,71 @@
         </div>
 
         <!-- Status Summary Cards -->
-        <div class="row my-4">
+        <div class="row">
+            <!-- Total Orders -->
             <div class="col-md-3">
-                <div class="card card-pink shadow-sm">
-                    <div class="card-body">
-                        <div class="small">Total Orders</div>
-                        <h3 class="mb-0">{{ number_format($orders->total()) }}</h3>
+                <div class="text-decoration-none text-white">
+                    <div class="card mb-4 stat-card gradient-pink text-white rounded-4 h-100">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-uppercase fw-semibold mb-1">Total Orders</h6>
+                                <h2 class="mb-0">{{ number_format($orders->total()) }}</h2>
+                            </div>
+                            <div class="icon-circle">
+                                <i class="fas fa-shopping-cart fa-lg"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Pending -->
             <div class="col-md-3">
-                <div class="card card-pink shadow-sm">
-                    <div class="card-body">
-                        <div class="small">Pending</div>
-                        <h4 class="mb-0">{{ $orders->where('status', 'Pending')->count() }}</h4>
+                <div class="text-decoration-none text-white">
+                    <div class="card stat-card gradient-pink text-white rounded-4 h-100">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-uppercase fw-semibold mb-1">Pending</h6>
+                                <h2 class="mb-0">{{ $orders->where('status', 'pending')->count() }}</h2>
+                            </div>
+                            <div class="icon-circle">
+                                <i class="fas fa-hourglass-start fa-lg"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Processing -->
             <div class="col-md-3">
-                <div class="card card-pink shadow-sm">
-                    <div class="card-body">
-                        <div class="small">Processing</div>
-                        <h4 class="mb-0">{{ $orders->where('status', 'Processing')->count() }}</h4>
+                <div class="text-decoration-none text-white">
+                    <div class="card stat-card gradient-pink text-white rounded-4 h-100">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-uppercase fw-semibold mb-1">Processing</h6>
+                                <h2 class="mb-0">{{ $orders->where('status', 'processing')->count() }}</h2>
+                            </div>
+                            <div class="icon-circle">
+                                <i class="fas fa-sync-alt fa-lg"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Completed -->
             <div class="col-md-3">
-                <div class="card card-pink shadow-sm">
-                    <div class="card-body">
-                        <div class="small">Completed</div>
-                        <h4 class="mb-0">{{ $orders->where('status', 'Completed')->count() }}</h4>
+                <div class="text-decoration-none text-white">
+                    <div class="card stat-card gradient-pink text-white rounded-4 h-100">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-uppercase fw-semibold mb-1">Completed</h6>
+                                <h2 class="mb-0">{{ $orders->where('status', 'completed')->count() }}</h2>
+                            </div>
+                            <div class="icon-circle">
+                                <i class="fas fa-check-circle fa-lg"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -114,19 +149,28 @@
 
                                 <td>Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
                                 <td>
-                                    <span
-                                        class="badge 
-                                    @if ($order->status == 'Pending') bg-warning text-dark
-                                    @elseif($order->status == 'Processing') bg-primary
-                                    @elseif($order->status == 'Shipped') bg-info
-                                    @elseif($order->status == 'Delivered') bg-success
-                                    @elseif($order->status == 'Cancelled') bg-danger @endif">
-                                        {{ $order->status }}
+                                @if ($order->status)
+                                    <span class="badge 
+                                        @if ($order->status == 'pending') bg-warning text-dark
+                                        @elseif($order->status == 'processing') bg-primary
+                                        @elseif($order->status == 'completed') bg-success
+                                        @else bg-secondary
+                                        @endif">
+                                        {{ ucfirst($order->status) }}
                                     </span>
+                                @else
+                                    <span class="badge bg-secondary">Unknown</span>
+                                @endif
+                            </td>
+                                <td class="d-flex gap-1">
+                                    <a href="{{ route('orders.show', $order->id) }}" class="btn btn-sm btn-pink" title="View">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-sm btn-pink" title="Edit">
+                                        <i class="fas fa-pen"></i>
+                                    </a>
                                 </td>
-                                <td>
-                                    <a href="{{ route('orders.show', $order->id) }}" class="btn btn-sm btn-pink">View</a>
-                                </td>
+                                
                             </tr>
                         @endforeach
                     </tbody>
@@ -166,6 +210,18 @@
 
 @push('styles')
     <style>
+        .gradient-pink {
+            background: linear-gradient(135deg, #e965a7, #ffb3d6);
+        }
+
+        .icon-circle {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            padding: 15px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+
         .btn-pink {
             color: #e965a7;
             background-color: white;
@@ -176,20 +232,6 @@
             background-color: #da5195;
             color: white;
         }
-
-        .card-pink {
-            background-color: #e965a7;
-            border: none;
-            color: white;
-        }
-
-        .card-pink .small,
-        .card-pink h3,
-        .card-pink h4,
-        .card-pink .card-body {
-            color: white;
-        }
-
         .btn-reset {
             border: 1px solid #dee2e6;
             color: black;

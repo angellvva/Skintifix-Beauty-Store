@@ -126,3 +126,6 @@ Route::post('/products/{id}/review', [ReviewController::class, 'store'])->name('
 Route::post('/checkout/selected', [CheckoutController::class, 'checkoutSelected'])->name('checkout.selected');
 
 Route::get('/orders/{id}', [AdminOrderController::class, 'show'])->name('orders.show');
+
+// Route untuk edit order
+Route::get('/orders/{id}/edit', [AdminOrderController::class, 'edit'])->name('orders.edit');

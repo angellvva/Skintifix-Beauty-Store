@@ -20,10 +20,16 @@ class AdminOrderController extends Controller
         return view('admin.orders.show', compact('order'));
     }
 
+    public function edit($id)
+    {
+        $order = Order::with('user', 'orderItems')->findOrFail($id);
+        return view('admin.orders.edit', compact('order'));
+    }
+
     public function update(Request $request, $id)
     {
         $request->validate([
-            'status' => 'required|in:Pending,Processing,Shipped,Delivered,Cancelled,Completed',
+            'status' => 'required|in:pending,processing,completed',
         ]);
 
         $order = Order::findOrFail($id);
