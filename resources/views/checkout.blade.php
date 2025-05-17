@@ -128,8 +128,7 @@
                         </div>
                         <hr>
 
-                        <button type="submit" form="checkout-form"
-                            class="btn w-100 rounded-pill shadow-sm"
+                        <button type="button" id="pay-button" class="btn w-100 rounded-pill shadow-sm"
                             style="background-color: #e965a7; color: white;">
                             <i class="fas fa-lock me-2"></i>Proceed to Payment
                         </button>
@@ -140,28 +139,75 @@
     </div>
 </div>
 
+<!-- Existing shipping update script -->
 <script>
     const shippingSelect = document.querySelector('select[name="shipping_method"]');
     const shippingCostElem = document.querySelector('#shipping-cost');
     const totalCostElem = document.querySelector('#total-cost');
 
-    // Helper: parse Rp formatted string to number
     function parseRp(rpString) {
         return parseInt(rpString.replace(/[Rp.\s]/g, '')) || 0;
     }
 
-    // Helper: format number to Rp string
     function formatRp(num) {
         return 'Rp' + num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     }
 
     const subtotal = parseRp(document.querySelector('#subtotal').textContent);
 
-    shippingSelect.addEventListener('change', function() {
+    shippingSelect.addEventListener('change', function () {
         const selectedOption = shippingSelect.options[shippingSelect.selectedIndex];
         const shippingCost = parseInt(selectedOption.getAttribute('data-cost')) || 0;
         shippingCostElem.textContent = formatRp(shippingCost);
         totalCostElem.textContent = formatRp(subtotal + shippingCost);
     });
 </script>
+
+<!-- Midtrans Snap.js -->
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
+
+<!-- Handle Pay Button Click & Call Snap -->
+<script>
+    document.getElementById('pay-button').addEventListener('click', function () {
+        let formData = new FormData(document.getElementById('checkout-form'));
+
+        fetch("{{ route('checkout.process') }}", {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json',
+            },
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (!data.snap_token) {
+                alert('Invalid Snap Token. Please try again.');
+                return;
+            }
+
+            snap.pay(data.snap_token, {
+                onSuccess: function(result) {
+                    alert("Payment success!");
+                    window.location.href = "/order-success"; 
+                },
+                onPending: function(result) {
+                    alert("Waiting for payment...");
+                },
+                onError: function(result) {
+                    alert("Payment failed: " + result.message);
+                },
+                onClose: function() {
+                    alert('You closed the payment popup without finishing the payment');
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Payment initiation failed, please try again.');
+        });
+    });
+</script>
+<!-- Midtrans Snap.js (use sandbox for testing) -->
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
 @endsection
