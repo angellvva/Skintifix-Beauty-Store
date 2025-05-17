@@ -116,6 +116,44 @@
     </style>
 </head>
 <body>
+    <script>
+        // Wait until the DOM is fully loaded
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.querySelector('form');
+            const password = document.querySelector('input[name="password"]');
+            const confirmPassword = document.querySelector('input[name="password_confirmation"]');
+            const errorMessage = document.getElementById('password-error');
+            const submitButton = document.querySelector('button[type="submit"]');
+
+            // Add event listener for form submission
+            form.addEventListener('submit', function(event) {
+                // Check if the passwords match
+                if (password.value !== confirmPassword.value) {
+                    // Show error message
+                    errorMessage.style.display = 'block';
+
+                    // Prevent form submission
+                    event.preventDefault();
+                } else {
+                    // Hide error message if passwords match
+                    errorMessage.style.display = 'none';
+                }
+            });
+
+            // Optional: Hide the error message if the user starts typing again
+            password.addEventListener('input', function() {
+                if (password.value === confirmPassword.value) {
+                    errorMessage.style.display = 'none';
+                }
+            });
+
+            confirmPassword.addEventListener('input', function() {
+                if (password.value === confirmPassword.value) {
+                    errorMessage.style.display = 'none';
+                }
+            });
+        });
+    </script>
 
     <div class="register-modal">
         <!-- Logo -->
@@ -132,7 +170,7 @@
             <input type="text" name="name" placeholder="" required>
 
             <label for="phone">Phone Number</label>
-            <input type="tel" name="phone" placeholder="" required>
+            <input type="tel" name="phone" placeholder="" required pattern="[0-9]{10,15}">
 
             <label for="email">Email</label>
             <input type="email" name="email" placeholder="name@example.com" required>
@@ -145,6 +183,11 @@
 
             <label for="confirm-password">Confirm Password</label>
             <input type="password" name="password_confirmation" placeholder="" required>
+
+            <!-- Error message for password mismatch -->
+        <div id="password-error" style="color: red; display: none;">
+            The password field confirmation does not match.
+        </div>
 
             <button type="submit">Register</button> 
         </form>

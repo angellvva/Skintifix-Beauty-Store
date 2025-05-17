@@ -21,7 +21,7 @@ class AuthController extends Controller
         // Validasi data yang dimasukkan
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:15',
+            'phone' => 'required|string|digits_between:10,15',
             'email' => 'required|string|email|max:255|unique:users',
             'address' => 'required|string|max:255',
             'password' => 'required|string|confirmed|min:8',
