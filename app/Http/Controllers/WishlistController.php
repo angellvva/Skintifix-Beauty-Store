@@ -6,7 +6,6 @@ use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cookie;
-use App\Models\Wishlist;
 
 class WishlistController extends Controller
 {
