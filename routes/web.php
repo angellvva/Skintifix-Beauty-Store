@@ -113,10 +113,6 @@ Route::get('/admin/orders', [AdminOrderController::class, 'orders'])->name('admi
 Route::get('/admin/customers', [AdminController::class, 'customers'])->name('admin.customers');
 // route admin categories
 Route::get('/admin/categories', [AdminController::class, 'categories'])->name('admin.categories');
-// route admin inventory
-Route::get('/admin/inventory', [AdminController::class, 'inventory'])->name('admin.inventory');
-// route admin promotion
-Route::get('/admin/promotions', [AdminController::class, 'promotions'])->name('admin.promotions');
 // route admin analytics
 Route::get('/admin/analytics', [AdminController::class, 'analytics'])->name('admin.analytics');
 // route admin messages

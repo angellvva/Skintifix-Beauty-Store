@@ -105,21 +105,15 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('admin.products') }}"
-                class="nav-link {{ request()->routeIs('admin.products') ? 'active' : '' }}">
-                <i class="bi bi-box-seam"></i> Products
-            </a>
-        </li>
-        <li class="nav-item">
             <a href="{{ route('admin.orders') }}"
                 class="nav-link {{ request()->routeIs('admin.orders') ? 'active' : '' }}">
                 <i class="bi bi-cart3"></i> Orders
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('admin.customers') }}"
-                class="nav-link {{ request()->routeIs('admin.customers') ? 'active' : '' }}">
-                <i class="bi bi-people"></i> Customers
+            <a href="{{ route('admin.products') }}"
+                class="nav-link {{ request()->routeIs('admin.products') ? 'active' : '' }}">
+                <i class="bi bi-box-seam"></i> Products
             </a>
         </li>
         <li class="nav-item">
@@ -129,15 +123,9 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('admin.inventory') }}"
-                class="nav-link {{ request()->routeIs('admin.inventory') ? 'active' : '' }}">
-                <i class="bi bi-boxes"></i> Inventory
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('admin.promotions') }}"
-                class="nav-link {{ request()->routeIs('admin.promotions') ? 'active' : '' }}">
-                <i class="bi bi-gift"></i> Promotions
+            <a href="{{ route('admin.customers') }}"
+                class="nav-link {{ request()->routeIs('admin.customers') ? 'active' : '' }}">
+                <i class="bi bi-people"></i> Customers
             </a>
         </li>
         <li class="nav-item">
