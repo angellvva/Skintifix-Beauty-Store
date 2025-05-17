@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Models\OrderItem;
+use App\Models\ProductCategory;
 
 class ProductController extends Controller
 {
@@ -45,5 +47,27 @@ class ProductController extends Controller
         })->get();
 
         return view('category-catalog', compact('products', 'category'));
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->q;
+
+        $products = Product::with('category')
+            ->where('name', 'like', "%{$query}%")
+            ->orWhere('description', 'like', "%{$query}%")
+            ->limit(10)
+            ->get();
+
+        $result = $products->map(function ($product) {
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'description' => \Str::limit($product->description, 60),
+                'category' => $product->category->name ?? 'Uncategorized'
+            ];
+        });
+
+        return response()->json($result);
     }
 }
