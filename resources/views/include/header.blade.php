@@ -176,42 +176,55 @@
     </header>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $('#searchInput').on('input', function () {
-        let query = $(this).val();
-        if (query.length > 1) {
-            $.ajax({
-                url: "{{ route('search.products') }}",
-                method: "GET",
-                data: { q: query },
-                success: function (data) {
-                    let results = $('#searchResults');
-                    results.empty();
-                    if (data.length) {
-                        data.forEach(item => {
-                            results.append(`
-                                <a href="/product/${item.id}" class="d-block text-decoration-none px-3 py-2 border-bottom text-dark search-item">
-                                    <div class="fw-bold" style="color: #e965a7;">${item.name}</div>
-                                    <div style="font-size: 13px;" class="text-muted">${item.category}</div>
-                                    <div style="font-size: 12px;" class="text-secondary">${item.description}</div>
-                                </a>
-                            `);
-                        });
-                        results.show();
-                    } else {
-                        results.html('<div class="px-3 py-2 text-muted">No results found</div>').show();
-                    }
-                }
-            });
-        } else {
-            $('#searchResults').hide();
-        }
-    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.querySelector('.search-input');
+        const dropdown = document.getElementById('search-dropdown');
 
-    // Hide dropdown on outside click
-    $(document).on('click', function (e) {
-        if (!$(e.target).closest('#searchForm').length) {
-            $('#searchResults').hide();
-        }
+        searchInput.addEventListener('input', function () {
+            const query = this.value.trim();
+            if (query.length > 1) {
+                fetch(`/search?q=${encodeURIComponent(query)}`)
+                    .then(response => response.json())
+                    .then(products => {
+                        dropdown.innerHTML = '';
+
+                        if (products.length > 0) {
+                            products.forEach(product => {
+                                const item = document.createElement('div');
+                                item.className = 'search-item d-flex align-items-center gap-3 p-2 border-bottom';
+                                item.style.cursor = 'pointer';
+                                item.onclick = () => {
+                                    window.location.href = `/product/${product.id}`;
+                                };
+
+                                item.innerHTML = `
+                                    <img src="${product.image}" alt="${product.name}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px;">
+                                    <div>
+                                        <div class="fw-semibold" style="color: #e965a7;">${product.name}</div>
+                                        <div class="text-muted" style="font-size: 13px;">${product.category}</div>
+                                        <div style="font-size: 13px; color: #555;">${product.description}</div>
+                                    </div>
+                                `;
+                                dropdown.appendChild(item);
+                            });
+                        } else {
+                            dropdown.innerHTML = '<div class="p-2 text-muted">No products found</div>';
+                        }
+
+                        dropdown.style.display = 'block';
+                    });
+            } else {
+                dropdown.innerHTML = '';
+                dropdown.style.display = 'none';
+            }
+        });
+
+        // Hide dropdown when clicking outside
+        document.addEventListener('click', function (e) {
+            if (!document.querySelector('.search-container').contains(e.target)) {
+                dropdown.style.display = 'none';
+            }
+        });
     });
 </script>
 </body>

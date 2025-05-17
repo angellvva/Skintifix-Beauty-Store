@@ -64,7 +64,8 @@ class ProductController extends Controller
                 'id' => $product->id,
                 'name' => $product->name,
                 'description' => \Str::limit($product->description, 60),
-                'category' => $product->category->name ?? 'Uncategorized'
+                'category' => $product->category->name ?? 'Uncategorized',
+                'image' => $product->image
             ];
         });
 

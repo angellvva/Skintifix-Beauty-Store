@@ -150,3 +150,6 @@ Route::get('/order/cancel/{order_id}', [OrderController::class, 'cancel'])->name
 Route::post('/admin/products', [AdminProductController::class, 'store'])->name('products.store');
 Route::get('/admin/products/{id}/edit', [AdminProductController::class, 'edit'])->name('products.edit');
 Route::put('/admin/products/{id}', [AdminProductController::class, 'update'])->name('products.update');
+
+//Route buat search bar
+Route::get('/search/products', [ProductController::class, 'search'])->name('search.products');
