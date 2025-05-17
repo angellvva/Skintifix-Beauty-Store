@@ -60,9 +60,19 @@ class AdminOrderController extends Controller
         // Validasi sort hanya boleh 'asc' atau 'desc'
         $sort = $request->input('sort', 'desc');
         $sort = in_array($sort, ['asc', 'desc']) ? $sort : 'desc';
+        $totalOrders = Order::count();
+        $totalPending = Order::where('status', 'pending')->count();
+        $totalProcessing = Order::where('status', 'processing')->count();
+        $totalCompleted = Order::where('status', 'completed')->count();
 
-        $orders = $query->orderBy('order_date', $sort)->paginate(5);
+        $orders = $query->orderBy('order_date', $sort)->paginate(10);
 
-        return view('admin.orders', compact('orders'));
+        return view('admin.orders', compact(
+        'orders',
+        'totalOrders',
+        'totalPending',
+        'totalProcessing',
+        'totalCompleted'
+        ));
     }
 }

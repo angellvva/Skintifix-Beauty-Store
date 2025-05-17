@@ -18,7 +18,7 @@
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
                                 <h6 class="text-uppercase fw-semibold mb-1">Total Orders</h6>
-                                <h2 class="mb-0">{{ number_format($orders->total()) }}</h2>
+                                <h2 class="mb-0">{{ $totalOrders }}</h2>
                             </div>
                             <div class="icon-circle">
                                 <i class="fas fa-shopping-cart fa-lg"></i>
@@ -35,7 +35,7 @@
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
                                 <h6 class="text-uppercase fw-semibold mb-1">Pending</h6>
-                                <h2 class="mb-0">{{ $orders->where('status', 'pending')->count() }}</h2>
+                                <h2 class="mb-0">{{ $totalPending }}</h2>
                             </div>
                             <div class="icon-circle">
                                 <i class="fas fa-hourglass-start fa-lg"></i>
@@ -52,7 +52,7 @@
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
                                 <h6 class="text-uppercase fw-semibold mb-1">Processing</h6>
-                                <h2 class="mb-0">{{ $orders->where('status', 'processing')->count() }}</h2>
+                                <h2 class="mb-0">{{ $totalProcessing }}</h2>
                             </div>
                             <div class="icon-circle">
                                 <i class="fas fa-sync-alt fa-lg"></i>
@@ -69,7 +69,7 @@
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
                                 <h6 class="text-uppercase fw-semibold mb-1">Completed</h6>
-                                <h2 class="mb-0">{{ $orders->where('status', 'completed')->count() }}</h2>
+                                <h2 class="mb-0">{{ $totalCompleted }}</h2>
                             </div>
                             <div class="icon-circle">
                                 <i class="fas fa-check-circle fa-lg"></i>
@@ -220,8 +220,6 @@
             padding: 15px;
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
-
-
         .btn-pink {
             color: #e965a7;
             background-color: white;
