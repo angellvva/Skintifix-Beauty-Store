@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,14 +15,18 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-image: url('{{ asset('images/background/flower.jpg') }}'); /* Update with the correct image path */
-            background-size: cover;  /* Ensures the image covers the entire background */
-            background-position: center; /* Center the image */
-            background-repeat: no-repeat; /* Prevents the image from repeating */
+            background-image: url('{{ asset('images/background/flower.jpg') }}');
+            /* Update with the correct image path */
+            background-size: cover;
+            /* Ensures the image covers the entire background */
+            background-position: center;
+            /* Center the image */
+            background-repeat: no-repeat;
+            /* Prevents the image from repeating */
         }
 
         .forgot-password-modal {
-            background-color: rgba(255, 255, 255, 0.9); 
+            background-color: rgba(255, 255, 255, 0.9);
             width: 380px;
             padding: 40px;
             border-radius: 12px;
@@ -107,15 +112,16 @@
         }
     </style>
 </head>
+
 <body>
 
     <div class="forgot-password-modal">
         <!-- Logo -->
         <div class="logo">Skintifix <span style="color: #000000;">Beauty Store</span></div>
-        
+
         <h2>Forgot Password</h2>
-        
-        <p class="gray-text">Enter your email address and we’ll send you a link<br>to reset your password.</br></p>
+
+        <p class="gray-text">Enter your email address and we’ll send you a link to reset your password.</p>
 
         <!-- Form untuk reset password -->
         <form method="POST" action="{{ route('password.update') }}">
@@ -136,4 +142,5 @@
     </div>
 
 </body>
+
 </html>
