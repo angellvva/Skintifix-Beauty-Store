@@ -13,41 +13,42 @@
             padding: 30px;
         }
 
-        /* Flex container for order card */
+        /* Matching the card style of the profile */
         .order-card {
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            background-color: white;
+            width: 100%;
             display: flex;
             justify-content: flex-start;
-            align-items: center;
-            padding: 30px;
+            align-items: flex-start;
             margin-bottom: 30px;
-            border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            background-color: white;
-            font-size: 18px;
-            width: 100%;
         }
 
         .order-left {
             flex: 2;
-            padding-right: 30px; /* More space between text and image */
+            padding-right: 30px;
         }
 
         .order-left p, .order-left h5 {
             margin: 10px 0;
-            font-size: 20px; /* Increased text size */
+            font-size: 20px;
         }
 
         .order-right {
             flex: 1;
             text-align: center;
+            position: relative;
         }
 
         .order-img {
-            width: 200px;  /* Enlarged image size */
+            width: 200px;
             height: 200px;
             object-fit: contain;
             border-radius: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 10px; /* Move the image upwards */
+            margin-top: -30px; /* Move the image up */
         }
 
         .rating {
@@ -63,15 +64,18 @@
             color: #ffcc00;
         }
 
+        /* Button Styling */
         .btn-view-order {
-            display: inline-block;
+            display: block;
             background-color: #e965a7;
             color: white;
             padding: 15px 30px;
             border-radius: 8px;
             text-decoration: none;
-            margin-top: 20px;
             font-size: 18px;
+            margin-top: 10px; /* Button below the image */
+            width: 100%; /* Full width to align with image */
+            text-align: center;
         }
 
         .btn-view-order:hover {
@@ -114,10 +118,10 @@
                                         <span class="star {{ $i <= $order->rating ? 'filled' : '' }}">★</span>
                                     @endfor
                                 </div>
-                                <a href="{{ url('/customer/order/' . $order->order_id) }}" class="btn-view-order">View Order</a>
                             </div>
                             <div class="order-right">
                                 <img src="{{ $order->image }}" alt="{{ $order->name }}" class="order-img">
+                                <a href="{{ url('/customer/order/' . $order->order_id) }}" class="btn-view-order">View Order</a>
                             </div>
                         </div>
                     @endforeach
@@ -127,7 +131,7 @@
                     <div class="table-responsive text-center py-5">
                         <i class="fas fa-shopping-bag fa-4x mb-4" style="color: #e965a7;"></i>
                         <h4 class="mb-3" style="color: #e965a7;">Your order is empty.</h4>
-                        <p class="text-muted mb-4">Looks like you haven't checkout yet.</p>
+                        <p class="text-muted mb-4">Looks like you haven't checked out yet.</p>
                         <a href="{{ route('catalog') }}" class="btn rounded-pill px-4 shadow-sm"
                             style="background-color: #e965a7; color: white;">
                             Checkout Now
