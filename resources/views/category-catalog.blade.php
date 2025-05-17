@@ -1,148 +1,169 @@
-@extends ('base.base')
+@extends('base.base')
 
 @section('content')
-    <style>
-        .product-section {
-            background-color: #fff0f6;
-            padding: 50px 20px;
-            min-height: 100vh;
-        }
+<style>
+    .product-section {
+        background-color: #fff0f6;
+        padding: 40px 0;
+        font-family: 'Arial', sans-serif;
+    }
 
-        .product-section h2 {
-            color: #e965a7;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 40px;
-        }
+    .product-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
 
-        .product-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 24px;
-            justify-content: center;
-        }
+    .product-header h2 {
+        color: #e965a7;
+        font-size: 36px;
+        font-weight: bold;
+    }
 
-        .product-card {
-            background-color: #fff;
-            border-radius: 12px;
-            width: calc(25% - 24px);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            transition: box-shadow 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            text-align: center;
-        }
+    .product-header p {
+        color: #666;
+        font-size: 16px;
+        margin-top: 10px;
+    }
 
-        .product-card:hover {
-            box-shadow: 0 0 24px rgba(0, 0, 0, 0.15);
-        }
+    .product-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0 auto 30px auto;
+        max-width: 1100px;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 0 20px;
+    }
 
-        .product-card img {
-            max-height: 150px;
-            object-fit: contain;
-            margin-bottom: 15px;
-        }
+    .product-search input {
+        padding: 8px 12px;
+        border: 1px solid #e965a7;
+        border-radius: 20px;
+        width: 220px;
+    }
 
-        .product-name {
-            font-weight: bold;
-            font-size: 18px;
-            margin-bottom: 8px;
-            color: #333;
+    .product-filters select {
+        padding: 8px 12px;
+        border-radius: 20px;
+        border: 1px solid #e965a7;
+        color: #e965a7;
+        background-color: #fff;
+    }
 
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 24px;
+        padding: 0 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
 
-        .product-stock {
-            color: #888;
-            font-size: 14px;
-        }
+    .product-card {
+        background-color: #fff;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        text-align: center;
+        position: relative;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
 
-        .product-price {
-            font-size: 16px;
-            color: #e965a7;
-            font-weight: bold;
-            margin: 10px 0;
-        }
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 18px rgba(0,0,0,0.15);
+    }
 
-        .product-description {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 10px;
+    .product-card img {
+        height: 160px;
+        object-fit: contain;
+        margin-bottom: 15px;
+    }
 
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+    .product-name {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 5px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 
-        .icon-btns form {
-            display: inline-block;
-            margin: 0 5px;
-        }
+    .product-price {
+        color: #e965a7;
+        font-size: 16px;
+        font-weight: bold;
+        margin: 5px 0;
+    }
 
-        .icon-btns button {
-            background: none;
-            border: none;
-            color: #e965a7;
-            font-size: 20px;
-            cursor: pointer;
-        }
+    .product-stock {
+        font-size: 13px;
+        color: #888;
+        margin-bottom: 10px;
+    }
 
-        .icon-btns button:hover {
-            color: #c44c8f;
-        }
+    .product-description {
+        color: #666;
+        font-size: 14px;
+        height: 38px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
-        @media (max-width: 992px) {
-            .product-card {
-                width: calc(50% - 24px);
-            }
-        }
+    .category-label {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: #e965a7;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+</style>
 
-        @media (max-width: 576px) {
-            .product-card {
-                width: 100%;
-            }
-        }
+<div class="product-section">
+    <div class="product-header">
+        <h2>{{ $category }}</h2>
+        <p>Explore our selection of high-quality {{ strtolower($category) }} products crafted to fit your needs.</p>
+    </div>
 
-        .product-category-label {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background-color: #e965a7;
-            color: white;
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 12px;
-            z-index: 10;
-        }
-    </style>
-
-    <div class="product-section">
-        <div class="container">
-            <h2>{{ $category }}</h2>
-            <div class="product-grid">
-                @forelse ($products as $product)
-                    <div class="product-card position-relative" style="cursor: pointer;"
-                        onclick="window.location='{{ route('product.detail', $product->id) }}'">
-                        <img src="{{ $product->image }}" alt="{{ $product->name }}">
-
-                        <div class="product-name">{{ $product->name }}</div>
-                        <div class="product-stock">Stock: {{ $product->stock }}</div>
-                        <div class="product-price">Rp{{ number_format($product->price, 0, ',', '.') }}</div>
-                        <div class="product-description">{{ $product->description, 60 }}</div>
-                    </div>
-                @empty
-                    <p style="text-align: center; width: 100%; color: #888;">No products found.</p>
-                @endforelse
-            </div>
+    <div class="product-controls">
+        <div class="product-search">
+            <input type="text" placeholder="Search {{ strtolower($category) }}...">
+        </div>
+        <div class="product-filters">
+            <select>
+                <option selected disabled>Sort By</option>
+                <option>Price: Low to High</option>
+                <option>Price: High to Low</option>
+                <option>Newest First</option>
+            </select>
+            <select>
+                <option selected disabled>Filter</option>
+                <option>In Stock</option>
+                <option>Out of Stock</option>
+            </select>
         </div>
     </div>
+
+    <div class="product-grid">
+        @forelse ($products as $product)
+            <div class="product-card" onclick="window.location='{{ route('product.detail', $product->id) }}'">
+                <div class="category-label">{{ $category }}</div>
+                <img src="{{ $product->image }}" alt="{{ $product->name }}">
+                <div class="product-name">{{ $product->name }}</div>
+                <div class="product-price">Rp{{ number_format($product->price, 0, ',', '.') }}</div>
+                <div class="product-stock">Stock: {{ $product->stock }}</div>
+                <div class="product-description">{{ $product->description }}</div>
+            </div>
+        @empty
+            <p style="text-align: center; width: 100%; color: #888;">No products found.</p>
+        @endforelse
+    </div>
+</div>
 @endsection

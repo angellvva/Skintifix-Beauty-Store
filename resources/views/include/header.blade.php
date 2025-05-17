@@ -110,11 +110,16 @@
                             <!-- Right Icons -->
                             <div class="d-flex align-items-center">
                                 <!-- Search bar -->
-                                <form class="d-flex align-items-center me-3 border rounded px-2" style="height: 40px;">
+                                <form id="searchForm" class="position-relative d-flex align-items-center me-3 border rounded px-2"
+                                    style="height: 40px;">
                                     <i class="fas fa-search me-2 text-muted"></i>
-                                    <input type="text" class="form-control border-0 p-0"
-                                        placeholder="Search products..."
+                                    <input type="text" id="searchInput" class="form-control border-0 p-0"
+                                        placeholder="Search products..." autocomplete="off"
                                         style="box-shadow: none; font-size: 14px; width: 180px;" />
+                                    <div id="searchResults"
+                                        class="position-absolute bg-white w-100 shadow-sm mt-2 rounded"
+                                        style="top: 100%; left: 0; z-index: 1000; display: none; max-height: 300px; overflow-y: auto;">
+                                    </div>
                                 </form>
 
                                 <a href="{{ route('cart.view') }}" class="icon-btn"
@@ -169,6 +174,46 @@
             </div>
         </div>
     </header>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $('#searchInput').on('input', function () {
+        let query = $(this).val();
+        if (query.length > 1) {
+            $.ajax({
+                url: "{{ route('search.products') }}",
+                method: "GET",
+                data: { q: query },
+                success: function (data) {
+                    let results = $('#searchResults');
+                    results.empty();
+                    if (data.length) {
+                        data.forEach(item => {
+                            results.append(`
+                                <a href="/product/${item.id}" class="d-block text-decoration-none px-3 py-2 border-bottom text-dark search-item">
+                                    <div class="fw-bold" style="color: #e965a7;">${item.name}</div>
+                                    <div style="font-size: 13px;" class="text-muted">${item.category}</div>
+                                    <div style="font-size: 12px;" class="text-secondary">${item.description}</div>
+                                </a>
+                            `);
+                        });
+                        results.show();
+                    } else {
+                        results.html('<div class="px-3 py-2 text-muted">No results found</div>').show();
+                    }
+                }
+            });
+        } else {
+            $('#searchResults').hide();
+        }
+    });
+
+    // Hide dropdown on outside click
+    $(document).on('click', function (e) {
+        if (!$(e.target).closest('#searchForm').length) {
+            $('#searchResults').hide();
+        }
+    });
+</script>
 </body>
 
 </html>
