@@ -110,17 +110,17 @@
                             <!-- Right Icons -->
                             <div class="d-flex align-items-center">
                                 <!-- Search bar -->
-                                <form id="searchForm" class="position-relative d-flex align-items-center me-3 border rounded px-2"
-                                    style="height: 40px;">
-                                    <i class="fas fa-search me-2 text-muted"></i>
-                                    <input type="text" id="searchInput" class="form-control border-0 p-0"
-                                        placeholder="Search products..." autocomplete="off"
-                                        style="box-shadow: none; font-size: 14px; width: 180px;" />
-                                    <div id="searchResults"
-                                        class="position-absolute bg-white w-100 shadow-sm mt-2 rounded"
-                                        style="top: 100%; left: 0; z-index: 1000; display: none; max-height: 300px; overflow-y: auto;">
-                                    </div>
-                                </form>
+                            <form id="searchForm" class="position-relative d-flex align-items-center me-3 border rounded px-2"
+                                style="height: 40px;">
+                                <i class="fas fa-search me-2 text-muted"></i>
+                                <input type="text" id="searchInput" class="form-control border-0 p-0"
+                                    placeholder="Search products..." autocomplete="off"
+                                    style="box-shadow: none; font-size: 14px; width: 180px;" />
+                                <div id="searchResults"
+                                    class="position-absolute bg-white w-100 shadow-sm mt-2 rounded"
+                                    style="top: 100%; left: 0; z-index: 1000; display: none; max-height: 300px; overflow-y: auto;">
+                                </div>
+                            </form>
 
                                 <a href="{{ route('cart.view') }}" class="icon-btn"
                                     style="text-decoration: none; color: #e965a7;">
@@ -177,55 +177,64 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const searchInput = document.querySelector('.search-input');
-        const dropdown = document.getElementById('search-dropdown');
+    const searchInput = document.getElementById('searchInput');
+    const dropdown = document.getElementById('searchResults');
 
-        searchInput.addEventListener('input', function () {
-            const query = this.value.trim();
-            if (query.length > 1) {
-                fetch(`/search?q=${encodeURIComponent(query)}`)
-                    .then(response => response.json())
-                    .then(products => {
-                        dropdown.innerHTML = '';
+    searchInput.addEventListener('input', function () {
+        const query = this.value.trim();
+        if (query.length > 1) {
+            dropdown.innerHTML = `
+                <div class="d-flex justify-content-center align-items-center p-3">
+                    <div class="spinner-border text-pink" style="width: 1.5rem; height: 1.5rem;" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            `;
+            dropdown.style.display = 'block';
+            fetch(`/search/products?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(products => {
+                    dropdown.innerHTML = '';
 
-                        if (products.length > 0) {
-                            products.forEach(product => {
-                                const item = document.createElement('div');
-                                item.className = 'search-item d-flex align-items-center gap-3 p-2 border-bottom';
-                                item.style.cursor = 'pointer';
-                                item.onclick = () => {
-                                    window.location.href = `/product/${product.id}`;
-                                };
+                    if (products.length > 0) {
+                        products.forEach(product => {
+                            const item = document.createElement('div');
+                            item.className = 'search-item d-flex align-items-center gap-3 p-2 border-bottom';
+                            item.style.cursor = 'pointer';
+                            item.onclick = () => {
+                                window.location.href = `/product/${product.id}`;
+                            };
 
-                                item.innerHTML = `
-                                    <img src="${product.image}" alt="${product.name}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px;">
-                                    <div>
-                                        <div class="fw-semibold" style="color: #e965a7;">${product.name}</div>
-                                        <div class="text-muted" style="font-size: 13px;">${product.category}</div>
-                                        <div style="font-size: 13px; color: #555;">${product.description}</div>
-                                    </div>
-                                `;
-                                dropdown.appendChild(item);
-                            });
-                        } else {
-                            dropdown.innerHTML = '<div class="p-2 text-muted">No products found</div>';
-                        }
+                            item.innerHTML = `
+                            <img src="${product.image}" alt="${product.name}" style="width: 45px; height: 45px; object-fit: cover; border-radius: 6px;">
+                            <div>
+                                <div class="fw-medium" style="color: #e965a7; font-size: 13px;">${product.name}</div>
+                                <div class="text-muted" style="font-size: 12px;">${product.category}</div>
+                            </div>
+                        `;
 
-                        dropdown.style.display = 'block';
-                    });
-            } else {
-                dropdown.innerHTML = '';
-                dropdown.style.display = 'none';
-            }
-        });
+                            dropdown.appendChild(item);
+                        });
+                    } else {
+                        dropdown.innerHTML = '<div class="p-2 text-muted">No products found</div>';
+                    }
 
-        // Hide dropdown when clicking outside
-        document.addEventListener('click', function (e) {
-            if (!document.querySelector('.search-container').contains(e.target)) {
-                dropdown.style.display = 'none';
-            }
-        });
+                    dropdown.style.display = 'block';
+                });
+        } else {
+            dropdown.innerHTML = '';
+            dropdown.style.display = 'none';
+        }
     });
+
+    // Hide dropdown when clicking outside
+    document.addEventListener('click', function (e) {
+        const form = document.getElementById('searchForm');
+        if (!form.contains(e.target)) {
+            dropdown.style.display = 'none';
+        }
+    });
+});
 </script>
 </body>
 
