@@ -45,8 +45,45 @@
                 </div>
             @endif
 
+            {{-- Floating toast for unselected checkout --}}
+            <div id="select-item-toast" class="alert alert-danger"
+                style="
+                    position: fixed;
+                    top: 120px;
+                    right: 253px;
+                    background-color: #f8d7da;
+                    color: #721c24;
+                    border: 1px solid #f5c6cb;
+                    border-radius: 8px;
+                    padding: 10px 20px 10px 15px;
+                    z-index: 9999;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                    opacity: 0;
+                    display: none;
+                    transition: opacity 0.5s ease;
+                    min-width: 250px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                ">
+                <span>Please select at least one item to checkout.</span>
+                <button id="close-toast"
+                    style="
+                        background: transparent;
+                        border: none;
+                        color: #721c24;
+                        font-weight: bold;
+                        font-size: 20px;
+                        line-height: 1;
+                        cursor: pointer;
+                        padding: 0 5px;
+                        margin-left: 15px;
+                    "
+                    aria-label="Close toast">&times;</button>
+            </div>
+
             @if (isset($cartItems) && $cartItems->count() > 0)
-                <form action="{{ route('checkout') }}" method="POST">
+                <form id="checkout-form" action="{{ route('checkout') }}" method="POST">
                     @csrf
                     <div class="table-responsive shadow-sm border rounded">
                         <table class="table align-middle mb-0">
@@ -180,6 +217,44 @@
                     clearTimeout(timeoutId);
                     fadeOutAndHide();
                 });
+            }
+        });
+        
+            // Close button for select-item toast
+            const toastCloseBtn = document.getElementById('close-toast');
+            if (toastCloseBtn) {
+                toastCloseBtn.addEventListener('click', () => {
+                    const toast = document.getElementById('select-item-toast');
+                    if (toast) {
+                        toast.style.opacity = 0;
+                        setTimeout(() => {
+                            toast.style.display = 'none';
+                        }, 500);
+                    }
+                });
+            }
+
+        document.getElementById('checkout-form').addEventListener('submit', function (e) {
+            const checkboxes = document.querySelectorAll('input[name="selected_items[]"]:checked');
+            if (checkboxes.length === 0) {
+                e.preventDefault();
+
+                const toast = document.getElementById('select-item-toast');
+                if (!toast) return;
+
+                toast.style.display = 'block';
+                setTimeout(() => {
+                    toast.style.opacity = 1;
+                }, 10); // slight delay for fade-in
+
+                setTimeout(() => {
+                    toast.style.opacity = 0;
+                    setTimeout(() => {
+                        toast.style.display = 'none';
+                    }, 500);
+                }, 2500);
+
+                return false;
             }
         });
     </script>
