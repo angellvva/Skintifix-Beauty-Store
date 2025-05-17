@@ -95,7 +95,6 @@ Route::get('/edit-profile', [ProfileController::class, 'edit'])->name('profile.e
 Route::post('/edit-profile', [ProfileController::class, 'update'])->name('profile.update');
 
 // route my orders
-Route::get('/my-orders', [ProfileController::class, 'orders'])->name('my-orders');
 Route::get('/my-orders', [OrderController::class, 'index'])->name('my-orders');
 
 // route admin dashboard

@@ -138,23 +138,23 @@
                                         Rp{{ number_format($order->price, 0, ',', '.') }}
                                     </p>
                                     <div class="d-flex justify-content-center gap-2">
-                                        <a href="{{ url('/customer/order/' . $order->id) }}"
-                                            class="btn btn-outline-secondary btn-sm">View</a>
-                                        <form action="{{ route('cart.add', $order->id) }}" method="POST">
+                                        <a href="{{ url('/customer/order/' . $order->order_id) }}"
+                                            class="btn btn-outline-secondary btn-sm">View Order</a>
+                                        {{-- <form action="{{ route('cart.add', $order->order_id) }}" method="POST">
                                             @csrf
                                             <button type="submit" class="btn-checkout" title="Go to checkout">
                                                 <i class="fas fa-arrow-right"></i>
                                             </button>
-                                        </form>
-                                        <form method="POST" action="{{ route('my-orders') }}"
+                                        </form> --}}
+                                        {{-- <form method="POST" action="{{ route('my-orders') }}"
                                             onsubmit="return confirm('Remove this order from your list?');">
                                             @csrf
-                                            <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                            <input type="hidden" name="order_id" value="{{ $order->order_id }}">
                                             <button type="submit" class="btn btn-outline-danger btn-sm"
                                                 title="Remove from Orders">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
-                                        </form>
+                                        </form> --}}
                                     </div>
                                 </div>
                             </div>
