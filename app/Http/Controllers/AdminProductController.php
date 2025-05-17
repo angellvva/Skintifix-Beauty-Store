@@ -51,6 +51,70 @@ class AdminProductController extends Controller
     public function add_product()
     {
         //
-        return view('admin.add-product');
+        $categories = ProductCategory::all();
+        return view('admin.add-product', compact('categories'));
+    }
+
+    public function store(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'name'        => 'required|string|max:255',
+            'description' => 'required|string',
+            'price'       => 'required|numeric|min:0',
+            'stock'       => 'required|integer|min:0',
+            'category_id' => 'required|exists:product_categories,id',
+            'image'       => 'required|image|mimes:jpeg,png,jpg,webp|max:2048', // max 2MB
+        ]);
+
+        // Simpan gambar ke storage
+        $imagePath = $request->file('image')->store('products', 'public');
+
+        // Simpan ke database
+        Product::create([
+            'name'        => $request->name,
+            'description' => $request->description,
+            'price'       => $request->price,
+            'stock'       => $request->stock,
+            'category_id' => $request->category_id,
+            'image'       => $imagePath,
+        ]);
+
+        return redirect()->route('admin.products')->with('success', 'Product created successfully.');
+    }
+
+    public function edit($id)
+    {
+        $product = Product::findOrFail($id);
+        $categories = ProductCategory::all();
+        return view('admin.product-edit', compact('product', 'categories'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric',
+            'stock' => 'required|integer',
+            'category_id' => 'required|exists:product_categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        $product = Product::findOrFail($id);
+        $product->name = $request->name;
+        $product->description = $request->description;
+        $product->price = $request->price;
+        $product->stock = $request->stock;
+        $product->category_id = $request->category_id;
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('products', 'public');
+            $product->image = $imagePath;
+        }
+
+        $product->save();
+
+        return redirect()->route('admin.products')->with('success', 'Product updated successfully.');
     }
 }

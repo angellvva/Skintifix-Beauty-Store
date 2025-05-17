@@ -166,7 +166,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="" class="btn btn-sm btn-edit me-2">
+                                    <a href="{{ route('products.edit', $product->id) }}" class="btn btn-sm btn-edit me-2">
                                         <i class="fas fa-pen" title="Edit Product"></i>
                                         </a>
                                     <form action="" method="POST" class="d-inline">
