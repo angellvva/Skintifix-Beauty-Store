@@ -10,11 +10,11 @@
         </div>
         <div class="row">
             <!-- Left side: Table -->
-            <div class="col-md-8">
+            <div class="col-md-7">
                 <div class="card shadow-sm">
                     <div class="card-body table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead class="table-light">
+                        <table class="table align-middle">
+                            <thead class="table">
                                 <tr>
                                     <th>Name</th>
                                     <th>Description</th>
@@ -26,14 +26,27 @@
                                 @foreach ($categories as $category)
                                     <tr>
                                         <td class="fw-semibold">{{ $category->name }}</td>
-                                        <td>{{ Str::limit($category->description, 35) }}</td>
-                                        <td>{{ $category->products_count }}</td>
+                                        <td>{{ Str::limit($category->description, 50) }}</td>
+                                        <td class="text-center">{{ $category->products_count }}</td>
                                         <td>
-                                            <a href="#" class="btn btn-sm btn-light border"><i class="fas fa-pen"></i></a>
-                                            <form action="{{ route('categories.destroy', $category->id) }}" method="POST" class="d-inline">
-                                                @csrf @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-light border text-danger"><i class="fas fa-trash"></i></button>
-                                            </form>
+                                            <div class="d-flex gap-1 align-items-center">
+                                                {{-- Edit Button --}}
+                                                <a href="{{ route('categories.edit', ['id' => $category->id]) }}"
+                                                class="btn btn-sm btn-outline-pink">
+                                                    <i class="fas fa-pen"></i>
+                                                </a>
+                                                {{-- Delete Button --}}
+                                                <form method="POST" action="{{ route('category.remove') }}"
+                                                    onsubmit="return confirm('Are you sure you want to delete this category?');">
+                                                    @csrf
+                                                    <input type="hidden" name="category_id" value="{{ $category->id }}">
+                                                    <button type="submit"
+                                                                class="btn btn-sm btn-outline-pink"
+                                                                style="color: #dc3545;">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -72,3 +85,18 @@
         </div>
     </div>
 @endsection
+
+@push('styles')
+    <style>
+        .btn-outline-pink {
+            border: 1px solid #e965a7;
+            color: #e965a7;
+            background-color: white;
+        }
+
+        .btn-outline-pink:hover {
+            background-color: #e965a7;
+            color: white;
+        }
+    </style>
+@endpush

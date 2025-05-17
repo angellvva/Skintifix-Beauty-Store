@@ -134,3 +134,8 @@ Route::resource('admin/categories', CategoryController::class)->names([
     'store' => 'categories.store',
     'destroy' => 'categories.destroy',
 ]);
+
+Route::get('/admin/categories/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+Route::put('/admin/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
+
+Route::post('/category/remove', [CategoryController::class, 'removeCategory'])->name('category.remove');
