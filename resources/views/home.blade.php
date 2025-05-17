@@ -1,88 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('base.base')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!-- Swiper CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+@section('content')
 
-    <style>
-        .category .card {
-            transition: box-shadow 0.3s ease;
-            border: 1px solid #e965a7;
-            /* border pink */
-        }
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
-        .category .card:hover {
-            cursor: pointer;
-            box-shadow: 0 0 24px rgba(0, 0, 0, 0.15);
-        }
+<style>
+    .category .card {
+        transition: box-shadow 0.3s ease;
+        border: 1px solid #e965a7;
+        /* border pink */
+    }
 
-        .category .btn-outline-secondary {
-            border-color: #e965a7 !important;
-            /* border pink */
-            color: #e965a7 !important;
-            /* text pink */
-        }
+    .category .card:hover {
+        cursor: pointer;
+        box-shadow: 0 0 24px rgba(0, 0, 0, 0.15);
+    }
 
-        .category .btn-outline-secondary:hover {
-            background-color: #e965a7 !important;
-            color: white !important;
-        }
+    .category .btn-outline-secondary {
+        border-color: #e965a7 !important;
+        /* border pink */
+        color: #e965a7 !important;
+        /* text pink */
+    }
 
-        .product-name {
-            font-weight: bold;
-            font-size: 18px;
-            margin-bottom: 8px;
-            color: #333;
+    .category .btn-outline-secondary:hover {
+        background-color: #e965a7 !important;
+        color: white !important;
+    }
 
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+    .product-name {
+        font-weight: bold;
+        font-size: 18px;
+        margin-bottom: 8px;
+        color: #333;
 
-        .product-stock {
-            color: #888;
-            font-size: 14px;
-        }
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
-        .product-unit-sold {
-            color: #888;
-            font-size: 14px;
-        }
+    .product-stock {
+        color: #888;
+        font-size: 14px;
+    }
 
-        .product-price {
-            font-size: 16px;
-            color: #e965a7;
-            font-weight: bold;
-            margin: 10px 0;
-        }
+    .product-unit-sold {
+        color: #888;
+        font-size: 14px;
+    }
 
-        .icon-btns form {
-            display: inline-block;
-            margin: 0 5px;
-        }
+    .product-price {
+        font-size: 16px;
+        color: #e965a7;
+        font-weight: bold;
+        margin: 10px 0;
+    }
 
-        .icon-btns button {
-            background: none;
-            border: none;
-            color: #e965a7;
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        .icon-btns button:hover {
-            color: #c44c8f;
-        }
-
-        .product-category-label {
-            position: absolute;
-            top: 15px;
-            right: 15px;
+    .product-category-label {
+        position: absolute;
+            top: 10px;
+            left: 10px;
             background-color: #e965a7;
             color: white;
             padding: 4px 10px;
@@ -90,37 +70,75 @@
             font-weight: 600;
             font-size: 12px;
             z-index: 10;
+    }
+
+    /* .swiper-container {
+        padding: 10px 0;
+    }
+
+    .swiper-slide {
+        width: auto;
+        transition: transform 0.3s ease;
+    }
+
+    .swiper-slide:hover {
+        transform: scale(1.03);
+    } */
+    .most-wanted-slider {
+        padding: 10px 0;
+    }
+
+    .swiper-slide {
+        width: auto;
+        max-width: 200px;
+        padding: 10px;
+    }
+
+    .wishlist-icon {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        color: #e965a7;
+        font-size: 18px;
+        z-index: 10;
+        background-color: white;
+        padding: 6px;
+        border-radius: 50%;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease;
+    }
+
+    .wishlist-icon:hover {
+        background-color: #fce4ef;
+        color: #c44c8f;
+    }
+
+    .product-card {
+            position: relative;
+            background-color: #fff;
+            border-radius: 12px;
+            width: calc(25% - 24px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
         }
 
-        /* .swiper-container {
-            padding: 10px 0;
+        .product-card:hover {
+            box-shadow: 0 0 24px rgba(0, 0, 0, 0.15);
         }
 
-        .swiper-slide {
-            width: auto;
-            transition: transform 0.3s ease;
+        .product-card img {
+            max-height: 150px;
+            object-fit: contain;
+            margin-bottom: 15px;
         }
+</style>
 
-        .swiper-slide:hover {
-            transform: scale(1.03);
-        } */
-        .most-wanted-slider {
-            padding: 10px 0;
-        }
-
-        .swiper-slide {
-            width: auto;
-            max-width: 200px;
-            padding: 10px;
-        }
-    </style>
-</head>
-
-<body>
-    @extends ('base.base')
-
-    @section('content')
-        <div class="container-fluid py-5" style="background-image: url('{{ asset('images/home/background.jpg') }}');">
+<div class="container-fluid py-5" style="background-image: url('{{ asset('images/home/background.jpg') }}');">
             <div class="container py-5">
                 <div class="row g-4 align-items-center">
                     <div class="col-md-12 col-lg-7">
@@ -184,7 +202,7 @@
 
         <div class="container">
             {{-- Best Seller --}}
-            <div class="p-4 category">
+            <div class="px-4 pt-4 category" style="padding-bottom: 48px;">
                 <!-- Judul dan Button Nav Carousel -->
                 <h2 class="fw-bold">Best Seller Products</h2>
                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -213,10 +231,23 @@
                                                     <img src="{{ $item->product->image }}"
                                                         alt="{{ $item->product->name }}" class="img-fluid">
 
-                                                    <!-- Label kategori -->
+                                                    <!-- Left: Category label -->
                                                     <div class="product-category-label">
                                                         {{ $item->product->category->name }}
                                                     </div>
+
+                                                    <!-- Right: Heart icon -->
+                                                    <form action="{{ route('wishlist.toggle', $item->product->id) }}" method="POST"
+                                                        style="position: absolute; top: 10px; right: 10px; z-index: 20;">
+                                                        @csrf
+                                                        <button type="submit" style="background: none; border: none; cursor: pointer;">
+                                                            @if ($item->product->isInWishlist ?? false)
+                                                                <i class="fas fa-heart" style="color: #e965a7; font-size: 20px;"></i>
+                                                            @else
+                                                                <i class="far fa-heart" style="color: #e965a7; font-size: 20px;"></i>
+                                                            @endif
+                                                        </button>
+                                                    </form>                                         
 
                                                     <h5 class="card-title product-name">{{ $item->product->name }}</h5>
 
@@ -271,10 +302,23 @@
                                                     <img src="{{ $item->product->image }}"
                                                         alt="{{ $item->product->name }}" class="img-fluid">
 
-                                                    <!-- Label kategori -->
+                                                    <!-- Left: Category label -->
                                                     <div class="product-category-label">
                                                         {{ $item->product->category->name }}
                                                     </div>
+
+                                                    <!-- Right: Heart icon -->
+                                                    <form action="{{ route('wishlist.toggle', $item->product->id) }}" method="POST"
+                                                    style="position: absolute; top: 10px; right: 10px; z-index: 20;">
+                                                    @csrf
+                                                    <button type="submit" style="background: none; border: none; cursor: pointer;">
+                                                        @if ($item->product->isInWishlist ?? false)
+                                                            <i class="fas fa-heart" style="color: #e965a7; font-size: 20px;"></i>
+                                                        @else
+                                                            <i class="far fa-heart" style="color: #e965a7; font-size: 20px;"></i>
+                                                        @endif
+                                                    </button>
+                                                </form>
 
                                                     <h5 class="card-title product-name">{{ $item->product->name }}</h5>
 
@@ -394,6 +438,3 @@
             });
         </script>
     @endsection
-</body>
-
-</html>

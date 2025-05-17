@@ -54,7 +54,7 @@ Route::post('/reset-password', [PasswordController::class, 'reset'])
 //Route untuk button add cart dan wishlist di product page
 Route::post('/wishlist/add/{id}', [HomeController::class, 'addToWishlist'])->name('wishlist.add');
 Route::get('/wishlist', [WishlistController::class, 'Wishlist'])->name('wishlist.view');
-Route::post('/wishlist/remove', [WishlistController::class, 'removeFromWishlist'])->name('wishlist.remove');
+Route::delete('/wishlist/remove', [WishlistController::class, 'removeFromWishlist'])->name('wishlist.remove');
 Route::post('/wishlist/toggle/{id}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
 
 //Route contact

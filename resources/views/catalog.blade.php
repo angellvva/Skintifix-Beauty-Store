@@ -82,23 +82,6 @@
             text-overflow: ellipsis;
         }
 
-        .icon-btns form {
-            display: inline-block;
-            margin: 0 5px;
-        }
-
-        .icon-btns button {
-            background: none;
-            border: none;
-            color: #e965a7;
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        .icon-btns button:hover {
-            color: #c44c8f;
-        }
-
         @media (max-width: 992px) {
             .product-card {
                 width: calc(50% - 24px);
@@ -159,8 +142,7 @@
                         <div class="product-description">{{ $product->description }}</div>
                     </div>
                     @empty
-                    {{-- What to show if $products is empty --}}
-                    <p>No products found.</p>
+                    <p style="text-align: center; width: 100%; color: #888;">No products found.</p>
                 @endforelse
             </div>
         </div>

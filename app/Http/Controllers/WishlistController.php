@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Wishlist;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cookie;
 
 class WishlistController extends Controller
 {
-    //
     public function Wishlist()
     {
         $userId = session('id', Cookie::get('id'));
@@ -18,12 +18,17 @@ class WishlistController extends Controller
             return redirect()->route('login')->with('error', "Please log in first.");
         }
 
-        $wishlistProducts = DB::table('wishlists')
-            ->join('products', 'wishlists.product_id', '=', 'products.id')
-            ->where('wishlists.user_id', $userId)
-            ->select('products.id', 'products.name', 'products.price', 'products.image')
-            ->get();
+        $wishlistProducts = Product::whereIn('id', function ($query) use ($userId) {
+        $query->select('product_id')
+              ->from('wishlists')
+              ->where('user_id', $userId);
+    })->get();
 
+    // Set isInWishlist = true manually for view rendering
+    foreach ($wishlistProducts as $product) {
+        $product->isInWishlist = true;
+    }
+    
         return view('wishlist', compact('wishlistProducts'));
     }
 
@@ -46,10 +51,11 @@ class WishlistController extends Controller
 
     public function toggle(Request $request, $productId)
     {
-        $userId = session('id'); // or whatever key you use to store the logged-in user
+        $userId = session('id', Cookie::get('id'));
 
         if (!$userId) {
-            return back()->with('success', 'You need to log in first.');
+            // you can redirect or return back with error message
+            return back()->with('error', 'You need to log in first.');
         }
 
         $wishlistItem = Wishlist::where('user_id', $userId)

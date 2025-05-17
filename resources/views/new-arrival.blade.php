@@ -82,23 +82,6 @@
             text-overflow: ellipsis;
         }
 
-        .icon-btns form {
-            display: inline-block;
-            margin: 0 5px;
-        }
-
-        .icon-btns button {
-            background: none;
-            border: none;
-            color: #e965a7;
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        .icon-btns button:hover {
-            color: #c44c8f;
-        }
-
         @media (max-width: 992px) {
             .product-card {
                 width: calc(50% - 24px);
@@ -140,9 +123,22 @@
                         <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}">
 
                         <!-- Label kategori -->
-                        <div class="product-category-label">
+                            <div class="product-category-label" style="left: 15px; right: auto;">
                             {{ $item->product->category->name }}
                         </div>
+
+                        <!-- Heart Wishlist Button - Top Right -->
+                        <form action="{{ route('wishlist.toggle', $item->product->id) }}" method="POST"
+                            style="position: absolute; top: 10px; right: 10px; z-index: 20;">
+                            @csrf
+                            <button type="submit" style="background: none; border: none; cursor: pointer;">
+                                @if ($item->product->isInWishlist ?? false)
+                                    <i class="fas fa-heart" style="color: #e965a7; font-size: 20px;"></i>
+                                @else
+                                    <i class="far fa-heart" style="color: #e965a7; font-size: 20px;"></i>
+                                @endif
+                            </button>
+                        </form>
 
                         <div class="product-name">{{ $item->product->name }}</div>
 
