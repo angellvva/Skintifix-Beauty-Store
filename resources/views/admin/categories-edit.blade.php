@@ -5,12 +5,11 @@
     <div class="row mb-4">
         <div class="col-12 d-flex justify-content-between align-items-center">
             <h2 class="fw-bold" style="color: #e965a7;">Edit Category</h2>
-            <a href="{{ route('admin.categories') }}" class="btn btn-pinkback">← Back</a>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-6 offset-md-3">
+        <div class="col-md-6">
             @if(session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
             @endif

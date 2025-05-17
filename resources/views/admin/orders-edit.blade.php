@@ -2,8 +2,8 @@
 
 @section('content')
 <div class="container my-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
+    <div class="d-flex align-items-center mb-4" >
+        <div class="me-auto">
             <h4 class="fw-bold mb-0">Update Order <span class="text-pink">#ORD-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</span>
             <span class="badge 
                 @if ($order->status == 'pending') text-warning border border-warning
@@ -15,12 +15,6 @@
                 {{ ucfirst($order->status) }}
             </span></h4>
         </div>
-        <div>
-            <a href="{{ route('admin.orders') }}" class="btn btn-outline-secondary me-2">Cancel</a>
-            <button form="orderUpdateForm" class="btn btn-pink">
-                <i class="bi bi-save me-1"></i> Save Changes
-            </button>
-        </div>
     </div>
 
     {{-- <form action="#" method="POST" id="orderUpdateForm"> --}}
@@ -30,7 +24,7 @@
         <div class="row g-4">
             <!-- Order Status -->
             <div class="col-md-6">
-                <div class="card rounded-4 border">
+                <div class="card shadow border-0 rounded-4">
                     <div class="card-header fw-semibold">Order Status</div>
                     <div class="card-body">
                         <div class="mb-3">
@@ -48,30 +42,17 @@
                                 <option value="failed" {{ optional($order->payment)->payment_status === 'failed' ? 'selected' : '' }}>Failed</option>
                             </select>
                         </div>
+
+                        <!-- Tombol diletakkan di dalam card-body -->
+                        <div class="d-flex justify-content-end gap-2 mt-3">
+                            <a href="{{ route('admin.orders') }}" class="btn btn-secondary px-4">Cancel</a>
+                            <button form="orderUpdateForm" class="btn btn-pink px-4 text-white">
+                                <i class="bi bi-save me-1"></i> Save Changes
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            {{-- <!-- Shipping Info -->
-            <div class="col-md-6">
-                <div class="card rounded-4 border">
-                    <div class="card-header fw-semibold">Shipping Information</div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <label for="shipping_date" class="form-label">Shipping Date</label>
-                            <input type="date" name="shipping_date" id="shipping_date" class="form-control" value="{{ old('shipping_date') }}">
-                        </div>
-                        <div class="mb-3">
-                            <label for="delivery_date" class="form-label">Estimated Delivery Date</label>
-                            <input type="date" name="delivery_date" id="delivery_date" class="form-control" value="{{ old('delivery_date') }}">
-                        </div>
-                        <div class="mb-3">
-                            <label for="received_date" class="form-label">Received Date</label>
-                            <input type="date" name="received_date" id="received_date" class="form-control" value="{{ old('received_date') }}">
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
         </div>
     </form>
 </div>
@@ -86,15 +67,33 @@
         background-color: #e965a7;
         color: white;
         border: none;
-    }
-    .btn-pink:hover {
-        background-color: #da5195;
+        transition: all 0.3s ease;
     }
 
+    .btn-pink:hover {
+        background-color: #da5195;
+        color: white;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        color: white;
+    }
     .card-header {
         background-color: #e965a7;
         color: white;
         font-weight: 600;
+    }
+
+    .card {
+        border-radius: 1rem !important;
     }
 </style>
 @endpush

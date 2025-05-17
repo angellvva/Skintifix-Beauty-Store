@@ -166,7 +166,9 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="" class="btn btn-sm btn-edit me-2">Edit</a>
+                                    <a href="" class="btn btn-sm btn-edit me-2">
+                                        <i class="fas fa-pen"></i>
+                                        </a>
                                     <form action="" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')

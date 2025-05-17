@@ -1,6 +1,40 @@
 @extends('layouts.admin')
 
 @section('content')
+    @if (session('success'))
+        <div id="category-notification" class="alert alert-success"
+            style="
+                transition: opacity 0.3s ease;
+                position: fixed;
+                top: 50px;
+                right: 275px;
+                background-color: #d4edda;
+                color: #155724;
+                border: 1px solid #c3e6cb;
+                border-radius: 8px;
+                padding: 10px 20px;
+                z-index: 9999;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                min-width: 250px;
+            ">
+            <span>{{ session('success') }}</span>
+            <button onclick="document.getElementById('category-notification').remove();"
+                style="
+                    transition: opacity 0.3s ease;
+                    background: transparent;
+                    border: none;
+                    color: #155724;
+                    font-weight: bold;
+                    font-size: 20px;
+                    margin-left: 15px;
+                    cursor: pointer;
+                "
+                aria-label="Close notification">&times;</button>
+        </div>
+    @endif
     <div class="container my-4">
         <div class="row mb-4">
             <div class="col-12">
@@ -105,4 +139,19 @@
             color: white;
         }
     </style>
+@endpush
+
+@push('scripts')
+    <script>
+        // Auto-hide notification after 5 seconds
+        setTimeout(() => {
+            const notification = document.getElementById('category-notification');
+            if (notification) {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }
+        }, 3000);
+    </script>
 @endpush
