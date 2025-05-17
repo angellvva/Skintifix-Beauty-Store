@@ -17,13 +17,13 @@ class AdminOrderController extends Controller
     public function show($id)
     {
         $order = Order::with('user', 'orderItems')->findOrFail($id);
-        return view('admin.orders.show', compact('order'));
+        return view('admin.orders-show', compact('order'));
     }
 
     public function edit($id)
     {
         $order = Order::with('user', 'orderItems')->findOrFail($id);
-        return view('admin.orders.edit', compact('order'));
+        return view('admin.orders-edit', compact('order'));
     }
 
     public function update(Request $request, $id)
