@@ -93,7 +93,7 @@
 <div class="sidebar">
     <div class="justify-content-start align-items-center mb-2 px-3 logo">
         <a href="{{ route('admin.dashboard') }}" class="text-decoration-none align-items-center">
-            <span><b>Skintifix</b> Beauty Mart</span>
+            <span><b>Skintifix</b> Beauty Store</span>
         </a>
     </div>
 
