@@ -129,12 +129,6 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('admin.analytics') }}"
-                class="nav-link {{ request()->routeIs('admin.analytics') ? 'active' : '' }}">
-                <i class="bi bi-bar-chart-line"></i> Analytics
-            </a>
-        </li>
-        <li class="nav-item">
             <a href="{{ route('admin.messages') }}"
                 class="nav-link {{ request()->routeIs('admin.messages') ? 'active' : '' }}">
                 <i class="bi bi-envelope-open-heart"></i> Messages
