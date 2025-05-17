@@ -56,7 +56,7 @@
 
                     <div class="col-lg-7">
                         @if (session('success'))
-                            <div class="alert alert-success mt-4">
+                            <div class="alert alert-success mt-4" id="success-message">
                                 {{ session('success') }}
                             </div>
                         @elseif($errors->any())
@@ -113,4 +113,19 @@
             </div>
         </div>
     </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const successMessage = document.getElementById('success-message');
+        if (successMessage) {
+            setTimeout(() => {
+                successMessage.style.transition = 'opacity 0.5s ease';
+                successMessage.style.opacity = '0';
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 500); // Fade-out duration
+            }, 3000); // 3 seconds display time
+        }
+    });
+</script>
 @endsection
