@@ -12,18 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('orders', function (Blueprint $table) {
-        $table->unsignedBigInteger('product_id')->after('user_id'); // Add column for product_id
-        $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade'); // Set foreign key constraint
+            if (!Schema::hasColumn('orders', 'updated_at')) {
+                $table->timestamp('updated_at')->nullable()->after('created_at');
+            }
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Reverse the migrations.\
      */
     public function down(): void
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->dropColumn('product_id');
+            $table->dropColumn('updated_at');
         });
     }
 };

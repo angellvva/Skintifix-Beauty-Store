@@ -32,8 +32,20 @@ class AdminOrderController extends Controller
             'status' => 'required|in:pending,processing,completed',
         ]);
 
-        $order = Order::findOrFail($id);
+        $request->validate([
+            'status' => 'required|in:pending,processing,completed',
+            'payment_status' => 'nullable|in:paid,failed',
+        ]);
+
+        $order = Order::with('payment')->findOrFail($id);
         $order->status = $request->status;
+
+        // Simpan status pembayaran
+        if ($order->payment) {
+            $order->payment->payment_status = $request->payment_status;
+            $order->payment->save();
+        }
+
         $order->save();
 
         return redirect()->route('admin.orders')->with('success', 'Order updated successfully.');

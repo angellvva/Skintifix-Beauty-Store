@@ -128,3 +128,5 @@ Route::get('/orders/{id}', [AdminOrderController::class, 'show'])->name('orders.
 
 // Route untuk edit order
 Route::get('/orders/{id}/edit', [AdminOrderController::class, 'edit'])->name('orders.edit');
+
+Route::put('/admin/orders/{id}', [AdminOrderController::class, 'update'])->name('orders.update');
