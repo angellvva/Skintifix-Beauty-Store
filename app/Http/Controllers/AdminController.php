@@ -102,9 +102,19 @@ class AdminController extends Controller
         return view('admin.analytics', compact('products'));
     }
 
-    public function messages()
+    public function messages(Request $request)
     {
-        $messages = DB::table('messages')->latest()->paginate(10);
-        return view('admin.messages', compact('messages'));
+        $query = DB::table('messages');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('name', 'like', "%$search%")
+                ->orWhere('message', 'like', "%$search%");
+        }
+
+        $messages = $query->latest()->get();
+        $totalMessages = DB::table('messages')->count();
+
+        return view('admin.messages', compact('messages', 'totalMessages'));
     }
 }
