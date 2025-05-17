@@ -57,4 +57,19 @@ class User extends Authenticatable
     {
         return optional($this->orders->sortByDesc('order_date')->first())->order_date;
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
+    public function payment()
+    {
+        return $this->hasOne(Payments::class);
+    }
 }
