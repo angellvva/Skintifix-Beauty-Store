@@ -113,4 +113,28 @@ public function viewWishlist()
         $wishlist = session('wishlist', []);
         return view('wishlist', compact('wishlist'));
     }
+
+public function toggleWishlist($id)
+{
+    $userId = session('id');
+
+    if (!$userId) {
+        return redirect()->route('login')->with('error', 'Please login first');
+    }
+
+    $wishlistItem = Wishlist::where('user_id', $userId)
+                            ->where('product_id', $id)
+                            ->first();
+
+    if ($wishlistItem) {
+        $wishlistItem->delete();
+        return back()->with('success', 'Product removed from wishlist!');
+    } else {
+        Wishlist::create([
+            'user_id' => $userId,
+            'product_id' => $id,
+        ]);
+        return back()->with('success', 'Product added to wishlist!');
+    }
+}
 }

@@ -42,4 +42,28 @@ class WishlistController extends Controller
 
         return back()->with('success', 'Product removed from wishlist.');
     }
+
+    public function toggle(Request $request, $productId)
+    {
+        $userId = session('user_id'); // or whatever key you use to store the logged-in user
+
+        if (!$userId) {
+            return back()->with('success', 'You need to log in first.');
+        }
+
+        $wishlistItem = Wishlist::where('user_id', $userId)
+                                ->where('product_id', $productId)
+                                ->first();
+
+        if ($wishlistItem) {
+            $wishlistItem->delete();
+            return back()->with('success', 'Removed from wishlist!');
+        } else {
+            Wishlist::create([
+                'user_id' => $userId,
+                'product_id' => $productId,
+            ]);
+            return back()->with('success', 'Added to wishlist!');
+        }
+    }
 }

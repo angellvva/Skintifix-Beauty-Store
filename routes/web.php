@@ -55,6 +55,7 @@ Route::post('/reset-password', [PasswordController::class, 'reset'])
 Route::post('/wishlist/add/{id}', [HomeController::class, 'addToWishlist'])->name('wishlist.add');
 Route::get('/wishlist', [WishlistController::class, 'Wishlist'])->name('wishlist.view');
 Route::post('/wishlist/remove', [WishlistController::class, 'removeFromWishlist'])->name('wishlist.remove');
+Route::post('/wishlist/toggle/{id}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
 
 //Route contact
 Route::get('/contact', [ContactController::class, 'contact'])->name('contact');

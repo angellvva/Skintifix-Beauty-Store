@@ -4,6 +4,71 @@
     <div class="product-section">
         <div class="container mt-5">
 
+            <!-- Flash Notification -->
+            @if(session('success'))
+                <div id="cart-notification" class="alert alert-success"
+                    style="
+                        position: fixed;
+                        top: 100px;
+                        right: 255px;
+                        background-color: #d4edda;
+                        color: #155724;
+                        border: 1px solid #c3e6cb;
+                        border-radius: 8px;
+                        padding: 10px 20px;
+                        z-index: 9999;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                        opacity: 1;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        min-width: 250px;
+                    ">
+                    <span>{{ session('success') }}</span>
+                    <button id="close-notification"
+                        style="
+                            background: transparent;
+                            border: none;
+                            color: #155724;
+                            font-weight: bold;
+                            font-size: 20px;
+                            line-height: 1;
+                            cursor: pointer;
+                            padding: 0 5px;
+                            margin-left: 15px;
+                        "
+                        aria-label="Close notification">&times;</button>
+                </div>
+
+                <script>
+                    window.addEventListener('DOMContentLoaded', () => {
+                        const notification = document.getElementById('cart-notification');
+                        const closeBtn = document.getElementById('close-notification');
+                        if (!notification) return;
+
+                        const displayTime = 4000;
+                        const fadeDuration = 1000;
+
+                        function fadeOutAndHide() {
+                            notification.style.transition = `opacity ${fadeDuration}ms ease`;
+                            notification.style.opacity = 0;
+                            setTimeout(() => {
+                                notification.style.display = 'none';
+                            }, fadeDuration);
+                        }
+
+                        const timeoutId = setTimeout(fadeOutAndHide, displayTime);
+
+                        if (closeBtn) {
+                            closeBtn.addEventListener('click', () => {
+                                clearTimeout(timeoutId);
+                                fadeOutAndHide();
+                            });
+                        }
+                    });
+                </script>
+            @endif
+            
             <!-- Product Info Card -->
             <div class="white-container position-relative mb-5"
                 style="background-color: white; padding: 40px 30px 30px 30px; border-radius: 16px;">
@@ -21,7 +86,24 @@
 
                     <!-- Product Info -->
                     <div class="col-md-6">
-                        <h1 class="fw-bold mb-3" style="color: #e75480;">{{ $product->name }}</h1>
+                        @if($isBestSeller)
+                                <a href="{{ route('best-seller') }}" 
+                                class="badge best-seller-badge ms-2 product-category-label"
+                                style="text-decoration: none;">
+                                    Best Seller
+                                </a>
+                            @endif
+
+                            @if($isNewArrival)
+                                <a href="{{ route('new-arrival') }}" 
+                                class="badge new-arrival-badge ms-2 product-category-label"
+                                style="text-decoration: none;">
+                                    New Arrival
+                                </a>
+                            @endif
+                        <h1 class="fw-bold mb-3" style="color: #e75480;">
+                            {{ $product->name }}
+                        </h1>
 
                         <h4 class="mb-3" style="color: #d6336c;">
                             Price: <span class="fw-semibold">Rp{{ number_format($product->price, 0, ',', '.') }}</span>
@@ -50,9 +132,10 @@
                             </form>
 
                             <!-- Add to Wishlist -->
-                            <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
+                            <form action="{{ route('wishlist.toggle', $product->id) }}" method="POST">
                                 @csrf
-                                <button type="submit" title="Add to Wishlist" class="icon-btn-bordered">
+                                <button type="submit" title="Add to Wishlist"
+                                    class="icon-btn-bordered {{ $isInWishlist ? 'btn-wishlist-filled' : 'btn-wishlist-outline' }}">
                                     <i class="fas fa-heart"></i>
                                 </button>
                             </form>
@@ -181,6 +264,52 @@
             margin: 40px auto 0;
             padding: 40px 20px;
             box-shadow: 0 0 12px rgba(233, 85, 135, 0.15);
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25em 0.6em;
+            border-radius: 12px;
+            color: white;
+            vertical-align: middle;
+        }
+
+        .best-seller-badge {
+            background-color: #e965a7;
+        }
+
+        .new-arrival-badge {
+            background-color: transparent;        /* No background */
+            border: 2px solid #e965a7;            /* Pink outline */
+            color: #e965a7;                       /* Pink text */
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 18px;
+            display: inline-block;
+        }
+
+        .product-category-label {
+            /* background-color: #e965a7;
+            color: white; */
+            padding: 8px 16px;       /* increase padding for bigger size */
+            border-radius: 12px;     /* slightly bigger rounded corners */
+            font-weight: 700;        /* make text bolder */
+            font-size: 18px;         /* bigger font size */
+            display: inline-block;
+        }
+
+        .btn-wishlist-filled {
+            background-color: #e965a7;
+            color: white;
+            border-color: #e965a7;
+        }
+
+        .btn-wishlist-outline {
+            background: none;
+            color: #e965a7;
+            border: 2px solid #e965a7;
         }
     </style>
 @endsection
