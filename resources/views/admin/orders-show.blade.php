@@ -8,11 +8,11 @@
         </a>
         <h4 class="fw-bold" style="color: #e965a7;">
             Order #ORD-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}
-            <span class="badge ms-2 
-                @if($order->status == 'pending') bg-warning text-dark
-                @elseif($order->status == 'processing') bg-primary
-                @elseif($order->status == 'completed') bg-success
-                @else bg-secondary @endif">
+            <span class="badge rounded-pill ms-2 px-3 py-1 border
+                @if ($order->status == 'pending') border-warning text-warning
+                @elseif($order->status == 'processing') border-primary text-primary
+                @elseif($order->status == 'completed') border-success text-success
+                @else border-secondary text-secondary @endif">
                 {{ ucfirst($order->status) }}
             </span>
         </h4>
@@ -25,7 +25,7 @@
                 <div class="card-header fw-semibold">Order Details</div>
                 <div class="card-body">
                     <p class="text-muted mb-4">
-                        Placed on {{ \Carbon\Carbon::parse($order->order_date)->format('d M Y') }} | #ORD-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}
+                        Placed on {{ \Carbon\Carbon::parse($order->order_date)->format('d F Y') }} | #ORD-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}
                     </p>
 
                     <table class="table">
@@ -84,7 +84,7 @@
                 <div class="card-body">
                     <p class="mb-1 fw-bold">{{ $order->user->name }}</p>
                     <p class="mb-1"><i class="fas fa-envelope me-2"></i>{{ $order->user->email }}</p>
-                    <p><i class="fas fa-phone me-2"></i>{{ $order->user->phone ?? '-' }}</p>
+                    <p class="mb-0"><i class="fas fa-phone me-2"></i>{{ $order->user->phone ?? '-' }}</p>
                 </div>
             </div>
 
@@ -92,8 +92,11 @@
             <div class="card mb-3">
                 <div class="card-header fw-semibold">Shipping Address</div>
                 <div class="card-body">
-                    <p class="mb-0">{{ $order->user->name }}</p>
-                    <p>{{ $order->user->address ?? '-' }}</p>
+                    <p class="mb-0 fw-bold">{{ $order->user->name }}</p>
+                    <p class="mb-0">{{ $order->user->phone ?? '-' }}</p>
+                    <p class="mb-0">{{ $order->user->address ?? '-' }}</p>
+                    <p class="mb-0">POSTAL CODE</p>
+                    <p class="mb-0">CITY</p>
                 </div>
             </div>
 
@@ -103,13 +106,13 @@
                 <div class="card-body">
                     <p><strong>Status:</strong> 
                         @if (isset($order->payment) && $order->payment->payment_status == 'paid')
-                            <span class="badge bg-success">Paid</span>
+                            <span class="badge rounded-pill border border-success text-success">Paid</span>
                         @else
-                            <span class="badge bg-danger">Failed</span>
+                            <span class="badge rounded pill border border-danger text-danger">Failed</span>
                         @endif
                     </p>
                     <p><strong>Method:</strong> {{ $order->payment->payment_method }}</p>
-                    <p><strong>Amount:</strong> Rp {{ number_format($order->total_amount, 0, ',', '.') }}</p>
+                    <p class="mb-0"><strong>Amount:</strong> Rp {{ number_format($order->total_amount, 0, ',', '.') }}</p>
                 </div>
             </div>
         </div>

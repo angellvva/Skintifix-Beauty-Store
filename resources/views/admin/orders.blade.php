@@ -150,16 +150,16 @@
                                 <td>Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
                                 <td>
                                 @if ($order->status)
-                                    <span class="badge 
-                                        @if ($order->status == 'pending') bg-warning text-dark
-                                        @elseif($order->status == 'processing') bg-primary
-                                        @elseif($order->status == 'completed') bg-success
-                                        @else bg-secondary
+                                    <span class="badge rounded-pill px-3 py-1 border
+                                        @if ($order->status == 'pending') border-warning text-warning
+                                        @elseif($order->status == 'processing') border-primary text-primary
+                                        @elseif($order->status == 'completed') border-success text-success
+                                        @else border-secondary text-secondary
                                         @endif">
                                         {{ ucfirst($order->status) }}
                                     </span>
                                 @else
-                                    <span class="badge bg-secondary">Unknown</span>
+                                    <span class="badge rounded-pill border border-secondary text-secondary px-3 py-1">Unknown</span>
                                 @endif
                             </td>
                                 <td class="d-flex gap-1">
