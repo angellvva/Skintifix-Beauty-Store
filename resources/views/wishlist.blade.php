@@ -17,8 +17,10 @@
         .wishlist-card {
             border: 2px solid #e965a7 !important;
             transition: all 0.3s ease;
-            width: 260px;
             border-radius: 8px;
+            flex: 1 1 calc((100% / 5) - 12px); /* subtracting approx gap */
+            max-width: calc((100% / 5) - 12px);
+            box-sizing: border-box;
         }
 
         .wishlist-card:hover {
@@ -37,6 +39,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 20px 10px;
+            justify-content: flex-start;
         }
 
         .empty-wishlist-icon {

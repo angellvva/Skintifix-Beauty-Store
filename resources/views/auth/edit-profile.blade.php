@@ -51,21 +51,35 @@
 
                         <form method="POST" action="{{ route('profile.update') }}">
                             @csrf
-
+                            <!-- Profile Picture Placeholder -->
+                            <div class="d-flex justify-content-center mb-4">
+                                <div class="rounded-circle d-flex justify-content-center align-items-center"
+                                    style="width: 160px; height: 160px; background-color: #fff0f6; color: #e965a7; font-size: 64px;">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                            </div>
                             <div class="mb-3">
                                 <label class="form-label">Full Name</label>
-                                <input type="text" name="name" class="form-control" value="{{ $user->name }}">
+                                <input type="text" name="name" class="form-control" value="{{ old('name', $user->name) }}">
+                                @error('name')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Phone Number</label>
-                                <input type="text" name="phone" class="form-control" value="{{ $user->phone }}">
+                                <input type="text" name="phone" class="form-control" value="{{ old('phone', $user->phone) }}">
+                                @error('phone')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Address</label>
-                                <input type="text" name="address" class="form-control" value="{{ $user->address }}">
-                            </div>
+                                <input type="text" name="address" class="form-control" value="{{ old('address', $user->address) }}">
+                                    @error('address')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror                            </div>
 
                             <button type="submit" class="btn mt-4" style="background-color: #e965a7; color: white;">
                                 Save Changes
@@ -81,18 +95,23 @@
                         <h4 class="fw-bold mb-1">Change Password</h4>
                         <p class="text-muted mb-4">Update your password to keep your account secure</p>
 
-                        <!-- Add your fields here -->
-                        <form method="POST" action="">
+                        <form method="POST" action="{{ route('profile.updatePassword') }}">
                             @csrf
 
                             <div class="mb-3">
                                 <label class="form-label">Current Password</label>
                                 <input type="password" name="current_password" class="form-control">
+                                @error('current_password')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">New Password</label>
                                 <input type="password" name="new_password" class="form-control">
+                                @error('new_password')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
 
                             <div class="mb-3">
