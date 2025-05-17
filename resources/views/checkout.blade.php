@@ -59,8 +59,8 @@
                         <div class="mb-3">
                             <select name="shipping_method" class="form-select" required>
                                 <option value="">Select a shipping method</option>
-                                <option value="standard">Standard (3–5 days) - Rp20.000</option>
-                                <option value="express">Express (1–2 days) - Rp40.000</option>
+                                <option value="standard" data-cost="20000">Standard (3–5 days) - Rp20.000</option>
+                                <option value="express" data-cost="40000">Express (1–2 days) - Rp40.000</option>
                             </select>
                         </div>
 
@@ -113,19 +113,20 @@
 
                         <div class="d-flex justify-content-between mt-3">
                             <span>Subtotal</span>
-                            <span>Rp{{ number_format($subtotal, 0, ',', '.') }}</span>
+                            <span id="subtotal">Rp{{ number_format($subtotal, 0, ',', '.') }}</span>
                         </div>
                         <div class="d-flex justify-content-between">
                             <span>Shipping</span>
-                            <span>Rp{{ number_format($shipping, 0, ',', '.') }}</span>
+                            <span id="shipping-cost">Rp{{ number_format($shipping, 0, ',', '.') }}</span>
                         </div>
 
                         <hr>
 
                         <div class="d-flex justify-content-between fw-bold fs-5 mb-4">
                             <span>Total</span>
-                            <span>Rp{{ number_format($total, 0, ',', '.') }}</span>
+                            <span id="total-cost">Rp{{ number_format($total, 0, ',', '.') }}</span>
                         </div>
+                        <hr>
 
                         <button type="submit" form="checkout-form"
                             class="btn w-100 rounded-pill shadow-sm"
@@ -138,4 +139,29 @@
         </div>
     </div>
 </div>
+
+<script>
+    const shippingSelect = document.querySelector('select[name="shipping_method"]');
+    const shippingCostElem = document.querySelector('#shipping-cost');
+    const totalCostElem = document.querySelector('#total-cost');
+
+    // Helper: parse Rp formatted string to number
+    function parseRp(rpString) {
+        return parseInt(rpString.replace(/[Rp.\s]/g, '')) || 0;
+    }
+
+    // Helper: format number to Rp string
+    function formatRp(num) {
+        return 'Rp' + num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
+    const subtotal = parseRp(document.querySelector('#subtotal').textContent);
+
+    shippingSelect.addEventListener('change', function() {
+        const selectedOption = shippingSelect.options[shippingSelect.selectedIndex];
+        const shippingCost = parseInt(selectedOption.getAttribute('data-cost')) || 0;
+        shippingCostElem.textContent = formatRp(shippingCost);
+        totalCostElem.textContent = formatRp(subtotal + shippingCost);
+    });
+</script>
 @endsection
