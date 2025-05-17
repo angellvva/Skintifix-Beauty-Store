@@ -48,57 +48,57 @@ class CheckoutController extends Controller
     }
 
     public function process(Request $request)
-    {
-        // Prepare Midtrans config
-        Config::$serverKey = config('services.midtrans.server_key');
-        Config::$isProduction = config('services.midtrans.is_production');
-        Config::$isSanitized = true;
-        Config::$is3ds = true;
+{
+    // Configure Midtrans
+    Config::$serverKey = config('services.midtrans.server_key');
+    Config::$isProduction = config('services.midtrans.is_production');
+    Config::$isSanitized = true;
+    Config::$is3ds = true;
 
-        // Calculate subtotal from cart items (replace with your logic)
-        $cartItems = // get user cart items here
-        $subtotal = $cartItems->sum(fn($item) => $item->price * $item->quantity);
+    // Get selected cart items
+    $selectedItemIds = $request->input('selected_items', []);
+    $cartItems = CartItem::whereIn('id', $selectedItemIds)->get();
 
-        // Get shipping cost from request (you sent it from frontend)
-        $shippingCost = 0;
-        if ($request->shipping_method == 'standard') {
-            $shippingCost = 20000;
-        } elseif ($request->shipping_method == 'express') {
-            $shippingCost = 40000;
-        }
+    // Calculate subtotal
+    $subtotal = $cartItems->sum(fn($item) => $item->price * $item->quantity);
 
-        $totalAmount = $subtotal + $shippingCost;
+    // Determine shipping cost
+    $shippingCost = $request->shipping_method === 'express' ? 40000 : 20000;
 
-        // Prepare transaction details for Midtrans Snap
-        $params = [
-            'transaction_details' => [
-                'order_id' => uniqid(), // generate unique order id
-                'gross_amount' => $totalAmount,
+    $totalAmount = $subtotal + $shippingCost;
+
+    // Prepare transaction params
+    $params = [
+        'transaction_details' => [
+            'order_id' => uniqid('ORDER-'),
+            'gross_amount' => $totalAmount,
+        ],
+        'customer_details' => [
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'billing_address' => [
+                'address' => $request->address,
+                'postal_code' => $request->postal_code,
+                'region' => $request->region,
+                'country' => $request->country,
             ],
-            'customer_details' => [
-                'first_name' => $request->name,
-                'phone' => $request->phone,
-                'address' => [
-                    'address' => $request->address,
-                    'postal_code' => $request->postal_code,
-                    'city' => $request->region,
-                    'country_code' => $request->country,
-                ],
-            ],
-            'item_details' => $cartItems->map(function($item) {
-                return [
-                    'id' => $item->id,
-                    'price' => $item->price,
-                    'quantity' => $item->quantity,
-                    'name' => $item->name,
-                ];
-            })->toArray(),
-        ];
+        ],
+        'item_details' => $cartItems->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'price' => $item->price,
+                'quantity' => $item->quantity,
+                'name' => $item->name,
+            ];
+        })->toArray(),
+    ];
 
-        // Get Snap payment URL (token)
+    try {
         $snapToken = Snap::getSnapToken($params);
-
-        // Return to frontend with snap token
         return response()->json(['snap_token' => $snapToken]);
+    } catch (\Exception $e) {
+        \Log::error('Midtrans Token Error: ' . $e->getMessage());
+        return response()->json(['error' => 'Failed to generate payment token'], 500);
     }
+}
 }
