@@ -81,7 +81,7 @@
         <div class="row mb-4">
             <div class="col-12 d-flex align-items-center justify-content-between">
                 <div>
-                    <h2 class="fw-bold">Products</h2>
+                    <h2 class="fw-bold" style="color: #e965a7;">Products</h2>
                     <p class="text-muted m-0">Manage and monitor all products available in your store</p>
                 </div>
                 <button type="button" class="btn text-white add-product"

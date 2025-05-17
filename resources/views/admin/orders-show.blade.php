@@ -6,7 +6,7 @@
         <a href="{{ route('admin.orders') }}" class="btn btn-light me-3">
             <i class="fas fa-arrow-left"></i>
         </a>
-        <h4 class="fw-bold mb-0">
+        <h4 class="fw-bold" style="color: #e965a7;">
             Order #ORD-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}
             <span class="badge ms-2 
                 @if($order->status == 'pending') bg-warning text-dark
@@ -31,6 +31,7 @@
                     <table class="table">
                         <thead>
                             <tr>
+                                <th>Image</th>
                                 <th>Product</th>
                                 <th>Price</th>
                                 <th>Qty</th>
@@ -39,7 +40,12 @@
                         </thead>
                         <tbody>
                             @foreach ($order->orderItems as $item)
-                                <tr>
+                                <tr class="align-middle">
+                                    <td>
+                                        <img src="{{ $item->product->image }}"
+                                            class="img-fluid"
+                                            style="height: 70px;">
+                                    </td>
                                     <td>{{ $item->product->name ?? '-' }}</td>
                                     <td>Rp {{ number_format($item->price, 0, ',', '.') }}</td>
                                     <td>{{ $item->quantity }}</td>
@@ -49,19 +55,19 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="3" class="text-end">Subtotal:</td>
+                                <td colspan="4" class="text-end">Subtotal:</td>
                                 <td>Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
                             </tr>
                             <tr>
-                                <td colspan="3" class="text-end">Shipping:</td>
+                                <td colspan="4" class="text-end">Shipping:</td>
                                 <td>Rp 0</td>
                             </tr>
                             <tr>
-                                <td colspan="3" class="text-end">Tax:</td>
+                                <td colspan="4" class="text-end">Tax:</td>
                                 <td>Rp 0</td>
                             </tr>
                             <tr class="fw-bold">
-                                <td colspan="3" class="text-end">Total:</td>
+                                <td colspan="4" class="text-end">Total:</td>
                                 <td>Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
                             </tr>
                         </tfoot>
@@ -110,3 +116,15 @@
     </div>
 </div>
 @endsection
+
+@push('styles')
+<style>
+    .card-header {
+        background-color: #e965a7;
+        color: white;
+        font-weight: 600;
+    }
+</style>
+
+</style>
+@endpush
