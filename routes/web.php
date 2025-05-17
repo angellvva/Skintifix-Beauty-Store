@@ -11,6 +11,7 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\WishlistController;
@@ -127,3 +128,9 @@ Route::get('/orders/{id}', [AdminOrderController::class, 'show'])->name('orders.
 // Route untuk edit order
 Route::get('/orders/{id}/edit', [AdminOrderController::class, 'edit'])->name('orders.edit');
 Route::put('/admin/orders/{id}', [AdminOrderController::class, 'update'])->name('orders.update');
+
+Route::resource('admin/categories', CategoryController::class)->names([
+    'index' => 'admin.categories',
+    'store' => 'categories.store',
+    'destroy' => 'categories.destroy',
+]);
