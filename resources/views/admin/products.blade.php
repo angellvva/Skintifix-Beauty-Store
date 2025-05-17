@@ -82,121 +82,131 @@
             <div class="col-12 d-flex align-items-center justify-content-between">
                 <div>
                     <h2 class="fw-bold">Products</h2>
-                    <p class="text-muted">Manage and monitor all products available in your store</p>
+                    <p class="text-muted m-0">Manage and monitor all products available in your store</p>
                 </div>
                 <button type="button" class="btn text-white add-product"
                     onclick="window.location='{{ route('admin.add-product') }}'"><i class="bi bi-plus-lg"></i> Add
                     Product</button>
             </div>
         </div>
+        <div class="card">
+            <div class="card-body">
+                <form id="filterForm" method="GET" action="{{ url()->current() }}">
+                    <div class="row g-3 mb-3 align-items-center">
+                        <div class="col-md-5">
+                            <div class="input-group">
+                                <span class="input-group-text" id="basic-addon1">
+                                    <i class="bi bi-search"></i>
+                                </span>
+                                <input type="text" name="search" class="form-control" placeholder="Search products..."
+                                    aria-label="Search" aria-describedby="basic-addon1" value="{{ request('search') }}" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <select name="category" class="form-select"
+                                onchange="document.getElementById('filterForm').submit()">
+                                <option value="all" {{ request('category', 'all') == 'all' ? 'selected' : '' }}>All
+                                    Categories
+                                </option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}"
+                                        {{ request('category') == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select name="status" class="form-select"
+                                onchange="document.getElementById('filterForm').submit()">
+                                <option value="all" {{ request('status', 'all') == 'all' ? 'selected' : '' }}>All Status
+                                </option>
+                                <option value="in_stock" {{ request('status') == 'in_stock' ? 'selected' : '' }}>In Stock
+                                </option>
+                                <option value="low_stock" {{ request('status') == 'low_stock' ? 'selected' : '' }}>Low Stock
+                                </option>
+                                <option value="out_of_stock" {{ request('status') == 'out_of_stock' ? 'selected' : '' }}>
+                                    Out of
+                                    Stock</option>
+                            </select>
+                        </div>
+                        <div class="col-md-1">
+                            <a href="{{ url()->current() }}" class="btn btn-reset" title="Reset Filter">
+                                <i class="bi bi-arrow-clockwise"></i> Reset
+                            </a>
+                        </div>
+                    </div>
+                </form>
 
-        <form id="filterForm" method="GET" action="{{ url()->current() }}">
-            <div class="row g-3 mb-3 align-items-center">
-                <div class="col-md-5">
-                    <div class="input-group">
-                        <span class="input-group-text" id="basic-addon1">
-                            <i class="bi bi-search"></i>
-                        </span>
-                        <input type="text" name="search" class="form-control" placeholder="Search products..."
-                            aria-label="Search" aria-describedby="basic-addon1" value="{{ request('search') }}" />
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($products as $product)
+                            <tr>
+                                <td class="fw-bold">{{ $product->name }}</td>
+                                <td>{{ $product->category->name }}</td>
+                                <td>Rp {{ number_format($product->price, 0, ',', '.') }}
+                                <td>{{ $product->stock }}</td>
+                                <td>
+                                    @if ($product->stock > 20)
+                                        <span class="badge-in-stock">In Stock</span>
+                                    @elseif($product->stock > 0)
+                                        <span class="badge-low-stock">Low Stock</span>
+                                    @else
+                                        <span class="badge-out-stock">Out of Stock</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="" class="btn btn-sm btn-edit me-2">Edit</a>
+                                    <form action="" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus produk">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        @if ($products->total() == 0)
+                            Showing 0 entries
+                        @else
+                            Showing {{ $products->firstItem() }} to {{ $products->lastItem() }} of
+                            {{ $products->total() }}
+                            entries
+                        @endif
+                    </div>
+
+                    {{-- Pagination links --}}
+                    <div class="d-flex justify-content-end">
+                        @if ($products->onFirstPage())
+                            <button class="btn btn-secondary me-1" disabled>Prev</button>
+                        @else
+                            <a href="{{ $products->previousPageUrl() }}" class="btn btn-prev-next me-1"
+                                style="margin-right: 4px;">Prev</a>
+                        @endif
+
+                        @if ($products->hasMorePages())
+                            <a href="{{ $products->nextPageUrl() }}" class="btn btn-prev-next ms-1">Next</a>
+                        @else
+                            <button class="btn btn-secondary ms-1" disabled>Next</button>
+                        @endif
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <select name="category" class="form-select" onchange="document.getElementById('filterForm').submit()">
-                        <option value="all" {{ request('category', 'all') == 'all' ? 'selected' : '' }}>All Categories
-                        </option>
-                        @foreach ($categories as $category)
-                            <option value="{{ $category->id }}"
-                                {{ request('category') == $category->id ? 'selected' : '' }}>
-                                {{ $category->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <select name="status" class="form-select" onchange="document.getElementById('filterForm').submit()">
-                        <option value="all" {{ request('status', 'all') == 'all' ? 'selected' : '' }}>All Status</option>
-                        <option value="in_stock" {{ request('status') == 'in_stock' ? 'selected' : '' }}>In Stock</option>
-                        <option value="low_stock" {{ request('status') == 'low_stock' ? 'selected' : '' }}>Low Stock
-                        </option>
-                        <option value="out_of_stock" {{ request('status') == 'out_of_stock' ? 'selected' : '' }}>Out of
-                            Stock</option>
-                    </select>
-                </div>
-                <div class="col-md-1">
-                    <a href="{{ url()->current() }}" class="btn btn-reset" title="Reset Filter">
-                        <i class="bi bi-arrow-clockwise"></i> Reset
-                    </a>
-                </div>
-            </div>
-        </form>
-
-        <table class="table align-middle">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Category</th>
-                    <th>Price</th>
-                    <th>Stock</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($products as $product)
-                    <tr>
-                        <td class="fw-bold">{{ $product->name }}</td>
-                        <td>{{ $product->category->name }}</td>
-                        <td>Rp {{ number_format($product->price, 0, ',', '.') }}
-                        <td>{{ $product->stock }}</td>
-                        <td>
-                            @if ($product->stock > 20)
-                                <span class="badge-in-stock">In Stock</span>
-                            @elseif($product->stock > 0)
-                                <span class="badge-low-stock">Low Stock</span>
-                            @else
-                                <span class="badge-out-stock">Out of Stock</span>
-                            @endif
-                        </td>
-                        <td>
-                            <a href="" class="btn btn-edit me-2">Edit</a>
-                            <form action="" method="POST" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-outline-danger" title="Hapus produk">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-
-        <div class="d-flex justify-content-between align-items-center mb-2">
-            <div>
-                @if ($products->total() == 0)
-                    Showing 0 entries
-                @else
-                    Showing {{ $products->firstItem() }} to {{ $products->lastItem() }} of {{ $products->total() }}
-                    entries
-                @endif
-            </div>
-
-            {{-- Pagination links --}}
-            <div class="d-flex justify-content-end">
-                @if ($products->onFirstPage())
-                    <button class="btn btn-secondary me-1" disabled>Prev</button>
-                @else
-                    <a href="{{ $products->previousPageUrl() }}" class="btn btn-prev-next me-1"
-                        style="margin-right: 4px;">Prev</a>
-                @endif
-
-                @if ($products->hasMorePages())
-                    <a href="{{ $products->nextPageUrl() }}" class="btn btn-prev-next ms-1">Next</a>
-                @else
-                    <button class="btn btn-secondary ms-1" disabled>Next</button>
-                @endif
             </div>
         </div>
     </div>

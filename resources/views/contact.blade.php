@@ -39,7 +39,7 @@
 
     <div class="contact-section">
         <div class="container py-5">
-            <div class="p-5 bg-white shadow-sm rounded">
+            <div class="p-5 bg-white shadow-sm" style="border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                 <div class="row g-4">
                     <div class="col-12 text-center">
                         <h1 class="contact-title">Get in Touch with Skintifix</h1>

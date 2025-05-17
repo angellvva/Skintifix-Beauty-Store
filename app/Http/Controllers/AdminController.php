@@ -65,14 +65,18 @@ class AdminController extends Controller
             $query->where('name', 'like', "%{$search}%");
         }
 
-        // Sorting berdasarkan status dropdown
-        switch ($request->input('status')) {
+        // Ambil status dengan default 'highest_spend'
+        $status = $request->input('status', 'highest_spend');
+
+        switch ($status) {
             case 'highest_spend':
-                // Menghitung total spent per user menggunakan withSum
-                $query->withSum('orders', 'total_amount')->orderBy('orders_sum_total_amount', 'desc');
+                // Total belanja tertinggi
+                $query->withSum('orders', 'total_amount')
+                    ->orderBy('orders_sum_total_amount', 'desc');
                 break;
 
             case 'most_orders':
+                // Jumlah pesanan terbanyak
                 $query->withCount('orders')
                     ->withSum('orders', 'total_amount')
                     ->orderBy('orders_count', 'desc')
@@ -84,6 +88,7 @@ class AdminController extends Controller
 
         return view('admin.customers', compact('customers'));
     }
+
 
     public function categories()
     {

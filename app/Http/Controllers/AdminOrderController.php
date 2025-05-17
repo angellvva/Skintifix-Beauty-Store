@@ -37,12 +37,25 @@ class AdminOrderController extends Controller
     {
         $query = Order::with('user', 'orderItems');
 
-        if ($request->filled('status')) {
+        if ($request->filled('search')) {
+            $orderId = $request->input('search');
+
+            if (is_numeric($orderId)) {
+                $query->where('id', $orderId);
+            } else {
+                $query->whereRaw('0 = 1');
+            }
+        }
+
+        if ($request->filled('status') && $request->status !== 'all') {
             $query->where('status', $request->status);
         }
 
-        $sort = $request->input('sort', 'desc'); // default: newest first
-        $orders = $query->orderBy('order_date', $sort)->paginate(10);
+        // Validasi sort hanya boleh 'asc' atau 'desc'
+        $sort = $request->input('sort', 'desc');
+        $sort = in_array($sort, ['asc', 'desc']) ? $sort : 'desc';
+
+        $orders = $query->orderBy('order_date', $sort)->paginate(5);
 
         return view('admin.orders', compact('orders'));
     }

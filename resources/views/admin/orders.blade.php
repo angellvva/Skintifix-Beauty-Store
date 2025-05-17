@@ -5,7 +5,7 @@
         <div class="row mb-4">
             <div class="col-12">
                 <h2 class="fw-bold">Orders</h2>
-                <p class="text-muted">Track and process customer orders efficiently</p>
+                <p class="text-muted m-0">Track and process customer orders efficiently</p>
             </div>
         </div>
 
@@ -46,25 +46,48 @@
         </div>
 
         <!-- Order Table -->
-        <div class="card mb-4">
+        <div class="card">
             <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <input type="text" class="form-control w-25" placeholder="Search orders...">
-                    <div>
-                        <select class="form-select d-inline-block w-auto me-2">
-                            <option>All Status</option>
-                            <option>Pending</option>
-                            <option>Processing</option>
-                            <option>Completed</option>
-                        </select>
-                        <select class="form-select d-inline-block w-auto">
-                            <option>Newest First</option>
-                            <option>Oldest First</option>
-                        </select>
+                <form method="GET" id="filterForm">
+                    <div class="row g-3 mb-3 align-items-center">
+                        <div class="col-md-5">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                <input type="text" name="search" class="form-control" placeholder="Search orders ID..."
+                                    value="{{ request('search') }}" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <select name="status" class="form-select"
+                                onchange="document.getElementById('filterForm').submit()">
+                                <option value="all" {{ request('status', 'all') == 'all' ? 'selected' : '' }}>All Status
+                                </option>
+                                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending
+                                </option>
+                                <option value="processing" {{ request('status') == 'processing' ? 'selected' : '' }}>
+                                    Processing</option>
+                                <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select name="sort" class="form-select"
+                                onchange="document.getElementById('filterForm').submit()">
+                                <option value="desc" {{ request('sort', 'desc') == 'desc' ? 'selected' : '' }}>Newest
+                                    First</option>
+                                <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Oldest First
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-1">
+                            <a href="{{ url()->current() }}" class="btn btn-reset">
+                                <i class="bi bi-arrow-clockwise"></i> Reset
+                            </a>
+                        </div>
                     </div>
-                </div>
+                </form>
 
-                <table class="table table-bordered align-middle">
+                <table class="table align-middle">
                     <thead>
                         <tr>
                             <th>Order ID</th>
@@ -78,43 +101,71 @@
                     </thead>
                     <tbody>
                         @foreach ($orders as $order)
-                        <tr>
-                            <td>#ORD-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</td>
-                            <td>{{ $order->user->name }}</td>
-                            <td>{{ \Carbon\Carbon::parse($order->order_date)->format('M d, Y') }}</td>
-                            <td>{{ $order->orderItems->sum('quantity') }}</td>
-                            <td>Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
-                            <td>
-                                <span class="badge 
-                                    @if($order->status == 'Pending') bg-warning text-dark
+                            <tr>
+                                <td class="fw-bold">#ORD-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</td>
+                                <td>{{ $order->user->name }}</td>
+                                <td>{{ \Carbon\Carbon::parse($order->order_date)->format('d M Y') }}</td>
+
+                                @if ($order->orderItems->sum('quantity') <= 1)
+                                    <td>{{ $order->orderItems->sum('quantity') }} item</td>
+                                @else
+                                    <td>{{ $order->orderItems->sum('quantity') }} items</td>
+                                @endif
+
+                                <td>Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
+                                <td>
+                                    <span
+                                        class="badge 
+                                    @if ($order->status == 'Pending') bg-warning text-dark
                                     @elseif($order->status == 'Processing') bg-primary
                                     @elseif($order->status == 'Shipped') bg-info
                                     @elseif($order->status == 'Delivered') bg-success
-                                    @elseif($order->status == 'Cancelled') bg-danger
-                                    @endif">
-                                    {{ $order->status }}
-                                </span>
-                            </td>
-                            <td>
-                                <a href="{{ route('orders.show', $order->id) }}" class="btn btn-sm btn-pink">View</a>
-                            </td>
-                        </tr>
+                                    @elseif($order->status == 'Cancelled') bg-danger @endif">
+                                        {{ $order->status }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="{{ route('orders.show', $order->id) }}" class="btn btn-sm btn-pink">View</a>
+                                </td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>
 
-                <!-- Pagination -->
-                <div class="d-flex justify-content-end">
-                    {{ $orders->links() }}
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        @if ($orders->total() == 0)
+                            Showing 0 entries
+                        @else
+                            Showing {{ $orders->firstItem() }} to {{ $orders->lastItem() }} of
+                            {{ $orders->total() }}
+                            entries
+                        @endif
+                    </div>
+
+                    {{-- Pagination links --}}
+                    <div class="d-flex justify-content-end">
+                        @if ($orders->onFirstPage())
+                            <button class="btn btn-secondary me-1" disabled>Prev</button>
+                        @else
+                            <a href="{{ $orders->previousPageUrl() }}" class="btn btn-prev-next me-1"
+                                style="margin-right: 4px;">Prev</a>
+                        @endif
+
+                        @if ($orders->hasMorePages())
+                            <a href="{{ $orders->nextPageUrl() }}" class="btn btn-prev-next ms-1">Next</a>
+                        @else
+                            <button class="btn btn-secondary ms-1" disabled>Next</button>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
 @endsection
 
 @push('styles')
-<style>
+    <style>
         .btn-pink {
             color: #e965a7;
             background-color: white;
@@ -126,17 +177,69 @@
             color: white;
         }
 
-.card-pink {
-    background-color: #e965a7;
-    border: none;
-    color: white;
-}
+        .card-pink {
+            background-color: #e965a7;
+            border: none;
+            color: white;
+        }
 
-.card-pink .small,
-.card-pink h3,
-.card-pink h4,
-.card-pink .card-body {
-    color: white;
-}
-</style>
+        .card-pink .small,
+        .card-pink h3,
+        .card-pink h4,
+        .card-pink .card-body {
+            color: white;
+        }
+
+        .btn-reset {
+            border: 1px solid #dee2e6;
+            color: black;
+            background-color: white;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .btn-prev-next {
+            color: white;
+            background-color: #e965a7;
+        }
+
+        .btn-prev-next:hover {
+            color: white;
+            background-color: #da5195;
+        }
+
+        table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+        }
+
+        thead th:nth-child(1) {
+            width: 15%;
+        }
+
+        thead th:nth-child(2) {
+            width: 20%;
+        }
+
+        thead th:nth-child(3) {
+            width: 15%;
+        }
+
+        thead th:nth-child(4) {
+            width: 15%;
+        }
+
+        thead th:nth-child(5) {
+            width: 15%;
+        }
+
+        thead th:nth-child(6) {
+            width: 10%;
+        }
+
+        thead th:nth-child(7) {
+            width: 10%;
+        }
+    </style>
 @endpush

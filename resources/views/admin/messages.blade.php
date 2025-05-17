@@ -5,7 +5,7 @@
         <div class="row mb-4">
             <div class="col-12">
                 <h2 class="fw-bold">Messages</h2>
-                <p class="text-muted">Handle communication and messages with customers and support</p>
+                <p class="text-mute m-0">Handle communication and messages with customers and support</p>
             </div>
         </div>
     </div>

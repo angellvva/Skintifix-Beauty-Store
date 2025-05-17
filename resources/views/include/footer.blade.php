@@ -48,7 +48,7 @@
     <!-- Copyright -->
     <div class="text-center text-white p-3" style="background-color: #e965a7;">
         <span class="text-light">
-            <a href="#" style="color: #ffc0cb;"><i class="fas fa-copyright me-2"></i>2025 Skintifix Beauty
+            <a href="#" style="color: white;"><i class="fas fa-copyright me-2"></i>2025 Skintifix Beauty
                 Store</a>. All rights reserved.
         </span>
     </div>
