@@ -30,7 +30,7 @@
             <!-- Total Revenue -->
             <div class="col-lg-4 mb-4">
                 <a href="{{ route('admin.orders') }}" class="text-decoration-none text-white">
-                    <div class="card stat-card gradient-green text-white rounded-4 h-100">
+                    <div class="card stat-card gradient-pink text-white rounded-4 h-100">
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
                                 <h6 class="text-uppercase fw-semibold mb-1">Total Revenue</h6>
@@ -47,7 +47,7 @@
             <!-- Total Products -->
             <div class="col-lg-4 mb-4">
                 <a href="{{ route('admin.products') }}" class="text-decoration-none text-white">
-                    <div class="card stat-card gradient-blue text-white rounded-4 h-100">
+                    <div class="card stat-card gradient-pink text-white rounded-4 h-100">
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
                                 <h6 class="text-uppercase fw-semibold mb-1">Total Products</h6>
