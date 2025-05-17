@@ -130,22 +130,37 @@
             <h2>All Products</h2>
             <div class="product-grid">
                 @forelse ($products as $product)
-                    <div class="product-card position-relative" style="cursor: pointer;"
-                        onclick="window.location='{{ route('product.detail', $product->id) }}'">
-                        <img src="{{ $product->image }}" alt="{{ $product->name }}">
+                    <div class="product-card position-relative" style="cursor: pointer;">
+                        <a href="{{ route('product.detail', $product->id) }}" style="text-decoration: none; color: inherit;">
+                            <img src="{{ $product->image }}" alt="{{ $product->name }}">
 
-                        <!-- Label kategori -->
-                        <div class="product-category-label">
-                            {{ $product->category->name }}
-                        </div>
+                            <!-- Category Label - Moved to Top Left -->
+                            <div class="product-category-label" style="left: 15px; right: auto;">
+                                {{ $product->category->name }}
+                            </div>
+                        </a>
+
+                        <!-- Heart Wishlist Button - Top Right -->
+                        <form action="{{ route('wishlist.toggle', $product->id) }}" method="POST"
+                            style="position: absolute; top: 10px; right: 10px; z-index: 20;">
+                            @csrf
+                            <button type="submit" style="background: none; border: none; cursor: pointer;">
+                                @if ($product->isInWishlist ?? false)
+                                    <i class="fas fa-heart" style="color: #e965a7; font-size: 20px;"></i>
+                                @else
+                                    <i class="far fa-heart" style="color: #e965a7; font-size: 20px;"></i>
+                                @endif
+                            </button>
+                        </form>
 
                         <div class="product-name">{{ $product->name }}</div>
                         <div class="product-stock">Stock: {{ $product->stock }}</div>
                         <div class="product-price">Rp{{ number_format($product->price, 0, ',', '.') }}</div>
-                        <div class="product-description">{{ $product->description, 60 }}</div>
+                        <div class="product-description">{{ $product->description }}</div>
                     </div>
-                @empty
-                    <p style="text-align: center; width: 100%; color: #888;">No products found.</p>
+                    @empty
+                    {{-- What to show if $products is empty --}}
+                    <p>No products found.</p>
                 @endforelse
             </div>
         </div>

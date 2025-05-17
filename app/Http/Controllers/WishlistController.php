@@ -6,6 +6,7 @@ use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cookie;
+use App\Models\Wishlist;
 
 class WishlistController extends Controller
 {
@@ -46,7 +47,7 @@ class WishlistController extends Controller
 
     public function toggle(Request $request, $productId)
     {
-        $userId = session('user_id'); // or whatever key you use to store the logged-in user
+        $userId = session('id'); // or whatever key you use to store the logged-in user
 
         if (!$userId) {
             return back()->with('success', 'You need to log in first.');

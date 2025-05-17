@@ -50,7 +50,24 @@ class HomeController extends Controller
 
     public function allProducts()
     {
-        $products = Product::all(); // Or paginate(12) if needed
+        $userId = session('id'); // or Auth::id() if you're using authentication
+        $products = Product::with('category')->get();
+
+        // If user is logged in, mark each product as in wishlist or not
+        if ($userId) {
+            $wishlistProductIds = Wishlist::where('user_id', $userId)
+                                        ->pluck('product_id')
+                                        ->toArray();
+
+            foreach ($products as $product) {
+                $product->isInWishlist = in_array($product->id, $wishlistProductIds);
+            }
+        } else {
+            foreach ($products as $product) {
+                $product->isInWishlist = false;
+            }
+        }
+
         return view('catalog', compact('products'));
     }
 
