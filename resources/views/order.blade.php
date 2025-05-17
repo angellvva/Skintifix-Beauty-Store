@@ -121,8 +121,7 @@
                             </div>
                             <div class="order-right">
                                 <img src="{{ $order->image }}" alt="{{ $order->name }}" class="order-img">
-                                <a href="{{ url('/customer/order/' . $order->order_id) }}" class="btn-view-order">View Order</a>
-                            </div>
+                                <a href="{{ route('order.show', ['order_id' => $order->order_id]) }}" class="btn-view-order">Order Detail</a>
                         </div>
                     @endforeach
                 </div>

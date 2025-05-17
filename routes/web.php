@@ -140,3 +140,9 @@ Route::get('/admin/categories/{id}/edit', [CategoryController::class, 'edit'])->
 Route::put('/admin/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
 
 Route::post('/category/remove', [CategoryController::class, 'removeCategory'])->name('category.remove');
+
+// Single route for both showing and tracking orders
+Route::get('/order/{order_id}', [OrderController::class, 'showOrTrack'])->name('order.show'); // Show or track order
+
+// Route for canceling the order
+Route::get('/order/cancel/{order_id}', [OrderController::class, 'cancel'])->name('order.cancel'); // Cancel order

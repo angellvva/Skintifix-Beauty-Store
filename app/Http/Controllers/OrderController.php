@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cookie;
@@ -50,5 +51,23 @@ class OrderController extends Controller
         return view('order', compact('orders'));
     }
 
-    // Other methods (showOrder, cancelOrder, createOrder) remain unchanged
+    public function showOrTrack($order_id)
+{
+    // Find the order by its ID
+    $order = Order::findOrFail($order_id);
+    // Check if the current route is for tracking
+    $isTracking = request()->routeIs('order.track'); // This checks if we're on the 'track' route
+
+    return view('order-detail', compact('order', 'isTracking')); // Pass order data and tracking flag
+}
+
+    public function cancel($order_id)
+    {
+        // Logic to cancel the order
+        $order = Order::findOrFail($order_id);
+        $order->status = 'Cancelled'; // Update order status
+        $order->save();
+
+        return redirect()->route('order.show', ['order_id' => $order_id])->with('success', 'Order has been cancelled successfully!');
+    }
 }
