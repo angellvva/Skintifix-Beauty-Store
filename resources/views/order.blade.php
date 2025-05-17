@@ -4,162 +4,123 @@
     <style>
         .product-section {
             background-color: #fff0f6;
+            padding: 60px 0;
         }
 
         .order-container {
-            margin-bottom: 60px;
+            margin: 0 auto;
+            max-width: 1200px;
+            padding: 30px;
         }
 
+        /* Flex container for order card */
         .order-card {
-            border: 2px solid #e965a7 !important;
-            transition: all 0.3s ease;
-            width: 260px;
-            border-radius: 8px;
-        }
-
-        .order-card:hover {
-            box-shadow: 0 0 15px rgba(233, 101, 167, 0.5);
-            transform: translateY(-5px);
-            z-index: 1;
-        }
-
-        .order-img {
-            height: 160px;
-            object-fit: contain;
-            margin-bottom: 1rem;
-        }
-
-        .order-grid {
             display: flex;
-            flex-wrap: wrap;
-            gap: 20px 10px;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            font-size: 18px;
+            width: 100%;
         }
 
-        .empty-order-icon {
-            font-size: 60px;
-            color: #ccc;
+        .order-left {
+            flex: 2;
+            padding-right: 30px; /* More space between text and image */
         }
 
-        .empty-order-text {
-            font-weight: 500;
-            color: #555;
+        .order-left p, .order-left h5 {
+            margin: 10px 0;
+            font-size: 20px; /* Increased text size */
         }
 
-        .empty-order-container {
-            padding-top: 100px;
-            padding-bottom: 100px;
+        .order-right {
+            flex: 1;
             text-align: center;
         }
 
-        .btn-checkout {
-            border: 1px solid #e965a7;
-            border-radius: 8px;
-            background: none;
-            width: 33px;
-            height: 31px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
+        .order-img {
+            width: 200px;  /* Enlarged image size */
+            height: 200px;
+            object-fit: contain;
+            border-radius: 12px;
+            margin-bottom: 20px;
         }
 
-        .btn-checkout i {
-            color: #e965a7;
-            transition: color 0.3s ease;
+        .rating {
+            margin-top: 15px;
         }
 
-        .btn-checkout:hover {
+        .star {
+            color: #ccc;
+            font-size: 24px;
+        }
+
+        .star.filled {
+            color: #ffcc00;
+        }
+
+        .btn-view-order {
+            display: inline-block;
             background-color: #e965a7;
-        }
-
-        .btn-checkout:hover i {
             color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-top: 20px;
+            font-size: 18px;
         }
 
-        .order-section {
-            background-color: #fff0f6;
+        .btn-view-order:hover {
+            background-color: #d84f91;
+        }
+
+        /* Styling for the header */
+        h2 {
+            text-align: left;
+            color: #e965a7;
+            margin-bottom: 30px;
+            font-size: 36px;
         }
     </style>
+
     <div class="product-section">
-        <div class="container py-5">
-            <h2 class="fw-bold mb-4" style="color: #e965a7;">My Orders</h2>
+        <div class="order-container">
+            <h2 class="fw-bold mb-4" style="color: #e965a7;">My Order</h2>
 
             @if (session('success'))
-                <p class="item-desc text-muted mb-4">
-                    You have {{ is_countable($orders) ? count($orders) : 0 }}
-                    {{ is_countable($orders) && count($orders) === 1 ? 'order' : 'orders' }}
-                </p>
-
-                <div id="order-notification" class="alert alert-success"
-                    style="
-                        position: fixed;
-                        top: 120px;
-                        right: 313px;
-                        background-color: #d4edda;  /* hijau muda */
-                        color: #155724;             /* hijau gelap */
-                        border: 1px solid #c3e6cb; /* border hijau */
-                        border-radius: 8px;
-                        padding: 10px 20px 10px 15px;
-                        z-index: 9999;
-                        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-                        opacity: 1;
-                        display: flex;
-                        align-items: center;
-                        justify-content: space-between;
-                        min-width: 250px;
-                    ">
+                <div id="order-notification" class="alert alert-success">
                     <span>{{ session('success') }}</span>
-                    <button id="close-order-notification"
-                        style="
-                            background: transparent;
-                            border: none;
-                            color: #155724;
-                            font-weight: bold;
-                            font-size: 20px;
-                            line-height: 1;
-                            cursor: pointer;
-                            padding: 0 5px;
-                            margin-left: 15px;
-                        "
-                        aria-label="Close notification">&times;</button>
+                    <button id="close-order-notification" style="background: transparent; border: none; color: #155724; font-weight: bold; font-size: 20px; line-height: 1; cursor: pointer; padding: 0 5px; margin-left: 15px;" aria-label="Close notification">&times;</button>
                 </div>
             @endif
 
             @if (isset($orders) && count($orders) > 0)
-                <div class="order-container">
-                    <div class="order-grid">
-                        @foreach ($orders as $order)
-                            <div class="card order-card border-0 shadow-sm p-3">
-                                <img src="{{ $order->image }}" class="card-img-top order-img mx-auto d-block"
-                                    alt="{{ $order->name }}">
-                                <div class="card-body text-center">
-                                    <h5 class="card-title">{{ $order->name }}</h5>
-                                    <p class="card-text text-danger fw-bold">
-                                        Rp{{ number_format($order->price, 0, ',', '.') }}
-                                    </p>
-                                    <div class="d-flex justify-content-center gap-2">
-                                        <a href="{{ url('/customer/order/' . $order->order_id) }}"
-                                            class="btn btn-outline-secondary btn-sm">View Order</a>
-                                        {{-- <form action="{{ route('cart.add', $order->order_id) }}" method="POST">
-                                            @csrf
-                                            <button type="submit" class="btn-checkout" title="Go to checkout">
-                                                <i class="fas fa-arrow-right"></i>
-                                            </button>
-                                        </form> --}}
-                                        {{-- <form method="POST" action="{{ route('my-orders') }}"
-                                            onsubmit="return confirm('Remove this order from your list?');">
-                                            @csrf
-                                            <input type="hidden" name="order_id" value="{{ $order->order_id }}">
-                                            <button type="submit" class="btn btn-outline-danger btn-sm"
-                                                title="Remove from Orders">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </form> --}}
-                                    </div>
+                <div class="order-grid">
+                    @foreach ($orders as $order)
+                        <div class="order-card">
+                            <div class="order-left">
+                                <p><strong>Order ID:</strong> {{ $order->order_id }}</p>
+                                <h5>{{ $order->name }}</h5>
+                                <p><strong>Price:</strong> Rp{{ number_format($order->price, 0, ',', '.') }}</p>
+                                <p><strong>Order Date:</strong> {{ \Carbon\Carbon::parse($order->created_at)->format('d M Y') }}</p>
+                                <p><strong>Estimated Delivery:</strong> {{ $order->estimated_delivery }}</p>
+                                <p><strong>Shipping Date:</strong> {{ $order->shipping_date }}</p>
+                                <div class="rating">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <span class="star {{ $i <= $order->rating ? 'filled' : '' }}">★</span>
+                                    @endfor
                                 </div>
+                                <a href="{{ url('/customer/order/' . $order->order_id) }}" class="btn-view-order">View Order</a>
                             </div>
-                        @endforeach
-                    </div>
+                            <div class="order-right">
+                                <img src="{{ $order->image }}" alt="{{ $order->name }}" class="order-img">
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             @else
                 <div style="background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
@@ -183,8 +144,8 @@
             const closeBtn = document.getElementById('close-order-notification');
             if (!notification) return;
 
-            const displayTime = 4000; // durasi tampil notifikasi sebelum auto fade
-            const fadeDuration = 1000; // durasi animasi fade out
+            const displayTime = 4000; // duration before auto fade
+            const fadeDuration = 1000; // fade-out duration
 
             function fadeOutAndHide() {
                 notification.style.transition = `opacity ${fadeDuration}ms ease`;
@@ -204,5 +165,4 @@
             }
         });
     </script>
-
 @endsection
