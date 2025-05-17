@@ -162,14 +162,16 @@
                     </div>
                 </div>
             @else
-                <div class="table-responsive shadow-sm rounded bg-white p-5 text-center"
-                    style="border: 1px solid #e965a7;">
-                    <i class="fas fa-shopping-cart fa-4x mb-4" style="color: #e965a7;"></i>
-                    <h4 class="mb-3" style="color: #e965a7;">you haven't checked out yet</h4>
-                    <a href="{{ route('catalog') }}" class="btn rounded-pill px-4 shadow-sm"
-                        style="background-color: #e965a7; color: white;">
-                        Checkout Now
-                    </a>
+                <div style="background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <div class="table-responsive text-center py-5">
+                        <i class="fas fa-shopping-cart fa-4x mb-4" style="color: #e965a7;"></i>
+                        <h4 class="mb-3" style="color: #e965a7;">Your order is empty.</h4>
+                        <p class="text-muted mb-4">Looks like you haven't checkout yet.</p>
+                        <a href="{{ route('catalog') }}" class="btn rounded-pill px-4 shadow-sm"
+                            style="background-color: #e965a7; color: white;">
+                            Checkout Now
+                        </a>
+                    </div>
                 </div>
             @endif
         </div>
