@@ -22,7 +22,7 @@ class AdminOrderController extends Controller
 
     public function edit($id)
     {
-        $order = Order::with('user', 'orderItems')->findOrFail($id);
+        $order = Order::with('user', 'orderItems','payment')->findOrFail($id);
         return view('admin.orders-edit', compact('order'));
     }
 
