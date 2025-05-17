@@ -79,6 +79,17 @@
         .btn-cart-pink:hover i {
             color: white;
         }
+
+        .btn-outline-pink {
+        border: 1px solid #e965a7;
+        color: #e965a7;
+        background-color: white;
+        }
+
+        .btn-outline-pink:hover {
+            background-color: #e965a7;
+            color: white;
+        }
     </style>
     <div class="product-section">
         <div class="container py-5">
@@ -138,8 +149,10 @@
                                         Rp{{ number_format($item->price, 0, ',', '.') }}
                                     </p>
                                     <div class="d-flex justify-content-center gap-2">
-                                        <a href="{{ url('/customer/product/' . $item->id) }}"
-                                            class="btn btn-outline-secondary btn-sm">View</a>
+                                        <a href="{{ route('product.detail', $item->id) }}"
+                                            class="btn btn-sm btn-outline-pink" title="View Product Detail">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
                                         <form action="{{ route('cart.add', $item->id) }}" method="POST">
                                             @csrf
                                             <button type="submit" class="btn-cart-pink" title="Add to cart">

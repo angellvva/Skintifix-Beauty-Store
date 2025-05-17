@@ -41,7 +41,7 @@
                                                     @csrf
                                                     <input type="hidden" name="category_id" value="{{ $category->id }}">
                                                     <button type="submit"
-                                                                class="btn btn-sm btn-outline-pink"
+                                                                class="btn btn-sm btn-outline-red"
                                                                 style="color: #dc3545;">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
@@ -90,6 +90,12 @@
     <style>
         .btn-outline-pink {
             border: 1px solid #e965a7;
+            color: #e965a7;
+            background-color: white;
+        }
+
+        .btn-outline-red {
+            border: 1px solid red;
             color: #e965a7;
             background-color: white;
         }
