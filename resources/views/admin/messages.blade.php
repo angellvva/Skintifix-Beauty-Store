@@ -11,14 +11,14 @@
 
         {{-- Top Summary --}}
         <div class="row mb-4">
-            <div class="col-md-3">
-                <div class="card gradient-pink text-white rounded-4 shadow-sm">
+            <div class="col-12 col-md-6 col-lg-4 mb-3">
+                <div class="card gradient-pink text-white rounded-4 shadow-sm h-100">
                     <div class="card-body d-flex justify-content-between align-items-center">
-                        <div>
+                        <div class="flex-grow-1">
                             <h6 class="text-uppercase fw-semibold mb-1">Total Messages</h6>
                             <h3 class="mb-0">{{ $totalMessages }}</h3>
                         </div>
-                        <div class="icon-circle">
+                        <div class="icon-circle flex-shrink-0 ms-3">
                             <i class="fas fa-envelope fa-lg"></i>
                         </div>
                     </div>

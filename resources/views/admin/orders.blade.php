@@ -20,7 +20,7 @@
                                 <h6 class="text-uppercase fw-semibold mb-1">Total Orders</h6>
                                 <h2 class="mb-0">{{ $totalOrders }}</h2>
                             </div>
-                            <div class="icon-circle">
+                            <div class="icon-circle flex-shrink-0 ms-3">
                                 <i class="fas fa-shopping-cart fa-lg"></i>
                             </div>
                         </div>
@@ -37,7 +37,7 @@
                                 <h6 class="text-uppercase fw-semibold mb-1">Pending</h6>
                                 <h2 class="mb-0">{{ $totalPending }}</h2>
                             </div>
-                            <div class="icon-circle">
+                            <div class="icon-circle flex-shrink-0 ms-3">
                                 <i class="fas fa-hourglass-start fa-lg"></i>
                             </div>
                         </div>
@@ -54,7 +54,7 @@
                                 <h6 class="text-uppercase fw-semibold mb-1">Processing</h6>
                                 <h2 class="mb-0">{{ $totalProcessing }}</h2>
                             </div>
-                            <div class="icon-circle">
+                            <div class="icon-circle flex-shrink-0 ms-3">
                                 <i class="fas fa-sync-alt fa-lg"></i>
                             </div>
                         </div>
@@ -71,7 +71,7 @@
                                 <h6 class="text-uppercase fw-semibold mb-1">Completed</h6>
                                 <h2 class="mb-0">{{ $totalCompleted }}</h2>
                             </div>
-                            <div class="icon-circle">
+                            <div class="icon-circle flex-shrink-0 ms-3">
                                 <i class="fas fa-check-circle fa-lg"></i>
                             </div>
                         </div>
