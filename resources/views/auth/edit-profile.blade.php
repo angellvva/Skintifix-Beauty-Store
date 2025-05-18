@@ -49,7 +49,7 @@
                         <h4 class="fw-bold mb-1">Personal Information</h4>
                         <p class="text-muted mb-4">Update your personal details</p>
 
-                        <form method="POST" action="{{ route('profile.update') }}">
+                        <form method="POST" action="{{ route('profile.updatePassword') }}">
                             @csrf
                             <!-- Profile Picture Placeholder -->
                             <div class="d-flex justify-content-center mb-4">

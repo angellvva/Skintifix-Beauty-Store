@@ -54,7 +54,7 @@ Route::post('/reset-password', [PasswordController::class, 'reset'])
 //Route untuk button add cart dan wishlist di product page
 Route::post('/wishlist/add/{id}', [HomeController::class, 'addToWishlist'])->name('wishlist.add');
 Route::get('/wishlist', [WishlistController::class, 'Wishlist'])->name('wishlist.view');
-Route::delete('/wishlist/remove', [WishlistController::class, 'removeFromWishlist'])->name('wishlist.remove');
+Route::post('/wishlist/remove', [WishlistController::class, 'removeFromWishlist'])->name('wishlist.remove');
 Route::post('/wishlist/toggle/{id}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
 
 //Route contact
@@ -95,7 +95,7 @@ Route::get('/catalog/{category}', [ProductController::class, 'categoryCatalog'])
 // Route untuk ke view edit profile saat pencet button edit profile
 Route::get('/edit-profile', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::post('/edit-profile', [ProfileController::class, 'update'])->name('profile.update');
-Route::post('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
+Route::post('/update-password', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
 
 // route my orders
 Route::get('/my-orders', [OrderController::class, 'index'])->name('my-orders');
