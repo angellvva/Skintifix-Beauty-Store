@@ -3,7 +3,7 @@
 @section('content')
     <style>
         .order-detail-section {
-            background-color: #f9f9f9;
+            background-color: #fff0f6;
             padding: 40px 0;
         }
 
@@ -64,26 +64,13 @@
             margin-top: 20px;
             font-size: 18px;
             font-weight: bold;
-            color: orange;
+            color: black;
         }
 
         .order-actions {
             margin-top: 30px;
             display: flex;
             justify-content: space-between;
-        }
-
-        .order-actions .cancel-btn {
-            padding: 12px 20px;
-            background-color: #ff6b6b;
-            color: white;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 16px;
-        }
-
-        .order-actions .cancel-btn:hover {
-            background-color: #d84f91;
         }
 
         .order-total {
@@ -96,15 +83,15 @@
         .order-address {
             margin-top: 20px;
             font-size: 18px;
-            color: #555;
+            color: black;
         }
     </style>
 
     <div class="order-detail-section">
         <div class="order-detail-container">
             <div class="order-header">
-                <h2>My Order</h2>
-                <p class="order-id">Order ID: #{{ $order->id }}</p>
+                <h2 class="fw-bold mb-4" style="color: #e965a7;">My Order</h2>
+                <p class="order-id"><strong>Order ID:</strong> {{ $order->id }}</p>
             </div>
 
             <div class="order-product-list">
@@ -122,7 +109,8 @@
 
             <div class="order-status">
                 Status: {{ $order->status }} <br>
-                Delivery Expected by: {{ \Carbon\Carbon::parse($order->estimated_delivery)->format('d F Y') }} <br>
+                Order Date: {{ \Carbon\Carbon::parse($order->created_at)->format('d F Y') }} <br>
+                Estimated Delivery: {{ \Carbon\Carbon::parse($order->estimated_delivery)->format('d F Y') }} <br>
                 Shipping Date: {{ \Carbon\Carbon::parse($order->shipping_date)->format('d F Y') }}
             </div>
 
@@ -131,12 +119,8 @@
             </div>
 
             <div class="order-address">
-                <h3>Shipping Address:</h3>
+                <h3>Address:</h3>
                 <p>{{ $order->user->address }}</p>
-            </div>
-
-            <div class="order-actions">
-                <a href="{{ route('order.cancel', ['order_id' => $order->id]) }}" class="cancel-btn">Cancel Order</a>
             </div>
         </div>
     </div>

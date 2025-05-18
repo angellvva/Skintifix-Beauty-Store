@@ -23,7 +23,6 @@
     <div class="section">
         <div class="container py-5">
             <h2 class="fw-bold mb-4" style="color: #e965a7;">Edit Profile</h2>
-
             @if (session('success'))
                 <div class="alert alert-success" style="border-color: #e965a7;">
                     {{ session('success') }}

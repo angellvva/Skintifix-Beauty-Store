@@ -13,7 +13,6 @@
             padding: 30px;
         }
 
-        /* Matching the card style of the profile */
         .order-card {
             border-radius: 16px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -47,24 +46,9 @@
             height: 200px;
             object-fit: contain;
             border-radius: 12px;
-            margin-bottom: 10px; /* Move the image upwards */
-            margin-top: -30px; /* Move the image up */
+            margin-bottom: 10px;
         }
 
-        .rating {
-            margin-top: 15px;
-        }
-
-        .star {
-            color: #ccc;
-            font-size: 24px;
-        }
-
-        .star.filled {
-            color: #ffcc00;
-        }
-
-        /* Button Styling */
         .btn-view-order {
             display: block;
             background-color: #e965a7;
@@ -73,8 +57,8 @@
             border-radius: 8px;
             text-decoration: none;
             font-size: 18px;
-            margin-top: 10px; /* Button below the image */
-            width: 100%; /* Full width to align with image */
+            margin-top: 10px;
+            width: 100%;
             text-align: center;
         }
 
@@ -82,7 +66,6 @@
             background-color: #d84f91;
         }
 
-        /* Styling for the header */
         h2 {
             text-align: left;
             color: #e965a7;
@@ -94,7 +77,6 @@
     <div class="product-section">
         <div class="order-container">
             <h2 class="fw-bold mb-4" style="color: #e965a7;">My Order</h2>
-
             @if (session('success'))
                 <div id="order-notification" class="alert alert-success">
                     <span>{{ session('success') }}</span>
