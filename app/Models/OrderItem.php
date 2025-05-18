@@ -17,4 +17,17 @@ class OrderItem extends Model
     {
         return $this->belongsTo(ProductCategory::class, 'category_id');
     }
+    
+    public function showOrTrack($order_id)
+    {
+        // Find the order by its ID, with related items and products, and address
+        $order = Order::with('items.product', 'user.address')->findOrFail($order_id);
+
+        // Check if it's a tracking route
+        $isTracking = request()->routeIs('order.track');
+
+        return view('order-detail', compact('order', 'isTracking')); // Pass order data and tracking flag
+    }
+
+
 }

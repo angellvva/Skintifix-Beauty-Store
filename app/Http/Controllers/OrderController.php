@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Order;
+use App\Models\OrderItem; 
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cookie;
@@ -22,22 +24,21 @@ class OrderController extends Controller
 
         // Fetch orders for the logged-in user
         $orders = DB::table('orders')
-        ->where('orders.user_id', $userId)  // Explicitly specify the table for user_id
-        ->join('products', 'orders.product_id', '=', 'products.id')
-        ->leftJoin('reviews', 'orders.id', '=', 'reviews.id')  // Ensure 'reviews.order_id' exists
-        ->select(
-            'orders.id as order_id',
-            'products.name',
-            'products.price',
-            'products.image',
-            'orders.created_at',
-            'orders.status',
-            'orders.total_amount',
-            'orders.estimated_delivery',
-            'reviews.rating'
-        )
-        ->orderBy('orders.created_at', 'desc')
-        ->get();
+            ->where('orders.user_id', $userId)  // Explicitly specify the table for user_id
+            ->join('products', 'orders.product_id', '=', 'products.id')
+            ->leftJoin('reviews', 'orders.id', '=', 'reviews.id')  // Ensure 'reviews.order_id' exists
+            ->select(
+                'orders.id as order_id',
+                'products.name',
+                'products.price',
+                'products.image',
+                'orders.created_at',
+                'orders.status',
+                'orders.total_amount',
+                'reviews.rating'
+            )
+            ->orderBy('orders.created_at', 'desc')
+            ->get();
 
         // Loop through the orders to calculate estimated delivery and shipping dates
         foreach ($orders as $order) {
@@ -51,16 +52,17 @@ class OrderController extends Controller
         return view('order', compact('orders'));
     }
 
+    // Show order details and track it
     public function showOrTrack($order_id)
-{
-    // Find the order by its ID
-    $order = Order::findOrFail($order_id);
-    // Check if the current route is for tracking
-    $isTracking = request()->routeIs('order.track'); // This checks if we're on the 'track' route
+    {
+        // Find the order by its ID, with related items and the user details
+        $order = Order::with('items.product', 'user')->findOrFail($order_id);
 
-    return view('order-detail', compact('order', 'isTracking')); // Pass order data and tracking flag
-}
+        return view('order-detail', compact('order')); // Pass order data
+    }
 
+
+    // Cancel the order
     public function cancel($order_id)
     {
         // Logic to cancel the order

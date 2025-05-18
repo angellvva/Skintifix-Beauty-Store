@@ -34,29 +34,30 @@
             color: #777;
         }
 
-        .order-product {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 20px;
+        .order-product-list {
+            margin-top: 20px;
         }
 
-        .order-product img {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-right: 20px;
-        }
-
-        .order-product-details {
+        .order-product-item {
             display: flex;
             justify-content: space-between;
-            margin-top: 10px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
         }
 
-        .order-product-details p {
-            font-size: 18px;
-            color: #555;
+        .order-product-item img {
+            width: 100px;
+            height: 100px;
+        }
+
+        .order-product-item-details {
+            flex-grow: 1;
+            margin-left: 20px;
+        }
+
+        .order-product-item-details p {
+            margin: 5px 0;
         }
 
         .order-status {
@@ -72,21 +73,15 @@
             justify-content: space-between;
         }
 
-        .order-actions .track-btn,
         .order-actions .cancel-btn {
             padding: 12px 20px;
-            background-color: #e965a7;
+            background-color: #ff6b6b;
             color: white;
             border-radius: 8px;
             text-decoration: none;
             font-size: 16px;
         }
 
-        .order-actions .cancel-btn {
-            background-color: #ff6b6b;
-        }
-
-        .order-actions .track-btn:hover,
         .order-actions .cancel-btn:hover {
             background-color: #d84f91;
         }
@@ -97,43 +92,51 @@
             margin-top: 20px;
             text-align: right;
         }
+
+        .order-address {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #555;
+        }
     </style>
 
     <div class="order-detail-section">
         <div class="order-detail-container">
             <div class="order-header">
                 <h2>My Order</h2>
-                <p class="order-id">Order ID: #{{ $order->order_id }}</p>
+                <p class="order-id">Order ID: #{{ $order->id }}</p>
             </div>
 
-            <div class="order-product">
-                <div class="order-product-header">
-                    <img src="{{ $order->product_image }}" alt="{{ $order->product_name }}">
-                    <div>
-                        <h3>{{ $order->product_name }}</h3>
-                        <p>By: {{ $order->seller_name }}</p>
+            <div class="order-product-list">
+                @foreach ($order->items as $item)
+                    <div class="order-product-item">
+                        <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}">
+                        <div class="order-product-item-details">
+                            <h3>{{ $item->product->name }}</h3>
+                            <p><strong>Qty:</strong> {{ $item->quantity }}</p>
+                            <p><strong>Price:</strong> Rp{{ number_format($item->price, 0, ',', '.') }}</p>
+                        </div>
                     </div>
-                </div>
-
-                <div class="order-product-details">
-                    <p><strong>Size:</strong> {{ $order->size }}</p>
-                    <p><strong>Qty:</strong> {{ $order->quantity }}</p>
-                    <p><strong>Price:</strong> ₹{{ number_format($order->price, 0, ',', '.') }}</p>
-                </div>
-
-                <div class="order-status">
-                    Status: {{ $order->status }} <br> 
-                    Delivery Expected by: {{ \Carbon\Carbon::parse($order->delivery_expected)->format('d F Y') }}
-                </div>
+                @endforeach
             </div>
 
-            <div class="order-actions">
-                <a href="{{ route('order.show', ['order_id' => $order->order_id]) }}" class="track-btn">Track Order</a>
-                <a href="{{ route('order.cancel', ['order_id' => $order->order_id]) }}" class="cancel-btn">Cancel Order</a>
+            <div class="order-status">
+                Status: {{ $order->status }} <br>
+                Delivery Expected by: {{ \Carbon\Carbon::parse($order->estimated_delivery)->format('d F Y') }} <br>
+                Shipping Date: {{ \Carbon\Carbon::parse($order->shipping_date)->format('d F Y') }}
             </div>
 
             <div class="order-total">
-                Total: {{ number_format($order->total_price, 0, ',', '.') }}
+                Total: Rp{{ number_format($order->total_amount, 0, ',', '.') }}
+            </div>
+
+            <div class="order-address">
+                <h3>Shipping Address:</h3>
+                <p>{{ $order->user->address }}</p>
+            </div>
+
+            <div class="order-actions">
+                <a href="{{ route('order.cancel', ['order_id' => $order->id]) }}" class="cancel-btn">Cancel Order</a>
             </div>
         </div>
     </div>
