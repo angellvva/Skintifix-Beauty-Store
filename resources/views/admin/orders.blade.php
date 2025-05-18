@@ -12,7 +12,7 @@
         <!-- Status Summary Cards -->
         <div class="row">
             <!-- Total Orders -->
-            <div class="col-md-3">
+            <div class="col-12 col-md-3 mb-3">
                 <div class="text-decoration-none text-white">
                     <div class="card mb-4 stat-card gradient-pink text-white rounded-4 h-100">
                         <div class="card-body d-flex justify-content-between align-items-center">
@@ -29,9 +29,9 @@
             </div>
 
             <!-- Pending -->
-            <div class="col-md-3">
+            <div class="col-12 col-md-3 mb-3">
                 <div class="text-decoration-none text-white">
-                    <div class="card stat-card gradient-pink text-white rounded-4 h-100">
+                    <div class="card mb-4 stat-card gradient-pink text-white rounded-4 h-100">
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
                                 <h6 class="text-uppercase fw-semibold mb-1">Pending</h6>
@@ -46,9 +46,9 @@
             </div>
 
             <!-- Processing -->
-            <div class="col-md-3">
+            <div class="col-12 col-md-3 mb-3">
                 <div class="text-decoration-none text-white">
-                    <div class="card stat-card gradient-pink text-white rounded-4 h-100">
+                    <div class="card mb-4 stat-card gradient-pink text-white rounded-4 h-100">
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
                                 <h6 class="text-uppercase fw-semibold mb-1">Processing</h6>
@@ -63,9 +63,9 @@
             </div>
 
             <!-- Completed -->
-            <div class="col-md-3">
+            <div class="col-12 col-md-3 mb-3">
                 <div class="text-decoration-none text-white">
-                    <div class="card stat-card gradient-pink text-white rounded-4 h-100">
+                    <div class="card mb-4 stat-card gradient-pink text-white rounded-4 h-100">
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
                                 <h6 class="text-uppercase fw-semibold mb-1">Completed</h6>
@@ -82,7 +82,7 @@
 
         <!-- Order Table -->
         <div class="card">
-            <div class="card-body">
+            <div class="card-body table-responsive">
                 <form method="GET" id="filterForm">
                     <div class="row g-3 mb-3 align-items-center">
                         <div class="col-md-5">
@@ -122,59 +122,61 @@
                     </div>
                 </form>
 
-                <table class="table align-middle">
-                    <thead>
-                        <tr>
-                            <th>Order ID</th>
-                            <th>Customer</th>
-                            <th>Date</th>
-                            <th>Products</th>
-                            <th>Total</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($orders as $order)
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
                             <tr>
-                                <td class="fw-bold">#ORD-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</td>
-                                <td>{{ $order->user->name }}</td>
-                                <td>{{ \Carbon\Carbon::parse($order->order_date)->format('d M Y') }}</td>
-
-                                @if ($order->orderItems->sum('quantity') <= 1)
-                                    <td>{{ $order->orderItems->sum('quantity') }} item</td>
-                                @else
-                                    <td>{{ $order->orderItems->sum('quantity') }} items</td>
-                                @endif
-
-                                <td>Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
-                                <td>
-                                @if ($order->status)
-                                    <span class="badge rounded-pill px-3 py-1 border
-                                        @if ($order->status == 'pending') border-warning text-warning
-                                        @elseif($order->status == 'processing') border-primary text-primary
-                                        @elseif($order->status == 'completed') border-success text-success
-                                        @else border-secondary text-secondary
-                                        @endif">
-                                        {{ ucfirst($order->status) }}
-                                    </span>
-                                @else
-                                    <span class="badge rounded-pill border border-secondary text-secondary px-3 py-1">Unknown</span>
-                                @endif
-                            </td>
-                                <td class="d-flex gap-1">
-                                    <a href="{{ route('orders.show', $order->id) }}" class="btn btn-sm btn-pink" title="View">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                    <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-sm btn-pink" title="Edit">
-                                        <i class="fas fa-pen"></i>
-                                    </a>
-                                </td>
-                                
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Date</th>
+                                <th>Products</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Actions</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach ($orders as $order)
+                                <tr>
+                                    <td class="fw-bold">#ORD-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</td>
+                                    <td>{{ $order->user->name }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($order->order_date)->format('d M Y') }}</td>
+
+                                    @if ($order->orderItems->sum('quantity') <= 1)
+                                        <td>{{ $order->orderItems->sum('quantity') }} item</td>
+                                    @else
+                                        <td>{{ $order->orderItems->sum('quantity') }} items</td>
+                                    @endif
+
+                                    <td>Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
+                                    <td>
+                                    @if ($order->status)
+                                        <span class="badge rounded-pill px-3 py-1 border
+                                            @if ($order->status == 'pending') border-warning text-warning
+                                            @elseif($order->status == 'processing') border-primary text-primary
+                                            @elseif($order->status == 'completed') border-success text-success
+                                            @else border-secondary text-secondary
+                                            @endif">
+                                            {{ ucfirst($order->status) }}
+                                        </span>
+                                    @else
+                                        <span class="badge rounded-pill border border-secondary text-secondary px-3 py-1">Unknown</span>
+                                    @endif
+                                </td>
+                                    <td class="d-flex gap-1">
+                                        <a href="{{ route('orders.show', $order->id) }}" class="btn btn-sm btn-pink" title="View">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-sm btn-pink" title="Edit">
+                                            <i class="fas fa-pen"></i>
+                                        </a>
+                                    </td>
+                                    
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
 
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
@@ -234,8 +236,9 @@
             border: 1px solid #dee2e6;
             color: black;
             background-color: white;
-            width: 100%;
-            box-sizing: border-box;
+            white-space: nowrap;
+        width: auto;
+        padding: 0.375rem 0.75rem;
         }
 
         .btn-prev-next {
@@ -281,5 +284,49 @@
         thead th:nth-child(7) {
             width: 10%;
         }
+
+        /* Untuk bagian tombol action */
+        td.d-flex.gap-1 {
+            flex-wrap: nowrap !important;  /* Pastikan tombol tidak pindah ke bawah */
+            gap: 0.25rem;
+        }
+
+        /* Membuat kolom tidak wrap ke bawah */
+        .table thead th {
+            white-space: nowrap;
+        }
+
+        /* Memastikan scroll horizontal jika layar kecil */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Agar teks dalam table tidak kepotong */
+        .table td {
+            white-space: nowrap;
+        }
+
+        /* Responsif di layar kecil */
+        @media (max-width: 768px) {
+            table {
+                min-width: 700px; /* cukup lebar untuk semua kolom */
+            }
+
+            .table-responsive {
+                border: 1px solid #dee2e6;
+            }
+
+            thead th:nth-child(6),  /* Status */
+            thead th:nth-child(7) { /* Actions */
+                min-width: 120px;
+            }
+
+            td:nth-child(6),
+            td:nth-child(7) {
+                min-width: 120px;
+            }
+        }
     </style>
 @endpush
+

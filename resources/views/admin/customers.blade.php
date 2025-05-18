@@ -24,12 +24,26 @@
             text-overflow: ellipsis;
         }
 
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border: 1px solid #dee2e6;
+        }
+
+        .table th,
+        .table td {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
         .btn-reset {
             border: 1px solid #dee2e6;
             color: black;
             background-color: white;
-            width: 100%;
-            box-sizing: border-box;
+            white-space: nowrap;
+            width: auto; 
+            padding: 0.375rem 0.75rem;
         }
     </style>
 
@@ -44,8 +58,8 @@
         <div class="card">
             <div class="card-body">
                 <form id="filterForm" method="GET" action="{{ url()->current() }}">
-                    <div class="row g-3 mb-3 align-items-center">
-                        <div class="col-md-5">
+                    <div class="row g-2 g-md-3 mb-3 align-items-center">
+                        <div class="col-12 col-md-5">
                             <div class="input-group">
                                 <span class="input-group-text" id="basic-addon1">
                                     <i class="bi bi-search"></i>
@@ -54,8 +68,7 @@
                                     aria-label="Search" aria-describedby="basic-addon1" value="{{ request('search') }}" />
                             </div>
                         </div>
-                        <div class="col-md-3"></div>
-                        <div class="col-md-3">
+                        <div class="col-12 col-md-3">
                             <select name="status" class="form-select"
                                 onchange="document.getElementById('filterForm').submit()">
                                 <option value="highest_spend" {{ request('status') == 'highest_spend' ? 'selected' : '' }}>
@@ -66,38 +79,39 @@
                                 </option>
                             </select>
                         </div>
-                        <div class="col-md-1">
-                            <a href="{{ url()->current() }}" class="btn btn-reset" title="Reset Filter">
+                        <div class="col-12 col-md-2">
+                            <a href="{{ url()->current() }}" class="btn btn-reset " title="Reset Filter">
                                 <i class="bi bi-arrow-clockwise"></i> Reset
                             </a>
                         </div>
                     </div>
                 </form>
-
-                <table class="table align-middle">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Orders</th>
-                            <th>Total Spent</th>
-                            <th>Last Order</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($customers as $customer)
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
                             <tr>
-                                <td class="fw-bold">{{ $customer->name }}</td>
-                                <td>{{ $customer->email }}</td>
-                                <td>{{ $customer->orders->count() }}</td>
-                                <td>Rp {{ number_format($customer->orders->sum('total_amount'), 0, ',', '.') }}</td>
-                                <td>
-                                    {{ $customer->orders->sortByDesc('created_at')->first()->created_at->format('d M Y') }}
-                                </td>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Orders</th>
+                                <th>Total Spent</th>
+                                <th>Last Order</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach ($customers as $customer)
+                                <tr>
+                                    <td class="fw-bold">{{ $customer->name }}</td>
+                                    <td>{{ $customer->email }}</td>
+                                    <td>{{ $customer->orders->count() }}</td>
+                                    <td>Rp {{ number_format($customer->orders->sum('total_amount'), 0, ',', '.') }}</td>
+                                    <td>
+                                        {{ $customer->orders->sortByDesc('created_at')->first()->created_at->format('d M Y') }}
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
 
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
