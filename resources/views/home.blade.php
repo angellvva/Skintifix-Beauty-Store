@@ -241,7 +241,7 @@
                                                         style="position: absolute; top: 10px; right: 10px; z-index: 20;">
                                                         @csrf
                                                         <button type="submit" style="background: none; border: none; cursor: pointer;">
-                                                            @if ($item->product->isInWishlist ?? false)
+                                                            @if ($item->isInWishlist ?? false)
                                                                 <i class="fas fa-heart" style="color: #e965a7; font-size: 20px;"></i>
                                                             @else
                                                                 <i class="far fa-heart" style="color: #e965a7; font-size: 20px;"></i>
@@ -312,7 +312,7 @@
                                                     style="position: absolute; top: 10px; right: 10px; z-index: 20;">
                                                     @csrf
                                                     <button type="submit" style="background: none; border: none; cursor: pointer;">
-                                                        @if ($item->product->isInWishlist ?? false)
+                                                        @if ($item->isInWishlist ?? false)
                                                             <i class="fas fa-heart" style="color: #e965a7; font-size: 20px;"></i>
                                                         @else
                                                             <i class="far fa-heart" style="color: #e965a7; font-size: 20px;"></i>

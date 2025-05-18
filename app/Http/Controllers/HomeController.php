@@ -14,38 +14,97 @@ class HomeController extends Controller
 {
     //
     public function show() {
-        return view('home',[
-            'order_items'=>OrderItem::where('quantity', '>', 1)
-            ->with(['product', 'category'])
-            ->get(),
+        $userId = session('id');
 
-            'products'=>Product::with(['category'])
-            ->get(),
+    // Best Sellers
+    $order_items = OrderItem::where('quantity', '>', 1)
+        ->with(['product', 'category'])
+        ->get();
 
-            'order_itemss'=>OrderItem::where('quantity', '>', 0)
-            ->with(['product', 'category'])
-            ->orderBy('created_at', 'desc')
-            ->limit(8)
-            ->get()
-        ]);
+    // All Products
+    $products = Product::with(['category'])->get();
+
+    // New Arrivals
+    $order_itemss = OrderItem::where('quantity', '>', 0)
+        ->with(['product', 'category'])
+        ->orderBy('created_at', 'desc')
+        ->limit(8)
+        ->get();
+
+    // If user is logged in, get wishlist data
+    $wishlistProductIds = [];
+    if ($userId) {
+        $wishlistProductIds = Wishlist::where('user_id', $userId)
+            ->pluck('product_id')
+            ->toArray();
+    }
+
+    // Add isInWishlist to best sellers
+    foreach ($order_items as $item) {
+        $item->isInWishlist = $userId ? in_array($item->product_id, $wishlistProductIds) : false;
+    }
+
+    // Add isInWishlist to all products
+    foreach ($products as $product) {
+        $product->isInWishlist = $userId ? in_array($product->id, $wishlistProductIds) : false;
+    }
+
+    // Add isInWishlist to new arrivals
+    foreach ($order_itemss as $item) {
+        $item->isInWishlist = $userId ? in_array($item->product_id, $wishlistProductIds) : false;
+    }
+
+    return view('home', compact('order_items', 'products', 'order_itemss'));
     }
 
     public function viewBestSeller() {
-        return view('best-seller',[
-            'order_items'=>OrderItem::where('quantity', '>', 1)
+        $userId = session('id');
+   
+        $order_items = OrderItem::where('quantity', '>', 1)
             ->with(['product'])
-            ->get()
-        ]);
+            ->get();
+
+        if ($userId) {
+            $wishlistProductIds = Wishlist::where('user_id', $userId)
+                                        ->pluck('product_id')
+                                        ->toArray();
+
+            foreach ($order_items as $product) {
+                $product->isInWishlist = in_array($product->product_id, $wishlistProductIds);
+            }
+        } else {
+            foreach ($order_items as $product) {
+                $product->isInWishlist = false;
+            }
+        }
+        
+        return view('best-seller', compact('order_items'));
     }
 
     public function viewNewArrival() {
-        return view('new-arrival', [
-            'order_items'=>OrderItem::where('quantity', '>', 0)
+        $userId = session('id');
+   
+        $order_items = OrderItem::where('quantity', '>', 0)
             ->with(['product', 'category'])
             ->orderBy('created_at', 'desc')
             ->limit(8)
-            ->get()
-        ]);
+            ->get();
+
+        if ($userId) {
+            $wishlistProductIds = Wishlist::where('user_id', $userId)
+                                        ->pluck('product_id')
+                                        ->toArray();
+
+            foreach ($order_items as $product) {
+                $product->isInWishlist = in_array($product->product_id, $wishlistProductIds);
+            }
+        } else {
+            foreach ($order_items as $product) {
+                $product->isInWishlist = false;
+            }
+        }
+        
+        return view('new-arrival', compact('order_items'));
     }
 
     public function allProducts()
