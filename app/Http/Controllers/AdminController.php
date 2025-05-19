@@ -40,7 +40,7 @@ class AdminController extends Controller
             ->get();
 
         $lowStockProducts = DB::table('products')
-            ->where('stock', '<=', 10)
+            ->where('stock', '<', 20)
             ->get();
 
         return view('admin.dashboard', compact(

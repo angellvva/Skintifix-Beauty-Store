@@ -103,7 +103,7 @@
                                     <tr>
                                         <td class="fw-semibold">{{ $category->name }}</td>
                                         <td>{{ Str::limit($category->description, 50) }}</td>
-                                        <td class="text-center">{{ $category->products_count }}</td>
+                                        <td>{{ $category->products_count }}</td>
                                         <td>
                                             <div class="d-flex gap-1 align-items-center">
                                                 {{-- Edit Button --}}
@@ -131,6 +131,34 @@
                         @if ($categories->isEmpty())
                             <p class="text-muted text-center">No categories found.</p>
                         @endif
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                @if ($categories->total() == 0)
+                                    Showing 0 entries
+                                @else
+                                    Showing {{ $categories->firstItem() }} to {{ $categories->lastItem() }} of
+                                    {{ $categories->total() }}
+                                    entries
+                                @endif
+                            </div>
+
+                            {{-- Pagination links --}}
+                            <div class="d-flex justify-content-end">
+                                @if ($categories->onFirstPage())
+                                    <button class="btn btn-secondary me-1" disabled>Prev</button>
+                                @else
+                                    <a href="{{ $categories->previousPageUrl() }}" class="btn btn-prev-next me-1"
+                                        style="margin-right: 4px;">Prev</a>
+                                @endif
+
+                                @if ($categories->hasMorePages())
+                                    <a href="{{ $categories->nextPageUrl() }}" class="btn btn-prev-next ms-1">Next</a>
+                                @else
+                                    <button class="btn btn-secondary ms-1" disabled>Next</button>
+                                @endif
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

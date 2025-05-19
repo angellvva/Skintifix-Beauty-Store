@@ -16,7 +16,7 @@ class CategoryController extends Controller
             ->when($search, function ($query, $search) {
                 $query->where('name', 'like', '%' . $search . '%');
             })
-            ->get();
+            ->paginate(10);
 
         return view('admin.categories', compact('categories'));
     }

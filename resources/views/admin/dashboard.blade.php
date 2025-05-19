@@ -65,7 +65,7 @@
         <div class="row">
             <!-- Recent Orders -->
             <div class="col-md-8 mb-4">
-                <div class="card shadow-sm">
+                <div class="card">
                     <div class="card-header bg-white">
                         <h5 class="mb-0">Recent Orders</h5>
                     </div>
@@ -100,7 +100,7 @@
 
             <!-- Low Stock Products -->
             <div class="col-md-4 mb-4">
-                <div class="card shadow-sm">
+                <div class="card">
                     <div class="card-header bg-white">
                         <h5 class="mb-0">Low Stock Products</h5>
                     </div>
@@ -109,14 +109,37 @@
                             @foreach ($lowStockProducts as $product)
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     {{ $product->name }}
-                                    <span class="badge bg-{!! $product->stock <= 0 ? 'danger' : ($product->stock <= 20 ? 'warning' : 'success') !!}">
-                                        {{ $product->stock }} left
+                                    <span
+                                        class="badge rounded-pill px-3 py-1 border
+                                        @if ($product->stock >= 20) border-success
+                                        @elseif ($product->stock > 0) border-warning
+                                        @else border-danger @endif">
+
+                                        @if ($product->stock < 20 && $product->stock > 0)
+                                            <span class="text-warning">{{ $product->stock }} left</span>
+                                        @else
+                                            <span class="text-danger">{{ $product->stock }} left</span>
+                                        @endif
                                     </span>
                                 </li>
                             @endforeach
                         </ul>
-                        <a href="{{ route('admin.products') }}" class="btn btn-sm btn-pink mt-3">Manage
+
+                        <a href="{{ route('admin.products') }}" class="btn btn-sm btn-pink">Manage
                             Products</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Recent Orders</h5>
+                    </div>
+                    <div class="card-body">
+
                     </div>
                 </div>
             </div>

@@ -160,11 +160,11 @@
                                 <td>
                                     <div
                                         class="badge rounded-pill px-3 py-1 border
-                                        @if ($product->stock > 20) border-success
+                                        @if ($product->stock >= 20) border-success
                                         @elseif ($product->stock > 0) border-warning
                                         @else border-danger @endif">
 
-                                        @if ($product->stock > 20)
+                                        @if ($product->stock >= 20)
                                             <span class="text-success">In Stock</span>
                                         @elseif($product->stock > 0)
                                             <span class="text-warning">Low Stock</span>
