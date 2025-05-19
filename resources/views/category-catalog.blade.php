@@ -1,5 +1,10 @@
 @extends('base.base')
 
+@section('head')
+    <!-- Add Toastr CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+@endsection
+
 @section('content')
 <style>
     .product-section {
@@ -67,8 +72,8 @@
         box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         text-align: center;
         position: relative;
-        cursor: pointer;
         transition: transform 0.2s ease;
+        cursor: pointer;
     }
 
     .product-card:hover {
@@ -116,13 +121,30 @@
     .category-label {
         position: absolute;
         top: 10px;
-        right: 10px;
+        left: 10px;
         background-color: #e965a7;
         color: white;
         padding: 4px 8px;
         border-radius: 10px;
         font-size: 12px;
         font-weight: 600;
+        z-index: 2;
+    }
+
+    .wishlist-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    .wishlist-button i {
+        font-size: 18px;
+        color: #e965a7;
     }
 </style>
 
@@ -153,8 +175,22 @@
 
     <div class="product-grid">
         @forelse ($products as $product)
+            @php
+                $isInWishlist = session('id') ? \App\Models\Wishlist::where('user_id', session('id'))
+                    ->where('product_id', $product->id)
+                    ->exists() : false;
+            @endphp
             <div class="product-card" onclick="window.location='{{ route('product.detail', $product->id) }}'">
                 <div class="category-label">{{ $category }}</div>
+
+                <!-- Wishlist Heart Button -->
+                <form action="{{ route('wishlist.toggle', $product->id) }}" method="POST" class="wishlist-button" onclick="event.stopPropagation();">
+                    @csrf
+                    <button type="submit" class="wishlist-button" title="Add to wishlist">
+                        <i class="{{ $isInWishlist ? 'fas' : 'far' }} fa-heart"></i>
+                    </button>
+                </form>
+
                 <img src="{{ $product->image }}" alt="{{ $product->name }}">
                 <div class="product-name">{{ $product->name }}</div>
                 <div class="product-price">Rp{{ number_format($product->price, 0, ',', '.') }}</div>
@@ -166,4 +202,20 @@
         @endforelse
     </div>
 </div>
+@endsection
+
+@section('scripts')
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <!-- Flash Toast -->
+    <script>
+        @if(session('success'))
+            toastr.success("{{ session('success') }}");
+        @endif
+
+        @if(session('error'))
+            toastr.error("{{ session('error') }}");
+        @endif
+    </script>
 @endsection
