@@ -158,13 +158,20 @@
                                 <td>Rp {{ number_format($product->price, 0, ',', '.') }}
                                 <td>{{ $product->stock }}</td>
                                 <td>
-                                    @if ($product->stock > 20)
-                                        <span class="badge-in-stock">In Stock</span>
-                                    @elseif($product->stock > 0)
-                                        <span class="badge-low-stock">Low Stock</span>
-                                    @else
-                                        <span class="badge-out-stock">Out of Stock</span>
-                                    @endif
+                                    <div
+                                        class="badge rounded-pill px-3 py-1 border
+                                        @if ($product->stock > 20) border-success
+                                        @elseif ($product->stock > 0) border-warning
+                                        @else border-danger @endif">
+
+                                        @if ($product->stock > 20)
+                                            <span class="text-success">In Stock</span>
+                                        @elseif($product->stock > 0)
+                                            <span class="text-warning">Low Stock</span>
+                                        @else
+                                            <span class="text-danger">Out of Stock</span>
+                                        @endif
+                                    </div>
                                 </td>
                                 <td>
                                     <a href="{{ route('products.edit', $product->id) }}" class="btn btn-sm btn-edit me-2">
