@@ -22,6 +22,10 @@ class CheckoutController extends Controller
     {
         $selectedIds = $request->input('selected_items', []);
 
+        if (is_string($selectedIds)) {
+            $selectedIds = explode(',', $selectedIds);
+        }
+
         if (empty($selectedIds)) {
             return redirect()->back()->with('error', 'Please select at least one product to checkout.');
         }
@@ -48,6 +52,7 @@ class CheckoutController extends Controller
 
         return view('checkout', compact('cartItems', 'cartTotal', 'user'));
     }
+
 
     public function process(Request $request)
 {
