@@ -113,8 +113,6 @@ Route::get('/admin/orders', [AdminOrderController::class, 'orders'])->name('admi
 
 // route admin customer
 Route::get('/admin/customers', [AdminController::class, 'customers'])->name('admin.customers');
-// route admin categories
-Route::get('/admin/categories', [AdminController::class, 'categories'])->name('admin.categories');
 // route admin messages
 Route::get('/admin/messages', [AdminController::class, 'messages'])->name('admin.messages');
 

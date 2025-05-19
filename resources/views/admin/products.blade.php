@@ -98,8 +98,9 @@
                                 <span class="input-group-text" id="basic-addon1">
                                     <i class="bi bi-search"></i>
                                 </span>
-                                <input type="text" name="search" class="form-control" placeholder="Search products..."
-                                    aria-label="Search" aria-describedby="basic-addon1" value="{{ request('search') }}" />
+                                <input type="text" name="search" class="form-control"
+                                    placeholder="Search product name..." aria-label="Search" aria-describedby="basic-addon1"
+                                    value="{{ request('search') }}" />
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -168,7 +169,7 @@
                                 <td>
                                     <a href="{{ route('products.edit', $product->id) }}" class="btn btn-sm btn-edit me-2">
                                         <i class="fas fa-pen" title="Edit Product"></i>
-                                        </a>
+                                    </a>
                                     <form action="" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')

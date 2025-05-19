@@ -1,6 +1,29 @@
 @extends('layouts.admin')
 
 @section('content')
+    <style>
+        table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+        }
+
+        thead th:nth-child(1) {
+            width: 20%;
+        }
+
+        thead th:nth-child(2) {
+            width: 55%;
+        }
+
+        thead th:nth-child(3) {
+            width: 15%;
+        }
+
+        thead th:nth-child(4) {
+            width: 10%;
+        }
+    </style>
     @if (session('success'))
         <div id="category-notification" class="alert alert-success"
             style="
@@ -48,13 +71,13 @@
                 <div class="card">
                     <div class="card-body">
                         {{-- Search Form --}}
-                        <form method="GET" id="filterForm">
+                        <form method="GET" action="{{ url()->current() }}">
                             <div class="row g-3 mb-3 align-items-center">
-                                <div class="col-md-5">
+                                <div class="col-md-6">
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bi bi-search"></i></span>
                                         <input type="text" name="search" class="form-control"
-                                            placeholder="Search messages or username..." value="{{ request('search') }}" />
+                                            placeholder="Search category name..." value="{{ request('search') }}" />
                                     </div>
                                 </div>
 

@@ -89,13 +89,6 @@ class AdminController extends Controller
         return view('admin.customers', compact('customers'));
     }
 
-
-    public function categories()
-    {
-        $products = Product::latest()->paginate(10);
-        return view('admin.categories', compact('products'));
-    }
-
     public function messages(Request $request)
     {
         $query = DB::table('messages');

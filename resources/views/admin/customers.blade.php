@@ -64,8 +64,9 @@
                                 <span class="input-group-text" id="basic-addon1">
                                     <i class="bi bi-search"></i>
                                 </span>
-                                <input type="text" name="search" class="form-control" placeholder="Search customers..."
-                                    aria-label="Search" aria-describedby="basic-addon1" value="{{ request('search') }}" />
+                                <input type="text" name="search" class="form-control"
+                                    placeholder="Search customer name..." aria-label="Search"
+                                    aria-describedby="basic-addon1" value="{{ request('search') }}" />
                             </div>
                         </div>
                         <div class="col-12 col-md-3">

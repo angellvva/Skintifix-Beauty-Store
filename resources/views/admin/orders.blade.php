@@ -88,7 +88,7 @@
                         <div class="col-md-5">
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-search"></i></span>
-                                <input type="text" name="search" class="form-control" placeholder="Search orders ID..."
+                                <input type="text" name="search" class="form-control" placeholder="Search order ID..."
                                     value="{{ request('search') }}" />
                             </div>
                         </div>

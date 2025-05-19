@@ -8,11 +8,19 @@ use App\Models\ProductCategory;
 class CategoryController extends Controller
 {
     //
-    public function index()
+    public function index(Request $request)
     {
-        $categories = ProductCategory::withCount('products')->get();
+        $search = $request->input('search');
+
+        $categories = ProductCategory::withCount('products')
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            })
+            ->get();
+
         return view('admin.categories', compact('categories'));
     }
+
 
     public function store(Request $request)
     {
