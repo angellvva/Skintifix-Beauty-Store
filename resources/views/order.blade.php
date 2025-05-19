@@ -99,11 +99,7 @@
                                     {{ \Carbon\Carbon::parse($order->created_at)->format('d M Y') }}</p>
                                 <p><strong>Estimated Delivery:</strong> {{ $order->estimated_delivery }}</p>
                                 <p><strong>Shipping Date:</strong> {{ $order->shipping_date }}</p>
-                                <div class="rating">
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        <span class="star {{ $i <= $order->rating ? 'filled' : '' }}">★</span>
-                                    @endfor
-                                </div>
+                                
                             </div>
                             <div class="order-right">
                                 <img src="{{ $order->image }}" alt="{{ $order->name }}" class="order-img">
