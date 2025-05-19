@@ -27,6 +27,19 @@ class CartController extends Controller
 
         return view('cart', compact('cartItems'));
     }
+    public function update(Request $request, $id)
+    {
+            $request->validate([
+                'quantity' => 'required|integer|min:1'
+            ]);
+
+            $cartItem = Cart::findOrFail($id);
+            $cartItem->quantity = $request->quantity;
+            $cartItem->save();
+
+            return response()->json(['message' => 'Cart updated successfully.']);
+    }
+
     public function updateQuantity(Request $request, $id)
     {
         $request->validate([
