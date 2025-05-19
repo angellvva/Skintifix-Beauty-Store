@@ -152,3 +152,15 @@ Route::put('/admin/products/{id}', [AdminProductController::class, 'update'])->n
 
 //Route buat search bar
 Route::get('/search/products', [ProductController::class, 'search'])->name('search.products');
+
+// Route buat payment-success
+Route::get('/payment-success', function () {
+    $payment = (object) [
+        'id' => 123,
+        'created_at' => now(),
+        'total_amount' => 149000,
+        'status' => 'paid',
+    ];
+
+    return view('payment-success', compact('payment'));
+})->name('payment.success');

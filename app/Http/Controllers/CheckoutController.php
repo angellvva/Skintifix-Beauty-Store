@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cookie;
 use Midtrans\Snap;
 use Midtrans\Config;
+use App\Models\CartItem;
+
 
 class CheckoutController extends Controller
 {
@@ -49,25 +51,31 @@ class CheckoutController extends Controller
 
     public function process(Request $request)
 {
-    // Configure Midtrans
-    Config::$serverKey = config('services.midtrans.server_key');
-    Config::$isProduction = config('services.midtrans.is_production');
+    Config::$serverKey = config('midtrans.server_key');
+    Config::$isProduction = config('midtrans.is_production');
     Config::$isSanitized = true;
     Config::$is3ds = true;
 
-    // Get selected cart items
     $selectedItemIds = $request->input('selected_items', []);
-    $cartItems = CartItem::whereIn('id', $selectedItemIds)->get();
 
-    // Calculate subtotal
+    $cartItems = collect(DB::table('carts')
+        ->join('products', 'carts.product_id', '=', 'products.id')
+        ->whereIn('carts.id', $selectedItemIds)
+        ->select('carts.id', 'products.name', 'products.price', 'products.image', 'carts.quantity')
+        ->get());
+
     $subtotal = $cartItems->sum(fn($item) => $item->price * $item->quantity);
-
-    // Determine shipping cost
     $shippingCost = $request->shipping_method === 'express' ? 40000 : 20000;
-
     $totalAmount = $subtotal + $shippingCost;
 
-    // Prepare transaction params
+    \Log::info('Process checkout request', [
+        'selected_items' => $selectedItemIds,
+        'subtotal' => $subtotal,
+        'shipping_method' => $request->shipping_method,
+        'total' => $totalAmount,
+        'cart_items' => $cartItems->toArray(),
+    ]);
+
     $params = [
         'transaction_details' => [
             'order_id' => uniqid('ORDER-'),
@@ -101,4 +109,5 @@ class CheckoutController extends Controller
         return response()->json(['error' => 'Failed to generate payment token'], 500);
     }
 }
+
 }
