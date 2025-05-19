@@ -113,6 +113,10 @@
                     </tbody>
                 </table>
 
+                @if ($customers->isEmpty())
+                    <p class="text-muted text-center">No customers found.</p>
+                @endif
+
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         @if ($customers->total() == 0)

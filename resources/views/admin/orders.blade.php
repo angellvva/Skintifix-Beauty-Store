@@ -122,64 +122,66 @@
                     </div>
                 </form>
 
-                <div class="table-responsive">
-                    <table class="table align-middle">
-                        <thead>
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Date</th>
+                            <th>Products</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($orders as $order)
                             <tr>
-                                <th>Order ID</th>
-                                <th>Customer</th>
-                                <th>Date</th>
-                                <th>Products</th>
-                                <th>Total</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($orders as $order)
-                                <tr>
-                                    <td class="fw-bold">#ORD-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</td>
-                                    <td>{{ $order->user->name }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($order->order_date)->format('d M Y') }}</td>
+                                <td class="fw-bold">#ORD-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</td>
+                                <td>{{ $order->user->name }}</td>
+                                <td>{{ \Carbon\Carbon::parse($order->order_date)->format('d M Y') }}</td>
 
-                                    @if ($order->orderItems->sum('quantity') <= 1)
-                                        <td>{{ $order->orderItems->sum('quantity') }} item</td>
-                                    @else
-                                        <td>{{ $order->orderItems->sum('quantity') }} items</td>
-                                    @endif
+                                @if ($order->orderItems->sum('quantity') <= 1)
+                                    <td>{{ $order->orderItems->sum('quantity') }} item</td>
+                                @else
+                                    <td>{{ $order->orderItems->sum('quantity') }} items</td>
+                                @endif
 
-                                    <td>Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
-                                    <td>
-                                        @if ($order->status)
-                                            <span
-                                                class="badge rounded-pill px-3 py-1 border
+                                <td>Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
+                                <td>
+                                    @if ($order->status)
+                                        <span
+                                            class="badge rounded-pill px-3 py-1 border
                                             @if ($order->status == 'pending') border-warning text-warning
                                             @elseif($order->status == 'processing') border-primary text-primary
                                             @elseif($order->status == 'completed') border-success text-success
                                             @else border-secondary text-secondary @endif">
-                                                {{ ucfirst($order->status) }}
-                                            </span>
-                                        @else
-                                            <span
-                                                class="badge rounded-pill border border-secondary text-secondary px-3 py-1">Unknown</span>
-                                        @endif
-                                    </td>
-                                    <td class="d-flex gap-1">
-                                        <a href="{{ route('orders.show', $order->id) }}" class="btn btn-sm btn-pink"
-                                            title="View">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                        <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-sm btn-pink"
-                                            title="Edit">
-                                            <i class="fas fa-pen"></i>
-                                        </a>
-                                    </td>
+                                            {{ ucfirst($order->status) }}
+                                        </span>
+                                    @else
+                                        <span
+                                            class="badge rounded-pill border border-secondary text-secondary px-3 py-1">Unknown</span>
+                                    @endif
+                                </td>
+                                <td class="d-flex gap-1">
+                                    <a href="{{ route('orders.show', $order->id) }}" class="btn btn-sm btn-pink"
+                                        title="View">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-sm btn-pink"
+                                        title="Edit">
+                                        <i class="fas fa-pen"></i>
+                                    </a>
+                                </td>
 
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+                @if ($orders->isEmpty())
+                    <p class="text-muted text-center">No orders found.</p>
+                @endif
 
                 <div class="d-flex justify-content-between align-items-center">
                     <div>

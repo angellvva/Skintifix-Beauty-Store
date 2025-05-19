@@ -183,6 +183,10 @@
                     </tbody>
                 </table>
 
+                @if ($products->isEmpty())
+                    <p class="text-muted text-center">No products found.</p>
+                @endif
+
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         @if ($products->total() == 0)
