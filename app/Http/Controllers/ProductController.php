@@ -42,20 +42,34 @@ class ProductController extends Controller
 
     public function categoryCatalog($category)
     {
-        $products = Product::whereHas('category', function ($query) use ($category) {
-            $query->where('name', $category);
-        })->get();
+        // Eager load category relation
+        $products = Product::with('category')
+            ->whereHas('category', function ($query) use ($category) {
+                $query->where('name', $category);
+            })
+            ->get();
 
-        return view('category-catalog', compact('products', 'category'));
+        // Get category description from first product
+        $categoryDescription = optional($products->first()?->category)->description;
+
+        return view('category-catalog', compact('products', 'category', 'categoryDescription'));
     }
 
     public function search(Request $request)
     {
         $query = $request->q;
+        $category = $request->category;
 
         $products = Product::with('category')
-            ->where('name', 'like', "%{$query}%")
-            ->orWhere('description', 'like', "%{$query}%")
+            ->where(function ($q) use ($query) {
+                $q->where('name', 'like', "%{$query}%")
+                ->orWhere('description', 'like', "%{$query}%");
+            })
+            ->when($category, function ($q) use ($category) {
+                $q->whereHas('category', function ($c) use ($category) {
+                    $c->where('name', $category);
+                });
+            })
             ->limit(10)
             ->get();
 

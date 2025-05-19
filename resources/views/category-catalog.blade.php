@@ -151,27 +151,37 @@
 <div class="product-section">
     <div class="product-header">
         <h2>{{ $category }}</h2>
-        <p>Explore our selection of high-quality {{ strtolower($category) }} products crafted to fit your needs.</p>
+        @php
+            $fallbackDescription = 'Explore our selection of high-quality ' . strtolower($category) . ' products crafted to fit your needs.';
+        @endphp
+
+        <p>{{ $categoryDescription ?? $fallbackDescription }}</p>
     </div>
 
-    <div class="product-controls">
-        <div class="product-search">
-            <input type="text" placeholder="Search {{ strtolower($category) }}...">
+<div class="mb-4" style="max-width: 1200px; padding: 0 20px; margin: 0 auto;">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+        {{-- Left: Search --}}
+        <div class="position-relative" style="width: 260px;">
+            <i class="fas fa-search position-absolute" style="top: 50%; left: 12px; transform: translateY(-50%); color: #888;"></i>
+            <input type="text" placeholder="Search {{ strtolower($category) }}..." class="form-control ps-5 rounded-3 shadow-sm" style="height: 42px;">
         </div>
-        <div class="product-filters">
-            <select>
+
+        {{-- Right: Filters --}}
+        <div class="d-flex gap-2">
+            <select class="form-select rounded-3 shadow-sm" style="height: 42px; width: 160px;">
                 <option selected disabled>Sort By</option>
                 <option>Price: Low to High</option>
                 <option>Price: High to Low</option>
-                <option>Newest First</option>
+                <option>Newest</option>
             </select>
-            <select>
+            <select class="form-select rounded-3 shadow-sm" style="height: 42px; width: 160px;">
                 <option selected disabled>Filter</option>
                 <option>In Stock</option>
                 <option>Out of Stock</option>
             </select>
         </div>
     </div>
+</div>
 
     <div class="product-grid">
         @forelse ($products as $product)
