@@ -112,6 +112,7 @@
                             <span>Subtotal</span>
                             <span id="subtotal">Rp{{ number_format($subtotal, 0, ',', '.') }}</span>
                         </div>
+
                         <div class="d-flex justify-content-between">
                             <span>Shipping</span>
                             <span id="shipping-cost">Rp{{ number_format($shipping, 0, ',', '.') }}</span>

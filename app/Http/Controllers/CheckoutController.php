@@ -19,39 +19,38 @@ class CheckoutController extends Controller
     }
 
     public function showCheckout(Request $request)
-    {
-        $selectedIds = $request->input('selected_items', []);
+{
+    $selectedIds = $request->input('selected_items', []);
 
-        if (is_string($selectedIds)) {
-            $selectedIds = explode(',', $selectedIds);
-        }
-
-        if (empty($selectedIds)) {
-            return redirect()->back()->with('error', 'Please select at least one product to checkout.');
-        }
-
-        $cartItems = DB::table('carts')
-            ->join('products', 'carts.product_id', '=', 'products.id')
-            ->whereIn('carts.id', $selectedIds)
-            ->select(
-                'carts.id as cart_id',
-                'products.name',
-                'products.price',
-                'products.image',
-                'carts.quantity'
-            )
-            ->get();
-
-        $cartTotal = 0;
-        foreach ($cartItems as $item) {
-            $cartTotal += $item->price * $item->quantity;
-        }
-
-        $userId = session('id') ?? Cookie::get('id');
-        $user = DB::table('users')->where('id', $userId)->first();
-
-        return view('checkout', compact('cartItems', 'cartTotal', 'user'));
+    if (is_string($selectedIds)) {
+        $selectedIds = explode(',', $selectedIds);
     }
+
+    if (empty($selectedIds)) {
+        return redirect()->back()->with('error', 'Please select at least one product to checkout.');
+    }
+
+    // Ambil data cart terbaru berdasarkan ID yg dipilih
+    $cartItems = DB::table('carts')
+        ->join('products', 'carts.product_id', '=', 'products.id')
+        ->whereIn('carts.id', $selectedIds)
+        ->select(
+            'carts.id as cart_id',
+            'products.name',
+            'products.price',
+            'products.image',
+            'carts.quantity'
+        )
+        ->get();
+
+    $subtotal = $cartItems->sum(fn($item) => $item->price * $item->quantity);
+
+    $userId = session('id') ?? Cookie::get('id');
+    $user = DB::table('users')->where('id', $userId)->first();
+
+    return view('checkout', compact('cartItems', 'subtotal', 'user'));
+}
+
 
 
     public function process(Request $request)
