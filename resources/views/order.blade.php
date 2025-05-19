@@ -30,7 +30,8 @@
             padding-right: 30px;
         }
 
-        .order-left p, .order-left h5 {
+        .order-left p,
+        .order-left h5 {
             margin: 10px 0;
             font-size: 20px;
         }
@@ -75,12 +76,14 @@
     </style>
 
     <div class="product-section">
-        <div class="order-container">
+        <div class="container">
             <h2 class="fw-bold mb-4" style="color: #e965a7;">My Order</h2>
             @if (session('success'))
                 <div id="order-notification" class="alert alert-success">
                     <span>{{ session('success') }}</span>
-                    <button id="close-order-notification" style="background: transparent; border: none; color: #155724; font-weight: bold; font-size: 20px; line-height: 1; cursor: pointer; padding: 0 5px; margin-left: 15px;" aria-label="Close notification">&times;</button>
+                    <button id="close-order-notification"
+                        style="background: transparent; border: none; color: #155724; font-weight: bold; font-size: 20px; line-height: 1; cursor: pointer; padding: 0 5px; margin-left: 15px;"
+                        aria-label="Close notification">&times;</button>
                 </div>
             @endif
 
@@ -92,7 +95,8 @@
                                 <p><strong>Order ID:</strong> {{ $order->order_id }}</p>
                                 <h5>{{ $order->name }}</h5>
                                 <p><strong>Price:</strong> Rp{{ number_format($order->price, 0, ',', '.') }}</p>
-                                <p><strong>Order Date:</strong> {{ \Carbon\Carbon::parse($order->created_at)->format('d M Y') }}</p>
+                                <p><strong>Order Date:</strong>
+                                    {{ \Carbon\Carbon::parse($order->created_at)->format('d M Y') }}</p>
                                 <p><strong>Estimated Delivery:</strong> {{ $order->estimated_delivery }}</p>
                                 <p><strong>Shipping Date:</strong> {{ $order->shipping_date }}</p>
                                 <div class="rating">
@@ -103,8 +107,9 @@
                             </div>
                             <div class="order-right">
                                 <img src="{{ $order->image }}" alt="{{ $order->name }}" class="order-img">
-                                <a href="{{ route('order.show', ['order_id' => $order->order_id]) }}" class="btn-view-order">Order Detail</a>
-                        </div>
+                                <a href="{{ route('order.show', ['order_id' => $order->order_id]) }}"
+                                    class="btn-view-order">Order Detail</a>
+                            </div>
                     @endforeach
                 </div>
             @else

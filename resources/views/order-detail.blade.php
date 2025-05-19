@@ -88,7 +88,7 @@
     </style>
 
     <div class="order-detail-section">
-        <div class="order-detail-container">
+        <div class="container">
             <div class="order-header">
                 <h2 class="fw-bold mb-4" style="color: #e965a7;">My Order</h2>
                 <p class="order-id"><strong>Order ID:</strong> {{ $order->id }}</p>
