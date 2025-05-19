@@ -137,7 +137,7 @@
                     <tbody>
                         @foreach ($orders as $order)
                             <tr>
-                                <td class="fw-bold">#ORD-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</td>
+                                <td class="fw-bold">SKINTIFIX-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</td>
                                 <td>{{ $order->user->name }}</td>
                                 <td>{{ \Carbon\Carbon::parse($order->order_date)->format('d M Y') }}</td>
 

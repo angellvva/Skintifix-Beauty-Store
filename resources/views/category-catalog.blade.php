@@ -1,5 +1,10 @@
 @extends('base.base')
 
+@section('head')
+    <!-- Add Toastr CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+@endsection
+
 @section('content')
 <style>
     .product-section {
@@ -67,8 +72,8 @@
         box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         text-align: center;
         position: relative;
-        cursor: pointer;
         transition: transform 0.2s ease;
+        cursor: pointer;
     }
 
     .product-card:hover {
@@ -116,45 +121,86 @@
     .category-label {
         position: absolute;
         top: 10px;
-        right: 10px;
+        left: 10px;
         background-color: #e965a7;
         color: white;
         padding: 4px 8px;
         border-radius: 10px;
         font-size: 12px;
         font-weight: 600;
+        z-index: 2;
+    }
+
+    .wishlist-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    .wishlist-button i {
+        font-size: 18px;
+        color: #e965a7;
     }
 </style>
 
 <div class="product-section">
     <div class="product-header">
         <h2>{{ $category }}</h2>
-        <p>Explore our selection of high-quality {{ strtolower($category) }} products crafted to fit your needs.</p>
+        @php
+            $fallbackDescription = 'Explore our selection of high-quality ' . strtolower($category) . ' products crafted to fit your needs.';
+        @endphp
+
+        <p>{{ $categoryDescription ?? $fallbackDescription }}</p>
     </div>
 
-    <div class="product-controls">
-        <div class="product-search">
-            <input type="text" placeholder="Search {{ strtolower($category) }}...">
+<div class="mb-4" style="max-width: 1200px; padding: 0 20px; margin: 0 auto;">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+        {{-- Left: Search --}}
+        <div class="position-relative" style="width: 260px;">
+            <i class="fas fa-search position-absolute" style="top: 50%; left: 12px; transform: translateY(-50%); color: #888;"></i>
+            <input type="text" placeholder="Search {{ strtolower($category) }}..." class="form-control ps-5 rounded-3 shadow-sm" style="height: 42px;">
         </div>
-        <div class="product-filters">
-            <select>
+
+        {{-- Right: Filters --}}
+        <div class="d-flex gap-2">
+            <select class="form-select rounded-3 shadow-sm" style="height: 42px; width: 160px;">
                 <option selected disabled>Sort By</option>
                 <option>Price: Low to High</option>
                 <option>Price: High to Low</option>
-                <option>Newest First</option>
+                <option>Newest</option>
             </select>
-            <select>
+            <select class="form-select rounded-3 shadow-sm" style="height: 42px; width: 160px;">
                 <option selected disabled>Filter</option>
                 <option>In Stock</option>
                 <option>Out of Stock</option>
             </select>
         </div>
     </div>
+</div>
 
     <div class="product-grid">
         @forelse ($products as $product)
+            @php
+                $isInWishlist = session('id') ? \App\Models\Wishlist::where('user_id', session('id'))
+                    ->where('product_id', $product->id)
+                    ->exists() : false;
+            @endphp
             <div class="product-card" onclick="window.location='{{ route('product.detail', $product->id) }}'">
                 <div class="category-label">{{ $category }}</div>
+
+                <!-- Wishlist Heart Button -->
+                <form action="{{ route('wishlist.toggle', $product->id) }}" method="POST" class="wishlist-button" onclick="event.stopPropagation();">
+                    @csrf
+                    <button type="submit" class="wishlist-button" title="Add to wishlist">
+                        <i class="{{ $isInWishlist ? 'fas' : 'far' }} fa-heart"></i>
+                    </button>
+                </form>
+
                 <img src="{{ $product->image }}" alt="{{ $product->name }}">
                 <div class="product-name">{{ $product->name }}</div>
                 <div class="product-price">Rp{{ number_format($product->price, 0, ',', '.') }}</div>
@@ -166,4 +212,20 @@
         @endforelse
     </div>
 </div>
+@endsection
+
+@section('scripts')
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <!-- Flash Toast -->
+    <script>
+        @if(session('success'))
+            toastr.success("{{ session('success') }}");
+        @endif
+
+        @if(session('error'))
+            toastr.error("{{ session('error') }}");
+        @endif
+    </script>
 @endsection
