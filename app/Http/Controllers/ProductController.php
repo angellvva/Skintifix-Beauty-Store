@@ -42,7 +42,7 @@ class ProductController extends Controller
 
     public function categoryCatalog($category)
     {
-        $products = Product::whereHas('category', function($query) use ($category) {
+        $products = Product::whereHas('category', function ($query) use ($category) {
             $query->where('name', $category);
         })->get();
 
@@ -63,7 +63,7 @@ class ProductController extends Controller
             return [
                 'id' => $product->id,
                 'name' => $product->name,
-                'description' => \Str::limit($product->description, 60),
+                'description' => Str::limit($product->description, 60),
                 'category' => $product->category->name ?? 'Uncategorized',
                 'image' => $product->image
             ];

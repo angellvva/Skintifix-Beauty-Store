@@ -1,6 +1,23 @@
 @extends('layouts.admin')
 
 @section('content')
+    <style>
+        table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+        }
+
+        .btn-reset {
+            border: 1px solid #dee2e6;
+            color: black;
+            background-color: white;
+            white-space: nowrap;
+            width: auto;
+            padding: 0.375rem 0.75rem;
+        }
+    </style>
+
     <div class="container my-4">
         <div class="row mb-4">
             <div class="col-12">
@@ -11,12 +28,12 @@
 
         {{-- Top Summary --}}
         <div class="row mb-4">
-            <div class="col-12 col-md-6 col-lg-4 mb-3">
+            <div class="col-12 col-md-3">
                 <div class="card gradient-pink text-white rounded-4 shadow-sm h-100">
                     <div class="card-body d-flex justify-content-between align-items-center">
                         <div class="flex-grow-1">
                             <h6 class="text-uppercase fw-semibold mb-1">Total Messages</h6>
-                            <h3 class="fw-bold mb-0">{{ $totalMessages }}</h3>
+                            <h2 class="fw-bold mb-0">{{ $totalMessages }}</h2>
                         </div>
                         <div class="icon-circle flex-shrink-0 ms-3">
                             <i class="fas fa-envelope fa-lg"></i>
@@ -26,26 +43,31 @@
             </div>
         </div>
 
-        {{-- Search Form --}}
-        <form method="GET" class="mb-3">
-            <div class="row">
-                <div class="col-md-4">
-                    <input type="text" name="search" class="form-control" placeholder="Search messages or username..."
-                        value="{{ request('search') }}">
-                </div>
-                <div class="col-md-2">
-                    <button class="btn btn-pink" type="submit">Search</button>
-                </div>
-            </div>
-        </form>
-
         {{-- Messages Table --}}
         <div class="card">
-            <div class="card-body p-0">
-                <table class="table mb-0 align-middle">
-                    <thead class="table-light">
+            <div class="card-body">
+                {{-- Search Form --}}
+                <form method="GET" id="filterForm">
+                    <div class="row g-3 mb-3 align-items-center">
+                        <div class="col-md-5">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                <input type="text" name="search" class="form-control"
+                                    placeholder="Search messages or username..." value="{{ request('search') }}" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <a href="{{ url()->current() }}" class="btn btn-reset">
+                                <i class="bi bi-arrow-clockwise"></i> Reset
+                            </a>
+                        </div>
+                    </div>
+                </form>
+
+                <table class="table align-middle">
+                    <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Message</th>
@@ -55,7 +77,6 @@
                     <tbody>
                         @forelse ($messages as $msg)
                             <tr>
-                                <td>{{ $msg->id }}</td>
                                 <td>{{ $msg->name }}</td>
                                 <td>{{ $msg->email }}</td>
                                 <td>{{ Str::limit($msg->message, 50) }}</td>

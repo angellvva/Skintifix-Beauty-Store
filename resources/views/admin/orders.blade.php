@@ -12,7 +12,7 @@
         <!-- Status Summary Cards -->
         <div class="row">
             <!-- Total Orders -->
-            <div class="col-12 col-md-3 mb-3">
+            <div class="col-12 col-md-3">
                 <div class="text-decoration-none text-white">
                     <div class="card mb-4 stat-card gradient-pink text-white rounded-4 h-100">
                         <div class="card-body d-flex justify-content-between align-items-center">
@@ -29,7 +29,7 @@
             </div>
 
             <!-- Pending -->
-            <div class="col-12 col-md-3 mb-3">
+            <div class="col-12 col-md-3">
                 <div class="text-decoration-none text-white">
                     <div class="card mb-4 stat-card gradient-pink text-white rounded-4 h-100">
                         <div class="card-body d-flex justify-content-between align-items-center">
@@ -46,7 +46,7 @@
             </div>
 
             <!-- Processing -->
-            <div class="col-12 col-md-3 mb-3">
+            <div class="col-12 col-md-3">
                 <div class="text-decoration-none text-white">
                     <div class="card mb-4 stat-card gradient-pink text-white rounded-4 h-100">
                         <div class="card-body d-flex justify-content-between align-items-center">
@@ -63,7 +63,7 @@
             </div>
 
             <!-- Completed -->
-            <div class="col-12 col-md-3 mb-3">
+            <div class="col-12 col-md-3">
                 <div class="text-decoration-none text-white">
                     <div class="card mb-4 stat-card gradient-pink text-white rounded-4 h-100">
                         <div class="card-body d-flex justify-content-between align-items-center">

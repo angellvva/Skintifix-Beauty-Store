@@ -42,7 +42,7 @@
             color: black;
             background-color: white;
             white-space: nowrap;
-            width: auto; 
+            width: auto;
             padding: 0.375rem 0.75rem;
         }
     </style>
@@ -86,32 +86,31 @@
                         </div>
                     </div>
                 </form>
-                <div class="table-responsive">
-                    <table class="table align-middle">
-                        <thead>
+
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Orders</th>
+                            <th>Total Spent</th>
+                            <th>Last Order</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($customers as $customer)
                             <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Orders</th>
-                                <th>Total Spent</th>
-                                <th>Last Order</th>
+                                <td class="fw-bold">{{ $customer->name }}</td>
+                                <td>{{ $customer->email }}</td>
+                                <td>{{ $customer->orders->count() }}</td>
+                                <td>Rp {{ number_format($customer->orders->sum('total_amount'), 0, ',', '.') }}</td>
+                                <td>
+                                    {{ $customer->orders->sortByDesc('created_at')->first()->created_at->format('d M Y') }}
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($customers as $customer)
-                                <tr>
-                                    <td class="fw-bold">{{ $customer->name }}</td>
-                                    <td>{{ $customer->email }}</td>
-                                    <td>{{ $customer->orders->count() }}</td>
-                                    <td>Rp {{ number_format($customer->orders->sum('total_amount'), 0, ',', '.') }}</td>
-                                    <td>
-                                        {{ $customer->orders->sortByDesc('created_at')->first()->created_at->format('d M Y') }}
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                        @endforeach
+                    </tbody>
+                </table>
 
                 <div class="d-flex justify-content-between align-items-center">
                     <div>

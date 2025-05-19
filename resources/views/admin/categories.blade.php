@@ -44,9 +44,28 @@
         </div>
         <div class="row">
             <!-- Left side: Table -->
-            <div class="col-md-7">
-                <div class="card shadow-sm">
-                    <div class="card-body table-responsive">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        {{-- Search Form --}}
+                        <form method="GET" id="filterForm">
+                            <div class="row g-3 mb-3 align-items-center">
+                                <div class="col-md-5">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                        <input type="text" name="search" class="form-control"
+                                            placeholder="Search messages or username..." value="{{ request('search') }}" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <a href="{{ url()->current() }}" class="btn btn-reset">
+                                        <i class="bi bi-arrow-clockwise"></i> Reset
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+
                         <table class="table align-middle">
                             <thead class="table">
                                 <tr>
@@ -66,7 +85,7 @@
                                             <div class="d-flex gap-1 align-items-center">
                                                 {{-- Edit Button --}}
                                                 <a href="{{ route('categories.edit', ['id' => $category->id]) }}"
-                                                class="btn btn-sm btn-outline-pink">
+                                                    class="btn btn-sm btn-outline-pink">
                                                     <i class="fas fa-pen" title="Edit Category"></i>
                                                 </a>
                                                 {{-- Delete Button --}}
@@ -76,8 +95,8 @@
                                                     @csrf
                                                     <input type="hidden" name="category_id" value="{{ $category->id }}">
                                                     <button type="submit" class="btn btn-sm btn-outline-red">
-                                                            <i class="fas fa-trash" title="Delete Category"></i>
-                                                        </button>
+                                                        <i class="fas fa-trash" title="Delete Category"></i>
+                                                    </button>
                                                 </form>
                                             </div>
                                         </td>
@@ -95,14 +114,15 @@
 
             <!-- Right side: Form -->
             <div class="col-md-4">
-                <div class="card shadow-sm">
+                <div class="card">
                     <div class="card-body">
                         <h5 class="fw-bold mb-3">Add New Category</h5>
                         <form action="{{ route('categories.store') }}" method="POST">
                             @csrf
                             <div class="mb-3">
                                 <label class="form-label">Category Name</label>
-                                <input type="text" name="name" class="form-control" placeholder="e.g. Eye Care" required>
+                                <input type="text" name="name" class="form-control" placeholder="e.g. Eye Care"
+                                    required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Description</label>
@@ -121,6 +141,15 @@
 
 @push('styles')
     <style>
+        .btn-reset {
+            border: 1px solid #dee2e6;
+            color: black;
+            background-color: white;
+            white-space: nowrap;
+            width: auto;
+            padding: 0.375rem 0.75rem;
+        }
+
         .btn-outline-pink {
             border: 1px solid #e965a7;
             color: #e965a7;
