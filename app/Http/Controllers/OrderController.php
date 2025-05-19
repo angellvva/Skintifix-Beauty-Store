@@ -55,10 +55,19 @@ class OrderController extends Controller
     // Show order details and track it
     public function showOrTrack($order_id)
     {
-        // Find the order by its ID, with related items and the user details
-        $order = Order::with('items.product', 'user')->findOrFail($order_id);
+        $order = Order::with('orderItems.product', 'user')->findOrFail($order_id);
 
-        return view('order-detail', compact('order')); // Pass order data
+        // Loop through the order items and add the estimated delivery and shipping dates
+        foreach ($order->orderItems as $orderItem) {
+            // Calculate the Estimated Delivery (3 days after order date)
+            $orderItem->estimated_delivery = Carbon::parse($order->created_at)->addDays(3)->format('Y-m-d');
+            
+            // Calculate the Shipping Date (3 days after Estimated Delivery)
+            $orderItem->shipping_date = Carbon::parse($orderItem->estimated_delivery)->addDays(3)->format('Y-m-d');
+        }
+
+        // Return the order-detail view with the updated order data
+        return view('order-detail', compact('order'));
     }
 
 

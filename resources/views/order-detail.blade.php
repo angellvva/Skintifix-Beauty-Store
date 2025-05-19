@@ -95,13 +95,13 @@
             </div>
 
             <div class="order-product-list">
-                @foreach ($order->items as $item)
+                @foreach ($order->orderItems as $orderItem)  <!-- Use orderItems instead of items -->
                     <div class="order-product-item">
-                        <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}">
+                        <img src="{{ $orderItem->product->image }}" alt="{{ $orderItem->product->name }}">
                         <div class="order-product-item-details">
-                            <h3>{{ $item->product->name }}</h3>
-                            <p><strong>Qty:</strong> {{ $item->quantity }}</p>
-                            <p><strong>Price:</strong> Rp{{ number_format($item->price, 0, ',', '.') }}</p>
+                            <h3>{{ $orderItem->product->name }}</h3>
+                            <p><strong>Qty:</strong> {{ $orderItem->quantity }}</p>
+                            <p><strong>Price:</strong> Rp{{ number_format($orderItem->price, 0, ',', '.') }}</p>
                         </div>
                     </div>
                 @endforeach
@@ -110,8 +110,8 @@
             <div class="order-status">
                 Status: {{ $order->status }} <br>
                 Order Date: {{ \Carbon\Carbon::parse($order->created_at)->format('d F Y') }} <br>
-                Estimated Delivery: {{ \Carbon\Carbon::parse($order->estimated_delivery)->format('d F Y') }} <br>
-                Shipping Date: {{ \Carbon\Carbon::parse($order->shipping_date)->format('d F Y') }}
+                Estimated Delivery: {{ \Carbon\Carbon::parse($orderItem->estimated_delivery)->format('d F Y') }} <br>  <!-- Access estimated_delivery for each item -->
+                Shipping Date: {{ \Carbon\Carbon::parse($orderItem->shipping_date)->format('d F Y') }}  <!-- Access shipping_date for each item -->
             </div>
 
             <div class="order-total">
@@ -124,4 +124,5 @@
             </div>
         </div>
     </div>
+
 @endsection
