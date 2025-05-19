@@ -16,7 +16,7 @@
                     <div class="card-body d-flex justify-content-between align-items-center">
                         <div class="flex-grow-1">
                             <h6 class="text-uppercase fw-semibold mb-1">Total Messages</h6>
-                            <h3 class="mb-0">{{ $totalMessages }}</h3>
+                            <h3 class="fw-bold mb-0">{{ $totalMessages }}</h3>
                         </div>
                         <div class="icon-circle flex-shrink-0 ms-3">
                             <i class="fas fa-envelope fa-lg"></i>
@@ -30,7 +30,8 @@
         <form method="GET" class="mb-3">
             <div class="row">
                 <div class="col-md-4">
-                    <input type="text" name="search" class="form-control" placeholder="Search messages or user name..." value="{{ request('search') }}">
+                    <input type="text" name="search" class="form-control" placeholder="Search messages or username..."
+                        value="{{ request('search') }}">
                 </div>
                 <div class="col-md-2">
                     <button class="btn btn-pink" type="submit">Search</button>
@@ -75,26 +76,26 @@
 
 
 @push('styles')
-<style>
-    .gradient-pink {
-        background: linear-gradient(135deg, #e965a7, #ffb3d6);
-    }
+    <style>
+        .gradient-pink {
+            background: linear-gradient(135deg, #e965a7, #ffb3d6);
+        }
 
-    .icon-circle {
-        background-color: rgba(255, 255, 255, 0.2);
-        border-radius: 50%;
-        padding: 15px;
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-    }
+        .icon-circle {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            padding: 15px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
 
-    .btn-pink {
-        background-color: #e965a7;
-        color: white;
-    }
+        .btn-pink {
+            background-color: #e965a7;
+            color: white;
+        }
 
-    .btn-pink:hover {
-        background-color: #da5195;
-        color: white;
-    }
-</style>
+        .btn-pink:hover {
+            background-color: #da5195;
+            color: white;
+        }
+    </style>
 @endpush

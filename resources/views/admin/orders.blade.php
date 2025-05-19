@@ -18,7 +18,7 @@
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
                                 <h6 class="text-uppercase fw-semibold mb-1">Total Orders</h6>
-                                <h2 class="mb-0">{{ $totalOrders }}</h2>
+                                <h2 class="fw-bold mb-0">{{ $totalOrders }}</h2>
                             </div>
                             <div class="icon-circle flex-shrink-0 ms-3">
                                 <i class="fas fa-shopping-cart fa-lg"></i>
@@ -35,7 +35,7 @@
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
                                 <h6 class="text-uppercase fw-semibold mb-1">Pending</h6>
-                                <h2 class="mb-0">{{ $totalPending }}</h2>
+                                <h2 class="fw-bold mb-0">{{ $totalPending }}</h2>
                             </div>
                             <div class="icon-circle flex-shrink-0 ms-3">
                                 <i class="fas fa-hourglass-start fa-lg"></i>
@@ -52,7 +52,7 @@
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
                                 <h6 class="text-uppercase fw-semibold mb-1">Processing</h6>
-                                <h2 class="mb-0">{{ $totalProcessing }}</h2>
+                                <h2 class="fw-bold mb-0">{{ $totalProcessing }}</h2>
                             </div>
                             <div class="icon-circle flex-shrink-0 ms-3">
                                 <i class="fas fa-sync-alt fa-lg"></i>
@@ -69,7 +69,7 @@
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
                                 <h6 class="text-uppercase fw-semibold mb-1">Completed</h6>
-                                <h2 class="mb-0">{{ $totalCompleted }}</h2>
+                                <h2 class="fw-bold mb-0">{{ $totalCompleted }}</h2>
                             </div>
                             <div class="icon-circle flex-shrink-0 ms-3">
                                 <i class="fas fa-check-circle fa-lg"></i>
@@ -150,28 +150,31 @@
 
                                     <td>Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
                                     <td>
-                                    @if ($order->status)
-                                        <span class="badge rounded-pill px-3 py-1 border
+                                        @if ($order->status)
+                                            <span
+                                                class="badge rounded-pill px-3 py-1 border
                                             @if ($order->status == 'pending') border-warning text-warning
                                             @elseif($order->status == 'processing') border-primary text-primary
                                             @elseif($order->status == 'completed') border-success text-success
-                                            @else border-secondary text-secondary
-                                            @endif">
-                                            {{ ucfirst($order->status) }}
-                                        </span>
-                                    @else
-                                        <span class="badge rounded-pill border border-secondary text-secondary px-3 py-1">Unknown</span>
-                                    @endif
-                                </td>
+                                            @else border-secondary text-secondary @endif">
+                                                {{ ucfirst($order->status) }}
+                                            </span>
+                                        @else
+                                            <span
+                                                class="badge rounded-pill border border-secondary text-secondary px-3 py-1">Unknown</span>
+                                        @endif
+                                    </td>
                                     <td class="d-flex gap-1">
-                                        <a href="{{ route('orders.show', $order->id) }}" class="btn btn-sm btn-pink" title="View">
+                                        <a href="{{ route('orders.show', $order->id) }}" class="btn btn-sm btn-pink"
+                                            title="View">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-sm btn-pink" title="Edit">
+                                        <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-sm btn-pink"
+                                            title="Edit">
                                             <i class="fas fa-pen"></i>
                                         </a>
                                     </td>
-                                    
+
                                 </tr>
                             @endforeach
                         </tbody>
@@ -222,6 +225,7 @@
             padding: 15px;
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
+
         .btn-pink {
             color: #e965a7;
             background-color: white;
@@ -232,13 +236,14 @@
             background-color: #da5195;
             color: white;
         }
+
         .btn-reset {
             border: 1px solid #dee2e6;
             color: black;
             background-color: white;
             white-space: nowrap;
-        width: auto;
-        padding: 0.375rem 0.75rem;
+            width: auto;
+            padding: 0.375rem 0.75rem;
         }
 
         .btn-prev-next {
@@ -287,7 +292,8 @@
 
         /* Untuk bagian tombol action */
         td.d-flex.gap-1 {
-            flex-wrap: nowrap !important;  /* Pastikan tombol tidak pindah ke bawah */
+            flex-wrap: nowrap !important;
+            /* Pastikan tombol tidak pindah ke bawah */
             gap: 0.25rem;
         }
 
@@ -310,15 +316,18 @@
         /* Responsif di layar kecil */
         @media (max-width: 768px) {
             table {
-                min-width: 700px; /* cukup lebar untuk semua kolom */
+                min-width: 700px;
+                /* cukup lebar untuk semua kolom */
             }
 
             .table-responsive {
                 border: 1px solid #dee2e6;
             }
 
-            thead th:nth-child(6),  /* Status */
-            thead th:nth-child(7) { /* Actions */
+            thead th:nth-child(6),
+            /* Status */
+            thead th:nth-child(7) {
+                /* Actions */
                 min-width: 120px;
             }
 
@@ -329,4 +338,3 @@
         }
     </style>
 @endpush
-
