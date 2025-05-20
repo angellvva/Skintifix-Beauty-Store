@@ -2,6 +2,17 @@
 
 @section('content')
 <style>
+    .card{
+        border-radius: 16px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        background-color: white;
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        margin-bottom: 30px;
+    }
     .order-detail-section {
         background-color: #fff0f6;
         padding: 60px 0;
@@ -12,18 +23,11 @@
         border-radius: 16px;  /* Rounded corners */
         border: 3px solid white;  /* Ensure the border is visible */
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 30px;
+        
         max-width: 1200px;
         margin: 0 auto;
         position: relative; /* Adding position to control layout */
         z-index: 1; /* Ensure the border stays on top */
-    }
-
-    .order-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 30px;
     }
 
     .order-header h2 {
@@ -98,45 +102,44 @@
 
 <div class="order-detail-section">
     <div class="container">
-        <div class="order-header">
-            <h2 class="fw-bold mb-4" style="color: #e965a7;">My Order</h2>
-        </div>
-
-        <div class="order-product-list">
-            @foreach ($order->orderItems as $orderItem)
-                <div class="order-product-item">
-                    <img src="{{ $orderItem->product->image }}" alt="{{ $orderItem->product->name }}">
-                    <div class="order-product-item-details">
-                        <p class="order-id" style="color:black;"><strong>Order ID:</strong> {{ $order->id }}</p>
-                        <h3>{{ $orderItem->product->name }}</h3>
-                        <p><strong>Qty:</strong> {{ $orderItem->quantity }}</p>
-                        <p><strong>Price:</strong> Rp{{ number_format($orderItem->price, 0, ',', '.') }}</p>
-                        <div class="mb-1">
-                            @for ($i = 1; $i <= 5; $i++)
-                                <i class="fas fa-star" style="color: {{ $i <= $orderItem->rating ? '#ffc107' : '#ddd' }};"></i>
-                            @endfor
+        <h2 class="fw-bold mb-4" style="color: #e965a7;">My Order</h2>
+        <div class="card">
+            <div class="card-body">
+                <div class="order-product-list">
+                    @foreach ($order->orderItems as $orderItem)
+                        <div class="order-product-item">
+                            <img src="{{ $orderItem->product->image }}" alt="{{ $orderItem->product->name }}">
+                               <div class="order-product-item-details">
+                                    <p class="order-id" style="color:black;">SKINTIFIX-{{ $order->id }}</p>
+                                    <h3>{{ $orderItem->product->name }}</h3>
+                                    <p><strong>Qty:</strong> {{ $orderItem->quantity }}</p>
+                                    <p><strong>Price:</strong> Rp{{ number_format($orderItem->price, 0, ',', '.') }}</p>
+                                    <div class="mb-1">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <i class="fas fa-star" style="color: {{ $i <= $orderItem->rating ? '#ffc107' : '#ddd' }};"></i>                                            @endfor
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
-                    </div>
+
+                        <div class="order-status">
+                            <p><strong>Status:</strong> {{ $order->status }} </p>
+                            <p><strong>Order Date:</strong> {{ \Carbon\Carbon::parse($order->created_at)->format('d M Y') }}</p>
+                            <p><strong>Estimated Delivery:</strong> {{ \Carbon\Carbon::parse($orderItem->estimated_delivery)->format('d M Y') }}</p>
+                            <p><strong>Shipping Date:</strong> {{ \Carbon\Carbon::parse($orderItem->shipping_date)->format('d M Y') }}</p>
+                        </div>
+
+                        <div class="order-total">
+                            Total: Rp{{ number_format($order->total_amount, 0, ',', '.') }}
+                        </div>
+
+                        <div class="order-address">
+                            <h3>Address:</h3>
+                            <p>{{ $order->user->address }}</p>
+                        </div>
                 </div>
-            @endforeach
-        </div>
-
-        <div class="order-status">
-            <p><strong>Status:</strong> {{ $order->status }} </p>
-            <p><strong>Order Date:</strong> {{ \Carbon\Carbon::parse($order->created_at)->format('d M Y') }}</p>
-            <p><strong>Estimated Delivery:</strong> {{ \Carbon\Carbon::parse($orderItem->estimated_delivery)->format('d M Y') }}</p>
-            <p><strong>Shipping Date:</strong> {{ \Carbon\Carbon::parse($orderItem->shipping_date)->format('d M Y') }}</p>
-        </div>
-
-        <div class="order-total">
-            Total: Rp{{ number_format($order->total_amount, 0, ',', '.') }}
-        </div>
-
-        <div class="order-address">
-            <h3>Address:</h3>
-            <p>{{ $order->user->address }}</p>
+            </div>       
         </div>
     </div>
-</div>
-
 @endsection
