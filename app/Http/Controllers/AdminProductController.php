@@ -55,7 +55,17 @@ class AdminProductController extends Controller
         return view('admin.add-product', compact('categories'));
     }
 
-    public function delete_product() {}
+    public function delete_product(Request $request)
+    {
+        $productID = $request->input('product_id');
+
+        if ($productID) {
+            Product::destroy($productID);
+            return redirect()->back()->with('success', 'Product deleted successfully.');
+        }
+
+        return redirect()->back()->with('error', 'Product not found.');
+    }
 
     public function store(Request $request)
     {

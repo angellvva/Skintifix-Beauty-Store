@@ -112,7 +112,7 @@ Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('adm
 Route::get('/admin/products', [AdminProductController::class, 'products'])->name('admin.products');
 // route admin add product
 Route::get('/admin/add-product', [AdminProductController::class, 'add_product'])->name('admin.add-product');
-
+// route admin delete product
 Route::post('/admin/delete-product', [AdminProductController::class, 'delete_product'])->name('admin.delete-product');
 
 // route admin order

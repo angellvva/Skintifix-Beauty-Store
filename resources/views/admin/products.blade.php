@@ -177,9 +177,10 @@
                                     <a href="{{ route('products.edit', $product->id) }}" class="btn btn-sm btn-edit me-2">
                                         <i class="fas fa-pen" title="Edit Product"></i>
                                     </a>
-                                    <form action="" method="POST" class="d-inline">
+                                    <form action="{{ route('admin.delete-product') }}" method="POST" class="d-inline"
+                                        onsubmit="return confirm('Are you sure you want to delete this product?');">
                                         @csrf
-                                        @method('DELETE')
+                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
                                         <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Product">
                                             <i class="fas fa-trash"></i>
                                         </button>
