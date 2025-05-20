@@ -158,7 +158,7 @@
                     </div>
 
                     <div class="order-status">
-                        <p><strong>Status:</strong> {{ $order->status }} </p>
+                        <p><strong>Status:</strong> {{ ucfirst($order->status) }} </p>
                         <p><strong>Order Date:</strong> {{ \Carbon\Carbon::parse($order->created_at)->format('d M Y') }}</p>
                         <p><strong>Estimated Delivery:</strong>
                             {{ \Carbon\Carbon::parse($orderItem->estimated_delivery)->format('d M Y') }}</p>
