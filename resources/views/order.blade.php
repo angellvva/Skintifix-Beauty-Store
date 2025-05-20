@@ -92,7 +92,7 @@
                     @foreach ($orders as $order)
                         <div class="order-card">
                             <div class="order-left">
-                                <p><strong>Order ID:</strong> {{ $order->order_id }}</p>
+                                <p>SKINTIFIX- {{ $order->order_id }}</p>
                                 <h5>{{ $order->name }}</h5>
                                 <p><strong>Price:</strong> Rp{{ number_format($order->price, 0, ',', '.') }}</p>
                                 <p><strong>Order Date:</strong>
