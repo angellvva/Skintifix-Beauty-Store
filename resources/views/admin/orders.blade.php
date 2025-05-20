@@ -156,7 +156,16 @@
                                             @elseif($order->status == 'processing') border-primary text-primary
                                             @elseif($order->status == 'completed') border-success text-success
                                             @else border-secondary text-secondary @endif">
-                                            {{ ucfirst($order->status) }}
+                                            @if ($order->status == 'pending')
+                                                text-warning
+                                            @elseif($order->status == 'processing')
+                                                text-primary
+                                            @elseif($order->status == 'completed')
+                                                text-success
+                                            @else
+                                                text-secondary
+                                                @endif">
+                                                {{ ucfirst($order->status) }}
                                         </span>
                                     @else
                                         <span
