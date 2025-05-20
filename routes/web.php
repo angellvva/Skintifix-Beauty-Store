@@ -113,6 +113,8 @@ Route::get('/admin/products', [AdminProductController::class, 'products'])->name
 // route admin add product
 Route::get('/admin/add-product', [AdminProductController::class, 'add_product'])->name('admin.add-product');
 
+Route::post('/admin/delete-product', [AdminProductController::class, 'delete_product'])->name('admin.delete-product');
+
 // route admin order
 Route::get('/admin/orders', [AdminOrderController::class, 'orders'])->name('admin.orders');
 

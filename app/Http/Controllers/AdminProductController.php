@@ -55,6 +55,8 @@ class AdminProductController extends Controller
         return view('admin.add-product', compact('categories'));
     }
 
+    public function delete_product() {}
+
     public function store(Request $request)
     {
         // Validasi input
