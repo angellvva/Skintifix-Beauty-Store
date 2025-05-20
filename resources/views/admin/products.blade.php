@@ -155,7 +155,7 @@
                             <tr>
                                 <td class="fw-bold">{{ $product->name }}</td>
                                 <td>{{ $product->category->name }}</td>
-                                <td>Rp {{ number_format($product->price, 0, ',', '.') }}
+                                <td>Rp {{ number_format($product->price, 0, ',', '.') }}</td>
                                 <td>{{ $product->stock }}</td>
                                 <td>
                                     <div

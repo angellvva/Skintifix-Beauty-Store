@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\ProductCategory;
@@ -36,12 +37,29 @@ class AdminController extends Controller
                 'users.name as customer_name'
             )
             ->orderByDesc('orders.order_date', 'desc')
-            ->limit(3)
+            ->limit(5)
             ->get();
 
         $lowStockProducts = DB::table('products')
             ->where('stock', '<', 20)
+            ->paginate(3);
+
+        $topSellingProducts = DB::table('order_items')
+            ->join('products', 'order_items.product_id', '=', 'products.id')
+            ->join('product_categories', 'products.category_id', '=', 'product_categories.id')
+            ->select(
+                'products.id',
+                'products.name as product_name',
+                'products.price as product_price',
+                'product_categories.name as category_name',
+                'products.stock as product_stock',
+                DB::raw('SUM(order_items.quantity) as total_quantity'),
+            )
+            ->groupBy('products.id', 'products.name', 'product_categories.name')
+            ->orderByDesc('total_quantity')
+            ->limit(5)
             ->get();
+
 
         return view('admin.dashboard', compact(
             'totalOrders',
@@ -49,7 +67,8 @@ class AdminController extends Controller
             'totalProducts',
             'newCustomers',
             'recentOrders',
-            'lowStockProducts'
+            'lowStockProducts',
+            'topSellingProducts'
         ));
     }
 

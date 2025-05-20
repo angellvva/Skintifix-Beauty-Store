@@ -222,6 +222,16 @@
             background-color: red;
             color: white;
         }
+
+        .btn-prev-next {
+            color: white;
+            background-color: #e965a7;
+        }
+
+        .btn-prev-next:hover {
+            color: white;
+            background-color: #da5195;
+        }
     </style>
 @endpush
 
