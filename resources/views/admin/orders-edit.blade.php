@@ -4,7 +4,7 @@
 <div class="container my-4">
     <div class="d-flex align-items-center mb-4" >
         <div class="me-auto">
-            <h4 class="fw-bold mb-0">Update Order <span class="text-pink">#ORD-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</span>
+            <h4 class="fw-bold mb-0">Update Order <span class="text-pink">SKINTIFIX-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</span>
             <span class="badge 
                 @if ($order->status == 'pending') text-warning border border-warning
                 @elseif($order->status == 'processing') text-primary border border-primary
