@@ -92,14 +92,15 @@
                     @foreach ($orders as $order)
                         <div class="order-card">
                             <div class="order-left">
-                                <p>SKINTIFIX-{{  str_pad($order->order_id, 5, '0', STR_PAD_LEFT)}}</p>
+                                <p class="fw-bold">SKINTIFIX-{{ str_pad($order->order_id, 5, '0', STR_PAD_LEFT) }}</p>
                                 <h5>{{ $order->name }}</h5>
+                                <br>
                                 <p><strong>Price:</strong> Rp{{ number_format($order->price, 0, ',', '.') }}</p>
                                 <p><strong>Order Date:</strong>
                                     {{ \Carbon\Carbon::parse($order->created_at)->format('d M Y') }}</p>
                                 <p><strong>Estimated Delivery:</strong> {{ $order->estimated_delivery }}</p>
                                 <p><strong>Shipping Date:</strong> {{ $order->shipping_date }}</p>
-                                
+
                             </div>
                             <div class="order-right">
                                 <img src="{{ $order->image }}" alt="{{ $order->name }}" class="order-img">
