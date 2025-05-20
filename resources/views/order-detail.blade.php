@@ -124,7 +124,7 @@
                         <div class="order-product-item">
                             <img src="{{ $orderItem->product->image }}" alt="{{ $orderItem->product->name }}">
                                <div class="order-product-item-details">
-                                    <p class="order-id" style="color:black;">SKINTIFIX-{{ $order->id }}</p>
+                                    <p class="order-id" style="color:black;">SKINTIFIX-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</p>
                                     <h3>{{ $orderItem->product->name }}</h3>
                                     <p><strong>Qty:</strong> {{ $orderItem->quantity }}</p>
                                     <p><strong>Price:</strong> Rp{{ number_format($orderItem->price, 0, ',', '.') }}</p>
