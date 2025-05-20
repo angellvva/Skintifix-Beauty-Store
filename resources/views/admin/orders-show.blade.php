@@ -7,7 +7,7 @@
             <i class="fas fa-arrow-left"></i>
         </a>
         <h4 class="fw-bold" style="color: #e965a7;">
-            Order #ORD-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}
+            Order SKINTIFIX-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}
             <span class="badge rounded-pill ms-2 px-3 py-1 border
                 @if ($order->status == 'pending') border-warning text-warning
                 @elseif($order->status == 'processing') border-primary text-primary
@@ -25,7 +25,7 @@
                 <div class="card-header fw-semibold">Order Details</div>
                 <div class="card-body">
                     <p class="text-muted mb-4">
-                        Placed on {{ \Carbon\Carbon::parse($order->order_date)->format('d F Y') }} | #ORD-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}
+                        Placed on {{ \Carbon\Carbon::parse($order->order_date)->format('d F Y') }} | SKINTIFIX-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}
                     </p>
 
                     <table class="table">
