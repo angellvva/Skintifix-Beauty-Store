@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Cookie;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $userId = session('id') ?? Cookie::get('id');
 
@@ -20,11 +20,29 @@ class OrderController extends Controller
             return redirect()->route('login')->with('error', 'You need to be logged in to view your orders.');
         }
 
-        // Ambil semua orders user
-        $orders = DB::table('orders')
-            ->where('user_id', $userId)
-            ->orderBy('id', 'desc')
-            ->get();
+        $search = $request->input('search');
+
+        // Query dasar untuk ambil orders user
+        $ordersQuery = DB::table('orders')->where('user_id', $userId);
+
+        if ($search) {
+            // Cek jika search hanya angka (order ID)
+            if (ctype_digit($search)) {
+                // Filter berdasarkan order id, partial match (misal '10' match order id 10, 100, dll)
+                $ordersQuery->where('id', 'like', "%{$search}%");
+            } else {
+                // Jika bukan angka, berarti cari berdasarkan product name
+                // Join ke order_items dan products untuk filter berdasarkan product name
+                $ordersQuery->whereIn('id', function ($query) use ($search) {
+                    $query->select('oi.order_id')
+                        ->from('order_items as oi')
+                        ->join('products as p', 'oi.product_id', '=', 'p.id')
+                        ->where('p.name', 'like', "%{$search}%");
+                });
+            }
+        }
+
+        $orders = $ordersQuery->orderBy('id', 'desc')->get();
 
         $orderIds = $orders->pluck('id')->toArray();
 

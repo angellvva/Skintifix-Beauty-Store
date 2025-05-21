@@ -37,13 +37,21 @@
             overflow: hidden;
         }
 
-        .btn-reset {
+        .btn-reset,
+        .btn-reset:hover {
             border: 1px solid #dee2e6;
             color: black;
             background-color: white;
             white-space: nowrap;
             width: auto;
             padding: 0.375rem 0.75rem;
+        }
+
+        .btn-search,
+        .btn-search:hover {
+            border: 1px solid #dee2e6;
+            color: white;
+            background-color: #e965a7;
         }
     </style>
 
@@ -58,8 +66,8 @@
         <div class="card">
             <div class="card-body">
                 <form id="filterForm" method="GET" action="{{ url()->current() }}">
-                    <div class="row g-2 g-md-3 mb-3 align-items-center">
-                        <div class="col-12 col-md-5">
+                    <div class="row g-3 mb-3 align-items-center">
+                        <div class="col-md-5">
                             <div class="input-group">
                                 <span class="input-group-text" id="basic-addon1">
                                     <i class="bi bi-search"></i>
@@ -67,9 +75,11 @@
                                 <input type="text" name="search" class="form-control"
                                     placeholder="Search customer name..." aria-label="Search"
                                     aria-describedby="basic-addon1" value="{{ request('search') }}" />
+                                <button type="submit" class="btn btn-search" title="Search Filter">Search</button>
                             </div>
                         </div>
-                        <div class="col-12 col-md-3">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-3">
                             <select name="status" class="form-select"
                                 onchange="document.getElementById('filterForm').submit()">
                                 <option value="highest_spend" {{ request('status') == 'highest_spend' ? 'selected' : '' }}>
@@ -80,7 +90,7 @@
                                 </option>
                             </select>
                         </div>
-                        <div class="col-12 col-md-2">
+                        <div class="col-md-1">
                             <a href="{{ url()->current() }}" class="btn btn-reset " title="Reset Filter">
                                 <i class="bi bi-arrow-clockwise"></i> Reset
                             </a>

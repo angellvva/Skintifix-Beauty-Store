@@ -23,6 +23,13 @@
         thead th:nth-child(4) {
             width: 10%;
         }
+
+        .btn-search,
+        .btn-search:hover {
+            border: 1px solid #dee2e6;
+            color: white;
+            background-color: #e965a7;
+        }
     </style>
     @if (session('success'))
         <div id="category-notification" class="alert alert-success"
@@ -78,6 +85,7 @@
                                         <span class="input-group-text"><i class="bi bi-search"></i></span>
                                         <input type="text" name="search" class="form-control"
                                             placeholder="Search category name..." value="{{ request('search') }}" />
+                                        <button type="submit" class="btn btn-search" title="Search Filter">Search</button>
                                     </div>
                                 </div>
 
@@ -192,7 +200,8 @@
 
 @push('styles')
     <style>
-        .btn-reset {
+        .btn-reset,
+        .btn-reset:hover {
             border: 1px solid #dee2e6;
             color: black;
             background-color: white;

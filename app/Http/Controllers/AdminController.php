@@ -118,6 +118,13 @@ class AdminController extends Controller
                 ->orWhere('message', 'like', "%$search%");
         }
 
+        // Filter search berdasarkan nama
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where('name', 'like', "%{$search}%")
+                ->orWhere('message', 'like', "%{$search}%");
+        }
+
         $messages = $query->latest()->get();
         $totalMessages = DB::table('messages')->count();
 

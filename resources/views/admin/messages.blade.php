@@ -8,13 +8,21 @@
             border-collapse: collapse;
         }
 
-        .btn-reset {
+        .btn-reset,
+        .btn-reset:hover {
             border: 1px solid #dee2e6;
             color: black;
             background-color: white;
             white-space: nowrap;
             width: auto;
             padding: 0.375rem 0.75rem;
+        }
+
+        .btn-search,
+        .btn-search:hover {
+            border: 1px solid #dee2e6;
+            color: white;
+            background-color: #e965a7;
         }
     </style>
 
@@ -54,6 +62,7 @@
                                 <span class="input-group-text"><i class="bi bi-search"></i></span>
                                 <input type="text" name="search" class="form-control"
                                     placeholder="Search messages or username..." value="{{ request('search') }}" />
+                                <button type="submit" class="btn btn-search" title="Search Filter">Search</button>
                             </div>
                         </div>
 
@@ -75,20 +84,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($messages as $msg)
+                        @foreach ($messages as $msg)
                             <tr>
                                 <td>{{ $msg->name }}</td>
                                 <td>{{ $msg->email }}</td>
                                 <td>{{ Str::limit($msg->message, 50) }}</td>
                                 <td>{{ \Carbon\Carbon::parse($msg->created_at)->format('d M Y H:i') }}</td>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="text-center text-muted">No messages found.</td>
-                            </tr>
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
+
+                @if ($messages->isEmpty())
+                    <p class="text-muted text-center">No messages found.</p>
+                @endif
             </div>
         </div>
     </div>

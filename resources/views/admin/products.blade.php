@@ -69,12 +69,20 @@
             text-overflow: ellipsis;
         }
 
-        .btn-reset {
+        .btn-reset,
+        .btn-reset:hover {
             border: 1px solid #dee2e6;
             color: black;
             background-color: white;
             width: 100%;
             box-sizing: border-box;
+        }
+
+        .btn-search,
+        .btn-search:hover {
+            border: 1px solid #dee2e6;
+            color: white;
+            background-color: #e965a7;
         }
     </style>
     <div class="container my-4">
@@ -101,6 +109,7 @@
                                 <input type="text" name="search" class="form-control"
                                     placeholder="Search product name..." aria-label="Search" aria-describedby="basic-addon1"
                                     value="{{ request('search') }}" />
+                                <button type="submit" class="btn btn-search" title="Search Filter">Search</button>
                             </div>
                         </div>
                         <div class="col-md-3">

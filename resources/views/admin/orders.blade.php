@@ -90,6 +90,7 @@
                                 <span class="input-group-text"><i class="bi bi-search"></i></span>
                                 <input type="text" name="search" class="form-control" placeholder="Search order ID..."
                                     value="{{ request('search') }}" />
+                                <button type="submit" class="btn btn-search" title="Search Filter">Search</button>
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -217,6 +218,13 @@
 
 @push('styles')
     <style>
+        .btn-search,
+        .btn-search:hover {
+            border: 1px solid #dee2e6;
+            color: white;
+            background-color: #e965a7;
+        }
+
         .gradient-pink {
             background: linear-gradient(135deg, #e965a7, #ffb3d6);
         }
@@ -239,7 +247,8 @@
             color: white;
         }
 
-        .btn-reset {
+        .btn-reset,
+        .btn-reset:hover {
             border: 1px solid #dee2e6;
             color: black;
             background-color: white;

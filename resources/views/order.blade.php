@@ -31,11 +31,49 @@
             color: white;
             background-color: #da5195;
         }
+
+        .btn-search,
+        .btn-search:hover {
+            border: 1px solid #dee2e6;
+            color: white;
+            background-color: #e965a7;
+        }
+
+        .btn-reset,
+        .btn-reset:hover {
+            border: 1px solid #dee2e6;
+            color: black;
+            background-color: white;
+            width: 100%;
+            box-sizing: border-box;
+        }
     </style>
 
     <div class="order-section">
         <div class="container py-5">
-            <h2 class="fw-bold mb-4" style="color: #e965a7;">My Order</h2>
+            <div class="row g-3">
+                <div class="col-md-7">
+                    <h2 class="fw-bold mb-4" style="color: #e965a7;">My Order</h2>
+                </div>
+                <div class="col-md-4">
+                    <form id="filterForm" method="GET" action="{{ url()->current() }}">
+                        <div class="input-group">
+                            <span class="input-group-text" id="basic-addon1">
+                                <i class="bi bi-search"></i>
+                            </span>
+                            <input type="text" name="search" class="form-control"
+                                placeholder="Search order ID or product name..." aria-label="Search"
+                                aria-describedby="basic-addon1" value="{{ request('search') }}" />
+                            <button type="submit" class="btn btn-search" title="Search Filter">Search</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-1">
+                    <a href="{{ url()->current() }}" class="btn btn-reset" title="Reset Filter">
+                        <i class="bi bi-arrow-clockwise"></i> Reset
+                    </a>
+                </div>
+            </div>
 
             @if (isset($orders) && count($orders) > 0)
                 @foreach ($orders as $order)
@@ -126,32 +164,4 @@
             @endif
         </div>
     </div>
-
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            const notification = document.getElementById('order-notification');
-            const closeBtn = document.getElementById('close-order-notification');
-            if (!notification) return;
-
-            const displayTime = 4000; // duration before auto fade
-            const fadeDuration = 1000; // fade-out duration
-
-            function fadeOutAndHide() {
-                notification.style.transition = `opacity ${fadeDuration}ms ease`;
-                notification.style.opacity = 0;
-                setTimeout(() => {
-                    notification.style.display = 'none';
-                }, fadeDuration);
-            }
-
-            const timeoutId = setTimeout(fadeOutAndHide, displayTime);
-
-            if (closeBtn) {
-                closeBtn.addEventListener('click', () => {
-                    clearTimeout(timeoutId);
-                    fadeOutAndHide();
-                });
-            }
-        });
-    </script>
 @endsection
