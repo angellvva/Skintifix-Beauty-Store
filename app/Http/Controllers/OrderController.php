@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Order;
-use App\Models\OrderItem; 
+use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -12,44 +12,45 @@ use Illuminate\Support\Facades\Cookie;
 
 class OrderController extends Controller
 {
-    // Show orders for the logged-in user
     public function index()
     {
-        // Attempt to get the user ID from session or cookies
         $userId = session('id') ?? Cookie::get('id');
-        
+
         if (!$userId) {
             return redirect()->route('login')->with('error', 'You need to be logged in to view your orders.');
         }
 
-        // Fetch orders for the logged-in user
+        // Ambil semua orders user
         $orders = DB::table('orders')
-            ->where('orders.user_id', $userId)  // Explicitly specify the table for user_id
-            ->join('products', 'orders.product_id', '=', 'products.id')
-            ->leftJoin('reviews', 'orders.id', '=', 'reviews.id')  // Ensure 'reviews.order_id' exists
-            ->select(
-                'orders.id as order_id',
-                'products.name',
-                'products.price',
-                'products.image',
-                'orders.created_at',
-                'orders.status',
-                'orders.total_amount',
-                'reviews.rating'
-            )
-            ->orderBy('orders.created_at', 'desc')
+            ->where('user_id', $userId)
+            ->orderBy('id', 'desc')
             ->get();
 
-        // Loop through the orders to calculate estimated delivery and shipping dates
-        foreach ($orders as $order) {
-            // Calculate Estimated Delivery (3 days after order date)
-            $order->estimated_delivery = Carbon::parse($order->created_at)->addDays(3)->format('Y-m-d');
-            // Calculate Shipping Date (3 days after Estimated Delivery)
-            $order->shipping_date = Carbon::parse($order->estimated_delivery)->addDays(3)->format('Y-m-d');
-        }
+        $orderIds = $orders->pluck('id')->toArray();
 
-        // Return the orders view with the orders data
-        return view('order', compact('orders'));
+        // Ambil semua order items yang terkait dengan order ids user tsb, beserta info produk
+        $orderItems = DB::table('order_items as oi')
+            ->join('products as p', 'oi.product_id', '=', 'p.id')
+            ->select(
+                'oi.order_id',
+                'p.name',
+                'p.image',
+                'p.price',
+                'oi.quantity'
+            )
+            ->whereIn('oi.order_id', $orderIds)
+            ->get();
+
+        // Group order items berdasarkan order_id
+        $itemsGrouped = $orderItems->groupBy('order_id');
+
+        $orderCount = $orders->count();
+
+        return view('order', [
+            'orders' => $orders,
+            'orderItemsGrouped' => $itemsGrouped,
+            'orderCount' => $orderCount,
+        ]);
     }
 
     // Show order details and track it
@@ -61,7 +62,7 @@ class OrderController extends Controller
         foreach ($order->orderItems as $orderItem) {
             // Calculate the Estimated Delivery (3 days after order date)
             $orderItem->estimated_delivery = Carbon::parse($order->created_at)->addDays(3)->format('Y-m-d');
-            
+
             // Calculate the Shipping Date (3 days after Estimated Delivery)
             $orderItem->shipping_date = Carbon::parse($orderItem->estimated_delivery)->addDays(3)->format('Y-m-d');
         }

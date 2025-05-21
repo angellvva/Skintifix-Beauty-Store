@@ -6,95 +6,111 @@
             background-color: #fff0f6;
         }
 
-        .order-card {
-            border-radius: 16px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            background-color: white;
-            width: 100%;
-            display: flex;
-            justify-content: flex-start;
-            align-items: flex-start;
-            margin-bottom: 30px;
-        }
-
-        .order-left {
-            flex: 2;
-            padding-right: 30px;
-        }
-
-        .order-left p,
-        .order-left h5 {
-            margin: 10px 0;
-            font-size: 20px;
-        }
-
-        .order-right {
-            flex: 1;
-            text-align: center;
-            position: relative;
-        }
-
         .order-img {
-            width: 200px;
-            height: 200px;
-            object-fit: contain;
-            border-radius: 12px;
-            margin-bottom: 10px;
-        }
-
-        .btn-view-order {
-            display: block;
-            background-color: #e965a7;
-            color: white;
-            padding: 15px 30px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 18px;
-            margin-top: 10px;
             width: 100%;
-            text-align: center;
+            border: 1px solid #dee2e6;
         }
 
-        .btn-view-order:hover {
-            background-color: #d84f91;
+        .btn-pink {
+            color: #e965a7;
+            background-color: white;
+            border: 1px solid #e965a7;
+        }
+
+        .btn-pink:hover {
+            color: white;
+            background-color: #e965a7;
+        }
+
+        .btn-pink2 {
+            color: white;
+            background-color: #e965a7;
+        }
+
+        .btn-pink2:hover {
+            color: white;
+            background-color: #da5195;
         }
     </style>
 
     <div class="order-section">
         <div class="container py-5">
             <h2 class="fw-bold mb-4" style="color: #e965a7;">My Order</h2>
-            @if (session('success'))
-                <div id="order-notification" class="alert alert-success">
-                    <span>{{ session('success') }}</span>
-                    <button id="close-order-notification"
-                        style="background: transparent; border: none; color: #155724; font-weight: bold; font-size: 20px; line-height: 1; cursor: pointer; padding: 0 5px; margin-left: 15px;"
-                        aria-label="Close notification">&times;</button>
-                </div>
-            @endif
 
             @if (isset($orders) && count($orders) > 0)
-                <div class="order-grid">
-                    @foreach ($orders as $order)
-                        <div class="order-card">
-                            <div class="order-left">
-                                <p class="fw-bold">SKINTIFIX-{{ str_pad($order->order_id, 5, '0', STR_PAD_LEFT) }}</p>
-                                <h5>{{ $order->name }}</h5>
-                                <br>
-                                <p><strong>Price:</strong> Rp{{ number_format($order->price, 0, ',', '.') }}</p>
-                                <p><strong>Order Date:</strong>
-                                    {{ \Carbon\Carbon::parse($order->created_at)->format('d M Y') }}</p>
-                                <p><strong>Estimated Delivery:</strong> {{ $order->estimated_delivery }}</p>
-                                <p><strong>Shipping Date:</strong> {{ $order->shipping_date }}</p>
+                @foreach ($orders as $order)
+                    <div class="p-4"
+                        style="background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: {{ $loop->last ? '0' : '20px' }};">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <div class="d-flex justify-content-between">
+                                            <span class="fw-normal">Order ID:
+                                                <b
+                                                    style="color:#e965a7;">SKINTIFIX-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</b></span>
+                                            <span @class([
+                                                'badge rounded-pill border px-3 py-1',
+                                                'border-secondary text-secondary' => $order->status == 'pending',
+                                                'border-warning text-warning' => $order->status == 'processing',
+                                                'border-success text-success' => $order->status == 'completed',
+                                            ])>
+                                                {{ ucfirst($order->status) }}
+                                            </span>
 
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $totalOrderPrice = 0;
+                                @endphp
+
+                                @foreach ($orderItemsGrouped[$order->id] ?? [] as $item)
+                                    @php
+                                        $subtotal = $item->price * $item->quantity;
+                                        $totalOrderPrice += $subtotal;
+                                    @endphp
+                                    <tr>
+                                        <td>
+                                            <div class="row">
+                                                <div class="col-md-1">
+                                                    <img src="{{ $item->image }}" alt="{{ $item->name }}"
+                                                        class="order-img">
+                                                </div>
+                                                <div class="col-md-9 p-0">
+                                                    <p class="fw-bold mb-1">{{ $item->name }}</p>
+                                                    <p class="mb-0">Amount: {{ $item->quantity }}</p>
+                                                </div>
+                                                <div class="col-md-2" style="text-align: right;">
+                                                    Rp{{ number_format($subtotal, 0, ',', '.') }}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+
+                        <div class="row align-items-center">
+                            <div class="col-md-10 text-end">
+                                Total Order:
                             </div>
-                            <div class="order-right">
-                                <img src="{{ $order->image }}" alt="{{ $order->name }}" class="order-img">
-                                <a href="{{ route('order.show', ['order_id' => $order->order_id]) }}"
-                                    class="btn-view-order">Order Detail</a>
+                            <div class="col-md-2" style="text-align: right; color:#e965a7;">
+                                <h4 class="m-0">Rp{{ number_format($totalOrderPrice, 0, ',', '.') }}</h4>
                             </div>
-                    @endforeach
-                </div>
+                        </div>
+                        <div class="text-end mt-3">
+                            <a href="{{ route('order.show', ['order_id' => $order->id]) }}"
+                                class="btn btn-sm btn-pink">Order
+                                Detail</a>
+                            <a href="{{ route('catalog') }}" class="btn btn-sm btn-pink2">Buy
+                                again
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
             @else
                 <div style="background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                     <div class="table-responsive text-center py-5">
