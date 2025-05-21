@@ -16,7 +16,6 @@
 
         .order-detail-section {
             background-color: #fff0f6;
-            padding: 60px 0;
         }
 
         .order-detail-container {
@@ -106,13 +105,6 @@
             color: black;
         }
 
-        h2 {
-            text-align: left;
-            color: #e965a7;
-            margin-bottom: 30px;
-            font-size: 36px;
-        }
-
         .order-detail-card {
             border-radius: 16px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -127,7 +119,7 @@
     </style>
 
     <div class="order-detail-section">
-        <div class="container">
+        <div class="container py-5">
             <h2 class="fw-bold mb-4" style="color: #e965a7;">My Order</h2>
             <div class="order-detail-card">
                 <div class="card-body">

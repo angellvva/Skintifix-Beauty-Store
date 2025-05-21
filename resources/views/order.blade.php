@@ -2,15 +2,8 @@
 
 @section('content')
     <style>
-        .product-section {
+        .order-section {
             background-color: #fff0f6;
-            padding: 60px 0;
-        }
-
-        .order-container {
-            margin: 0 auto;
-            max-width: 1200px;
-            padding: 30px;
         }
 
         .order-card {
@@ -66,17 +59,10 @@
         .btn-view-order:hover {
             background-color: #d84f91;
         }
-
-        h2 {
-            text-align: left;
-            color: #e965a7;
-            margin-bottom: 30px;
-            font-size: 36px;
-        }
     </style>
 
-    <div class="product-section">
-        <div class="container">
+    <div class="order-section">
+        <div class="container py-5">
             <h2 class="fw-bold mb-4" style="color: #e965a7;">My Order</h2>
             @if (session('success'))
                 <div id="order-notification" class="alert alert-success">
