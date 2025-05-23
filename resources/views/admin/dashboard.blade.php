@@ -74,7 +74,7 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>Order #</th>
+                                        <th>Order ID</th>
                                         <th>Date</th>
                                         <th>Customer</th>
                                         <th>Amount</th>
