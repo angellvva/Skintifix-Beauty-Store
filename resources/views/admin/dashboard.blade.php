@@ -202,20 +202,26 @@
                 </div>
             </div>
         </div>
-
+        {{-- Sales Chart End--}}
         <div class="row mt-5">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header bg-white">
                         <h5 class="mb-0">Sales Over Time</h5>
+                    </div>
+                    <div class="card-body">
                         <form action="{{ route('admin.dashboard') }}" method="GET" class="row g-3 align-items-end mb-4">
+                            <div class="col-md-1">
+                                <label for="start_date" class="form-label fw-bold">Start Date</label>
+                            </div>
                             <div class="col-md-2">
-                                <label for="start_date" class="form-label">Start Date</label>
                                 <input type="date" id="start_date" name="start_date" class="form-control"
                                     value="{{ request('start_date') }}">
                             </div>
+                            <div class="col-md-1">
+                                <label for="end_date" class="form-label fw-bold">End Date</label>
+                            </div>
                             <div class="col-md-2">
-                                <label for="end_date" class="form-label">End Date</label>
                                 <input type="date" id="end_date" name="end_date" class="form-control"
                                     value="{{ request('end_date') }}">
                             </div>
@@ -230,6 +236,7 @@
                 </div>
             </div>
         </div>
+        {{-- Sales Chart End --}}
     </div>
 @endsection
 
