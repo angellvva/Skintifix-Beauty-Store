@@ -131,7 +131,7 @@
 
         <h2>Forgot Password</h2>
 
-        <p class="gray-text">Enter your email address and we’ll send you a link to reset your password.</p>
+        <p class="gray-text">Enter your email address and set your new password.</p>
 
         <!-- Form untuk reset password -->
         <form method="POST" action="{{ route('password.update') }}">
@@ -142,18 +142,18 @@
                 <div class="error-message">{{ $errors->first('email') }}</div>
             @endif
 
-            <label for="password">Password</label>
+            <label for="password">New Password</label>
             <input type="password" name="password" placeholder="" required>
-             @if ($errors->has('password'))
+            @if ($errors->has('password'))
                 <div class="error-message">{{ $errors->first('password') }}</div>
             @endif
 
-            <label for="confirm-password">Confirm Password</label>
+            <label for="confirm-password">Confirm New Password</label>
             <input type="password" name="password_confirmation" placeholder="" required>
             @if ($errors->has('password_confirmation'))
                 <div class="error-message">{{ $errors->first('password_confirmation') }}</div>
             @endif
-         
+
             <button type="submit">Reset Password</button>
         </form>
 
@@ -161,4 +161,5 @@
     </div>
 
 </body>
+
 </html>
