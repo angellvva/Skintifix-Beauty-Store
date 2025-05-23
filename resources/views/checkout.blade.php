@@ -65,6 +65,19 @@
                             </select>
                         </div>
 
+                        <!-- Payment Method -->
+                        <h5 class="fw-bold mt-4" style="color: #e75480;">
+                            <i class="fas fa-wallet me-2"></i>Payment Method
+                        </h5>
+                        <div class="mb-4">
+                            <select name="payment_method" class="form-select" required>
+                                <option value="">Choose a payment method</option>
+                                <option value="bank_transfer">Bank Transfer</option>
+                                <option value="e_wallet">E-Wallet</option>
+                                <option value="credit_card">Credit Card</option>
+                            </select>
+                        </div>
+
                         @foreach ($cartItems as $item)
                             <input type="hidden" name="selected_items[]" value="{{ $item->cart_id }}">
                         @endforeach
@@ -73,6 +86,8 @@
                             style="background-color: #e965a7; color: white;">
                             <i class="fas fa-lock me-2"></i>Proceed to Payment
                         </button>
+
+                        
                     </form>
                 </div>
             </div>
