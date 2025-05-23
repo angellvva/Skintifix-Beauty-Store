@@ -50,7 +50,7 @@ class CartController extends Controller
             ->where('id', $id)
             ->update(['quantity' => $request->quantity]);
 
-        return back()->with('success', 'Cart updated successfully.');
+        return response()->json(['message' => 'Quantity updated successfully.']);
     }
 
     public function remove($id)

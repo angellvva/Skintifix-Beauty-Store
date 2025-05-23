@@ -63,8 +63,9 @@
                                 </td>
                                 <td class="align-middle text-center">
                                     {{-- Form update quantity --}}                                
-                                        <input type="number" name="quantity" min="1" value="{{ $item->quantity }}"
-                                            class="form-control form-control-sm"
+                                        <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" 
+                                            class="form-control form-control-sm quantity-input"
+                                            data-cart-id="{{ $item->cart_id }}"
                                             style="max-width: 70px; display:inline-block;">                          
                                 </td>
                                 <td class="align-middle text-center fw-semibold subtotal">Rp
@@ -133,6 +134,31 @@
             @endif
         </div>
     </div>
+    <script>
+        document.querySelectorAll('.quantity-input').forEach(input => {
+            input.addEventListener('change', function () {
+                const cartId = this.dataset.cartId;
+                const newQty = this.value;
+
+                fetch(`/cart/update-quantity/${cartId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ quantity: newQty })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.message);
+                })
+                .catch(error => {
+                    console.error('Update error:', error);
+                });
+            });
+        });
+    </script>
+
 
     <script>
         // Close success notification
