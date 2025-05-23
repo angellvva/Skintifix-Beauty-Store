@@ -4,16 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Order;
-use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Models\ProductCategory;
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
     // Halaman dashboard admin
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         $totalOrders = DB::table('orders')->count();
 
@@ -42,6 +43,7 @@ class AdminController extends Controller
 
         $lowStockProducts = DB::table('products')
             ->where('stock', '<', 20)
+            ->whereNull('deleted_at')
             ->paginate(3);
 
         $topSellingProducts = DB::table('order_items')
@@ -59,6 +61,28 @@ class AdminController extends Controller
             ->orderByDesc('total_quantity')
             ->limit(5)
             ->get();
+        
+    // Sales Over Time Chart with optional date range filter
+        $startDate = $request->input('start_date', now()->subDays(6)->format('Y-m-d'));
+        $endDate = $request->input('end_date', now()->format('Y-m-d'));
+
+        $salesData = DB::table('orders')
+            ->selectRaw('DATE(order_date) as date, COUNT(*) as orders')
+            ->whereBetween('order_date', [$startDate, $endDate])
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
+
+        $salesLabels = [];
+        $salesCounts = [];
+
+        $datePeriod = \Carbon\CarbonPeriod::create($startDate, $endDate);
+        foreach ($datePeriod as $date) {
+            $formatted = $date->format('Y-m-d');
+            $salesLabels[] = $formatted;
+            $match = $salesData->firstWhere('date', $formatted);
+            $salesCounts[] = $match ? $match->orders : 0;
+        }
 
 
         return view('admin.dashboard', compact(
@@ -68,7 +92,11 @@ class AdminController extends Controller
             'newCustomers',
             'recentOrders',
             'lowStockProducts',
-            'topSellingProducts'
+            'topSellingProducts',
+            'salesLabels', 
+            'salesCounts',
+            'startDate',
+            'endDate'
         ));
     }
 
