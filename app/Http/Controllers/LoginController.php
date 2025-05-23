@@ -40,33 +40,24 @@ class LoginController extends Controller
         // Find user from 'users' table
         $user = DB::table('users')->where('email', $credentials['email'])->first();
 
-        if ($user && Hash::check($credentials['password'], $user->password)) {
-            // Store session or cookies
-            if ($request->has('remember')) {
-                Cookie::queue('id', $user->id, 60 * 24 * 7);
-                Cookie::queue('email', $user->email, 60 * 24 * 7);
-                Cookie::queue('name', $user->name, 60 * 24 * 7);
-            } else {
-                session()->put('id', $user->id);
-                session()->put('email', $user->email);
-                session()->put('name', $user->name);
-            }
-
-            return redirect('/')->with('success', 'Login Successful!');
+        if (!$user) {
+            return redirect('/login')->withErrors(['email' => 'Email tidak terdaftar di database'])->withInput();
         }
 
-        return redirect('/login')->with('error', 'Login Failed! Please check your credentials.');
-    }
+        if (!Hash::check($credentials['password'], $user->password)) {
+            return redirect('/login')->withErrors(['password' => 'Password salah'])->withInput();
+        }
 
-    public function Logout(Request $request)
-    {
-        // Clear session and cookies
-        session()->forget(['id', 'email', 'name']);
-
-        Cookie::queue(Cookie::forget('id'));
-        Cookie::queue(Cookie::forget('email'));
-        Cookie::queue(Cookie::forget('name'));
-
-        return redirect('/')->with('success', 'Logged out successfully.');
-    }
+        // Simpan sesi
+        if ($request->has('remember')) {
+            Cookie::queue('id', $user->id, 60 * 24 * 7);
+            Cookie::queue('email', $user->email, 60 * 24 * 7);
+            Cookie::queue('name', $user->name, 60 * 24 * 7);
+        } else {
+            session()->put('id', $user->id);
+            session()->put('email', $user->email);
+            session()->put('name', $user->name);
+        }
+        return redirect('/')->with('success', 'Login Successful!');
+    }   
 }

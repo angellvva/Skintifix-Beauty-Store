@@ -114,6 +114,31 @@
         .login-modal .gray-text {
             color: gray;
         }
+
+        .error-message {
+            color: red;
+            text-align: left;
+            font-size: 13px;
+            margin-top: 4px;
+            animation: fadeInUp 0.4s ease;
+            background-color: #ffe6e6;
+            padding: 6px 10px;
+            border-left: 4px solid #ff4d4d;
+            border-radius: 4px;
+            display: inline-block;
+            max-width: 100%;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 
@@ -125,14 +150,20 @@
         <h2>Account Sign In</h2>
         <p class="gray-text">Welcome back! Please sign in below to access your account and view your previous order
             history and earned points.</p>
-
+        
         <form action="{{ route('login') }}" method="POST">
             @csrf
             <label for="email">Email</label>
-            <input type="text" name="email" placeholder="name@example.com" required>
+            <input type="text" name="email" value="{{ old('email') }}" placeholder="name@example.com" required>
+            @if ($errors->has('email'))
+                <div class="error-message">{{ $errors->first('email') }}</div>
+            @endif
 
             <label for="password">Password</label>
-            <input type="password" name="password" placeholder="" required>
+            <input type="password" name="password" required>
+            @if ($errors->has('password'))
+                <div class="error-message">{{ $errors->first('password') }}</div>
+            @endif
 
             <button type="submit">Sign In</button>
         </form>
