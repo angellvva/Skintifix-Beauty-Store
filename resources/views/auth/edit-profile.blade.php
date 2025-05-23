@@ -48,7 +48,7 @@
                         <h4 class="fw-bold mb-1">Personal Information</h4>
                         <p class="text-muted mb-4">Update your personal details</p>
 
-                        <form method="POST" action="{{ route('profile.updatePassword') }}">
+                        <form method="POST" action="{{ route('profile.update') }}">
                             @csrf
                             <!-- Profile Picture Placeholder -->
                             <div class="d-flex justify-content-center mb-4">
@@ -146,27 +146,3 @@
         }
     </script>
 @endsection
-
-{{-- div col lg-8 --}}
-<!-- Profile Picture -->
-{{-- <div class="col-lg-4">
-                    <div class="h-100 card p-4 text-center"
-                        style="border: 0; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                        <h4 class="fw-bold mb-1">Profile Picture</h4>
-                        <p class="text-muted mb-4">Update your profile picture</p>
-
-                        <div class="mb-4">
-                            <div class="rounded-circle d-inline-flex justify-content-center align-items-center"
-                                style="width: 160px; height: 160px; background-color:#fff0f6;">
-                                <i class="fas fa-user" style="font-size: 64px; color:#e965a7;"></i>
-                            </div>
-                        </div>
-
-                        <button class="btn btn-warning text-white w-100 mb-2">
-                            <i class="bi bi-upload me-1"></i> Unggah Foto Baru
-                        </button>
-                        <button class="btn btn-outline-danger w-100">
-                            <i class="bi bi-trash me-1"></i> Hapus Foto
-                        </button>
-                    </div>
-                </div> --}}
