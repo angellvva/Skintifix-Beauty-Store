@@ -136,6 +136,18 @@
             object-fit: contain;
             margin-bottom: 15px;
         }
+
+        .btn-outline-pink {
+            color: #e965a7;
+            border: 2px solid #e965a7;
+            background-color: transparent;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-pink:hover {
+            background-color: #e965a7;
+            color: white;
+            border-color: #e965a7;
+        }
 </style>
 
 <div class="container-fluid py-5" style="background-image: url('{{ asset('images/home/background.jpg') }}');">
@@ -199,6 +211,31 @@
                 </div>
             </div>
         </div>
+        <!-- Our Products Swiper End -->
+
+        <!-- Contact us Now Start-->
+            <div class="container py-5 mb-5" style="background-color: #ffcee2; color: #e965a7; padding: 60px 0;">
+                <div class="row align-items-center">
+                    <!-- Text Content -->
+                    <div class="col-md-5 text-center text-md-start mb-4 mb-md-0 ps-md-5">
+                        <h2 class="fw-bold display-5">Exclusive Products</h2>
+                        <h3 class="fw-normal">only in <strong>Skintifix Beauty Store</strong></h3>
+                        <p class="mt-3 mb-4 small">Start your beauty goals with us, right here right now. Get in touch with us!</p>
+                        <a href="{{ route('contact') }}" class="btn btn-outline-pink rounded-pill px-4 py-2">
+                            Contact Us Now
+                        </a>
+                    </div>
+
+                    <!-- Image Content -->
+                    <div class="col-md-7 d-flex justify-content-center">
+                        <div class="position-relative" style="border-radius: 20px; overflow: hidden; border: 10px solid white;">
+                            <img src="{{ asset('images/contact.png') }}" alt="Contact" class="img-fluid" style="border-radius: 10px; object-fit: cover; max-height: 400px;">
+                            <span class="position-absolute top-0 start-0 bg-white text-dark px-3 py-1 fw-bold" style="border-bottom-right-radius: 20px;">NEW</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!-- Contact us Now End-->        
 
         <div class="container">
             {{-- Best Seller --}}
