@@ -192,11 +192,12 @@
             let total = 0;
 
             document.querySelectorAll('tbody tr').forEach(row => {
+                const checkbox = row.querySelector('input[type="checkbox"]');
                 const priceEl = row.querySelector('.price');
                 const qtyInput = row.querySelector('input[name="quantity"]');
                 const subtotalEl = row.querySelector('.subtotal');
 
-                if (!priceEl || !qtyInput || !subtotalEl) return;
+                if (!priceEl || !qtyInput || !subtotalEl || !checkbox) return;
 
                 // Ambil harga dan quantity
                 let price = parseInt(priceEl.textContent.replace(/[^0-9]/g, '')) || 0;
@@ -206,20 +207,21 @@
                 let subtotal = price * qty;
                 subtotalEl.textContent = formatRp(subtotal);
 
-                // Tambah ke total
-                total += subtotal;
+                if (checkbox.checked){
+                    total += subtotal;
+                }
             });
 
-            // Update total di footer
-            const totalDisplay = document.getElementById('total-display');
-            if (totalDisplay) {
-                totalDisplay.textContent = formatRp(total);
-            }
+            document.getElementById('total-display').textContent = formatRp(total);
         }
 
         // Pasang event listener pada semua input quantity
         document.querySelectorAll('input[name="quantity"]').forEach(input => {
             input.addEventListener('input', updateTotals);
+        });
+
+        document.querySelectorAll('input[type="checkbox"]').forEach(cb =>{
+            cb.addEventListener('change', updateTotals);
         });
 
         // Hitung ulang saat halaman load
