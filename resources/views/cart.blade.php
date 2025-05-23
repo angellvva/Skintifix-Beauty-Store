@@ -62,16 +62,10 @@
                                 <td class="align-middle text-center price">Rp {{ number_format($item->price, 0, ',', '.') }}
                                 </td>
                                 <td class="align-middle text-center">
-                                    {{-- Form update quantity --}}
-                                    <form action="{{ route('cart.update', $item->cart_id) }}" method="POST"
-                                        style="display:inline-block;">
-                                        @csrf
-                                        @method('PUT')
+                                    {{-- Form update quantity --}}                                
                                         <input type="number" name="quantity" min="1" value="{{ $item->quantity }}"
                                             class="form-control form-control-sm"
-                                            style="max-width: 70px; display:inline-block;">
-                                
-                                    </form>
+                                            style="max-width: 70px; display:inline-block;">                          
                                 </td>
                                 <td class="align-middle text-center fw-semibold subtotal">Rp
                                     {{ number_format($subtotal, 0, ',', '.') }}</td>
