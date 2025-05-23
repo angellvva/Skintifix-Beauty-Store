@@ -113,83 +113,151 @@
         .register-modal .gray-text {
             color: gray;
         }
+        .error-message {
+            color: red;
+            font-size: 13px;
+            background-color: #ffe6e6;
+            padding: 6px 10px;
+            border-left: 4px solid #ff4d4d;
+            border-radius: 4px;
+            display: block;
+            margin-top: 5px;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Styling untuk form dan elemen lainnya */
+        .register-modal input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin: 6px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .register-modal input[type="password"]:focus {
+            border-color: #e965a7;
+            outline: none;
+        }
     </style>
 </head>
 <body>
     <script>
-        // Wait until the DOM is fully loaded
-        document.addEventListener("DOMContentLoaded", function() {
-            const form = document.querySelector('form');
-            const password = document.querySelector('input[name="password"]');
-            const confirmPassword = document.querySelector('input[name="password_confirmation"]');
-            const errorMessage = document.getElementById('password-error');
-            const submitButton = document.querySelector('button[type="submit"]');
+    document.addEventListener("DOMContentLoaded", function() {
+        const form = document.getElementById('registerForm');
+        const name = document.querySelector('input[name="name"]');
+        const phone = document.querySelector('input[name="phone"]');
+        const email = document.querySelector('input[name="email"]');
+        const address = document.querySelector('input[name="address"]');
+        const password = document.querySelector('input[name="password"]');
+        const confirmPassword = document.querySelector('input[name="password_confirmation"]');
 
-            // Add event listener for form submission
-            form.addEventListener('submit', function(event) {
-                // Check if the passwords match
-                if (password.value !== confirmPassword.value) {
-                    // Show error message
-                    errorMessage.style.display = 'block';
+        form.addEventListener('submit', function(event) {
+            let valid = true;
 
-                    // Prevent form submission
-                    event.preventDefault();
-                } else {
-                    // Hide error message if passwords match
-                    errorMessage.style.display = 'none';
-                }
-            });
+            // Cek jika password dan confirm password tidak cocok
+            if (password.value !== confirmPassword.value) {
+                document.getElementById('confirm-password-error').textContent = "The password and confirm password do not match.";
+                document.getElementById('confirm-password-error').style.display = 'block';
+                valid = false;
+            } else {
+                document.getElementById('confirm-password-error').style.display = 'none';
+            }
 
-            // Optional: Hide the error message if the user starts typing again
-            password.addEventListener('input', function() {
-                if (password.value === confirmPassword.value) {
-                    errorMessage.style.display = 'none';
-                }
-            });
+            // Cek jika password kurang dari 8 karakter
+            if (password.value.length < 8) {
+                document.getElementById('password-error').textContent = "Password must be at least 8 characters.";
+                document.getElementById('password-error').style.display = 'block';
+                valid = false;
+            } else {
+                document.getElementById('password-error').style.display = 'none';
+            }
 
-            confirmPassword.addEventListener('input', function() {
-                if (password.value === confirmPassword.value) {
-                    errorMessage.style.display = 'none';
-                }
-            });
+            // Validasi nama (hanya boleh huruf dan spasi)
+            const namePattern = /^[a-zA-Z\s]+$/;
+            if (!namePattern.test(name.value)) {
+                document.getElementById('name-error').textContent = "Name must be only letters and spaces.";
+                document.getElementById('name-error').style.display = 'block';
+                valid = false;
+            } else {
+                document.getElementById('name-error').style.display = 'none';
+            }
+
+            // Validasi nomor telepon (hanya angka)
+            const phonePattern = /^[0-9]{10,15}$/;
+            if (!phonePattern.test(phone.value)) {
+                document.getElementById('phone-error').textContent = "Phone number must be a valid number with 10-15 digits.";
+                document.getElementById('phone-error').style.display = 'block';
+                valid = false;
+            } else {
+                document.getElementById('phone-error').style.display = 'none';
+            }
+
+            // Validasi email
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailPattern.test(email.value)) {
+                document.getElementById('email-error').textContent = "Please enter a valid email.";
+                document.getElementById('email-error').style.display = 'block';
+                valid = false;
+            } else {
+                document.getElementById('email-error').style.display = 'none';
+            }
+
+            // Validasi alamat (hanya string)
+            const addressPattern = /^[a-zA-Z0-9\s,]+$/;
+            if (!addressPattern.test(address.value)) {
+                document.getElementById('address-error').textContent = "Address must be a valid string.";
+                document.getElementById('address-error').style.display = 'block';
+                valid = false;
+            } else {
+                document.getElementById('address-error').style.display = 'none';
+            }
+
+            // Jika ada error, jangan kirim form
+            if (!valid) {
+                event.preventDefault();
+            }
         });
-    </script>
+    });
+</script>
 
     <div class="register-modal">
         <!-- Logo -->
         <div class="logo">Skintifix <span style="color: #000000;">Beauty Store</span></div>
-        
         <h2>Account Register</h2>
-        
         <p class="gray-text">Enter your information to create an account</p>
 
         <!-- Form untuk registrasi -->
-       <form action="{{ route('register.submit') }}" method="POST">
+       <form action="{{ route('register.submit') }}" method="POST" id="registerForm">
             @csrf
             <label for="name">Name</label>
-            <input type="text" name="name" placeholder="" required>
+            <input type="text" name="name" placeholder="Enter your name" required>
+            <div class="error-message" id="name-error" style="display:none;"></div>
 
             <label for="phone">Phone Number</label>
-            <input type="tel" name="phone" placeholder="" required pattern="[0-9]{10,15}">
+            <input type="tel" name="phone" placeholder="Phone number" required pattern="[0-9]{10,15}">
+            <div class="error-message" id="phone-error" style="display:none;"></div>
 
             <label for="email">Email</label>
             <input type="email" name="email" placeholder="name@example.com" required>
+            <div class="error-message" id="email-error" style="display:none;"></div>
 
             <label for="address">Address</label>
-            <input type="text" name="address" placeholder="" required>
+            <input type="text" name="address" placeholder="Your address" required>
+            <div class="error-message" id="address-error" style="display:none;"></div>
 
             <label for="password">Password</label>
             <input type="password" name="password" required minlength="8" placeholder="Password (min 8 characters)">
+            <div class="error-message" id="password-error" style="display:none;"></div>
 
             <label for="confirm-password">Confirm Password</label>
-            <input type="password" name="password_confirmation" placeholder="" required>
+            <input type="password" name="password_confirmation" placeholder="Confirm your password" required>
+            <div class="error-message" id="confirm-password-error" style="display:none;"></div>
 
-            <!-- Error message for password mismatch -->
-        <div id="password-error" style="color: red; display: none;">
-            The password field confirmation does not match.
-        </div>
-
-            <button type="submit">Register</button> 
+            <button type="submit">Register</button>
         </form>
 
         <!-- Link untuk kembali ke halaman login jika sudah punya akun -->

@@ -109,7 +109,7 @@
                             <tbody>
                                 @foreach ($categories as $category)
                                     <tr>
-                                        <td class="fw-semibold">{{ $category->name }}</td>
+                                        <td class="fw-bold">{{ $category->name }}</td>
                                         <td>{{ Str::limit($category->description, 50) }}</td>
                                         <td>{{ $category->products_count }}</td>
                                         <td>

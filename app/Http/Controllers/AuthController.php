@@ -41,7 +41,4 @@ class AuthController extends Controller
         // Redirect setelah registrasi berhasil
         return redirect()->route('login')->with('status', 'Registration successful! Please login.');
     }
-
- 
-
 }
