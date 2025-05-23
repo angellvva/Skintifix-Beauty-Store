@@ -24,8 +24,7 @@ class ReviewController extends Controller
 
         Review::create([
             'product_id' => $productId,
-            'user_id' => session('id'),
-            //Auth::id(), // Will be null if not logged in
+            'user_id' => Auth::id(),
             'rating' => $request->rating,
             'comment' => $request->comment,
         ]);
