@@ -203,7 +203,7 @@
             </div>
         </div>
         {{-- Sales Chart End--}}
-        <div class="row mt-5">
+        <div class="row mt-4">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header bg-white">
