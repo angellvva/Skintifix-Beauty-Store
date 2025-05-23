@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Cookie;
 use Midtrans\Snap;
 use Midtrans\Config;
 use App\Models\CartItem;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cookie;
 
 
 class CheckoutController extends Controller
@@ -72,7 +73,7 @@ class CheckoutController extends Controller
     $shippingCost = $request->shipping_method === 'express' ? 40000 : 20000;
     $totalAmount = $subtotal + $shippingCost;
 
-    \Log::info('Process checkout request', [
+    Log::info('Process checkout request', [
         'selected_items' => $selectedItemIds,
         'subtotal' => $subtotal,
         'shipping_method' => $request->shipping_method,
@@ -109,7 +110,7 @@ class CheckoutController extends Controller
         $snapToken = Snap::getSnapToken($params);
         return response()->json(['snap_token' => $snapToken]);
     } catch (\Exception $e) {
-        \Log::error('Midtrans Token Error: ' . $e->getMessage());
+        Log::error('Midtrans Token Error: ' . $e->getMessage());
         return response()->json(['error' => 'Failed to generate payment token'], 500);
     }
 }
