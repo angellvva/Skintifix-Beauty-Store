@@ -117,16 +117,12 @@
 
         .error-message {
             color: red;
-            text-align: left;
             font-size: 13px;
-            margin-top: 4px;
-            animation: fadeInUp 0.4s ease;
             background-color: #ffe6e6;
             padding: 6px 10px;
             border-left: 4px solid #ff4d4d;
             border-radius: 4px;
-            display: inline-block;
-            max-width: 100%;
+            margin-top: 10px;
         }
 
         @keyframes fadeInUp {

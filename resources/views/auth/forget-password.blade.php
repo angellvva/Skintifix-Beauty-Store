@@ -110,6 +110,16 @@
         .forgot-password-modal .gray-text {
             color: gray;
         }
+
+        .error-message {
+            color: red;
+            font-size: 13px;
+            background-color: #ffe6e6;
+            padding: 6px 10px;
+            border-left: 4px solid #ff4d4d;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 
@@ -128,13 +138,22 @@
             @csrf
             <label for="email">Email</label>
             <input type="email" name="email" placeholder="name@example.com" required>
+            @if ($errors->has('email'))
+                <div class="error-message">{{ $errors->first('email') }}</div>
+            @endif
 
             <label for="password">Password</label>
             <input type="password" name="password" placeholder="" required>
+             @if ($errors->has('password'))
+                <div class="error-message">{{ $errors->first('password') }}</div>
+            @endif
 
             <label for="confirm-password">Confirm Password</label>
             <input type="password" name="password_confirmation" placeholder="" required>
-
+            @if ($errors->has('password_confirmation'))
+                <div class="error-message">{{ $errors->first('password_confirmation') }}</div>
+            @endif
+         
             <button type="submit">Reset Password</button>
         </form>
 
@@ -142,5 +161,4 @@
     </div>
 
 </body>
-
 </html>

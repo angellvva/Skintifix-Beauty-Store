@@ -41,11 +41,11 @@ class LoginController extends Controller
         $user = DB::table('users')->where('email', $credentials['email'])->first();
 
         if (!$user) {
-            return redirect('/login')->withErrors(['email' => 'Email tidak terdaftar di database'])->withInput();
+            return redirect('/login')->withErrors(['email' => 'Email not registered in database'])->withInput();
         }
 
         if (!Hash::check($credentials['password'], $user->password)) {
-            return redirect('/login')->withErrors(['password' => 'Password salah'])->withInput();
+            return redirect('/login')->withErrors(['password' => 'Your Password Incorrect'])->withInput();
         }
 
         // Simpan sesi
