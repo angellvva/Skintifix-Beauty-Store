@@ -64,10 +64,16 @@ class CategoryController extends Controller
         $categoryId = $request->input('category_id');
 
         if ($categoryId) {
-            ProductCategory::destroy($categoryId);
-            return redirect()->back()->with('success', 'Category deleted successfully.');
+            $category = ProductCategory::find($categoryId);
+
+            if ($category) {
+                $category->delete(); // Soft delete
+                return redirect()->back()->with('success', 'Category deleted successfully.');
+            }
+
+            return redirect()->back()->with('error', 'Category not found.');
         }
 
-        return redirect()->back()->with('error', 'Category not found.');
+        return redirect()->back()->with('error', 'Invalid request.');
     }
 }

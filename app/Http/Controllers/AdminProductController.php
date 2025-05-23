@@ -60,11 +60,17 @@ class AdminProductController extends Controller
         $productID = $request->input('product_id');
 
         if ($productID) {
-            Product::destroy($productID);
-            return redirect()->back()->with('success', 'Product deleted successfully.');
+            $product = Product::find($productID);
+
+            if ($product) {
+                $product->delete(); // This will perform a soft delete
+                return redirect()->back()->with('success', 'Product deleted successfully.');
+            }
+
+            return redirect()->back()->with('error', 'Product not found.');
         }
 
-        return redirect()->back()->with('error', 'Product not found.');
+        return redirect()->back()->with('error', 'Invalid request.');
     }
 
     public function store(Request $request)
