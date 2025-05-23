@@ -147,7 +147,7 @@
         <p class="gray-text">Welcome back! Please sign in below to access your account and view your previous order
             history and earned points.</p>
         
-        <form action="{{ route('login') }}" method="POST">
+        <form action="{{ route('login.action') }}" method="POST">
             @csrf
             <label for="email">Email</label>
             <input type="text" name="email" value="{{ old('email') }}" placeholder="name@example.com" required>
