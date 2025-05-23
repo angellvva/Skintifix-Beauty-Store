@@ -45,34 +45,34 @@
                         @php $total = 0; @endphp
                         @foreach ($cartItems as $item)
                             @php
-                                $subtotal = $item->price * $item->quantity;
+                                $subtotal = $item->product->price * $item->quantity;
                                 $total += $subtotal;
                             @endphp
                             <tr>
                                 <td style="max-width: 600px; white-space: normal;">
                                     <div class="d-flex align-items-center gap-3" style="margin-right: 10px;">
-                                        <img src="{{ $item->image }}" alt="{{ $item->name }}" class="rounded"
+                                        <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}" class="rounded"
                                             style="width: 80px; height: 80px; object-fit: cover; margin-left: 10px;">
                                         <div>
-                                            <h5 class="mb-1 fw-semibold" style="color: #e965a7;">{{ $item->name }}</h5>
-                                            <small class="text-muted">{{ $item->description ?? '' }}</small>
+                                            <h5 class="mb-1 fw-semibold" style="color: #e965a7;">{{ $item->product->name }}</h5>
+                                            <small class="text-muted">{{ $item->product->description ?? '' }}</small>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="align-middle text-center price">Rp {{ number_format($item->price, 0, ',', '.') }}
+                                <td class="align-middle text-center price">Rp {{ number_format($item->product->price, 0, ',', '.') }}
                                 </td>
                                 <td class="align-middle text-center">
                                     {{-- Form update quantity --}}                                
                                         <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" 
                                             class="form-control form-control-sm quantity-input"
-                                            data-cart-id="{{ $item->cart_id }}"
+                                            data-cart-id="{{ $item->id }}"
                                             style="max-width: 70px; display:inline-block;">                          
                                 </td>
                                 <td class="align-middle text-center fw-semibold subtotal">Rp
                                     {{ number_format($subtotal, 0, ',', '.') }}</td>
                                 <td class="align-middle text-center">
                                     {{-- Form hapus item --}}
-                                    <form action="{{ route('cart.remove', $item->cart_id) }}" method="POST"
+                                    <form action="{{ route('cart.remove', $item->id) }}" method="POST"
                                         onsubmit="return confirm('Are you sure you want to remove this item?');"
                                         style="display:inline-block;">
                                         @csrf
@@ -83,7 +83,7 @@
                                     </form>
                                 </td>
                                 <td class="align-middle text-center">
-                                    <input type="checkbox" name="selected_items[]" value="{{ $item->cart_id }}">
+                                    <input type="checkbox" name="selected_items[]" value="{{ $item->id }}">
                                 </td>
                             </tr>
                         @endforeach

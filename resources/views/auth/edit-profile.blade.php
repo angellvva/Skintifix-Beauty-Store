@@ -11,11 +11,11 @@
             color: white;
         }
 
-        .tab-content>.tab-pane {
+        .tab-content > .tab-pane {
             display: none;
         }
 
-        .tab-content>.tab-pane.active {
+        .tab-content > .tab-pane.active {
             display: block;
         }
     </style>
@@ -23,9 +23,20 @@
     <div class="section">
         <div class="container py-5">
             <h2 class="fw-bold mb-4" style="color: #e965a7;">Edit Profile</h2>
+
             @if (session('success'))
                 <div class="alert alert-success" style="border-color: #e965a7;">
                     {{ session('success') }}
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="alert alert-danger" style="border-color: #e965a7;">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
                 </div>
             @endif
 
@@ -44,41 +55,44 @@
                 <!-- Profile Tab -->
                 <div class="tab-pane active" id="tab-profile">
                     <div class="h-100 card p-4"
-                        style="border: 0; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                         style="border: 0; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                         <h4 class="fw-bold mb-1">Personal Information</h4>
                         <p class="text-muted mb-4">Update your personal details</p>
 
                         <form method="POST" action="{{ route('profile.update') }}">
                             @csrf
-                            <!-- Profile Picture Placeholder -->
                             <div class="d-flex justify-content-center mb-4">
                                 <div class="rounded-circle d-flex justify-content-center align-items-center"
-                                    style="width: 160px; height: 160px; background-color: #fff0f6; color: #e965a7; font-size: 64px;">
+                                     style="width: 160px; height: 160px; background-color: #fff0f6; color: #e965a7; font-size: 64px;">
                                     <i class="fas fa-user"></i>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Full Name</label>
-                                <input type="text" name="name" class="form-control" value="{{ old('name', $user->name) }}">
+                                <input type="text" name="name" class="form-control"
+                                       value="{{ old('name', Auth::user()->name) }}">
                                 @error('name')
-                                    <small class="text-danger">{{ $message }}</small>
+                                <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Phone Number</label>
-                                <input type="text" name="phone" class="form-control" value="{{ old('phone', $user->phone) }}">
+                                <input type="text" name="phone" class="form-control"
+                                       value="{{ old('phone', Auth::user()->phone) }}">
                                 @error('phone')
-                                    <small class="text-danger">{{ $message }}</small>
+                                <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Address</label>
-                                <input type="text" name="address" class="form-control" value="{{ old('address', $user->address) }}">
-                                    @error('address')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror                            </div>
+                                <input type="text" name="address" class="form-control"
+                                       value="{{ old('address', Auth::user()->address) }}">
+                                @error('address')
+                                <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
 
                             <button type="submit" class="btn mt-4" style="background-color: #e965a7; color: white;">
                                 Save Changes
@@ -90,7 +104,7 @@
                 <!-- Security & Privacy Tab -->
                 <div class="tab-pane" id="tab-security">
                     <div class="h-100 card p-4"
-                        style="border: 0; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                         style="border: 0; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                         <h4 class="fw-bold mb-1">Change Password</h4>
                         <p class="text-muted mb-4">Update your password to keep your account secure</p>
 
@@ -101,7 +115,7 @@
                                 <label class="form-label">Current Password</label>
                                 <input type="password" name="current_password" class="form-control">
                                 @error('current_password')
-                                    <small class="text-danger">{{ $message }}</small>
+                                <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
 
@@ -109,7 +123,7 @@
                                 <label class="form-label">New Password</label>
                                 <input type="password" name="new_password" class="form-control">
                                 @error('new_password')
-                                    <small class="text-danger">{{ $message }}</small>
+                                <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
 

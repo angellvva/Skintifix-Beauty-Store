@@ -136,7 +136,7 @@
                                     <i class="fas fa-user"></i>
                                 </a> --}}
 
-                                @if (session()->has('id'))
+                                @auth
                                     <div class="dropdown">
                                         <button class="icon-btn dropdown-toggle" type="button" id="dropdownUser"
                                             data-bs-toggle="dropdown" aria-expanded="false"
@@ -153,10 +153,9 @@
                                                 <hr class="dropdown-divider">
                                             </li>
                                             <li>
-                                                <form method="GET" action="{{ route('login') }}">
+                                                <form method="POST" action="{{ route('logout') }}">
                                                     @csrf
-                                                    <button type="submit"
-                                                        class="dropdown-item text-danger">Logout</button>
+                                                    <button type="submit" class="dropdown-item text-danger">Logout</button>
                                                 </form>
                                             </li>
                                         </ul>
@@ -166,7 +165,7 @@
                                         style="text-decoration: none; color: #e965a7;">
                                         <i class="fas fa-user"></i>
                                     </a>
-                                @endif
+                                @endauth
                             </div>
                         </div>
                     </div>

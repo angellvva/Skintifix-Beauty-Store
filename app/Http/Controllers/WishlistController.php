@@ -6,13 +6,13 @@ use App\Models\Wishlist;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Auth;
 
 class WishlistController extends Controller
 {
     public function Wishlist()
     {
-        $userId = session('id', Cookie::get('id'));
+        $userId = Auth::id();
 
         if (!$userId) {
             return redirect()->route('login')->with('error', "Please log in first.");
@@ -34,8 +34,8 @@ class WishlistController extends Controller
 
     public function removeFromWishlist(Request $request)
     {
+        $userId = Auth::id();
         $productId = $request->input('product_id');
-        $userId = session('id', Cookie::get('id'));
 
         if (!$userId) {
             return redirect()->route('login')->with('error', "Please log in first.");
@@ -51,7 +51,7 @@ class WishlistController extends Controller
 
     public function toggle(Request $request, $productId)
     {
-        $userId = session('id', Cookie::get('id'));
+        $userId = Auth::id();
 
         if (!$userId) {
             // you can redirect or return back with error message

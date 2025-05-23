@@ -5,15 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;  // Import Auth facade
 use App\Models\User;
 
 class ProfileController extends Controller
 {
-    //
     public function edit()
     {
-        $userId = session('id', request()->cookie('id'));
-        $user = DB::table('users')->where('id', $userId)->first();
+        $user = Auth::user();
 
         if (!$user) {
             return redirect()->route('login')->with('error', 'Please log in.');
@@ -24,7 +23,11 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
-        $userId = session('id', request()->cookie('id'));
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Please log in.');
+        }
 
         $request->validate([
             'name' => 'required|string|max:255',
@@ -32,7 +35,8 @@ class ProfileController extends Controller
             'address' => 'required|string|max:255',
         ]);
 
-        DB::table('users')->where('id', $userId)->update([
+        // You can use Eloquent update for the user model
+        $user->update([
             'name' => $request->name,
             'phone' => $request->phone,
             'address' => $request->address,
@@ -43,18 +47,16 @@ class ProfileController extends Controller
 
     public function updatePassword(Request $request)
     {
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Please log in.');
+        }
+
         $request->validate([
             'current_password' => ['required'],
             'new_password' => ['required', 'min:8', 'confirmed'],
         ]);
-
-        // Get the user using session key 'id'
-        $userId = session('id');
-        $user = User::find($userId);
-
-        if (!$user) {
-            return redirect()->back()->withErrors(['session' => 'User not found. Please log in again.']);
-        }
 
         if (!Hash::check($request->current_password, $user->password)) {
             return redirect()->back()->withErrors(['current_password' => 'Current password is incorrect.']);
@@ -66,9 +68,9 @@ class ProfileController extends Controller
         return redirect()->back()->with('success', 'Password updated successfully!');
     }
 
-
     public function orders()
     {
+        // Optionally, pass user orders data if needed
         return view('order');
     }
 }

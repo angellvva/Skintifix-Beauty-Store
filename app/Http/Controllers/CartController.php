@@ -1,61 +1,54 @@
 <?php
 
-namespace App\Http\Controllers; // pastikan namespace ini ada
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Cart;
+use App\Models\Product;
 
 class CartController extends Controller
 {
     public function index()
     {
-        $userId = session('id', Cookie::get('id'));
+        $userId = Auth::id();
 
-        $cartItems = DB::table('carts')
-            ->join('products', 'carts.product_id', '=', 'products.id')
-            ->where('carts.user_id', $userId)
-            ->select(
-                'carts.id as cart_id',
-                'products.name',
-                'products.price',
-                'products.image',
-                'products.description',
-                'carts.quantity'
-            )
+        $cartItems = Cart::with('product')
+            ->where('user_id', $userId)
             ->get();
 
         return view('cart', compact('cartItems'));
     }
+
     public function update(Request $request, $id)
-    {
-            $request->validate([
-                'quantity' => 'required|integer|min:1'
-            ]);
-
-            $cartItem = Cart::findOrFail($id);
-            $cartItem->quantity = $request->quantity;
-            $cartItem->save();
-
-            return response()->json(['message' => 'Cart updated successfully.']);
-    }
-
-    public function updateQuantity(Request $request, $id)
     {
         $request->validate([
             'quantity' => 'required|integer|min:1'
         ]);
 
-        DB::table('carts')
-            ->where('id', $id)
-            ->update(['quantity' => $request->quantity]);
+        $cartItem = Cart::findOrFail($id);
+        $cartItem->quantity = $request->quantity;
+        $cartItem->save();
 
-        return response()->json(['message' => 'Quantity updated successfully.']);
+        return response()->json(['message' => 'Cart updated successfully.']);
     }
+
+    // public function updateQuantity(Request $request, $id)
+    // {
+    //     $request->validate([
+    //         'quantity' => 'required|integer|min:1'
+    //     ]);
+
+    //     $cartItem = Cart::findOrFail($id);
+    //     $cartItem->quantity = $request->quantity;
+    //     $cartItem->save();
+
+    //     return response()->json(['message' => 'Quantity updated successfully.']);
+    // }
 
     public function remove($id)
     {
-        DB::table('carts')->where('id', $id)->delete();
+        Cart::findOrFail($id)->delete();
 
         return redirect()->route('cart.view')->with('success', 'Product removed from cart.');
     }
