@@ -32,6 +32,7 @@ Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('car
 Route::put('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
 Route::post('/checkout', [CheckoutController::class, 'showCheckout'])->name('checkout');
 Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
+Route::post('/cart/update-quantity/{id}', [CartController::class, 'updateQuantity']);
 
 
 // route untuk catalog
