@@ -133,10 +133,10 @@
 
                         <div class="row align-items-center">
                             <div class="col-md-10 text-end">
-                                Total Order:
+                                Total Amount:
                             </div>
                             <div class="col-md-2" style="text-align: right; color:#e965a7;">
-                                <h4 class="m-0">Rp{{ number_format($totalOrderPrice, 0, ',', '.') }}</h4>
+                                <h4 class="m-0">Rp{{ number_format($order->total_amount, 0, ',', '.') }}</h4>
                             </div>
                         </div>
                         <div class="text-end mt-3">

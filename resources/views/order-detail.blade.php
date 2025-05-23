@@ -1,187 +1,153 @@
 @extends('base.base')
 
 @section('content')
-    <style>
-        .card {
-            border-radius: 16px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            background-color: white;
-            width: 100%;
-            display: flex;
-            justify-content: flex-start;
-            align-items: flex-start;
-            margin-bottom: 30px;
-        }
+<style>
+    .order-detail-section {
+        background-color: #fff0f6;
+    }
 
-        .order-detail-section {
-            background-color: #fff0f6;
-        }
+    .order-detail-card {
+        border-radius: 16px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        background-color: white;
+        width: 100%;
+        position: relative;
+    }
 
-        .order-detail-container {
-            background-color: white;
-            border-radius: 16px;
-            border: 3px solid white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
+    .back-icon {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 2;
+        border: 1px solid #e965a7;
+        color: #e965a7;
+        padding: 6px 10px;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
 
-        .order-product-list {
-            margin-top: 20px;
-        }
+    .back-icon:hover {
+        background-color: #e965a7;
+        color: white;
+    }
 
-        .order-product-item {
-            display: flex;
-            justify-content: flex-start;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            position: relative;
-        }
+    .order-product-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
 
-        .order-product-item img {
-            width: 200px;
-            height: 200px;
-            object-fit: contain;
-            border-radius: 12px;
-            margin-right: 20px;
-            /* Increased margin between image and text */
-        }
+    .order-product-item {
+        display: flex;
+        gap: 20px;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 10px;
+    }
 
-        .order-product-item-details {
-            flex-grow: 1;
-        }
+    .order-product-item img {
+        width: 150px;
+        height: 150px;
+        object-fit: contain;
+        border-radius: 12px;
+    }
 
-        .order-product-item-details p {
-            margin: 5px 0;
-        }
+    .order-product-item-details {
+        flex: 1;
+    }
 
-        /* Extended line under product item */
-        .order-product-item::after {
-            content: '';
-            display: block;
-            width: 100%;
-            height: 1px;
-            background-color: #ddd;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-        }
+    .order-product-item-details p {
+        margin: 5px 0;
+    }
 
-        .order-status {
-            margin-top: 20px;
-            font-size: 18px;
-            font-weight: bold;
-            color: black;
-        }
+    .fas.fa-star {
+        color: #ddd;
+    }
 
-        .order-status p {
-            font-weight: normal;
-        }
+    .fas.fa-star.active {
+        color: #ffc107;
+    }
 
-        .order-actions {
-            margin-top: 30px;
-            display: flex;
-            justify-content: space-between;
-        }
+    .order-summary {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 40px;
+        justify-content: space-between;
+    }
 
-        /* Right-aligned Total (above the line) */
-        .order-total {
-            font-size: 20px;
-            font-weight: bold;
-            margin-top: 20px;
-            text-align: right;
-            /* Align total to the right */
-            position: relative;
-            z-index: 2;
-            /* Ensure total is above the line */
-        }
+    .order-summary .summary-block {
+        flex: 1;
+        min-width: 200px;
+    }
 
-        .order-address {
-            margin-top: 20px;
-            font-size: 18px;
-            color: black;
-        }
+    .order-summary .summary-block p {
+        margin: 4px 0;
+    }
 
-        .order-detail-card {
-            border-radius: 16px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            background-color: white;
-            width: 100%;
-            display: flex;
-            justify-content: flex-start;
-            align-items: flex-start;
-            margin-bottom: 30px;
-        }
-        .fas.fa-star {
-            color: #ddd; /* Warna bintang yang tidak dipilih (abu-abu) */
-        }
+    .order-total {
+        font-size: 18px;
+        margin-bottom: 12px;
+        text-align: right;
+    }
+</style>
 
-        .fas.fa-star.active {
-            color: #ffc107; /* Warna bintang yang dipilih (kuning) */
-        }
-    </style>
+<div class="order-detail-section">
+    <div class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold mb-0" style="color: #e965a7;">Order Detail 
+                <span style="color: #000;">SKINTIFIX-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</span>
+            </h2>
+        </div>
+        <div class="order-detail-card">
+            <a href="{{ route('my-orders') }}" class="btn btn-light back-icon">
+                <i class="fas fa-arrow-left"></i>
+            </a>
 
-    <div class="order-detail-section">
-        <div class="container py-5">
-            <h2 class="fw-bold mb-4" style="color: #e965a7;">Order Detail</h2>
-            <div class="order-detail-card">
-                <div class="card-body">
-                    <div class="order-product-list">
-                        @foreach ($order->orderItems as $orderItem)
-                            <div class="order-product-item">
-                                <img src="{{ $orderItem->product->image }}" alt="{{ $orderItem->product->name }}">
-                                <div class="order-product-item-details">
-                                    <p class="order-id" style="color:black;">
-                                        SKINTIFIX-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</p>
-                                    <h3>{{ $orderItem->product->name }}</h3>
-                                    <p><strong>Qty:</strong> {{ $orderItem->quantity }}</p>
-                                    <p><strong>Price:</strong> Rp{{ number_format($orderItem->price, 0, ',', '.') }}</p>
-                                    <div class="order-product-item-details">
-                                    <div class="order-product-item-details">
-                                        <div class="mb-1">
-                                            <i class="fas fa-star active"></i> <!-- Ini adalah bintang yang aktif, warna kuning -->
-                                            <i class="fas fa-star active"></i> <!-- Bintang aktif -->
-                                            <i class="fas fa-star active"></i> <!-- Bintang aktif -->
-                                            <i class="fas fa-star"></i> <!-- Bintang tidak aktif, abu-abu -->
-                                            <i class="fas fa-star"></i> <!-- Bintang tidak aktif, abu-abu -->
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
+            {{-- Product List --}}
+            <div class="order-product-list">
+                @foreach ($order->orderItems as $orderItem)
+                <div class="order-product-item">
+                    <img src="{{ $orderItem->product->image }}" alt="{{ $orderItem->product->name }}">
+                    <div class="order-product-item-details">
+                        <h4 class="mb-1">{{ $orderItem->product->name }}</h4>
+                        <p><strong>Qty:</strong> {{ $orderItem->quantity }}</p>
+                        <p><strong>Price:</strong> Rp{{ number_format($orderItem->price, 0, ',', '.') }}</p>
+                        <div>
+                            <i class="fas fa-star active"></i>
+                            <i class="fas fa-star active"></i>
+                            <i class="fas fa-star active"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
                     </div>
+                </div>
+                @endforeach
+            </div>
 
-                    <!-- Total Right-aligned (above the line) -->
-                    <div class="order-total">
-                        Total: Rp{{ number_format($order->total_amount, 0, ',', '.') }}
-                    </div>
+            <div class="order-total">
+                Subtotal: Rp{{ number_format($order->subtotal, 0, ',', '.') }} <br>
+                Shipping Cost: Rp{{ number_format($order->shipping_price, 0, ',', '.') }}<br>
+                <strong>Total Amount: Rp{{ number_format($order->total_amount, 0, ',', '.') }}</strong>
+            </div>
+            
+            <br>
 
-                    <div class="order-status">
-                        <p><strong>Status:</strong> {{ ucfirst($order->status) }} </p>
-                        <p><strong>Order Date:</strong> {{ \Carbon\Carbon::parse($order->created_at)->format('d M Y') }}</p>
-                        <p><strong>Estimated Delivery:</strong>
-                            {{ \Carbon\Carbon::parse($orderItem->estimated_delivery)->format('d M Y') }}</p>
-                        <p><strong>Shipping Date:</strong>
-                            {{ \Carbon\Carbon::parse($orderItem->shipping_date)->format('d M Y') }}</p>
-                    </div>
-
+            {{-- Summary --}}
+            <div class="order-summary">
+                <div class="summary-block">
+                    <p><strong>Status:</strong> {{ ucfirst($order->status) }}</p>
                     <br>
-
-                    <div class="order-address">
-                        <h4>Address:</h4>
-                        <p>{{ $order->user->address }}</p>
-                    </div>
-
-                    <div class="order-actions">
-                        <a href="{{ route('my-orders') }}" class="btn btn-sm btn-pink2"
-                        style="background-color: #e965a7; color: white;">
-                        Back</a>
-                    </div>
+                    <p><strong>Order Date:</strong> {{ \Carbon\Carbon::parse($order->created_at)->format('d M Y') }}</p>
+                    <p><strong>Estimated Delivery:</strong> {{ \Carbon\Carbon::parse($order->orderItems[0]->estimated_delivery)->format('d M Y') }}</p>
+                    <p><strong>Shipping Date:</strong> {{ \Carbon\Carbon::parse($order->orderItems[0]->shipping_date)->format('d M Y') }}</p>
+                    <br>
+                    <p><strong>Address:</strong></p>
+                    <p>{{ $order->user->address }}</p>
                 </div>
             </div>
         </div>
-    @endsection
+    </div>
+</div>
+@endsection
