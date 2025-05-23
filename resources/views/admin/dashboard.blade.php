@@ -208,22 +208,24 @@
                 <div class="card">
                     <div class="card-header bg-white">
                         <h5 class="mb-0">Sales Over Time</h5>
-                                <form action="{{ route('admin.dashboard') }}" method="GET" class="row g-3 align-items-end mb-4">
-                                    <div class="col-md-2">
-                                        <label for="start_date" class="form-label">Start Date</label>
-                                        <input type="date" id="start_date" name="start_date" class="form-control" value="{{ request('start_date') }}">
-                                    </div>
-                                    <div class="col-md-2">
-                                        <label for="end_date" class="form-label">End Date</label>
-                                        <input type="date" id="end_date" name="end_date" class="form-control" value="{{ request('end_date') }}">
-                                    </div>
-                                    <div class="col-md-1">
-                                        <button type="submit" class="btn btn-pink w-100">Filter</button>
-                                    </div>
-                                </form>
-                            <div class="card-body">
-                                <canvas id="salesChart" height="60"></canvas>
-                            </div>  
+                        <form action="{{ route('admin.dashboard') }}" method="GET" class="row g-3 align-items-end mb-4">
+                            <div class="col-md-2">
+                                <label for="start_date" class="form-label">Start Date</label>
+                                <input type="date" id="start_date" name="start_date" class="form-control"
+                                    value="{{ request('start_date') }}">
+                            </div>
+                            <div class="col-md-2">
+                                <label for="end_date" class="form-label">End Date</label>
+                                <input type="date" id="end_date" name="end_date" class="form-control"
+                                    value="{{ request('end_date') }}">
+                            </div>
+                            <div class="col-md-1">
+                                <button type="submit" class="btn btn-pink w-100">Filter</button>
+                            </div>
+                        </form>
+                        <div class="card-body">
+                            <canvas id="salesChart" height="60"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -301,59 +303,59 @@
 @endpush
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    const ctx = document.getElementById('salesChart').getContext('2d');
-    const salesChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: {!! json_encode($salesLabels) !!},
-            datasets: [{
-                label: 'Total Sales',
-                data: {!! json_encode($salesCounts) !!},
-                borderColor: '#e965a7',
-                backgroundColor: '#e965a7',
-                tension: 0.4,
-                pointRadius: 4,
-                pointHoverRadius: 6
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    min : 0,
-                    max : 20,
-                    ticks: {
-                        stepSize: 5,
-                        callback: function(value) {
-                            return value;
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('salesChart').getContext('2d');
+        const salesChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {!! json_encode($salesLabels) !!},
+                datasets: [{
+                    label: 'Total Sales',
+                    data: {!! json_encode($salesCounts) !!},
+                    borderColor: '#e965a7',
+                    backgroundColor: '#e965a7',
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        min: 0,
+                        max: 10,
+                        ticks: {
+                            stepSize: 1,
+                            callback: function(value) {
+                                return value;
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Number of Orders',
+                            color: '#e965a7',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            }
                         }
                     },
-                    title: {
-                        display: true,
-                        text: 'Number of Orders',
-                        color: '#e965a7',
-                        font: {
-                            size: 16,
-                            weight: 'bold'
-                        }
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Date',
-                        color: '#e965a7',
-                        font: {
-                            size: 16,
-                            weight: 'bold'
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date',
+                            color: '#e965a7',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            }
                         }
                     }
                 }
             }
-        }
-    });
-</script>
+        });
+    </script>
 @endpush

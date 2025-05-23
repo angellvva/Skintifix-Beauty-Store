@@ -61,8 +61,8 @@ class AdminController extends Controller
             ->orderByDesc('total_quantity')
             ->limit(5)
             ->get();
-        
-    // Sales Over Time Chart with optional date range filter
+
+        // Sales Over Time Chart with optional date range filter
         $startDate = $request->input('start_date', now()->subDays(6)->format('Y-m-d'));
         $endDate = $request->input('end_date', now()->format('Y-m-d'));
 
@@ -84,7 +84,6 @@ class AdminController extends Controller
             $salesCounts[] = $match ? $match->orders : 0;
         }
 
-
         return view('admin.dashboard', compact(
             'totalOrders',
             'totalRevenue',
@@ -93,7 +92,7 @@ class AdminController extends Controller
             'recentOrders',
             'lowStockProducts',
             'topSellingProducts',
-            'salesLabels', 
+            'salesLabels',
             'salesCounts',
             'startDate',
             'endDate'
