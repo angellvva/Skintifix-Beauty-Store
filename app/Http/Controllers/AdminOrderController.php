@@ -30,10 +30,6 @@ class AdminOrderController extends Controller
     {
         $request->validate([
             'status' => 'required|in:pending,processing,completed',
-        ]);
-
-        $request->validate([
-            'status' => 'required|in:pending,processing,completed',
             'payment_status' => 'nullable|in:paid,failed',
         ]);
 
