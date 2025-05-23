@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Review;
 use App\Models\Product;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use App\Models\OrderItem;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use App\Models\ProductCategory;
 
 class ProductController extends Controller
 {
     //
+    
     public function detail($id)
     {
         // Load product with reviews and user relations

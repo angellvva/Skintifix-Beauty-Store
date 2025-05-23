@@ -263,6 +263,5 @@
         <!-- Link untuk kembali ke halaman login jika sudah punya akun -->
         <p class="bottom-link gray-text" style="margin-top: 20px; margin-bottom: 14px;">Already have an account? <a href="{{ route('login') }}"><b>Login here</b></a></p>
     </div>
-
 </body>
 </html>

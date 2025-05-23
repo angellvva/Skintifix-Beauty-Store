@@ -116,6 +116,13 @@
             align-items: flex-start;
             margin-bottom: 30px;
         }
+        .fas.fa-star {
+            color: #ddd; /* Warna bintang yang tidak dipilih (abu-abu) */
+        }
+
+        .fas.fa-star.active {
+            color: #ffc107; /* Warna bintang yang dipilih (kuning) */
+        }
     </style>
 
     <div class="order-detail-section">
@@ -133,11 +140,15 @@
                                     <h3>{{ $orderItem->product->name }}</h3>
                                     <p><strong>Qty:</strong> {{ $orderItem->quantity }}</p>
                                     <p><strong>Price:</strong> Rp{{ number_format($orderItem->price, 0, ',', '.') }}</p>
-                                    <div class="mb-1">
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            <i class="fas fa-star"
-                                                style="color: {{ $i <= $orderItem->rating ? '#ffc107' : '#ddd' }};"></i>
-                                        @endfor
+                                    <div class="order-product-item-details">
+                                    <div class="order-product-item-details">
+                                        <div class="mb-1">
+                                            <i class="fas fa-star active"></i> <!-- Ini adalah bintang yang aktif, warna kuning -->
+                                            <i class="fas fa-star active"></i> <!-- Bintang aktif -->
+                                            <i class="fas fa-star active"></i> <!-- Bintang aktif -->
+                                            <i class="fas fa-star"></i> <!-- Bintang tidak aktif, abu-abu -->
+                                            <i class="fas fa-star"></i> <!-- Bintang tidak aktif, abu-abu -->
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -163,6 +174,12 @@
                     <div class="order-address">
                         <h4>Address:</h4>
                         <p>{{ $order->user->address }}</p>
+                    </div>
+
+                    <div class="order-actions">
+                        <a href="{{ route('my-orders') }}" class="btn btn-sm btn-pink2"
+                        style="background-color: #e965a7; color: white;">
+                        Back</a>
                     </div>
                 </div>
             </div>
