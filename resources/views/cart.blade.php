@@ -70,9 +70,7 @@
                                         <input type="number" name="quantity" min="1" value="{{ $item->quantity }}"
                                             class="form-control form-control-sm"
                                             style="max-width: 70px; display:inline-block;">
-                                        <button type="submit" class="btn btn-sm btn-primary ms-1" title="Update Quantity">
-                                            <i class="fas fa-sync-alt"></i>
-                                        </button>
+                                
                                     </form>
                                 </td>
                                 <td class="align-middle text-center fw-semibold subtotal">Rp

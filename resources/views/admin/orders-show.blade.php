@@ -62,10 +62,6 @@
                                 <td colspan="4" class="text-end">Shipping:</td>
                                 <td>Rp 0</td>
                             </tr>
-                            <tr>
-                                <td colspan="4" class="text-end">Tax:</td>
-                                <td>Rp 0</td>
-                            </tr>
                             <tr class="fw-bold">
                                 <td colspan="4" class="text-end">Total:</td>
                                 <td>Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
