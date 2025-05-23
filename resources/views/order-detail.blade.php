@@ -127,7 +127,7 @@
 
     <div class="order-detail-section">
         <div class="container py-5">
-            <h2 class="fw-bold mb-4" style="color: #e965a7;">My Order</h2>
+            <h2 class="fw-bold mb-4" style="color: #e965a7;">Order Detail</h2>
             <div class="order-detail-card">
                 <div class="card-body">
                     <div class="order-product-list">
