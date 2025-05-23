@@ -56,11 +56,11 @@
                         <tfoot>
                             <tr>
                                 <td colspan="4" class="text-end">Subtotal:</td>
-                                <td>Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format($order->subtotal, 0, ',', '.') }}</td>
                             </tr>
                             <tr>
                                 <td colspan="4" class="text-end">Shipping:</td>
-                                <td>Rp 0</td>
+                                <td>Rp {{ number_format($order->shipping_price, 0, ',', '.') }}</td>
                             </tr>
                             <tr class="fw-bold">
                                 <td colspan="4" class="text-end">Total:</td>
