@@ -30,7 +30,7 @@
         <div class="row mb-4">
             <div class="col-12">
                 <h2 class="fw-bold" style="color: #e965a7;">Messages</h2>
-                <p class="text-mute m-0">Handle communication and messages with customers and support</p>
+                <p class="text-muted m-0">Display messages received from customers</p>
             </div>
         </div>
 
