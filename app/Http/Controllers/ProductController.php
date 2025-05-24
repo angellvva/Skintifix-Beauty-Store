@@ -35,14 +35,44 @@ class ProductController extends Controller
         return view('product-detail', compact('product', 'isBestSeller', 'isNewArrival', 'isInWishlist'));
     }
 
-    public function categoryCatalog($category)
+    public function categoryCatalog($category, Request $request)
     {
-        $products = Product::with('category')
+        $search = $request->query('search');
+        $status = $request->query('status', 'all');
+        $sort = $request->query('sort', 'newest');
+
+        $productsQuery = Product::with('category')
             ->whereHas('category', function ($query) use ($category) {
                 $query->where('name', $category);
-            })
-            ->get();
+            });
 
+        // Search by product name
+        if ($search) {
+            $productsQuery->where('name', 'like', '%' . $search . '%');
+        }
+
+        // Filter by stock status
+        if ($status == 'in_stock') {
+            $productsQuery->where('stock', '>', 0); // sesuaikan field `stock` di DB
+        } elseif ($status == 'out_of_stock') {
+            $productsQuery->where('stock', '=', 0);
+        }
+
+        // Sorting
+        switch ($sort) {
+            case 'price_asc':
+                $productsQuery->orderBy('price', 'asc');
+                break;
+            case 'price_desc':
+                $productsQuery->orderBy('price', 'desc');
+                break;
+            case 'newest':
+            default:
+                $productsQuery->orderBy('created_at', 'desc');
+                break;
+        }
+
+        $products = $productsQuery->get();
         $categoryDescription = optional($products->first()?->category)->description;
 
         return view('category-catalog', compact('products', 'category', 'categoryDescription'));
@@ -56,7 +86,7 @@ class ProductController extends Controller
         $products = Product::with('category')
             ->where(function ($q) use ($query) {
                 $q->where('name', 'like', "%{$query}%")
-                  ->orWhere('description', 'like', "%{$query}%");
+                    ->orWhere('description', 'like', "%{$query}%");
             })
             ->when($category, function ($q) use ($category) {
                 $q->whereHas('category', function ($c) use ($category) {
