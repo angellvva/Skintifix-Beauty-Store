@@ -157,7 +157,7 @@ Route::middleware(['auth', 'is_user'])->group(function () {
     Route::post('/checkout/selected', [CheckoutController::class, 'checkoutSelected'])->name('checkout.selected');
 
     // Single route for both showing and tracking orders
-    Route::get('/order/{order_id}', [OrderController::class, 'showOrTrack'])->name('order.show'); // Show or track order
+    Route::get('/order/{order_id}', [OrderController::class, 'order_detail'])->name('order.detail'); // Show or track order
 
     // Route for canceling the order
     Route::get('/order/cancel/{order_id}', [OrderController::class, 'cancel'])->name('order.cancel'); // Cancel order

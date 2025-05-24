@@ -57,10 +57,10 @@ class OrderController extends Controller
         ]);
     }
 
-    public function showOrTrack($order_id)
+    public function order_detail($order_id)
     {
         $user = Auth::user();
-        $order = Order::with('orderItems.product', 'user')->findOrFail($order_id);
+        $order = Order::with('orderItems.product', 'user', 'payment')->findOrFail($order_id);
 
         // Ensure the order belongs to the logged-in user
         if ($order->user_id !== $user->id) {
@@ -88,7 +88,7 @@ class OrderController extends Controller
         $order->status = 'Cancelled';
         $order->save();
 
-        return redirect()->route('order.show', ['order_id' => $order_id])
+        return redirect()->route('order.detail', ['order_id' => $order_id])
             ->with('success', 'Order has been cancelled successfully!');
     }
 }

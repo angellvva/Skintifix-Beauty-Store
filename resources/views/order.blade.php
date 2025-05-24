@@ -95,7 +95,6 @@
                                             ])>
                                                 {{ ucfirst($order->status) }}
                                             </span>
-
                                         </div>
                                     </th>
                                 </tr>
@@ -110,6 +109,7 @@
                                         $subtotal = $item->price * $item->quantity;
                                         $totalOrderPrice += $subtotal;
                                     @endphp
+
                                     <tr>
                                         <td>
                                             <div class="row">
@@ -133,14 +133,14 @@
 
                         <div class="row align-items-center">
                             <div class="col-md-10 text-end">
-                                Total Amount:
+                                Total Amount
                             </div>
                             <div class="col-md-2" style="text-align: right; color:#e965a7;">
-                                <h4 class="m-0">Rp{{ number_format($order->total_amount, 0, ',', '.') }}</h4>
+                                <h4 class="m-0 fw-bold">Rp{{ number_format($order->total_amount, 0, ',', '.') }}</h4>
                             </div>
                         </div>
                         <div class="text-end mt-3">
-                            <a href="{{ route('order.show', ['order_id' => $order->id]) }}"
+                            <a href="{{ route('order.detail', ['order_id' => $order->id]) }}"
                                 class="btn btn-sm btn-pink">Order
                                 Detail</a>
                             <a href="{{ route('catalog') }}" class="btn btn-sm btn-pink2">Buy
