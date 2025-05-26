@@ -88,7 +88,8 @@
                                                 <b
                                                     style="color:#e965a7;">SKINTIFIX-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</b></span>
                                             <span @class([
-                                                'badge rounded-pill border px-3 py-1',
+                                                'badge rounded-pill border px-3 py-1 align-self-center',
+                                                'border-danger text-danger' => $order->status == 'failed',
                                                 'border-secondary text-secondary' => $order->status == 'pending',
                                                 'border-warning text-warning' => $order->status == 'processing',
                                                 'border-success text-success' => $order->status == 'completed',

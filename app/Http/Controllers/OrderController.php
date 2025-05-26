@@ -62,16 +62,6 @@ class OrderController extends Controller
         $user = Auth::user();
         $order = Order::with('orderItems.product', 'user', 'payment')->findOrFail($order_id);
 
-        // Ensure the order belongs to the logged-in user
-        if ($order->user_id !== $user->id) {
-            abort(403, 'Unauthorized');
-        }
-
-        foreach ($order->orderItems as $orderItem) {
-            $orderItem->estimated_delivery = Carbon::parse($order->created_at)->addDays(3)->format('Y-m-d');
-            $orderItem->shipping_date = Carbon::parse($orderItem->estimated_delivery)->addDays(3)->format('Y-m-d');
-        }
-
         return view('order-detail', compact('order'));
     }
 
