@@ -187,8 +187,13 @@
                                     </span>
                                 </td>
                                 <td>
-                                    Standard Delivery<br>
-                                    <p class="m-0" style="color:gray;">3 business days</p>
+                                    @if ($order->shipping_price == 20000)
+                                        Standard Delivery<br>
+                                        <p class="m-0" style="color:gray;">3 business days</p>
+                                    @else
+                                        Express Delivery<br>
+                                        <p class="m-0" style="color:gray;">1 business day</p>
+                                    @endif
                                 </td>
                                 <td>
                                     {{ \Carbon\Carbon::parse($order->created_at)->format('d M Y') }}<br>
@@ -199,7 +204,12 @@
                                     {{ \Carbon\Carbon::parse($order->created_at)->addDays(1)->format('d M Y') }}<br>
                                 </td>
                                 <td>
-                                    {{ \Carbon\Carbon::parse($order->created_at)->addDays(4)->format('d M Y') }}<br>
+                                    @if ($order->shipping_price == 20000)
+                                        {{ \Carbon\Carbon::parse($order->created_at)->addDays(4)->format('d M Y') }}<br>
+                                    @else
+                                        {{ \Carbon\Carbon::parse($order->created_at)->addDays(2)->format('d M Y') }}<br>
+                                    @endif
+
                                 </td>
                                 <td>
                                     <div @class([
