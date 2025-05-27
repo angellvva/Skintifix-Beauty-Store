@@ -5,11 +5,36 @@
         .product-section {
             background-color: #fff0f6;
         }
+
+        .btn-outline-pink {
+        color: #e75480;
+        border: 2px solid #e75480;
+        background-color: transparent;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .btn-outline-pink.active {
+        background-color: #e75480;
+        color: white;
+    }
+
+    .btn-outline-pink i {
+        transition: transform 0.3s;
+    }
+
+    .btn-outline-pink.active i {
+        transform: rotate(360deg);
+    }
     </style>
 
     <div class="product-section">
         <div class="container py-5">
             <h2 class="fw-bold mb-4" style="color: #e965a7;">Your Shopping Cart</h2>
+            <div class="mb-4">
+                <button type="button" id="toggle-checkboxes" class="btn btn-outline-pink rounded-pill shadow-sm">
+                <i class="far fa-circle me-2"></i><span>Select All Items</span>
+            </button>
+            </div>
             @if (session('success'))
                 <div id="cart-notification" class="alert alert-success"
                     style="position: fixed; top: 120px; right: 313px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 8px; padding: 10px 20px 10px 15px; z-index: 9999; box-shadow: 0 2px 8px rgba(0,0,0,0.1); opacity: 1; display: flex; align-items: center; justify-content: space-between; min-width: 250px;">
@@ -83,7 +108,7 @@
                                     </form>
                                 </td>
                                 <td class="align-middle text-center">
-                                    <input type="checkbox" name="selected_items[]" value="{{ $item->id }}">
+                                    <input type="checkbox" name="selected_items[]" value="{{ $item->id }}" checked>
                                 </td>
                             </tr>
                         @endforeach
@@ -252,6 +277,32 @@
 
         // Hitung ulang saat halaman load
         window.addEventListener('load', updateTotals);
+        
+        // Checkbox toggle logic
+        const toggleBtn = document.getElementById('toggle-checkboxes');
+        let allSelected = false;
+
+        toggleBtn?.addEventListener('click', () => {
+            const checkboxes = document.querySelectorAll('input[name="selected_items[]"]');
+            allSelected = !allSelected;
+
+            checkboxes.forEach(cb => cb.checked = allSelected);
+
+            const icon = toggleBtn.querySelector('i');
+            const label = toggleBtn.querySelector('span');
+
+            if (allSelected) {
+                icon.className = 'fas fa-check-circle me-2';
+                label.textContent = 'Deselect All Items';
+                toggleBtn.classList.add('active');
+            } else {
+                icon.className = 'far fa-check-circle me-2';
+                label.textContent = 'Select All Items';
+                toggleBtn.classList.remove('active');
+            }
+
+            updateTotals();
+        });
     </script>
 
 @endsection
