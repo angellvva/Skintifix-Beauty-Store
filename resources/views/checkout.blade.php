@@ -17,19 +17,24 @@
 
                         <!-- Customer Info -->
                         <h5 class="fw-bold mb-3" style="color: #e75480;">
-                            <i class="fas fa-user me-2"></i>Customer Information
+                            <i class="fas fa-user me-2"></i>Recipient Information
                         </h5>
+
+                        <div class="mb-4">
+                            <button type="button" id="toggle-default" class="btn btn-outline-pink rounded-pill shadow-sm">
+                                <i class="far fa-check-circle me-2"></i>Use my account information
+                            </button>
+                        </div>
 
                         <div class="mb-3">
                             <label class="form-label">Full Name</label>
-                            <input type="text" name="name" class="form-control" 
-                                value="{{ $user->name ?? '' }}" readonly>
+                            <input type="text" name="name" id="name" class="form-control" value="{{ $user->name ?? '' }}" required>
+                            <div class="invalid-feedback">Full Name is required.</div>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Phone Number</label>
-                            <input type="text" name="phone" id="phone" class="form-control"
-                                value="{{ $user->phone ?? '' }}" required>
+                            <input type="text" name="phone" id="phone" class="form-control" value="{{ $user->phone ?? '' }}" required>
                             <div class="invalid-feedback">Phone Number is required.</div>
                         </div>
 
@@ -39,7 +44,7 @@
                             <div class="invalid-feedback">Full Address is required.</div>
                         </div>
 
-                        <!-- Additional Address -->
+                        {{-- <!-- Additional Address -->
                         <div class="row">
                             <div class="col-md-4 mb-3">
                                 <label class="form-label">Postal Code</label>
@@ -56,7 +61,7 @@
                                 <input type="text" name="country" id="country" class="form-control" required>
                                 <div class="invalid-feedback">Country is required.</div>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <!-- Shipping Method -->
                         <h5 class="fw-bold mt-4" style="color: #e75480;">
@@ -70,20 +75,6 @@
                             </select>
                             <div class="invalid-feedback">Please select a shipping method.</div>
                         </div>
-
-                        {{-- <!-- Payment Method -->
-                        <h5 class="fw-bold mt-4" style="color: #e75480;">
-                            <i class="fas fa-wallet me-2"></i>Payment Method
-                        </h5>
-                        <div class="mb-4">
-                            <select name="payment_method" id="payment-method" class="form-select" required>
-                                <option value="">Choose a payment method</option>
-                                <option value="bank_transfer">Bank Transfer</option>
-                                <option value="e_wallet">E-Wallet</option>
-                                <option value="credit_card">Credit Card</option>
-                            </select>
-                            <div class="invalid-feedback">Please select a payment method.</div>
-                        </div> --}}
 
                         @foreach ($cartItems as $item)
                             <input type="hidden" name="selected_items[]" value="{{ $item->cart_id }}">
@@ -174,6 +165,7 @@
     document.getElementById('pay-button').addEventListener('click', function () {
         const form = document.getElementById('checkout-form');
         const fields = [
+            'name',
             'phone',
             'address',
             'postal_code',
@@ -200,5 +192,63 @@
         }
     });
 </script>
+
+<script>
+    const toggleBtn = document.getElementById('toggle-default');
+    const defaultName = @json($user->name ?? '');
+    const defaultPhone = @json($user->phone ?? '');
+    const defaultAddress = @json($user->address ?? '');
+
+    function toggleRecipientFields(disabled) {
+        ['name', 'phone', 'address'].forEach(id => {
+            document.getElementById(id).readOnly = disabled;
+        });
+    }
+
+    let useDefault = true;
+
+    toggleBtn.addEventListener('click', function () {
+        useDefault = !useDefault;
+        this.classList.toggle('active', useDefault);
+
+        if (useDefault) {
+            document.getElementById('name').value = defaultName;
+            document.getElementById('phone').value = defaultPhone;
+            document.getElementById('address').value = defaultAddress;
+        } else {
+            document.getElementById('name').value = '';
+            document.getElementById('phone').value = '';
+            document.getElementById('address').value = '';
+        }
+
+        toggleRecipientFields(useDefault);
+    });
+
+    // On page load: activate and disable fields
+    toggleBtn.classList.add('active');
+    toggleRecipientFields(true);
+</script>
+
+<style>
+    .btn-outline-pink {
+        color: #e75480;
+        border: 2px solid #e75480;
+        background-color: transparent;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .btn-outline-pink.active {
+        background-color: #e75480;
+        color: white;
+    }
+
+    .btn-outline-pink i {
+        transition: transform 0.3s;
+    }
+
+    .btn-outline-pink.active i {
+        transform: rotate(360deg);
+    }
+</style>
 
 @endsection

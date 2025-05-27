@@ -47,6 +47,11 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('regi
 // Route untuk menangani registrasi pengguna
 Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
 
+// ROUTE HOME
+// Route::get('/', function () {return view('home');});
+Route::get('/', [HomeController::class, 'show'])
+    ->name('home');
+
 Route::middleware(['auth', 'is_admin'])->group(function () {
     // route admin dashboard
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
@@ -90,11 +95,6 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
 });
 
 Route::middleware(['auth', 'is_user'])->group(function () {
-    // ROUTE HOME
-    // Route::get('/', function () {return view('home');});
-    Route::get('/', [HomeController::class, 'show'])
-        ->name('home');
-
     // route untuk cart
     // Route::get('/cart', [CartController::class, 'index'])->name('cart');
     Route::post('/cart/add/{id}', [HomeController::class, 'addToCart'])->name('cart.add');
