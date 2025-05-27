@@ -49,6 +49,6 @@ class LoginController extends Controller
         $request->session()->regenerateToken();
         Cookie::queue(Cookie::forget(Auth::getRecallerName())); // Clear remember me cookie
 
-        return redirect('/login')->with('success', 'You have been logged out.');
+        return redirect('/')->with('success', 'You have been logged out.');
     }
 }
