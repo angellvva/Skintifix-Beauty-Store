@@ -65,13 +65,13 @@
                         <div class="mb-3">
                             <select name="shipping_method" id="shipping-method-select" class="form-select" required>
                                 <option value="">Select a shipping method</option>
-                                <option value="standard" data-cost="20000">Standard (3–5 days) - Rp20.000</option>
-                                <option value="express" data-cost="40000">Express (1–2 days) - Rp40.000</option>
+                                <option value="standard" data-cost="20000">Standard (3 days) - Rp20.000</option>
+                                <option value="express" data-cost="40000">Express (1 days) - Rp40.000</option>
                             </select>
                             <div class="invalid-feedback">Please select a shipping method.</div>
                         </div>
 
-                        <!-- Payment Method -->
+                        {{-- <!-- Payment Method -->
                         <h5 class="fw-bold mt-4" style="color: #e75480;">
                             <i class="fas fa-wallet me-2"></i>Payment Method
                         </h5>
@@ -83,7 +83,7 @@
                                 <option value="credit_card">Credit Card</option>
                             </select>
                             <div class="invalid-feedback">Please select a payment method.</div>
-                        </div>
+                        </div> --}}
 
                         @foreach ($cartItems as $item)
                             <input type="hidden" name="selected_items[]" value="{{ $item->cart_id }}">
