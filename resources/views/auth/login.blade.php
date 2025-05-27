@@ -130,6 +130,7 @@
                 opacity: 0;
                 transform: translateY(6px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -146,7 +147,7 @@
         <h2>Account Sign In</h2>
         <p class="gray-text">Welcome back! Please sign in below to access your account and view your previous order
             history and earned points.</p>
-        
+
         <form action="{{ route('login.action') }}" method="POST">
             @csrf
             <label for="email">Email</label>

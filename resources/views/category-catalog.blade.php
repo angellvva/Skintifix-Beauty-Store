@@ -172,7 +172,9 @@
                         ' products crafted to fit your needs.';
                 @endphp
 
-                <p style="color: gray;">{{ $categoryDescription ?? $fallbackDescription }}</p>
+                <p style="color: gray;">
+                    {{ !empty($categoryDescription) ? $categoryDescription : $fallbackDescription }}
+                </p>
             </div>
 
             <div class="mb-4">

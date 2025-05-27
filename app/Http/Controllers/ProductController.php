@@ -41,24 +41,22 @@ class ProductController extends Controller
         $status = $request->query('status', 'all');
         $sort = $request->query('sort', 'newest');
 
-        $productsQuery = Product::with('category')
-            ->whereHas('category', function ($query) use ($category) {
-                $query->where('name', $category);
-            });
+        $categoryModel = ProductCategory::where('name', $category)->first();
+        $categoryDescription = optional($categoryModel)->description;
 
-        // Search by product name
+        $productsQuery = Product::with('category')
+            ->where('category_id', $categoryModel?->id);
+
         if ($search) {
             $productsQuery->where('name', 'like', '%' . $search . '%');
         }
 
-        // Filter by stock status
         if ($status == 'in_stock') {
-            $productsQuery->where('stock', '>', 0); // sesuaikan field `stock` di DB
+            $productsQuery->where('stock', '>', 0);
         } elseif ($status == 'out_of_stock') {
             $productsQuery->where('stock', '=', 0);
         }
 
-        // Sorting
         switch ($sort) {
             case 'price_asc':
                 $productsQuery->orderBy('price', 'asc');
@@ -73,7 +71,6 @@ class ProductController extends Controller
         }
 
         $products = $productsQuery->get();
-        $categoryDescription = optional($products->first()?->category)->description;
 
         return view('category-catalog', compact('products', 'category', 'categoryDescription'));
     }
