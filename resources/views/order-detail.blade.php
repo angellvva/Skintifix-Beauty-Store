@@ -125,11 +125,11 @@
             @else
                 <div class="p-4 mb-4"
                     style="background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                    <h5 class="fw-bold ps-2" style="color:#e965a7;">Customer & Shipping Information</h5>
+                    <h5 class="fw-bold ps-2" style="color:#e965a7;">Recipient & Shipping Information</h5>
                     <table class="table customer-info-table">
                         <thead>
                             <tr>
-                                <th>Customer Details</th>
+                                <th>Recipient Details</th>
                                 <th>Contact Information</th>
                                 <th>Shipping Address</th>
                             </tr>
@@ -137,22 +137,15 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <p class="fw-bold m-0">{{ $order->user->name }}</p>
-                                    <p class="m-0" style="color:gray;">Customer ID:
-                                        CUST-{{ str_pad($order->user->id, 5, '0', STR_PAD_LEFT) }}
-                                    </p>
+                                    <p class="fw-bold m-0">{{ $order->recipient_name }}</p>
                                 </td>
                                 <td>
                                     <p class="m-0">
                                         <span><i class="fas fa-phone me-2"
-                                                style="color:#e965a7;"></i></span>{{ $order->user->phone }}
-                                    </p>
-                                    <p class="m-0">
-                                        <span><i class="fas fa-envelope me-2"
-                                                style="color:#e965a7;"></i></span>{{ $order->user->email }}
+                                                style="color:#e965a7;"></i></span>{{ $order->recipient_phone }}
                                     </p>
                                 </td>
-                                <td>{{ $order->user->address }}</td>
+                                <td>{{ $order->recipient_address }}</td>
                             </tr>
                         </tbody>
                     </table>
