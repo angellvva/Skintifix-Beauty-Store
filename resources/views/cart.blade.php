@@ -306,17 +306,14 @@
         });
     </script>
     <script>
-    // Nama key untuk localStorage
     const STORAGE_KEY = 'cartSelectedItems';
 
-    // Fungsi simpan selected checkbox ke localStorage
     function saveSelectedCheckboxes() {
         const checkedBoxes = Array.from(document.querySelectorAll('input[name="selected_items[]"]:checked'))
             .map(cb => cb.value);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(checkedBoxes));
     }
 
-    // Fungsi load dan apply state checkbox dari localStorage
     function loadSelectedCheckboxes() {
         const stored = localStorage.getItem(STORAGE_KEY);
         if (stored) {
@@ -325,18 +322,15 @@
                 cb.checked = selectedIds.includes(cb.value);
             });
         } else {
-            // Jika belum ada data di localStorage, default semua checked
             document.querySelectorAll('input[name="selected_items[]"]').forEach(cb => cb.checked = true);
         }
     }
 
-    // Jalankan saat halaman selesai load
     window.addEventListener('load', () => {
         loadSelectedCheckboxes();
-        updateTotals();  // hitung ulang total sesuai checkbox yg aktif
+        updateTotals();  
     });
 
-    // Simpan state saat checkbox berubah
     document.querySelectorAll('input[name="selected_items[]"]').forEach(cb => {
         cb.addEventListener('change', () => {
             saveSelectedCheckboxes();
@@ -344,12 +338,10 @@
         });
     });
 
-    // Simpan state saat tombol toggle select/deselect all diklik
     document.getElementById('toggle-checkboxes')?.addEventListener('click', () => {
         saveSelectedCheckboxes();
     });
 
-    // Juga simpan saat submit checkout, untuk berjaga-jaga
     document.getElementById('checkout-form').addEventListener('submit', () => {
         saveSelectedCheckboxes();
     });
