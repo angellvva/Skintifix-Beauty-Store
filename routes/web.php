@@ -100,6 +100,7 @@ Route::middleware(['auth', 'is_user'])->group(function () {
     Route::post('/cart/add/{id}', [HomeController::class, 'addToCart'])->name('cart.add');
     Route::get('/cart', [CartController::class, 'index'])->name('cart.view');
     Route::put('/cart/update/{id}', [CartController::class, 'updateQuantity'])->name('cart.update');
+    Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
     Route::put('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
     Route::post('/checkout', [CheckoutController::class, 'showCheckout'])->name('checkout');

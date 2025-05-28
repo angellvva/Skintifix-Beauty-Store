@@ -165,7 +165,7 @@
                 const cartId = this.dataset.cartId;
                 const newQty = this.value;
 
-                fetch(`/cart/update-quantity/${cartId}`, {
+                fetch(`/cart/update/${cartId}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -176,6 +176,7 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log(data.message);
+                    location.reload();
                 })
                 .catch(error => {
                     console.error('Update error:', error);
