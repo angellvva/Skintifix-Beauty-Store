@@ -3,10 +3,24 @@
 namespace App\Models;
 use App\Models\Payments;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Order extends Model
 {
     //
+    use Hasfactory;
+    protected $fillable = [
+        'id',
+        'user_id',
+        'recipient_name',
+        'total_amount',
+        'status',
+        'payment_url',
+        'order_date'
+    ];
+
+    public $timestamps = true;
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

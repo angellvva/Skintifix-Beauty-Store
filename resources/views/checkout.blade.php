@@ -28,13 +28,13 @@
 
                         <div class="mb-3">
                             <label class="form-label">Full Name</label>
-                            <input type="text" name="name" id="name" class="form-control" value="{{ $user->name ?? '' }}" required>
+                            <input type="text" name="name" id="recipient_name" class="form-control" value="{{ $user->name ?? '' }}" required>
                             <div class="invalid-feedback">Full Name is required.</div>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Phone Number</label>
-                            <input type="text" name="phone" id="phone" class="form-control" value="{{ $user->phone ?? '' }}" required>
+                            <input type="text" name="recipient_phone" id="phone" class="form-control" value="{{ $user->phone ?? '' }}" required>
                             <div class="invalid-feedback">Phone Number is required.</div>
                         </div>
 
@@ -164,32 +164,50 @@
     // Validate before proceeding to payment with inline error messages
     document.getElementById('pay-button').addEventListener('click', function () {
         const form = document.getElementById('checkout-form');
-        const fields = [
-            'name',
-            'phone',
-            'address',
-            'postal_code',
-            'region',
-            'country',
-            'shipping-method-select',
-            'payment-method'
-        ];
+        const formData = new FormData(form);
+        // const fields = [
+        //     'name',
+        //     'phone',
+        //     'address',
+        //     'postal_code',
+        //     'region',
+        //     'country',
+        //     'shipping-method-select',
+        //     'payment-method'
+        // ];
 
-        let formValid = true;
+        // let formValid = true;
 
-        fields.forEach(id => {
-            const el = document.getElementById(id);
-            if (!el.value.trim()) {
-                el.classList.add('is-invalid');
-                formValid = false;
-            } else {
-                el.classList.remove('is-invalid');
+        // fields.forEach(id => {
+        //     const el = document.getElementById(id);
+        //     if (!el.value.trim()) {
+        //         el.classList.add('is-invalid');
+        //         formValid = false;
+        //     } else {
+        //         el.classList.remove('is-invalid');
+        //     }
+        // });
+
+        // if (formValid) {
+        //     form.submit();
+        // }
+        fetch('/checkout/process', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.snap_token) {
+                window.location.href = 'https://app.midtrans.com/snap/v1/transaction/' + data.snap_token;
+            } 
+            else {
+                alert('Error: ' + data.error);
             }
-        });
-
-        if (formValid) {
-            form.submit();
-        }
+        })
+        .catch(error => {
+            console.error('Error: ', error);
+            alert('Something went wrong. Please try again later.');
+        })
     });
 </script>
 
