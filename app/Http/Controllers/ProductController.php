@@ -49,12 +49,8 @@ class ProductController extends Controller
 
         if ($search) {
             $productsQuery->where('name', 'like', '%' . $search . '%');
-        }
-
-        if ($status == 'in_stock') {
+        } elseif ($status == 'in_stock') {
             $productsQuery->where('stock', '>', 0);
-        } elseif ($status == 'out_of_stock') {
-            $productsQuery->where('stock', '=', 0);
         }
 
         switch ($sort) {
@@ -70,7 +66,12 @@ class ProductController extends Controller
                 break;
         }
 
-        $products = $productsQuery->get();
+        $allProducts = $productsQuery->get();
+
+        $inStockProducts = $allProducts->filter(fn($product) => $product->stock > 0);
+        $outOfStockProducts = $allProducts->filter(fn($product) => $product->stock == 0);
+
+        $products = $inStockProducts->concat($outOfStockProducts);
 
         return view('category-catalog', compact('products', 'category', 'categoryDescription'));
     }

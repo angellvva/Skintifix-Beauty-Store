@@ -33,6 +33,7 @@
             align-items: center;
             padding: 20px;
             text-align: center;
+            overflow: hidden;
         }
 
         .product-card:hover {
@@ -106,6 +107,34 @@
             font-size: 12px;
             z-index: 10;
         }
+
+        .product-out-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: inherit;
+            z-index: 30;
+        }
+
+        .product-out-label {
+            background-color: #e965a7;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
     </style>
 
     <div class="product-section">
@@ -121,6 +150,15 @@
                             <div class="product-category-label" style="left: 15px; right: auto;">
                                 {{ $product->category->name }}
                             </div>
+
+                            <!-- Overlay jika habis -->
+                            @if ($product->stock == 0)
+                                <div class="product-out-overlay">
+                                    <div class="product-out-label">
+                                        Out of Stock
+                                    </div>
+                                </div>
+                            @endif
                         </a>
 
                         <!-- Heart Wishlist Button - Top Right -->
@@ -141,7 +179,7 @@
                         <div class="product-price">Rp{{ number_format($product->price, 0, ',', '.') }}</div>
                         <div class="product-description">{{ $product->description }}</div>
                     </div>
-                    @empty
+                @empty
                     <p style="text-align: center; width: 100%; color: #888;">No products found.</p>
                 @endforelse
             </div>

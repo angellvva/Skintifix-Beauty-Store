@@ -95,7 +95,14 @@ class HomeController extends Controller
             $product->isInWishlist = in_array($product->id, $wishlistProductIds);
         }
 
-        return view('catalog', compact('products'));
+        // Pisahkan produk dengan stok > 0 dan stok == 0
+        $inStock = $products->filter(fn($p) => $p->stock > 0);
+        $outOfStock = $products->filter(fn($p) => $p->stock == 0);
+
+        // Gabungkan ulang: stok tersedia dulu, habis di belakang
+        $sortedProducts = $inStock->concat($outOfStock);
+
+        return view('catalog', ['products' => $sortedProducts]);
     }
 
     public function addToCart($id, Request $request)
@@ -108,8 +115,8 @@ class HomeController extends Controller
         }
 
         $cartItem = Cart::where('user_id', $userId)
-                        ->where('product_id', $id)
-                        ->first();
+            ->where('product_id', $id)
+            ->first();
 
         if ($cartItem) {
             $cartItem->quantity += 1;
@@ -134,8 +141,8 @@ class HomeController extends Controller
         }
 
         $exists = Wishlist::where('user_id', $userId)
-                          ->where('product_id', $id)
-                          ->exists();
+            ->where('product_id', $id)
+            ->exists();
 
         if (!$exists) {
             Wishlist::create([
@@ -168,8 +175,8 @@ class HomeController extends Controller
         }
 
         $wishlistItem = Wishlist::where('user_id', $userId)
-                                ->where('product_id', $id)
-                                ->first();
+            ->where('product_id', $id)
+            ->first();
 
         if ($wishlistItem) {
             $wishlistItem->delete();

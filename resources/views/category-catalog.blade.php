@@ -64,6 +64,7 @@
             position: relative;
             transition: transform 0.2s ease;
             cursor: pointer;
+            overflow: hidden;
         }
 
         .product-card:hover {
@@ -159,6 +160,34 @@
             width: auto;
             padding: 0.375rem 0.75rem;
         }
+
+        .product-out-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: inherit;
+            z-index: 30;
+        }
+
+        .product-out-label {
+            background-color: #e965a7;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
     </style>
 
     <div class="product-section">
@@ -205,8 +234,6 @@
                                 </option>
                                 <option value="in_stock" {{ request('status') == 'in_stock' ? 'selected' : '' }}>In Stock
                                 </option>
-                                <option value="out_of_stock" {{ request('status') == 'out_of_stock' ? 'selected' : '' }}>
-                                    Out of Stock</option>
                             </select>
                         </div>
                         <div class="col-md-1">
@@ -229,6 +256,14 @@
                             : false;
                     @endphp
                     <div class="product-card" onclick="window.location='{{ route('product.detail', $product->id) }}'">
+                        @if ($product->stock == 0)
+                            <div class="product-out-overlay">
+                                <div class="product-out-label">
+                                    Out of Stock
+                                </div>
+                            </div>
+                        @endif
+
                         <div class="category-label">{{ $category }}</div>
 
                         <!-- Wishlist Heart Button -->
