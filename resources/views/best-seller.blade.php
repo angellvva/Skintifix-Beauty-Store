@@ -121,17 +121,18 @@
                         onclick="window.location='{{ route('product.detail', $item->product->id) }}'">
                         <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}">
 
-                        <!-- Label kategori -->
-                            <div class="product-category-label" style="left: 15px; right: auto;">
+                        <!-- Kategori -->
+                        <div class="product-category-label" style="left: 15px; right: auto;">
                             {{ $item->product->category->name }}
                         </div>
 
-                        <!-- Heart Wishlist Button - Top Right -->
+                        <!-- Wishlist -->
                         <form action="{{ route('wishlist.toggle', $item->product->id) }}" method="POST"
-                            style="position: absolute; top: 10px; right: 10px; z-index: 20;">
+                            style="position: absolute; top: 10px; right: 10px; z-index: 20;"
+                            onclick="event.stopPropagation();">
                             @csrf
                             <button type="submit" style="background: none; border: none; cursor: pointer;">
-                                @if ($item->isInWishlist ?? false)
+                                @if ($item->isInWishlist)
                                     <i class="fas fa-heart" style="color: #e965a7; font-size: 20px;"></i>
                                 @else
                                     <i class="far fa-heart" style="color: #e965a7; font-size: 20px;"></i>
@@ -140,19 +141,14 @@
                         </form>
 
                         <div class="product-name">{{ $item->product->name }}</div>
-
-                        <div class="product-unit-sold">Units Sold:
-                            {{ $order_items->where('product_id', $item->product->id)->sum('quantity') }}
-                        </div>
-
+                        <div class="product-unit-sold">Units Sold: {{ $item->total_sold }}</div>
                         <div class="product-price">Rp{{ number_format($item->product->price, 0, ',', '.') }}</div>
-                        <div class="product-description">{{ $item->product->description, 60 }}</div>
+                        <div class="product-description">{{ $item->product->description }}</div>
                     </div>
                 @empty
                     <p style="text-align: center; width: 100%; color: #888;">No products found.</p>
                 @endforelse
             </div>
         </div>
-    </div>
     </div>
 @endsection

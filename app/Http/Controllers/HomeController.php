@@ -15,13 +15,35 @@ class HomeController extends Controller
     {
         $userId = Auth::id();
 
-        // Best Sellers
-        $order_items = OrderItem::where('quantity', '>', 1)
-            ->with(['product', 'category'])
+        // Best Seller Products (sama dengan best-seller view)
+        $topSelling = OrderItem::selectRaw('product_id, SUM(quantity) as total_sold')
+            ->groupBy('product_id')
+            ->orderByDesc('total_sold')
+            ->limit(8)
             ->get();
 
+        $productIds = $topSelling->pluck('product_id');
+
+        $products = Product::with('category')->whereIn('id', $productIds)->get()->keyBy('id');
+
+        $wishlistProductIds = $userId
+            ? Wishlist::where('user_id', $userId)->pluck('product_id')->toArray()
+            : [];
+
+        // Gabungkan info best seller
+        $order_items = $topSelling->map(function ($item) use ($products, $wishlistProductIds) {
+            return (object) [
+                'product' => $products[$item->product_id] ?? null,
+                'total_sold' => $item->total_sold,
+                'isInWishlist' => in_array($item->product_id, $wishlistProductIds),
+            ];
+        })->filter(fn($i) => $i->product !== null);
+
         // All Products
-        $products = Product::with(['category'])->get();
+        $productsAll = Product::with(['category'])->get();
+        foreach ($productsAll as $product) {
+            $product->isInWishlist = in_array($product->id, $wishlistProductIds);
+        }
 
         // New Arrivals
         $order_itemss = OrderItem::where('quantity', '>', 0)
@@ -29,40 +51,50 @@ class HomeController extends Controller
             ->orderBy('created_at', 'desc')
             ->limit(8)
             ->get();
-
-        // Wishlist data
-        $wishlistProductIds = $userId ? Wishlist::where('user_id', $userId)->pluck('product_id')->toArray() : [];
-
-        foreach ($order_items as $item) {
-            $item->isInWishlist = in_array($item->product_id, $wishlistProductIds);
-        }
-
-        foreach ($products as $product) {
-            $product->isInWishlist = in_array($product->id, $wishlistProductIds);
-        }
-
         foreach ($order_itemss as $item) {
             $item->isInWishlist = in_array($item->product_id, $wishlistProductIds);
         }
 
-        return view('home', compact('order_items', 'products', 'order_itemss'));
+        return view('home', [
+            'order_items' => $order_items,
+            'products' => $productsAll,
+            'order_itemss' => $order_itemss
+        ]);
     }
 
     public function viewBestSeller()
     {
         $userId = Auth::id();
 
-        $order_items = OrderItem::where('quantity', '>', 1)
-            ->with(['product'])
+        // Ambil 8 produk dengan jumlah unit terjual terbanyak
+        $topSelling = OrderItem::selectRaw('product_id, SUM(quantity) as total_sold')
+            ->groupBy('product_id')
+            ->orderByDesc('total_sold')
+            ->limit(8)
             ->get();
 
-        $wishlistProductIds = $userId ? Wishlist::where('user_id', $userId)->pluck('product_id')->toArray() : [];
+        $productIds = $topSelling->pluck('product_id');
 
-        foreach ($order_items as $product) {
-            $product->isInWishlist = in_array($product->product_id, $wishlistProductIds);
-        }
+        $products = Product::with('category')
+            ->whereIn('id', $productIds)
+            ->get()
+            ->keyBy('id');
 
-        return view('best-seller', compact('order_items'));
+        // Ambil wishlist user
+        $wishlistProductIds = $userId
+            ? Wishlist::where('user_id', $userId)->pluck('product_id')->toArray()
+            : [];
+
+        // Gabungkan semua info dalam array final
+        $bestSellerItems = $topSelling->map(function ($item) use ($products, $wishlistProductIds) {
+            return (object) [
+                'product' => $products[$item->product_id] ?? null,
+                'total_sold' => $item->total_sold,
+                'isInWishlist' => in_array($item->product_id, $wishlistProductIds),
+            ];
+        })->filter(fn($i) => $i->product !== null);
+
+        return view('best-seller', ['order_items' => $bestSellerItems]);
     }
 
     public function viewNewArrival()
@@ -87,22 +119,20 @@ class HomeController extends Controller
     public function allProducts()
     {
         $userId = Auth::id();
-        $products = Product::with('category')->get();
 
         $wishlistProductIds = $userId ? Wishlist::where('user_id', $userId)->pluck('product_id')->toArray() : [];
 
-        foreach ($products as $product) {
+        $productsQuery = Product::with('category');
+
+        // Paginate 8 per page, urutkan berdasarkan stok
+        $productsPaginated = $productsQuery->orderByRaw("stock > 0 DESC")
+            ->paginate(8);
+
+        foreach ($productsPaginated as $product) {
             $product->isInWishlist = in_array($product->id, $wishlistProductIds);
         }
 
-        // Pisahkan produk dengan stok > 0 dan stok == 0
-        $inStock = $products->filter(fn($p) => $p->stock > 0);
-        $outOfStock = $products->filter(fn($p) => $p->stock == 0);
-
-        // Gabungkan ulang: stok tersedia dulu, habis di belakang
-        $sortedProducts = $inStock->concat($outOfStock);
-
-        return view('catalog', ['products' => $sortedProducts]);
+        return view('catalog', ['products' => $productsPaginated]);
     }
 
     public function addToCart($id, Request $request)

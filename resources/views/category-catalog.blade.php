@@ -285,6 +285,31 @@
                     <p style="text-align: center; width: 100%; color: #888;">No products found.</p>
                 @endforelse
             </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap">
+                <div class="mb-0">
+                    @if ($products->total() == 0)
+                        Showing 0 entries
+                    @else
+                        Showing {{ $products->firstItem() }} to {{ $products->lastItem() }} of {{ $products->total() }}
+                        entries
+                    @endif
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    @if ($products->onFirstPage())
+                        <button class="btn btn-secondary me-1" disabled>Prev</button>
+                    @else
+                        <a href="{{ $products->previousPageUrl() }}" class="btn btn-prev-next me-1">Prev</a>
+                    @endif
+
+                    @if ($products->hasMorePages())
+                        <a href="{{ $products->nextPageUrl() }}" class="btn btn-prev-next ms-1">Next</a>
+                    @else
+                        <button class="btn btn-secondary ms-1" disabled>Next</button>
+                    @endif
+                </div>
+            </div>
         </div>
     </div>
 @endsection

@@ -36,6 +36,29 @@
             overflow: hidden;
         }
 
+        .product-card {
+            background-color: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            position: relative;
+            transition: transform 0.2s ease;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-card img {
+            height: 160px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+
         .product-card:hover {
             box-shadow: 0 0 24px rgba(0, 0, 0, 0.15);
         }
@@ -135,11 +158,22 @@
             align-items: center;
             text-align: center;
         }
+
+        .btn-prev-next {
+            color: white;
+            background-color: #e965a7;
+        }
+
+        .btn-prev-next:hover {
+            color: white;
+            background-color: #da5195;
+        }
     </style>
 
     <div class="product-section">
         <div class="container">
             <h2>All Products</h2>
+
             <div class="product-grid">
                 @forelse ($products as $product)
                     <div class="product-card position-relative" style="cursor: pointer;">
@@ -182,6 +216,31 @@
                 @empty
                     <p style="text-align: center; width: 100%; color: #888;">No products found.</p>
                 @endforelse
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap ms-3 me-3">
+                <div class="">
+                    @if ($products->total() == 0)
+                        Showing 0 entries
+                    @else
+                        Showing {{ $products->firstItem() }} to {{ $products->lastItem() }} of
+                        {{ $products->total() }} entries
+                    @endif
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    @if ($products->onFirstPage())
+                        <button class="btn btn-secondary me-1" disabled>Prev</button>
+                    @else
+                        <a href="{{ $products->previousPageUrl() }}" class="btn btn-prev-next me-1">Prev</a>
+                    @endif
+
+                    @if ($products->hasMorePages())
+                        <a href="{{ $products->nextPageUrl() }}" class="btn btn-prev-next ms-1">Next</a>
+                    @else
+                        <button class="btn btn-secondary ms-1" disabled>Next</button>
+                    @endif
+                </div>
             </div>
         </div>
     </div>

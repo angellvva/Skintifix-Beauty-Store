@@ -49,7 +49,7 @@ class ProductController extends Controller
 
         if ($search) {
             $productsQuery->where('name', 'like', '%' . $search . '%');
-        } elseif ($status == 'in_stock') {
+        } elseif ($status === 'in_stock') {
             $productsQuery->where('stock', '>', 0);
         }
 
@@ -66,15 +66,14 @@ class ProductController extends Controller
                 break;
         }
 
-        $allProducts = $productsQuery->get();
+        // Prioritaskan stok tersedia
+        $productsQuery->orderByRaw('stock > 0 DESC');
 
-        $inStockProducts = $allProducts->filter(fn($product) => $product->stock > 0);
-        $outOfStockProducts = $allProducts->filter(fn($product) => $product->stock == 0);
-
-        $products = $inStockProducts->concat($outOfStockProducts);
+        $products = $productsQuery->paginate(10)->withQueryString();
 
         return view('category-catalog', compact('products', 'category', 'categoryDescription'));
     }
+
 
     public function search(Request $request)
     {

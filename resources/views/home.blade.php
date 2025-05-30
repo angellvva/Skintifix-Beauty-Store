@@ -284,9 +284,8 @@
 
                                                 <h5 class="card-title product-name">{{ $item->product->name }}</h5>
 
-                                                <div class="product-unit-sold">Units Sold:
-                                                    {{ $order_items->where('product_id', $item->product->id)->sum('quantity') }}
-                                                </div>
+                                                <div class="product-unit-sold">Units Sold: {{ $item->total_sold }}</div>
+
 
                                                 <div class="product-price">
                                                     Rp{{ number_format($item->product->price, 0, ',', '.') }}
