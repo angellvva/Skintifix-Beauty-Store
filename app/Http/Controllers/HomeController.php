@@ -15,7 +15,7 @@ class HomeController extends Controller
     {
         $userId = Auth::id();
 
-        // Best Seller Products (sama dengan best-seller view)
+        // 1. Best Seller Products
         $topSelling = OrderItem::selectRaw('product_id, SUM(quantity) as total_sold')
             ->groupBy('product_id')
             ->orderByDesc('total_sold')
@@ -23,14 +23,13 @@ class HomeController extends Controller
             ->get();
 
         $productIds = $topSelling->pluck('product_id');
-
         $products = Product::with('category')->whereIn('id', $productIds)->get()->keyBy('id');
 
         $wishlistProductIds = $userId
             ? Wishlist::where('user_id', $userId)->pluck('product_id')->toArray()
             : [];
 
-        // Gabungkan info best seller
+        // Map ke objek gabungan best seller
         $order_items = $topSelling->map(function ($item) use ($products, $wishlistProductIds) {
             return (object) [
                 'product' => $products[$item->product_id] ?? null,
@@ -39,26 +38,30 @@ class HomeController extends Controller
             ];
         })->filter(fn($i) => $i->product !== null);
 
-        // All Products
-        $productsAll = Product::with(['category'])->get();
+        // 2. All Products
+        $productsAll = Product::with('category')->get();
         foreach ($productsAll as $product) {
             $product->isInWishlist = in_array($product->id, $wishlistProductIds);
         }
 
-        // New Arrivals
-        $order_itemss = OrderItem::where('quantity', '>', 0)
-            ->with(['product', 'category'])
+        // 3. New Arrival Products (sama seperti viewNewArrival)
+        $newArrivalProducts = Product::with('category')
+            ->whereNull('deleted_at')
             ->orderBy('created_at', 'desc')
             ->limit(8)
             ->get();
-        foreach ($order_itemss as $item) {
-            $item->isInWishlist = in_array($item->product_id, $wishlistProductIds);
+
+        foreach ($newArrivalProducts as $product) {
+            $product->isInWishlist = in_array($product->id, $wishlistProductIds);
+
+            $product->units_sold = OrderItem::where('product_id', $product->id)
+                ->sum('quantity');
         }
 
         return view('home', [
-            'order_items' => $order_items,
-            'products' => $productsAll,
-            'order_itemss' => $order_itemss
+            'order_items' => $order_items,          // best seller
+            'products' => $productsAll,             // all products
+            'order_itemss' => $newArrivalProducts   // new arrival (ubah variable kalau mau)
         ]);
     }
 
@@ -101,19 +104,27 @@ class HomeController extends Controller
     {
         $userId = Auth::id();
 
-        $order_items = OrderItem::where('quantity', '>', 0)
-            ->with(['product', 'category'])
+        // Ambil produk dengan kategori & total units sold
+        $products = Product::with('category')
+            ->whereNull('deleted_at')
             ->orderBy('created_at', 'desc')
             ->limit(8)
             ->get();
 
-        $wishlistProductIds = $userId ? Wishlist::where('user_id', $userId)->pluck('product_id')->toArray() : [];
+        // Ambil wishlist user
+        $wishlistProductIds = $userId
+            ? Wishlist::where('user_id', $userId)->pluck('product_id')->toArray()
+            : [];
 
-        foreach ($order_items as $product) {
-            $product->isInWishlist = in_array($product->product_id, $wishlistProductIds);
+        // Tambahkan data wishlist dan total units sold
+        foreach ($products as $product) {
+            $product->isInWishlist = in_array($product->id, $wishlistProductIds);
+
+            $product->units_sold = OrderItem::where('product_id', $product->id)
+                ->sum('quantity');
         }
 
-        return view('new-arrival', compact('order_items'));
+        return view('new-arrival', compact('products'));
     }
 
     public function allProducts()

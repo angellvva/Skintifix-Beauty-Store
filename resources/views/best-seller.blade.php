@@ -119,7 +119,8 @@
                 @forelse ($order_items as $item)
                     <div class="product-card position-relative" style="cursor: pointer;"
                         onclick="window.location='{{ route('product.detail', $item->product->id) }}'">
-                        <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}">
+                        <img src="{{ Str::startsWith($item->product->image, ['http://', 'https://']) ? $item->product->image : asset('storage/' . $item->product->image) }}"
+                            alt="{{ $item->product->name }}">
 
                         <!-- Kategori -->
                         <div class="product-category-label" style="left: 15px; right: auto;">

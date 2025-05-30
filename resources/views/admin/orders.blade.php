@@ -153,8 +153,8 @@
                                     @if ($order->status)
                                         <span
                                             class="badge rounded-pill px-3 py-1 border
-                                            @if ($order->status == 'pending') border-warning text-warning
-                                            @elseif($order->status == 'processing') border-primary text-primary
+                                            @if ($order->status == 'pending') border-secondary text-secondary
+                                            @elseif($order->status == 'processing') border-warning text-warning
                                             @elseif($order->status == 'completed') border-success text-success
                                             @else border-secondary text-secondary @endif">
                                             {{ ucfirst($order->status) }}

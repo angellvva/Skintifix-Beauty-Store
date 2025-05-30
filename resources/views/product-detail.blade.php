@@ -75,7 +75,8 @@
                     <!-- Product Image -->
                     <div class="col-md-6 mt-0">
                         <div class="product-image-wrapper position-relative">
-                            <img src="{{ $product->image }}" alt="{{ $product->name }}" class="img-fluid rounded">
+                            <img src="{{ Str::startsWith($product->image, ['http://', 'https://']) ? $product->image : asset('storage/' . $product->image) }}"
+                                alt="{{ $product->name }}" class="img-fluid rounded">
 
                             @if ($product->stock == 0)
                                 <div class="product-out-overlay">

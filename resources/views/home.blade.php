@@ -305,7 +305,6 @@
     <div class="container">
         {{-- New Arrival --}}
         <div class="px-4 pt-4 category" style="padding-bottom: 48px;">
-            <!-- Judul dan Button Nav Carousel -->
             <h2 class="fw-bold">New Arrival Products</h2>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div>
@@ -328,19 +327,18 @@
                                 @foreach ($chunk as $item)
                                     <div class="col">
                                         <div class="card h-100"
-                                            onclick="window.location='{{ route('product.detail', $item->product->id) }}'">
+                                            onclick="window.location='{{ route('product.detail', $item->id) }}'">
                                             <div class="card-body shadow-sm position-relative">
-                                                <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}"
-                                                    class="img-fluid">
+                                                <img src="{{ Str::startsWith($item->image, ['http://', 'https://']) ? $item->image : asset('storage/' . $item->image) }}"
+                                                    alt="{{ $item->name }}" class="img-fluid">
 
-                                                <!-- Left: Category label -->
+                                                <!-- Kategori -->
                                                 <div class="product-category-label">
-                                                    {{ $item->product->category->name }}
+                                                    {{ $item->category->name }}
                                                 </div>
 
-                                                <!-- Right: Heart icon -->
-                                                <form action="{{ route('wishlist.toggle', $item->product->id) }}"
-                                                    method="POST"
+                                                <!-- Wishlist -->
+                                                <form action="{{ route('wishlist.toggle', $item->id) }}" method="POST"
                                                     style="position: absolute; top: 10px; right: 10px; z-index: 20;">
                                                     @csrf
                                                     <button type="submit"
@@ -355,14 +353,14 @@
                                                     </button>
                                                 </form>
 
-                                                <h5 class="card-title product-name">{{ $item->product->name }}</h5>
+                                                <h5 class="card-title product-name">{{ $item->name }}</h5>
 
-                                                <div class="product-unit-sold">Units Sold:
-                                                    {{ $order_items->where('product_id', $item->product->id)->sum('quantity') }}
+                                                <div class="product-unit-sold">
+                                                    Units Sold: {{ $item->units_sold }}
                                                 </div>
 
                                                 <div class="product-price">
-                                                    Rp{{ number_format($item->product->price, 0, ',', '.') }}
+                                                    Rp{{ number_format($item->price, 0, ',', '.') }}
                                                 </div>
                                             </div>
                                         </div>
@@ -375,8 +373,6 @@
             </div>
             <!-- Carousel End-->
         </div>
-        <!-- Carousel End-->
-    </div>
     </div>
 
     <!-- Nourishing Beauty Section Start -->

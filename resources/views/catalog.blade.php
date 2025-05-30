@@ -1,5 +1,7 @@
 @extends ('base.base')
 
+@php use Illuminate\Support\Str; @endphp
+
 @section('content')
     <style>
         .product-section {
@@ -178,7 +180,8 @@
                 @forelse ($products as $product)
                     <div class="product-card position-relative" style="cursor: pointer;">
                         <a href="{{ route('product.detail', $product->id) }}" style="text-decoration: none; color: inherit;">
-                            <img src="{{ $product->image }}" alt="{{ $product->name }}">
+                            <img src="{{ Str::startsWith($product->image, ['http://', 'https://']) ? $product->image : asset('storage/' . $product->image) }}"
+                                alt="{{ $product->name }}">
 
                             <!-- Category Label - Moved to Top Left -->
                             <div class="product-category-label" style="left: 15px; right: auto;">
