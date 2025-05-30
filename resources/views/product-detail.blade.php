@@ -99,7 +99,7 @@
 
                         @if ($isNewArrival)
                             <a href="{{ route('new-arrival') }}"
-                                class="badge new-arrival-badge ms-2 product-category-label mb-4"
+                                class="badge new-arrival-badge {{ !$isBestSeller ? 'ms-0' : 'ms-2' }} product-category-label mb-4"
                                 style="text-decoration: none;">
                                 <h6 class="mb-0">New Arrival</h6>
                             </a>
