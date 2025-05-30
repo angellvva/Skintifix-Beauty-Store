@@ -286,7 +286,6 @@
 
                                                 <div class="product-unit-sold">Units Sold: {{ $item->total_sold }}</div>
 
-
                                                 <div class="product-price">
                                                     Rp{{ number_format($item->product->price, 0, ',', '.') }}
                                                 </div>

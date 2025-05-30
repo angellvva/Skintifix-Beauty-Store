@@ -7,24 +7,24 @@
         }
 
         .btn-outline-pink {
-        color: #e75480;
-        border: 2px solid #e75480;
-        background-color: transparent;
-        transition: background-color 0.3s, color 0.3s;
-    }
+            color: #e965a7;
+            border: 2px solid #e965a7;
+            background-color: transparent;
+            transition: background-color 0.3s, color 0.3s;
+        }
 
-    .btn-outline-pink.active {
-        background-color: #e75480;
-        color: white;
-    }
+        .btn-outline-pink.active {
+            background-color: #e965a7;
+            color: white;
+        }
 
-    .btn-outline-pink i {
-        transition: transform 0.3s;
-    }
+        .btn-outline-pink i {
+            transition: transform 0.3s;
+        }
 
-    .btn-outline-pink.active i {
-        transform: rotate(360deg);
-    }
+        .btn-outline-pink.active i {
+            transform: rotate(360deg);
+        }
     </style>
 
     <div class="product-section">
@@ -32,8 +32,8 @@
             <h2 class="fw-bold mb-4" style="color: #e965a7;">Your Shopping Cart</h2>
             <div class="mb-4">
                 <button type="button" id="toggle-checkboxes" class="btn btn-outline-pink rounded-pill shadow-sm">
-                <i class="far fa-circle me-2"></i><span>Select All Items</span>
-            </button>
+                    <i class="far fa-circle me-2"></i><span>Select All Items</span>
+                </button>
             </div>
             @if (session('success'))
                 <div id="cart-notification" class="alert alert-success"
@@ -76,22 +76,24 @@
                             <tr>
                                 <td style="max-width: 600px; white-space: normal;">
                                     <div class="d-flex align-items-center gap-3" style="margin-right: 10px;">
-                                        <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}" class="rounded"
+                                        <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}"
+                                            class="rounded"
                                             style="width: 80px; height: 80px; object-fit: cover; margin-left: 10px;">
                                         <div>
-                                            <h5 class="mb-1 fw-semibold" style="color: #e965a7;">{{ $item->product->name }}</h5>
+                                            <h5 class="mb-1 fw-semibold" style="color: #e965a7;">{{ $item->product->name }}
+                                            </h5>
                                             <small class="text-muted">{{ $item->product->description ?? '' }}</small>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="align-middle text-center price">Rp {{ number_format($item->product->price, 0, ',', '.') }}
+                                <td class="align-middle text-center price">Rp
+                                    {{ number_format($item->product->price, 0, ',', '.') }}
                                 </td>
                                 <td class="align-middle text-center">
-                                    {{-- Form update quantity --}}                                
-                                        <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" 
-                                            class="form-control form-control-sm quantity-input"
-                                            data-cart-id="{{ $item->id }}"
-                                            style="max-width: 70px; display:inline-block;">                          
+                                    {{-- Form update quantity --}}
+                                    <input type="number" name="quantity" value="{{ $item->quantity }}" min="1"
+                                        class="form-control form-control-sm quantity-input"
+                                        data-cart-id="{{ $item->id }}" style="max-width: 70px; display:inline-block;">
                                 </td>
                                 <td class="align-middle text-center fw-semibold subtotal">Rp
                                     {{ number_format($subtotal, 0, ',', '.') }}</td>
@@ -159,32 +161,34 @@
             @endif
         </div>
     </div>
+
     <script>
         document.querySelectorAll('.quantity-input').forEach(input => {
-            input.addEventListener('change', function () {
+            input.addEventListener('change', function() {
                 const cartId = this.dataset.cartId;
                 const newQty = this.value;
 
                 fetch(`/cart/update/${cartId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({ quantity: newQty })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data.message);
-                    location.reload();
-                })
-                .catch(error => {
-                    console.error('Update error:', error);
-                });
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            quantity: newQty
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data.message);
+                        location.reload();
+                    })
+                    .catch(error => {
+                        console.error('Update error:', error);
+                    });
             });
         });
     </script>
-
 
     <script>
         // Close success notification
@@ -233,6 +237,7 @@
             document.getElementById('selected-items-input').value = selectedIds.join(',');
         });
     </script>
+
     <script>
         // Format angka ke Rupiah
         function formatRp(num) {
@@ -259,7 +264,7 @@
                 let subtotal = price * qty;
                 subtotalEl.textContent = formatRp(subtotal);
 
-                if (checkbox.checked){
+                if (checkbox.checked) {
                     total += subtotal;
                 }
             });
@@ -272,16 +277,17 @@
             input.addEventListener('input', updateTotals);
         });
 
-        document.querySelectorAll('input[type="checkbox"]').forEach(cb =>{
+        document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
             cb.addEventListener('change', updateTotals);
         });
 
         // Hitung ulang saat halaman load
         window.addEventListener('load', updateTotals);
-        
+
         // Checkbox toggle logic
         const toggleBtn = document.getElementById('toggle-checkboxes');
-        let allSelected = false;
+        let allSelected = Array.from(document.querySelectorAll('input[name="selected_items[]"]'))
+            .every(cb => cb.checked);
 
         toggleBtn?.addEventListener('click', () => {
             const checkboxes = document.querySelectorAll('input[name="selected_items[]"]');
@@ -305,47 +311,56 @@
             updateTotals();
         });
     </script>
+
     <script>
-    const STORAGE_KEY = 'cartSelectedItems';
+        const STORAGE_KEY = 'cartSelectedItems';
 
-    function saveSelectedCheckboxes() {
-        const checkedBoxes = Array.from(document.querySelectorAll('input[name="selected_items[]"]:checked'))
-            .map(cb => cb.value);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(checkedBoxes));
-    }
-
-    function loadSelectedCheckboxes() {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) {
-            const selectedIds = JSON.parse(stored);
-            document.querySelectorAll('input[name="selected_items[]"]').forEach(cb => {
-                cb.checked = selectedIds.includes(cb.value);
-            });
-        } else {
-            document.querySelectorAll('input[name="selected_items[]"]').forEach(cb => cb.checked = true);
+        function saveSelectedCheckboxes() {
+            const checkedBoxes = Array.from(document.querySelectorAll('input[name="selected_items[]"]:checked'))
+                .map(cb => cb.value);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(checkedBoxes));
         }
-    }
 
-    window.addEventListener('load', () => {
-        loadSelectedCheckboxes();
-        updateTotals();  
-    });
+        function loadSelectedCheckboxes() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                const selectedIds = JSON.parse(stored);
+                document.querySelectorAll('input[name="selected_items[]"]').forEach(cb => {
+                    cb.checked = selectedIds.includes(cb.value);
+                });
+            } else {
+                document.querySelectorAll('input[name="selected_items[]"]').forEach(cb => cb.checked = true);
+            }
+        }
 
-    document.querySelectorAll('input[name="selected_items[]"]').forEach(cb => {
-        cb.addEventListener('change', () => {
-            saveSelectedCheckboxes();
+        window.addEventListener('load', () => {
+            localStorage.removeItem('cartSelectedItems');
+            loadSelectedCheckboxes();
             updateTotals();
+
+            // Reset tampilan tombol
+            const icon = toggleBtn.querySelector('i');
+            const label = toggleBtn.querySelector('span');
+            icon.className = 'fas fa-check-circle me-2';
+            label.textContent = 'Deselect All Items';
+            toggleBtn.classList.add('active');
         });
-    });
 
-    document.getElementById('toggle-checkboxes')?.addEventListener('click', () => {
-        saveSelectedCheckboxes();
-    });
+        document.querySelectorAll('input[name="selected_items[]"]').forEach(cb => {
+            cb.addEventListener('change', () => {
+                saveSelectedCheckboxes();
+                updateTotals();
+            });
+        });
 
-    document.getElementById('checkout-form').addEventListener('submit', () => {
-        saveSelectedCheckboxes();
-    });
-</script>
+        document.getElementById('toggle-checkboxes')?.addEventListener('click', () => {
+            saveSelectedCheckboxes();
+        });
+
+        document.getElementById('checkout-form').addEventListener('submit', () => {
+            saveSelectedCheckboxes();
+        });
+    </script>
 
 
 @endsection
