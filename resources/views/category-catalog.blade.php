@@ -275,7 +275,7 @@
                             </button>
                         </form>
 
-                        <img src="{{ Str::startsWith($product->image, ['http://', 'https://']) ? $product->image : asset('storage/' . $product->image) }}"
+                        <img src="{{ Str::startsWith($product->image, ['http://', 'https://']) ? $product->image : asset($product->image) }}"
                             alt="{{ $product->name }}">
                         <div class="product-name">{{ $product->name }}</div>
                         <div class="product-price">Rp{{ number_format($product->price, 0, ',', '.') }}</div>

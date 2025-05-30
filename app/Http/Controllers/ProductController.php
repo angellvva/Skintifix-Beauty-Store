@@ -49,7 +49,9 @@ class ProductController extends Controller
 
         if ($search) {
             $productsQuery->where('name', 'like', '%' . $search . '%');
-        } elseif ($status === 'in_stock') {
+        }
+
+        if ($status === 'in_stock') {
             $productsQuery->where('stock', '>', 0);
         }
 
@@ -66,14 +68,13 @@ class ProductController extends Controller
                 break;
         }
 
-        // Prioritaskan stok tersedia
-        $productsQuery->orderByRaw('stock > 0 DESC');
+        // Pastikan produk dengan stok > 0 selalu ditampilkan dulu
+        $productsQuery->orderByRaw('stock = 0');
 
         $products = $productsQuery->paginate(10)->withQueryString();
 
         return view('category-catalog', compact('products', 'category', 'categoryDescription'));
     }
-
 
     public function search(Request $request)
     {

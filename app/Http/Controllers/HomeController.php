@@ -69,7 +69,7 @@ class HomeController extends Controller
     {
         $userId = Auth::id();
 
-        // Ambil 8 produk dengan jumlah unit terjual terbanyak
+        // Ambil 8 produk dengan penjualan terbanyak
         $topSelling = OrderItem::selectRaw('product_id, SUM(quantity) as total_sold')
             ->groupBy('product_id')
             ->orderByDesc('total_sold')
@@ -78,6 +78,7 @@ class HomeController extends Controller
 
         $productIds = $topSelling->pluck('product_id');
 
+        // Ambil data produk
         $products = Product::with('category')
             ->whereIn('id', $productIds)
             ->get()
@@ -88,14 +89,23 @@ class HomeController extends Controller
             ? Wishlist::where('user_id', $userId)->pluck('product_id')->toArray()
             : [];
 
-        // Gabungkan semua info dalam array final
+        // Gabungkan info & filter produk yang valid
         $bestSellerItems = $topSelling->map(function ($item) use ($products, $wishlistProductIds) {
+            $product = $products[$item->product_id] ?? null;
+
+            if (!$product) return null;
+
             return (object) [
-                'product' => $products[$item->product_id] ?? null,
+                'product' => $product,
                 'total_sold' => $item->total_sold,
                 'isInWishlist' => in_array($item->product_id, $wishlistProductIds),
             ];
-        })->filter(fn($i) => $i->product !== null);
+        })->filter();
+
+        // Urutkan agar produk dengan stok habis berada di paling akhir
+        $bestSellerItems = $bestSellerItems->sortBy(function ($item) {
+            return $item->product->stock == 0 ? 1 : 0;
+        })->values();
 
         return view('best-seller', ['order_items' => $bestSellerItems]);
     }
@@ -104,25 +114,29 @@ class HomeController extends Controller
     {
         $userId = Auth::id();
 
-        // Ambil produk dengan kategori & total units sold
+        // Ambil produk terbaru (tidak soft delete)
         $products = Product::with('category')
             ->whereNull('deleted_at')
             ->orderBy('created_at', 'desc')
             ->limit(8)
             ->get();
 
-        // Ambil wishlist user
+        // Ambil ID produk di wishlist
         $wishlistProductIds = $userId
             ? Wishlist::where('user_id', $userId)->pluck('product_id')->toArray()
             : [];
 
-        // Tambahkan data wishlist dan total units sold
+        // Tambahkan data tambahan ke tiap produk
         foreach ($products as $product) {
             $product->isInWishlist = in_array($product->id, $wishlistProductIds);
-
-            $product->units_sold = OrderItem::where('product_id', $product->id)
-                ->sum('quantity');
+            $product->units_sold = OrderItem::where('product_id', $product->id)->sum('quantity');
+            $product->stock = $product->stock ?? 0; // Pastikan nilai stok ada
         }
+
+        // Urutkan produk: stok tersedia di atas, out of stock di bawah
+        $products = $products->sortBy(function ($product) {
+            return $product->stock == 0 ? 1 : 0;
+        })->values(); // reset index agar urutan tetap konsisten
 
         return view('new-arrival', compact('products'));
     }

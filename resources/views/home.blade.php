@@ -257,8 +257,8 @@
                                         <div class="card h-100"
                                             onclick="window.location='{{ route('product.detail', $item->product->id) }}'">
                                             <div class="card-body shadow-sm position-relative">
-                                                <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}"
-                                                    class="img-fluid">
+                                                <img src="{{ Str::startsWith($item->product->image, ['http://', 'https://']) ? $item->product->image : asset($item->image) }}"
+                                                    alt="{{ $item->product->name }}" class="img-fluid">
 
                                                 <!-- Left: Category label -->
                                                 <div class="product-category-label">
@@ -329,7 +329,7 @@
                                         <div class="card h-100"
                                             onclick="window.location='{{ route('product.detail', $item->id) }}'">
                                             <div class="card-body shadow-sm position-relative">
-                                                <img src="{{ Str::startsWith($item->image, ['http://', 'https://']) ? $item->image : asset('storage/' . $item->image) }}"
+                                                <img src="{{ Str::startsWith($item->image, ['http://', 'https://']) ? $item->image : asset($item->image) }}"
                                                     alt="{{ $item->name }}" class="img-fluid">
 
                                                 <!-- Kategori -->

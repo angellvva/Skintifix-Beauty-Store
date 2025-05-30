@@ -85,8 +85,27 @@ class AdminProductController extends Controller
             'image'       => 'required|image|mimes:jpeg,png,jpg,webp|max:2048', // max 2MB
         ]);
 
-        // Simpan gambar ke storage
-        $imagePath = $request->file('image')->store('products', 'public');
+        // Simpan gambar ke public/images/products/
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+
+            // Buat nama file unik
+            $filename = time() . '_' . $image->getClientOriginalName();
+
+            // Tentukan path tujuan
+            $destinationPath = public_path('images/products');
+
+            // Buat folder jika belum ada
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Pindahkan file ke folder public/images/products
+            $image->move($destinationPath, $filename);
+
+            // Simpan path jika perlu
+            $imagePath = 'images/products/' . $filename;
+        }
 
         // Simpan ke database
         Product::create([

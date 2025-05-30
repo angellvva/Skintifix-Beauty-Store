@@ -180,7 +180,7 @@
                 @forelse ($products as $product)
                     <div class="product-card position-relative" style="cursor: pointer;">
                         <a href="{{ route('product.detail', $product->id) }}" style="text-decoration: none; color: inherit;">
-                            <img src="{{ Str::startsWith($product->image, ['http://', 'https://']) ? $product->image : asset('storage/' . $product->image) }}"
+                            <img src="{{ Str::startsWith($product->image, ['http://', 'https://']) ? $product->image : asset($product->image) }}"
                                 alt="{{ $product->name }}">
 
                             <!-- Category Label - Moved to Top Left -->
