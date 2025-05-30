@@ -24,8 +24,14 @@ class AuthController extends Controller
             'phone' => 'required|string|digits_between:10,15',
             'email' => 'required|string|email|max:255|unique:users',
             'address' => 'required|string|max:255',
+            'postal_code' => 'required|string|max:10',
+            'city' => 'required|string|max:100', 
+            'country' => 'required|string|max:100',
             'password' => 'required|string|confirmed|min:8',
         ]);
+
+        // Concatenate address, city, postal code, and country
+        $full_address = $validated['address'] . ', ' . $validated['postal_code'] . ', ' . $validated['city'] . ', ' . $validated['country'];
 
         // Membuat pengguna baru
         User::create([

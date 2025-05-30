@@ -142,6 +142,42 @@
             border-color: #e965a7;
             outline: none;
         }
+
+        /* Flex container for Address */
+        .address-container {
+            margin-bottom: 0; /* Remove margin below the Address field */
+        }
+
+        /* Flex container for Postal Code, City, and Country (inline) */
+        .postal-city-country-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        /* Styling for Postal Code */
+        .postal-code-container {
+            width: 30%; /* Smaller width for Postal Code */
+        }
+
+        /* Styling for City and Country */
+        .city-container, .country-container {
+            width: 32%; /* Both City and Country take equal width */
+        }
+
+        /* Common styling for input fields */
+        .register-modal input[type="text"],
+        .register-modal input[type="email"],
+        .register-modal input[type="password"],
+        .register-modal input[type="tel"] {
+            width: 100%;
+            padding: 12px;
+            margin: 6px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
@@ -232,33 +268,57 @@
 
         <!-- Form untuk registrasi -->
        <form action="{{ route('register.submit') }}" method="POST" id="registerForm">
-            @csrf
-            <label for="name">Name</label>
-            <input type="text" name="name" placeholder="Enter your name" required>
-            <div class="error-message" id="name-error" style="display:none;"></div>
+        @csrf
+        <label for="name">Name</label>
+        <input type="text" name="name" placeholder="Enter your name" required>
+        <div class="error-message" id="name-error" style="display:none;"></div>
 
-            <label for="phone">Phone Number</label>
-            <input type="tel" name="phone" placeholder="Phone number" required pattern="[0-9]{10,15}">
-            <div class="error-message" id="phone-error" style="display:none;"></div>
+        <label for="phone">Phone Number</label>
+        <input type="tel" name="phone" placeholder="Phone number" required pattern="[0-9]{10,15}">
+        <div class="error-message" id="phone-error" style="display:none;"></div>
 
-            <label for="email">Email</label>
-            <input type="email" name="email" placeholder="name@example.com" required>
-            <div class="error-message" id="email-error" style="display:none;"></div>
+        <label for="email">Email</label>
+        <input type="email" name="email" placeholder="name@example.com" required>
+        <div class="error-message" id="email-error" style="display:none;"></div>
 
-            <label for="address">Address</label>
-            <input type="text" name="address" placeholder="Your address" required>
-            <div class="error-message" id="address-error" style="display:none;"></div>
+        <!-- Address, Postal Code, City, and Country Inline Fields -->
+        <div class="address-container">
+            <div class="left-side">
+                <label for="address">Address</label>
+                <input type="text" name="address" placeholder="Your address" required>
+                <div class="error-message" id="address-error" style="display:none;"></div>
+            </div>
+        </div>
 
-            <label for="password">Password</label>
-            <input type="password" name="password" required minlength="8" placeholder="Password (min 8 characters)">
-            <div class="error-message" id="password-error" style="display:none;"></div>
+        <!-- Postal Code, City, and Country section inline -->
+        <div class="postal-city-country-container">
+            <div class="postal-code-container">
+                <label for="postal_code">Postal Code</label>
+                <input type="text" name="postal_code" placeholder="Ex:123742" required>
+                <div class="error-message" id="postal-code-error" style="display:none;"></div>
+            </div>
 
-            <label for="confirm-password">Confirm Password</label>
-            <input type="password" name="password_confirmation" placeholder="Confirm your password" required>
-            <div class="error-message" id="confirm-password-error" style="display:none;"></div>
+            <div class="city-container">
+                <label for="city">City</label>
+                <input type="text" name="city" placeholder="City" required>
+            </div>
 
-            <button type="submit">Register</button>
-        </form>
+            <div class="country-container">
+                <label for="country">Country</label>
+                <input type="text" name="country" placeholder="Country" required>
+            </div>
+        </div>
+
+        <label for="password">Password</label>
+        <input type="password" name="password" required minlength="8" placeholder="Password (min 8 characters)">
+        <div class="error-message" id="password-error" style="display:none;"></div>
+
+        <label for="confirm-password">Confirm Password</label>
+        <input type="password" name="password_confirmation" placeholder="Confirm your password" required>
+        <div class="error-message" id="confirm-password-error" style="display:none;"></div>
+
+        <button type="submit">Register</button>
+    </form>
 
         <!-- Link untuk kembali ke halaman login jika sudah punya akun -->
         <p class="bottom-link gray-text" style="margin-top: 20px; margin-bottom: 14px;">Already have an account? <a href="{{ route('login') }}"><b>Login here</b></a></p>
