@@ -63,7 +63,8 @@
                             <small class="text-muted">Leave blank if not changing the image.</small>
                             @if ($product->image)
                                 <div class="mt-2">
-                                    <img src="{{ $product->image }}" alt="Current Image" width="100">
+                                    <img src="{{ Str::startsWith($product->image, ['http://', 'https://']) ? $product->image : asset($product->image) }}"
+                                        alt="Current Image" class="img-thumbnail" width="100">
                                 </div>
                             @endif
                         </div>

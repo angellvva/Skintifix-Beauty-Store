@@ -111,28 +111,62 @@
             color: #888;
             font-size: 14px;
         }
+
+        .product-out-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: inherit;
+            z-index: 30;
+        }
+
+        .product-out-label {
+            background-color: #e965a7;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
     </style>
 
     <div class="product-section">
         <div class="container">
             <h2>New Arrival Products</h2>
             <div class="product-grid">
-                @forelse ($order_items as $item)
+                @forelse ($products as $product)
                     <div class="product-card position-relative" style="cursor: pointer;"
-                        onclick="window.location='{{ route('product.detail', $item->product->id) }}'">
-                        <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}">
+                        onclick="window.location='{{ route('product.detail', $product->id) }}'">
 
-                        <!-- Label kategori -->
-                            <div class="product-category-label" style="left: 15px; right: auto;">
-                            {{ $item->product->category->name }}
+                        @if ($product->stock == 0)
+                            <div class="product-out-overlay">
+                                <div class="product-out-label">Out of Stock</div>
+                            </div>
+                        @endif
+
+                        <img src="{{ Str::startsWith($product->image, ['http://', 'https://']) ? $product->image : asset($product->image) }}"
+                            alt="{{ $product->name }}">
+
+                        <div class="product-category-label" style="left: 15px; right: auto;">
+                            {{ $product->category->name }}
                         </div>
 
-                        <!-- Heart Wishlist Button - Top Right -->
-                        <form action="{{ route('wishlist.toggle', $item->product->id) }}" method="POST"
+                        <form action="{{ route('wishlist.toggle', $product->id) }}" method="POST"
                             style="position: absolute; top: 10px; right: 10px; z-index: 20;">
                             @csrf
                             <button type="submit" style="background: none; border: none; cursor: pointer;">
-                                @if ($item->isInWishlist ?? false)
+                                @if ($product->isInWishlist ?? false)
                                     <i class="fas fa-heart" style="color: #e965a7; font-size: 20px;"></i>
                                 @else
                                     <i class="far fa-heart" style="color: #e965a7; font-size: 20px;"></i>
@@ -140,21 +174,17 @@
                             </button>
                         </form>
 
-                        <div class="product-name">{{ $item->product->name }}</div>
+                        <div class="product-name">{{ $product->name }}</div>
 
-                        <div class="product-unit-sold">Units Sold:
-                            {{ $order_items->where('product_id', $item->product->id)->sum('quantity') }}
-                        </div>
+                        <div class="product-unit-sold">Units Sold: {{ $product->units_sold }}</div>
 
-                        <div class="product-price">Rp{{ number_format($item->product->price, 0, ',', '.') }}</div>
-                        <div class="product-description">{{ $item->product->description }}</div>
+                        <div class="product-price">Rp{{ number_format($product->price, 0, ',', '.') }}</div>
+                        <div class="product-description">{{ $product->description }}</div>
                     </div>
                 @empty
                     <p style="text-align: center; width: 100%; color: #888;">No products found.</p>
                 @endforelse
             </div>
         </div>
-
-    </div>
     </div>
 @endsection

@@ -52,6 +52,33 @@ Route::post('/register', [AuthController::class, 'register'])->name('register.su
 Route::get('/', [HomeController::class, 'show'])
     ->name('home');
 
+// route untuk catalog
+Route::get('/catalog', [HomeController::class, 'allProducts'])
+    ->name('catalog');
+
+//Route contact
+Route::get('/contact', [ContactController::class, 'contact'])->name('contact');
+Route::post('/contact', [ContactController::class, 'store']);
+
+// Route untuk menampilkan best seller products
+Route::get('/best-seller', [HomeController::class, 'viewBestSeller'])
+    ->name('best-seller');
+
+// Route untuk menampilkan new arrival products
+Route::get('/new-arrival', [HomeController::class, 'viewNewArrival'])
+    ->name('new-arrival');
+
+// Route untuk menampilkan product details
+Route::get('/product/{id}', [ProductController::class, 'detail'])
+    ->name('product.detail');
+
+// Route untuk menampilkan product berdasarkan category
+Route::get('/catalog/{category}', [ProductController::class, 'categoryCatalog'])
+    ->name('category.catalog');
+
+//Route buat search bar
+Route::get('/search/products', [ProductController::class, 'search'])->name('search.products');
+
 Route::middleware(['auth', 'is_admin'])->group(function () {
     // route admin dashboard
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
@@ -96,7 +123,6 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
 
 Route::middleware(['auth', 'is_user'])->group(function () {
     // route untuk cart
-    // Route::get('/cart', [CartController::class, 'index'])->name('cart');
     Route::post('/cart/add/{id}', [HomeController::class, 'addToCart'])->name('cart.add');
     Route::get('/cart', [CartController::class, 'index'])->name('cart.view');
     Route::put('/cart/update/{id}', [CartController::class, 'updateQuantity'])->name('cart.update');
@@ -106,40 +132,15 @@ Route::middleware(['auth', 'is_user'])->group(function () {
     Route::post('/checkout', [CheckoutController::class, 'showCheckout'])->name('checkout');
     Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
 
-
-    // route untuk catalog
-    Route::get('/catalog', [HomeController::class, 'allProducts'])
-        ->name('catalog');
-
     //Route untuk button add cart dan wishlist di product page
     Route::post('/wishlist/add/{id}', [HomeController::class, 'addToWishlist'])->name('wishlist.add');
     Route::get('/wishlist', [WishlistController::class, 'Wishlist'])->name('wishlist.view');
     Route::post('/wishlist/remove', [WishlistController::class, 'removeFromWishlist'])->name('wishlist.remove');
     Route::post('/wishlist/toggle/{id}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
 
-    //Route contact
-    Route::get('/contact', [ContactController::class, 'contact'])->name('contact');
-    Route::post('/contact', [ContactController::class, 'store']);
-
     //checkout
     Route::post('/checkout', [CheckoutController::class, 'showCheckout'])->name('checkout');
     Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
-
-    // Route untuk menampilkan best seller products
-    Route::get('/best-seller', [HomeController::class, 'viewBestSeller'])
-        ->name('best-seller');
-
-    // Route untuk menampilkan new arrival products
-    Route::get('/new-arrival', [HomeController::class, 'viewNewArrival'])
-        ->name('new-arrival');
-
-    // Route untuk menampilkan product details
-    Route::get('/product/{id}', [ProductController::class, 'detail'])
-        ->name('product.detail');
-
-    // Route untuk menampilkan product berdasarkan category
-    Route::get('/catalog/{category}', [ProductController::class, 'categoryCatalog'])
-        ->name('category.catalog');
 
     // Route untuk ke view edit profile saat pencet button edit profile
     Route::get('/edit-profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -162,9 +163,6 @@ Route::middleware(['auth', 'is_user'])->group(function () {
 
     // Route for canceling the order
     Route::get('/order/cancel/{order_id}', [OrderController::class, 'cancel'])->name('order.cancel'); // Cancel order
-
-    //Route buat search bar
-    Route::get('/search/products', [ProductController::class, 'search'])->name('search.products');
 
     // Route buat payment-success
     Route::get('/payment-success', function () {

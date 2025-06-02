@@ -242,8 +242,9 @@
                 document.getElementById('email-error').style.display = 'none';
             }
 
-            // Validasi alamat (hanya string)
-            const addressPattern = /^[a-zA-Z0-9\s,]+$/;
+            // Validasi alamat (membolehkan angka dan karakter alfanumerik, termasuk spasi dan koma)
+            // Validasi alamat (membolehkan huruf, angka, spasi, koma, titik, dan karakter lainnya yang sering ada di alamat)
+            const addressPattern = /^[a-zA-Z0-9\s,.\-]+$/;
             if (!addressPattern.test(address.value)) {
                 document.getElementById('address-error').textContent = "Address must be a valid string.";
                 document.getElementById('address-error').style.display = 'block';

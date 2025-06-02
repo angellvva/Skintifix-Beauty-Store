@@ -17,8 +17,19 @@ class CartController extends Controller
             ->where('user_id', $userId)
             ->get();
 
-        return view('cart', compact('cartItems'));
+        // Filter dan hapus item cart jika product-nya sudah tidak ada
+        $validCartItems = $cartItems->filter(function ($item) {
+            if (!$item->product) {
+                // Produk sudah dihapus, maka item keranjang juga dihapus
+                $item->delete();
+                return false;
+            }
+            return true;
+        });
+
+        return view('cart', ['cartItems' => $validCartItems]);
     }
+
 
     public function update(Request $request, $id)
     {
@@ -32,19 +43,6 @@ class CartController extends Controller
 
         return response()->json(['message' => 'Cart updated successfully.']);
     }
-
-    // public function updateQuantity(Request $request, $id)
-    // {
-    //     $request->validate([
-    //         'quantity' => 'required|integer|min:1'
-    //     ]);
-
-    //     $cartItem = Cart::findOrFail($id);
-    //     $cartItem->quantity = $request->quantity;
-    //     $cartItem->save();
-
-    //     return response()->json(['message' => 'Quantity updated successfully.']);
-    // }
 
     public function remove($id)
     {

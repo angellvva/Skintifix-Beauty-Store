@@ -19,16 +19,16 @@ class WishlistController extends Controller
         }
 
         $wishlistProducts = Product::whereIn('id', function ($query) use ($userId) {
-        $query->select('product_id')
-              ->from('wishlists')
-              ->where('user_id', $userId);
-    })->get();
+            $query->select('product_id')
+                ->from('wishlists')
+                ->where('user_id', $userId);
+        })->get();
 
-    // Set isInWishlist = true manually for view rendering
-    foreach ($wishlistProducts as $product) {
-        $product->isInWishlist = true;
-    }
-    
+        // Set isInWishlist = true manually for view rendering
+        foreach ($wishlistProducts as $product) {
+            $product->isInWishlist = true;
+        }
+
         return view('wishlist', compact('wishlistProducts'));
     }
 
@@ -59,8 +59,8 @@ class WishlistController extends Controller
         }
 
         $wishlistItem = Wishlist::where('user_id', $userId)
-                                ->where('product_id', $productId)
-                                ->first();
+            ->where('product_id', $productId)
+            ->first();
 
         if ($wishlistItem) {
             $wishlistItem->delete();

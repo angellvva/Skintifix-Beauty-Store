@@ -64,6 +64,7 @@
             position: relative;
             transition: transform 0.2s ease;
             cursor: pointer;
+            overflow: hidden;
         }
 
         .product-card:hover {
@@ -159,6 +160,34 @@
             width: auto;
             padding: 0.375rem 0.75rem;
         }
+
+        .product-out-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: inherit;
+            z-index: 30;
+        }
+
+        .product-out-label {
+            background-color: #e965a7;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
     </style>
 
     <div class="product-section">
@@ -205,8 +234,6 @@
                                 </option>
                                 <option value="in_stock" {{ request('status') == 'in_stock' ? 'selected' : '' }}>In Stock
                                 </option>
-                                <option value="out_of_stock" {{ request('status') == 'out_of_stock' ? 'selected' : '' }}>
-                                    Out of Stock</option>
                             </select>
                         </div>
                         <div class="col-md-1">
@@ -229,6 +256,14 @@
                             : false;
                     @endphp
                     <div class="product-card" onclick="window.location='{{ route('product.detail', $product->id) }}'">
+                        @if ($product->stock == 0)
+                            <div class="product-out-overlay">
+                                <div class="product-out-label">
+                                    Out of Stock
+                                </div>
+                            </div>
+                        @endif
+
                         <div class="category-label">{{ $category }}</div>
 
                         <!-- Wishlist Heart Button -->
@@ -240,7 +275,8 @@
                             </button>
                         </form>
 
-                        <img src="{{ $product->image }}" alt="{{ $product->name }}">
+                        <img src="{{ Str::startsWith($product->image, ['http://', 'https://']) ? $product->image : asset($product->image) }}"
+                            alt="{{ $product->name }}">
                         <div class="product-name">{{ $product->name }}</div>
                         <div class="product-price">Rp{{ number_format($product->price, 0, ',', '.') }}</div>
                         <div class="product-stock">Stock: {{ $product->stock }}</div>
@@ -249,6 +285,31 @@
                 @empty
                     <p style="text-align: center; width: 100%; color: #888;">No products found.</p>
                 @endforelse
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap">
+                <div class="mb-0">
+                    @if ($products->total() == 0)
+                        Showing 0 entries
+                    @else
+                        Showing {{ $products->firstItem() }} to {{ $products->lastItem() }} of {{ $products->total() }}
+                        entries
+                    @endif
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    @if ($products->onFirstPage())
+                        <button class="btn btn-secondary me-1" disabled>Prev</button>
+                    @else
+                        <a href="{{ $products->previousPageUrl() }}" class="btn btn-prev-next me-1">Prev</a>
+                    @endif
+
+                    @if ($products->hasMorePages())
+                        <a href="{{ $products->nextPageUrl() }}" class="btn btn-prev-next ms-1">Next</a>
+                    @else
+                        <button class="btn btn-secondary ms-1" disabled>Next</button>
+                    @endif
+                </div>
             </div>
         </div>
     </div>

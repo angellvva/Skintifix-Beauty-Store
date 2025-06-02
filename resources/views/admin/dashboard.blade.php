@@ -9,6 +9,30 @@
             </div>
         </div>
 
+        <form action="{{ route('admin.dashboard') }}" method="GET" class="row g-3 align-items-end mb-4">
+            <div class="col-md-1">
+                <label for="start_date" class="form-label fw-bold">Start Date</label>
+            </div>
+            <div class="col-md-2">
+                <input type="date" id="start_date" name="start_date" class="form-control"
+                    value="{{ request('start_date') }}">
+            </div>
+            <div class="col-md-1">
+                <label for="end_date" class="form-label fw-bold">End Date</label>
+            </div>
+            <div class="col-md-2">
+                <input type="date" id="end_date" name="end_date" class="form-control" value="{{ request('end_date') }}">
+            </div>
+            <div class="col-md-1">
+                <button type="submit" class="btn btn-filter w-100">Filter</button>
+            </div>
+            <div class="col-md-1">
+                <a href="{{ route('admin.dashboard') }}" class="btn btn-reset" title="Reset Filter">
+                    <i class="bi bi-arrow-clockwise"></i> Reset
+                </a>
+            </div>
+        </form>
+
         <div class="row">
             <!-- Total Orders -->
             <div class="col-lg-4 mb-4">
@@ -91,6 +115,10 @@
                                     @endforeach
                                 </tbody>
                             </table>
+
+                            @if ($recentOrders->isEmpty())
+                                <p class="text-muted text-center">No orders found.</p>
+                            @endif
                         </div>
                         <a href="{{ route('admin.orders') }}" class="btn btn-sm btn-pink mt-2">View All
                             Orders</a>
@@ -195,6 +223,10 @@
                                 </tbody>
                             </table>
 
+                            @if ($topSellingProducts->isEmpty())
+                                <p class="text-muted text-center">No products found.</p>
+                            @endif
+
                             <a href="{{ route('admin.products') }}" class="btn btn-sm btn-pink mt-2">View All
                                 Products</a>
                         </div>
@@ -202,7 +234,7 @@
                 </div>
             </div>
         </div>
-        {{-- Sales Chart End--}}
+        {{-- Sales Chart End --}}
         <div class="row mt-4">
             <div class="col-md-12">
                 <div class="card">
@@ -210,25 +242,6 @@
                         <h5 class="mb-0">Sales Over Time</h5>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('admin.dashboard') }}" method="GET" class="row g-3 align-items-end mb-4">
-                            <div class="col-md-1">
-                                <label for="start_date" class="form-label fw-bold">Start Date</label>
-                            </div>
-                            <div class="col-md-2">
-                                <input type="date" id="start_date" name="start_date" class="form-control"
-                                    value="{{ request('start_date') }}">
-                            </div>
-                            <div class="col-md-1">
-                                <label for="end_date" class="form-label fw-bold">End Date</label>
-                            </div>
-                            <div class="col-md-2">
-                                <input type="date" id="end_date" name="end_date" class="form-control"
-                                    value="{{ request('end_date') }}">
-                            </div>
-                            <div class="col-md-1">
-                                <button type="submit" class="btn btn-pink w-100">Filter</button>
-                            </div>
-                        </form>
                         <div class="card-body">
                             <canvas id="salesChart" height="60"></canvas>
                         </div>
@@ -262,6 +275,25 @@
         .btn-pink:hover {
             background-color: #da5195;
             color: white;
+        }
+
+        .btn-filter {
+            color: white;
+            background-color: #e965a7;
+        }
+
+        .btn-filter:hover {
+            color: white;
+            background-color: #da5195;
+        }
+
+        .btn-reset,
+        .btn-reset:hover {
+            border: 1px solid #dee2e6;
+            color: black;
+            background-color: white;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .text-truncate-1line {

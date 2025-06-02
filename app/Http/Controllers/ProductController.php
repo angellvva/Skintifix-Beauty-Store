@@ -51,10 +51,8 @@ class ProductController extends Controller
             $productsQuery->where('name', 'like', '%' . $search . '%');
         }
 
-        if ($status == 'in_stock') {
+        if ($status === 'in_stock') {
             $productsQuery->where('stock', '>', 0);
-        } elseif ($status == 'out_of_stock') {
-            $productsQuery->where('stock', '=', 0);
         }
 
         switch ($sort) {
@@ -70,7 +68,10 @@ class ProductController extends Controller
                 break;
         }
 
-        $products = $productsQuery->get();
+        // Pastikan produk dengan stok > 0 selalu ditampilkan dulu
+        $productsQuery->orderByRaw('stock = 0');
+
+        $products = $productsQuery->paginate(10)->withQueryString();
 
         return view('category-catalog', compact('products', 'category', 'categoryDescription'));
     }

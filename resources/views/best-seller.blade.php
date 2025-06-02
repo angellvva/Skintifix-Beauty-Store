@@ -110,6 +110,34 @@
             color: #888;
             font-size: 14px;
         }
+
+        .product-out-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: inherit;
+            z-index: 30;
+        }
+
+        .product-out-label {
+            background-color: #e965a7;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
     </style>
 
     <div class="product-section">
@@ -119,19 +147,29 @@
                 @forelse ($order_items as $item)
                     <div class="product-card position-relative" style="cursor: pointer;"
                         onclick="window.location='{{ route('product.detail', $item->product->id) }}'">
-                        <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}">
 
-                        <!-- Label kategori -->
-                            <div class="product-category-label" style="left: 15px; right: auto;">
+                        {{-- Overlay jika produk out of stock --}}
+                        @if ($item->product->stock == 0)
+                            <div class="product-out-overlay">
+                                <div class="product-out-label">Out of Stock</div>
+                            </div>
+                        @endif
+
+                        <img src="{{ Str::startsWith($item->product->image, ['http://', 'https://']) ? $item->product->image : asset($pitem->roduct->image) }}"
+                            alt="{{ $item->product->name }}">
+
+                        <!-- Kategori -->
+                        <div class="product-category-label" style="left: 15px; right: auto;">
                             {{ $item->product->category->name }}
                         </div>
 
-                        <!-- Heart Wishlist Button - Top Right -->
+                        <!-- Wishlist -->
                         <form action="{{ route('wishlist.toggle', $item->product->id) }}" method="POST"
-                            style="position: absolute; top: 10px; right: 10px; z-index: 20;">
+                            style="position: absolute; top: 10px; right: 10px; z-index: 20;"
+                            onclick="event.stopPropagation();">
                             @csrf
                             <button type="submit" style="background: none; border: none; cursor: pointer;">
-                                @if ($item->isInWishlist ?? false)
+                                @if ($item->isInWishlist)
                                     <i class="fas fa-heart" style="color: #e965a7; font-size: 20px;"></i>
                                 @else
                                     <i class="far fa-heart" style="color: #e965a7; font-size: 20px;"></i>
@@ -140,19 +178,14 @@
                         </form>
 
                         <div class="product-name">{{ $item->product->name }}</div>
-
-                        <div class="product-unit-sold">Units Sold:
-                            {{ $order_items->where('product_id', $item->product->id)->sum('quantity') }}
-                        </div>
-
+                        <div class="product-unit-sold">Units Sold: {{ $item->total_sold }}</div>
                         <div class="product-price">Rp{{ number_format($item->product->price, 0, ',', '.') }}</div>
-                        <div class="product-description">{{ $item->product->description, 60 }}</div>
+                        <div class="product-description">{{ $item->product->description }}</div>
                     </div>
                 @empty
                     <p style="text-align: center; width: 100%; color: #888;">No products found.</p>
                 @endforelse
             </div>
         </div>
-    </div>
     </div>
 @endsection

@@ -2,10 +2,9 @@
 
 @section('content')
     <div class="product-section">
-        <div class="container mt-5">
-
+        <div class="container">
             <!-- Flash Notification -->
-            @if(session('success'))
+            @if (session('success'))
                 <div id="cart-notification" class="alert alert-success"
                     style="
                         position: fixed;
@@ -68,44 +67,49 @@
                     });
                 </script>
             @endif
-            
+
             <!-- Product Info Card -->
-            <div class="white-container position-relative mb-5"
-                style="background-color: white; padding: 40px 30px 30px 30px; border-radius: 16px;">
-
-                <!-- Back Button -->
-                <a href="{{ route('catalog') }}" class="back-btn" title="Back to products">
-                    <i class="fas fa-arrow-left"></i>
-                </a>
-
-                <div class="row g-4 align-items-center justify-content-center">
+            <div class="mb-4 d-flex align-items-center"
+                style="background-color: white; padding: 40px 30px 30px 30px; border-radius: 16px; min-height: 500px;">
+                <div class="row g-4 d-flex align-items-center">
                     <!-- Product Image -->
-                    <div class="product-image-wrapper mx-auto mt-3">
-                        <img src="{{ $product->image }}" alt="{{ $product->name }}" class="img-fluid rounded">
+                    <div class="col-md-6 mt-0">
+                        <div class="product-image-wrapper position-relative">
+                            <img src="{{ Str::startsWith($product->image, ['http://', 'https://']) ? $product->image : asset($product->image) }}"
+                                alt="{{ $product->name }}" class="img-fluid rounded">
+
+                            @if ($product->stock == 0)
+                                <div class="product-out-overlay">
+                                    <div class="product-out-label">
+                                        Out of Stock
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
                     </div>
 
                     <!-- Product Info -->
-                    <div class="col-md-6">
-                        @if($isBestSeller)
-                                <a href="{{ route('best-seller') }}" 
-                                class="badge best-seller-badge ms-2 product-category-label"
+                    <div class="col-md-6 mt-0">
+                        @if ($isBestSeller)
+                            <a href="{{ route('best-seller') }}" class="badge best-seller-badge product-category-label mb-4"
                                 style="text-decoration: none;">
-                                    Best Seller
-                                </a>
-                            @endif
+                                <h6 class="mb-0">Best Seller</h6>
+                            </a>
+                        @endif
 
-                            @if($isNewArrival)
-                                <a href="{{ route('new-arrival') }}" 
-                                class="badge new-arrival-badge ms-2 product-category-label"
+                        @if ($isNewArrival)
+                            <a href="{{ route('new-arrival') }}"
+                                class="badge new-arrival-badge {{ !$isBestSeller ? 'ms-0' : 'ms-2' }} product-category-label mb-4"
                                 style="text-decoration: none;">
-                                    New Arrival
-                                </a>
-                            @endif
-                        <h1 class="fw-bold mb-3" style="color: #e75480;">
+                                <h6 class="mb-0">New Arrival</h6>
+                            </a>
+                        @endif
+
+                        <h1 class="fw-bold mb-3" style="color:#e965a7;">
                             {{ $product->name }}
                         </h1>
 
-                        <h4 class="mb-3" style="color: #d6336c;">
+                        <h4 class="mb-3" style="color:#e965a7;">
                             Price: <span class="fw-semibold">Rp{{ number_format($product->price, 0, ',', '.') }}</span>
                         </h4>
 
@@ -118,18 +122,20 @@
                             @endif
                         </p>
 
-                        <hr style="border-color: #f8bbd0;">
+                        <hr style="border-color: black;">
 
-                        <p class="mb-4" style="color: #6f2a48;">{{ $product->description }}</p>
+                        <p class="mb-4" style="color: black;">{{ $product->description }}</p>
 
                         <div class="d-flex align-items-center gap-3">
-                            <!-- Add to Cart -->
-                            <form action="{{ route('cart.add', $product->id) }}" method="POST">
-                                @csrf
-                                <button type="submit" title="Add to Cart" class="icon-btn-bordered">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </button>
-                            </form>
+                            @if ($product->stock > 0)
+                                <!-- Add to Cart -->
+                                <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" title="Add to Cart" class="icon-btn-bordered">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </button>
+                                </form>
+                            @endif
 
                             <!-- Add to Wishlist -->
                             <form action="{{ route('wishlist.toggle', $product->id) }}" method="POST">
@@ -198,11 +204,12 @@
     <style>
         .product-section {
             background-color: #fff0f6;
-            padding: 50px 0;
+            padding: 50px 20px;
+            min-height: 100vh;
         }
 
         .product-image-wrapper {
-            border: 2px solid #e965a7;
+            border: 1px solid #e965a7;
             border-radius: 16px;
             padding: 20px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
@@ -213,7 +220,7 @@
 
         .icon-btn-bordered {
             background: none;
-            border: 2px solid #e965a7;
+            border: 1px solid #e965a7;
             border-radius: 12px;
             padding: 10px 16px;
             color: #e965a7;
@@ -250,22 +257,6 @@
             color: #c44c8f;
         }
 
-        .white-container {
-            background-color: white;
-            border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-        }
-
-        .empty-review-container {
-            border: 2px dashed #e965a7;
-            border-radius: 16px;
-            background-color: #fff0f6;
-            max-width: 400px;
-            margin: 40px auto 0;
-            padding: 40px 20px;
-            box-shadow: 0 0 12px rgba(233, 85, 135, 0.15);
-        }
-
         .badge {
             font-size: 0.75rem;
             font-weight: 600;
@@ -277,26 +268,27 @@
 
         .best-seller-badge {
             background-color: #e965a7;
+            border: 1px solid #e965a7;
         }
 
         .new-arrival-badge {
-            background-color: transparent;        /* No background */
-            border: 2px solid #e965a7;            /* Pink outline */
-            color: #e965a7;                       /* Pink text */
-            padding: 8px 16px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 18px;
-            display: inline-block;
+            background-color: transparent;
+            /* No background */
+            border: 1px solid #e965a7;
+            /* Pink outline */
+            color: #e965a7;
+            /* Pink text */
         }
 
         .product-category-label {
-            /* background-color: #e965a7;
-            color: white; */
-            padding: 8px 16px;       /* increase padding for bigger size */
-            border-radius: 12px;     /* slightly bigger rounded corners */
-            font-weight: 700;        /* make text bolder */
-            font-size: 18px;         /* bigger font size */
+            padding: 8px 16px;
+            /* increase padding for bigger size */
+            border-radius: 12px;
+            /* slightly bigger rounded corners */
+            font-weight: 700;
+            /* make text bolder */
+            font-size: 18px;
+            /* bigger font size */
             display: inline-block;
         }
 
@@ -309,7 +301,36 @@
         .btn-wishlist-outline {
             background: none;
             color: #e965a7;
-            border: 2px solid #e965a7;
+            border: 1px solid #e965a7;
+        }
+
+        .product-out-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: inherit;
+            z-index: 30;
+        }
+
+        .product-out-label {
+            background-color: #e965a7;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            line-height: 1.2;
         }
     </style>
 @endsection

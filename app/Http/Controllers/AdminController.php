@@ -16,28 +16,41 @@ class AdminController extends Controller
     // Halaman dashboard admin
     public function dashboard(Request $request)
     {
-        $totalOrders = DB::table('orders')->count();
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
 
-        $totalRevenue = DB::table('order_items')
-            ->select(DB::raw('SUM(price * quantity) as total'))
+        // Query builder untuk kondisi dinamis
+        $ordersQuery = DB::table('orders');
+        $orderItemsQuery = DB::table('order_items')
+            ->join('orders', 'order_items.order_id', '=', 'orders.id');
+        $topSellingQuery = DB::table('order_items')
+            ->join('orders', 'order_items.order_id', '=', 'orders.id')
+            ->join('products', 'order_items.product_id', '=', 'products.id')
+            ->join('product_categories', 'products.category_id', '=', 'product_categories.id');
+
+        if ($startDate && $endDate) {
+            $ordersQuery->whereBetween('order_date', [$startDate, $endDate]);
+            $orderItemsQuery->whereBetween('orders.order_date', [$startDate, $endDate]);
+            $topSellingQuery->whereBetween('orders.order_date', [$startDate, $endDate]);
+        }
+
+        $totalOrders = $ordersQuery->count();
+
+        $totalRevenue = $orderItemsQuery
+            ->select(DB::raw('SUM(order_items.price * order_items.quantity) as total'))
             ->value('total');
 
-        $totalProducts = DB::table('products')->count();
-
-        $newCustomers = DB::table('users')
-            ->whereDate('created_at', '>=', now()->subDays(7))
+        $totalProducts = DB::table('products')
+            ->whereNull('deleted_at')
             ->count();
 
         $recentOrders = DB::table('orders')
             ->join('users', 'orders.user_id', '=', 'users.id')
-            ->select(
-                'orders.id',
-                'users.name as customer',
-                'orders.order_date',
-                'orders.total_amount',
-                'users.name as customer_name'
-            )
-            ->orderByDesc('orders.order_date', 'desc')
+            ->select('orders.id', 'orders.order_date', 'orders.total_amount', 'users.name as customer_name')
+            ->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
+                $query->whereBetween('orders.order_date', [$startDate, $endDate]);
+            })
+            ->orderByDesc('orders.order_date')
             ->limit(5)
             ->get();
 
@@ -46,29 +59,26 @@ class AdminController extends Controller
             ->whereNull('deleted_at')
             ->paginate(3);
 
-        $topSellingProducts = DB::table('order_items')
-            ->join('products', 'order_items.product_id', '=', 'products.id')
-            ->join('product_categories', 'products.category_id', '=', 'product_categories.id')
+        $topSellingProducts = $topSellingQuery
             ->select(
                 'products.id',
                 'products.name as product_name',
                 'products.price as product_price',
                 'product_categories.name as category_name',
                 'products.stock as product_stock',
-                DB::raw('SUM(order_items.quantity) as total_quantity'),
+                DB::raw('SUM(order_items.quantity) as total_quantity')
             )
-            ->groupBy('products.id', 'products.name', 'product_categories.name')
+            ->groupBy('products.id', 'products.name', 'products.price', 'product_categories.name', 'products.stock')
             ->orderByDesc('total_quantity')
             ->limit(5)
             ->get();
 
-        // Sales Over Time Chart with optional date range filter
-        $startDate = $request->input('start_date', now()->subDays(6)->format('Y-m-d'));
-        $endDate = $request->input('end_date', now()->format('Y-m-d'));
-
+        // Sales Over Time
         $salesData = DB::table('orders')
             ->selectRaw('DATE(order_date) as date, COUNT(*) as orders')
-            ->whereBetween('order_date', [$startDate, $endDate])
+            ->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
+                $query->whereBetween('order_date', [$startDate, $endDate]);
+            })
             ->groupBy('date')
             ->orderBy('date')
             ->get();
@@ -76,19 +86,25 @@ class AdminController extends Controller
         $salesLabels = [];
         $salesCounts = [];
 
-        $datePeriod = \Carbon\CarbonPeriod::create($startDate, $endDate);
-        foreach ($datePeriod as $date) {
-            $formatted = $date->format('Y-m-d');
-            $salesLabels[] = $formatted;
-            $match = $salesData->firstWhere('date', $formatted);
-            $salesCounts[] = $match ? $match->orders : 0;
+        if ($startDate && $endDate) {
+            $datePeriod = \Carbon\CarbonPeriod::create($startDate, $endDate);
+            foreach ($datePeriod as $date) {
+                $formatted = $date->format('Y-m-d');
+                $salesLabels[] = $formatted;
+                $match = $salesData->firstWhere('date', $formatted);
+                $salesCounts[] = $match ? $match->orders : 0;
+            }
+        } else {
+            foreach ($salesData as $row) {
+                $salesLabels[] = $row->date;
+                $salesCounts[] = $row->orders;
+            }
         }
 
         return view('admin.dashboard', compact(
             'totalOrders',
             'totalRevenue',
             'totalProducts',
-            'newCustomers',
             'recentOrders',
             'lowStockProducts',
             'topSellingProducts',
