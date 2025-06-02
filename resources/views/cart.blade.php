@@ -129,7 +129,7 @@
                 </table>
 
                 {{-- Form checkout terpisah --}}
-                <form id="checkout-form" action="{{ route('checkout') }}" method="POST" class="mt-4">
+                <form id="checkout-form" action="{{ route('checkout') }}" method="GET" class="mt-4">
                     @csrf
                     {{-- Kirim hanya selected_items --}}
                     {{-- Gunakan checkbox yang dipilih --}}

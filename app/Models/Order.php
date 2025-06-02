@@ -10,9 +10,11 @@ class Order extends Model
     //
     use Hasfactory;
     protected $fillable = [
-        'id',
+        'order_id',
         'user_id',
         'recipient_name',
+        'recipient_phone',
+        'recipient_address',
         'total_amount',
         'status',
         'payment_url',

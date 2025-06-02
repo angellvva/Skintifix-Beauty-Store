@@ -139,7 +139,8 @@ Route::middleware(['auth', 'is_user'])->group(function () {
     Route::post('/wishlist/toggle/{id}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
 
     //checkout
-    Route::post('/checkout', [CheckoutController::class, 'showCheckout'])->name('checkout');
+    // Route::get('/checkout', [CheckoutController::class, 'showCheckout'])->name('checkout');
+    Route::get('/checkout', [CheckoutController::class, 'showCheckout'])->name('checkout');
     Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
 
     // Route untuk ke view edit profile saat pencet button edit profile
@@ -165,14 +166,9 @@ Route::middleware(['auth', 'is_user'])->group(function () {
     Route::get('/order/cancel/{order_id}', [OrderController::class, 'cancel'])->name('order.cancel'); // Cancel order
 
     // Route buat payment-success
-    Route::get('/payment-success', function () {
-        $payment = (object) [
-            'id' => 123,
-            'created_at' => now(),
-            'total_amount' => 149000,
-            'status' => 'paid',
-        ];
-
-        return view('payment-success', compact('payment'));
+    Route::get('/payment/success', function () {
+        return view('payment-success');
     })->name('payment.success');
+    Route::get('/payment/success', [CheckoutController::class, 'paymentSuccess'])->name('payment.success');
+
 });

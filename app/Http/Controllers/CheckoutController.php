@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\Order;
-use App\Models\OrderDetail;
+use App\Models\OrderItem;
+
 
 class CheckoutController extends Controller
 {
@@ -28,7 +29,7 @@ class CheckoutController extends Controller
         }
 
         if (empty($selectedIds)) {
-            return redirect()->back()->with('error', 'Please select at least one product to checkout.');
+            return redirect()->route('cart.view')->with('error', 'Please select at least one product to checkout.');
         }
 
         $cartItems = DB::table('carts')
@@ -85,19 +86,21 @@ class CheckoutController extends Controller
         try {
             $recipient_name = $request->input('recipient_name', 'default recipient'); // default value jika tidak ada input
             $recipient_phone = $request->input('recipient_phone', Auth::user()->phone);  // Ganti default_phone_number jika tidak ada input
-
+            $recipient_address = "SS";
+            // dd($recipient_phone);
             $order = Order::create([
                 'invoice_number' => 'INV-' . date('Ymd') . '-' . strtoupper(Str::random(6)),
                 'user_id' => Auth::id(),
                 'recipient_name' => $recipient_name,
                 'recipient_phone' => $recipient_phone,
-                'total_price' => $totalAmount,
+                'recipient_address' => $recipient_address,
+                'total_amount' => $totalAmount,
                 'status' => 'pending',
                 'payment_url' => null,  // URL pembayaran akan diset setelah transaksi Midtrans selesai
             ]);
 
             foreach ($cartItems as $item) {
-                OrderDetail::create([
+                OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $item->cart_id,
                     'product_name' => $item->name,
@@ -107,10 +110,12 @@ class CheckoutController extends Controller
                 ]);
             }
 
+            Log::info('Generated order ID:', ['invoice' => $order->invoice_number]);
+
             $params = [
                 'transaction_details' => [
-                    'order_id' => $order->invoice_number,
-                    'gross_amount' => $totalAmount,
+                    'order_id' => $order->invoice_number ?? 'INV-'.Str::uuid(),
+                    'gross_amount' => (int) $totalAmount,
                 ],
                 'customer_details' => [
                     'first_name' => $request->name,
@@ -132,6 +137,10 @@ class CheckoutController extends Controller
                         'name' => $item->name,
                     ];
                 })->toArray(),
+
+                'callbacks'=> [
+                    'finish'=>route('payment.success'),
+                ],
             ];
 
             $snapUrl = Snap::createTransaction($params)->redirect_url;
@@ -151,5 +160,17 @@ class CheckoutController extends Controller
             Log::error('Midtrans Token Error: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Checkout gagal: ' . $e->getMessage());
         }
+    }
+
+    public function paymentSuccess(Request $request)
+    {
+        $orderId = $request->get('order_id');
+        $order = Order::where('invoice_number', $orderId)->first();
+
+        if(!$order){
+            return redirect()->route('catalog')->with('error', 'Order not found.');
+        }
+
+        return view('payment-success', compact('order'));
     }
 }

@@ -5,6 +5,7 @@
 <div class="checkout-section py-5" style="background-color: #fff0f6;">
     <div class="container">
         <div class="row g-4">
+
             {{-- LEFT: Checkout Form --}}
             <div class="col-md-7">
                 <div class="card border-0 shadow-sm rounded-4 p-4">
@@ -15,7 +16,7 @@
                     <form id="checkout-form" action="{{ route('checkout.process') }}" method="POST" novalidate>
                         @csrf
 
-                        <!-- Customer Info -->
+                        <!-- Recipient Info -->
                         <h5 class="fw-bold mb-3" style="color: #e75480;">
                             <i class="fas fa-user me-2"></i>Recipient Information
                         </h5>
@@ -28,7 +29,7 @@
 
                         <div class="mb-3">
                             <label class="form-label">Full Name</label>
-                            <input type="text" name="name" id="recipient_name" class="form-control" value="{{ $user->name ?? '' }}" required>
+                            <input type="text" name="name" id="name" class="form-control" value="{{ $user->name ?? '' }}" required>
                             <div class="invalid-feedback">Full Name is required.</div>
                         </div>
 
@@ -44,25 +45,6 @@
                             <div class="invalid-feedback">Full Address is required.</div>
                         </div>
 
-                        {{-- <!-- Additional Address -->
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label">Postal Code</label>
-                                <input type="text" name="postal_code" id="postal_code" class="form-control" required>
-                                <div class="invalid-feedback">Postal Code is required.</div>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label">Region/Province</label>
-                                <input type="text" name="region" id="region" class="form-control" required>
-                                <div class="invalid-feedback">Region/Province is required.</div>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label">Country</label>
-                                <input type="text" name="country" id="country" class="form-control" required>
-                                <div class="invalid-feedback">Country is required.</div>
-                            </div>
-                        </div> --}}
-
                         <!-- Shipping Method -->
                         <h5 class="fw-bold mt-4" style="color: #e75480;">
                             <i class="fas fa-truck me-2"></i>Shipping Method
@@ -71,7 +53,7 @@
                             <select name="shipping_method" id="shipping-method-select" class="form-select" required>
                                 <option value="">Select a shipping method</option>
                                 <option value="standard" data-cost="20000">Standard (3 days) - Rp20.000</option>
-                                <option value="express" data-cost="40000">Express (1 days) - Rp40.000</option>
+                                <option value="express" data-cost="40000">Express (1 day) - Rp40.000</option>
                             </select>
                             <div class="invalid-feedback">Please select a shipping method.</div>
                         </div>
@@ -79,6 +61,10 @@
                         @foreach ($cartItems as $item)
                             <input type="hidden" name="selected_items[]" value="{{ $item->cart_id }}">
                         @endforeach
+
+                        <!-- Hidden input for shipping cost and total amount -->
+                        <input type="hidden" name="shipping_cost" id="shipping-cost-hidden" value="20000">
+                        <input type="hidden" name="total_amount" id="total-amount-hidden" value="{{ $cartItems->sum(fn($item) => $item->price * $item->quantity) + 20000 }}">
                     </form>
                 </div>
             </div>
@@ -90,6 +76,12 @@
                         <h5 class="card-title fw-bold mb-4" style="color: #e965a7;">
                             <i class="fas fa-receipt me-2"></i>Order Summary
                         </h5>
+
+                        @php
+                            $subtotal = $cartItems->sum(fn($item) => $item->price * $item->quantity);
+                            $shipping = 20000;
+                            $total = $subtotal + $shipping;
+                        @endphp
 
                         @forelse ($cartItems as $item)
                             <div class="d-flex justify-content-between mb-3">
@@ -108,12 +100,6 @@
                             <p class="text-muted">Your cart is empty.</p>
                         @endforelse
 
-                        @php
-                            $subtotal = $cartItems->sum(fn($item) => $item->price * $item->quantity);
-                            $shipping = 20000; // flat rate shipping
-                            $total = $subtotal + $shipping;
-                        @endphp
-
                         <div class="d-flex justify-content-between mt-3">
                             <span>Subtotal</span>
                             <span id="subtotal">Rp{{ number_format($subtotal, 0, ',', '.') }}</span>
@@ -130,23 +116,26 @@
                             <span>Total</span>
                             <span id="total-cost">Rp{{ number_format($total, 0, ',', '.') }}</span>
                         </div>
-                        <hr>
-                        <button type="button" id="pay-button" class="btn w-100 rounded-pill shadow-sm"
+
+                        <!-- Submit button within form -->
+                        <button type="submit" form="checkout-form" class="btn w-100 rounded-pill shadow-sm"
                             style="background-color: #e965a7; color: white;">
                             <i class="fas fa-lock me-2"></i>Proceed to Payment
                         </button>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
 
 <script>
-    // Update shipping cost and total on shipping method change
     const shippingSelect = document.getElementById('shipping-method-select');
     const shippingCostElem = document.getElementById('shipping-cost');
     const totalCostElem = document.getElementById('total-cost');
+    const hiddenShippingCost = document.getElementById('shipping-cost-hidden');
+    const hiddenTotalAmount = document.getElementById('total-amount-hidden');
 
     function formatRp(num) {
         return 'Rp' + num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -155,63 +144,16 @@
     shippingSelect.addEventListener('change', function () {
         const selectedOption = shippingSelect.options[shippingSelect.selectedIndex];
         const shippingCost = parseInt(selectedOption.getAttribute('data-cost')) || 0;
-        shippingCostElem.textContent = formatRp(shippingCost);
-
         const subtotal = parseInt(document.getElementById('subtotal').textContent.replace(/[Rp.\s]/g, '')) || 0;
-        totalCostElem.textContent = formatRp(subtotal + shippingCost);
+        const total = subtotal + shippingCost;
+
+        shippingCostElem.textContent = formatRp(shippingCost);
+        totalCostElem.textContent = formatRp(total);
+        hiddenShippingCost.value = shippingCost;
+        hiddenTotalAmount.value = total;
     });
 
-    // Validate before proceeding to payment with inline error messages
-    document.getElementById('pay-button').addEventListener('click', function () {
-        const form = document.getElementById('checkout-form');
-        const formData = new FormData(form);
-        // const fields = [
-        //     'name',
-        //     'phone',
-        //     'address',
-        //     'postal_code',
-        //     'region',
-        //     'country',
-        //     'shipping-method-select',
-        //     'payment-method'
-        // ];
-
-        // let formValid = true;
-
-        // fields.forEach(id => {
-        //     const el = document.getElementById(id);
-        //     if (!el.value.trim()) {
-        //         el.classList.add('is-invalid');
-        //         formValid = false;
-        //     } else {
-        //         el.classList.remove('is-invalid');
-        //     }
-        // });
-
-        // if (formValid) {
-        //     form.submit();
-        // }
-        fetch('/checkout/process', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.snap_token) {
-                window.location.href = 'https://app.midtrans.com/snap/v1/transaction/' + data.snap_token;
-            } 
-            else {
-                alert('Error: ' + data.error);
-            }
-        })
-        .catch(error => {
-            console.error('Error: ', error);
-            alert('Something went wrong. Please try again later.');
-        })
-    });
-</script>
-
-<script>
+    // Toggle account info button
     const toggleBtn = document.getElementById('toggle-default');
     const defaultName = @json($user->name ?? '');
     const defaultPhone = @json($user->phone ?? '');
@@ -242,7 +184,6 @@
         toggleRecipientFields(useDefault);
     });
 
-    // On page load: activate and disable fields
     toggleBtn.classList.add('active');
     toggleRecipientFields(true);
 </script>
