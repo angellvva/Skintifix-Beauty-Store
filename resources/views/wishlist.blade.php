@@ -6,41 +6,47 @@
             background-color: #fff0f6;
         }
 
+        .product-section h2 {
+            color: #e965a7;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
         .item-desc {
             margin-bottom: 30px;
         }
 
-        .wishlist-container {
-            margin-bottom: 60px;
-        }
-
         .wishlist-card {
-            border: 2px solid #e965a7 !important;
-            transition: all 0.3s ease;
-            border-radius: 8px;
-            flex: 1 1 calc((100% / 5) - 12px);
-            /* subtracting approx gap */
-            max-width: calc((100% / 5) - 12px);
-            box-sizing: border-box;
+            background-color: #fff;
+            border-radius: 12px;
+            width: calc(25% - 24px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+            overflow: hidden;
         }
 
         .wishlist-card:hover {
-            box-shadow: 0 0 15px rgba(233, 101, 167, 0.5);
             transform: translateY(-5px);
-            z-index: 1;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
         }
 
         .wishlist-img {
             height: 160px;
             object-fit: contain;
-            margin-bottom: 1rem;
+            margin-bottom: 15px;
         }
 
         .wishlist-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 20px 10px;
-            justify-content: flex-start;
+            gap: 24px;
+            justify-content: center;
         }
 
         .empty-wishlist-icon {
@@ -123,17 +129,25 @@
             align-items: center;
             text-align: center;
         }
+
+        .product-name {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #333;
+
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     </style>
     <div class="product-section">
         <div class="container py-5">
-            <h2 class="fw-bold mb-4" style="color: #e965a7;">My Wishlist</h2>
+            <h2>My Wishlist</h2>
 
             @if (session('success'))
-                <p class="item-desc text-muted mb-4">
-                    You have {{ is_countable($wishlistProducts) ? count($wishlistProducts) : 0 }}
-                    {{ is_countable($wishlistProducts) && count($wishlistProducts) === 1 ? 'item' : 'items' }}
-                </p>
-
                 <div id="cart-notification" class="alert alert-success"
                     style="
                         position: fixed;
@@ -170,52 +184,50 @@
             @endif
 
             @if (isset($wishlistProducts) && count($wishlistProducts) > 0)
-                <div class="wishlist-container">
-                    <div class="wishlist-grid">
-                        @foreach ($wishlistProducts as $item)
-                            <div class="card wishlist-card border-0 shadow-sm p-3 position-relative">
-                                @if ($item->stock == 0)
-                                    <div class="product-out-overlay">
-                                        <div class="product-out-label">Out of Stock</div>
-                                    </div>
-                                @endif
+                <div class="wishlist-grid">
+                    @foreach ($wishlistProducts as $item)
+                        <div class="card wishlist-card border-0 shadow-sm p-3 position-relative">
+                            @if ($item->stock == 0)
+                                <div class="product-out-overlay">
+                                    <div class="product-out-label">Out of Stock</div>
+                                </div>
+                            @endif
 
-                                <img src="{{ $item->image }}" class="card-img-top wishlist-img mx-auto d-block"
-                                    alt="{{ $item->name }}">
+                            <img src="{{ $item->image }}" class="card-img-top wishlist-img mx-auto d-block"
+                                alt="{{ $item->name }}">
 
-                                <div class="card-body text-center">
-                                    <h5 class="card-title">{{ $item->name }}</h5>
-                                    <p class="card-text text-danger fw-bold">
-                                        Rp{{ number_format($item->price, 0, ',', '.') }}
-                                    </p>
-                                    <small class="text-muted d-block mb-2">Stock: {{ $item->stock }}</small>
-                                    <div class="d-flex justify-content-center gap-2 position-relative" style="z-index: 40;">
-                                        <a href="{{ route('product.detail', $item->id) }}"
-                                            class="btn btn-sm btn-outline-pink" title="View Product Detail">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                        @if ($item->stock > 0)
-                                            <form action="{{ route('cart.add', $item->id) }}" method="POST">
-                                                @csrf
-                                                <button type="submit" class="btn-cart-pink" title="Add to cart">
-                                                    <i class="fas fa-shopping-cart"></i>
-                                                </button>
-                                            </form>
-                                        @endif
-                                        <form method="POST" action="{{ route('wishlist.remove') }}"
-                                            onsubmit="return confirm('Remove this item from your wishlist?');">
+                            <div class="card-body text-center">
+                                <h5 class="product-name">{{ $item->name }}</h5>
+                                <p class="fw-bold" style="color: #e965a7;">
+                                    Rp{{ number_format($item->price, 0, ',', '.') }}
+                                </p>
+                                <small class="text-muted d-block mb-2">Stock: {{ $item->stock }}</small>
+                                <div class="d-flex justify-content-center gap-2 position-relative" style="z-index: 40;">
+                                    <a href="{{ route('product.detail', $item->id) }}" class="btn btn-sm btn-outline-pink"
+                                        title="View Product Detail">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    @if ($item->stock > 0)
+                                        <form action="{{ route('cart.add', $item->id) }}" method="POST">
                                             @csrf
-                                            <input type="hidden" name="product_id" value="{{ $item->id }}">
-                                            <button type="submit" class="btn btn-outline-danger btn-sm"
-                                                title="Remove from Wishlist">
-                                                <i class="fas fa-trash-alt"></i>
+                                            <button type="submit" class="btn-cart-pink" title="Add to cart">
+                                                <i class="fas fa-shopping-cart"></i>
                                             </button>
                                         </form>
-                                    </div>
+                                    @endif
+                                    <form method="POST" action="{{ route('wishlist.remove') }}"
+                                        onsubmit="return confirm('Remove this item from your wishlist?');">
+                                        @csrf
+                                        <input type="hidden" name="product_id" value="{{ $item->id }}">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm"
+                                            title="Remove from Wishlist">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
-                        @endforeach
-                    </div>
+                        </div>
+                    @endforeach
                 </div>
             @else
                 <div style="background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
