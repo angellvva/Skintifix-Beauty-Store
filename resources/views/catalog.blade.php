@@ -7,7 +7,6 @@
         .product-section {
             background-color: #fff0f6;
             padding: 50px 20px;
-            min-height: 100vh;
         }
 
         .product-section h2 {
@@ -38,18 +37,6 @@
             overflow: hidden;
         }
 
-        .product-card {
-            background-color: #fff;
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            text-align: center;
-            position: relative;
-            transition: transform 0.2s ease;
-            cursor: pointer;
-            overflow: hidden;
-        }
-
         .product-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
@@ -57,16 +44,6 @@
 
         .product-card img {
             height: 160px;
-            object-fit: contain;
-            margin-bottom: 15px;
-        }
-
-        .product-card:hover {
-            box-shadow: 0 0 24px rgba(0, 0, 0, 0.15);
-        }
-
-        .product-card img {
-            max-height: 150px;
             object-fit: contain;
             margin-bottom: 15px;
         }
