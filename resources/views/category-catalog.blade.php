@@ -173,6 +173,7 @@
             align-items: center;
             border-radius: inherit;
             z-index: 30;
+            pointer-events: none;
         }
 
         .product-out-label {
@@ -187,6 +188,18 @@
             justify-content: center;
             align-items: center;
             text-align: center;
+        }
+
+        .category-label {
+            z-index: 40;
+            /* Lebih tinggi dari overlay */
+        }
+
+        .wishlist-button {
+            z-index: 40;
+            /* Lebih tinggi dari overlay */
+            pointer-events: auto;
+            /* Pastikan tombol tetap bisa diklik */
         }
     </style>
 
