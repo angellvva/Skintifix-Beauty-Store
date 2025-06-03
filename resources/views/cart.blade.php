@@ -281,6 +281,30 @@
             cb.addEventListener('change', updateTotals);
         });
 
+        document.querySelectorAll('input[name="selected_items[]"]').forEach(cb => {
+            cb.addEventListener('change', () => {
+                const checkboxes = document.querySelectorAll('input[name="selected_items[]"]');
+                const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+
+                const icon = toggleBtn.querySelector('i');
+                const label = toggleBtn.querySelector('span');
+
+                if (allChecked) {
+                    icon.className = 'fas fa-check-circle me-2';
+                    label.textContent = 'Deselect All Items';
+                    toggleBtn.classList.add('active');
+                    allSelected = true;
+                } else {
+                    icon.className = 'far fa-check-circle me-2';
+                    label.textContent = 'Select All Items';
+                    toggleBtn.classList.remove('active');
+                    allSelected = false;
+                }
+
+                updateTotals(); // pastikan total juga diperbarui
+            });
+        });
+
         // Hitung ulang saat halaman load
         window.addEventListener('load', updateTotals);
 
