@@ -29,6 +29,11 @@ class WishlistController extends Controller
             $product->isInWishlist = true;
         }
 
+        // Sort produk: stok > 0 dulu, lalu yang stoknya habis
+        $wishlistProducts = $wishlistProducts->sortByDesc(function ($product) {
+            return $product->stock > 0 ? 1 : 0;
+        })->values(); // Reset index
+
         return view('wishlist', compact('wishlistProducts'));
     }
 

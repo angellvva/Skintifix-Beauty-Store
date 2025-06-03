@@ -149,9 +149,9 @@ class HomeController extends Controller
 
         $productsQuery = Product::with('category');
 
-        // Paginate 8 per page, urutkan berdasarkan stok
+        // Paginate 12 per page, urutkan berdasarkan stok
         $productsPaginated = $productsQuery->orderByRaw("stock > 0 DESC")
-            ->paginate(8);
+            ->paginate(12);
 
         foreach ($productsPaginated as $product) {
             $product->isInWishlist = in_array($product->id, $wishlistProductIds);
