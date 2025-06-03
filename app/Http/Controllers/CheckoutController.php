@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Payments;
 
 
 class CheckoutController extends Controller
@@ -66,7 +67,7 @@ class CheckoutController extends Controller
         $cartItems = collect(DB::table('carts')
             ->join('products', 'carts.product_id', '=', 'products.id')
             ->whereIn('carts.id', $selectedItemIds)
-            ->select('carts.id as cart_id', 'products.name', 'products.price', 'products.image', 'carts.quantity')
+            ->select('carts.id as cart_id', 'products.id as product_id', 'products.name', 'products.price', 'products.image', 'carts.quantity')
             ->get());
 
         $subtotal = $cartItems->sum(fn($item) => $item->price * $item->quantity);
@@ -101,15 +102,31 @@ class CheckoutController extends Controller
                 'payment_url' => null,  // URL pembayaran akan diset setelah transaksi Midtrans selesai
             ]);
 
+            Payments::create([
+                'order_id' => $order->id,
+                'payment_status' => 'pending',
+                'payment_method' => null, // akan diupdate oleh Midtrans callback
+                'payment_date' => null,
+            ]);
+
             foreach ($cartItems as $item) {
                 OrderItem::create([
                     'order_id' => $order->id,
-                    'product_id' => $item->cart_id,
+                    'product_id' => $item->product_id,
                     'product_name' => $item->name,
                     'quantity' => $item->quantity,
                     'price' => $item->price,
                     'subtotal' => $item->price * $item->quantity,
                 ]);
+
+                // ngurangi stok produk di db
+                DB::table('products')
+                    ->where('id', $item->product_id)
+                    ->decrement('stock', $item->quantity);
+
+                // hapus produk dari cart
+                DB::table('carts')->whereIn('id', $selectedItemIds)->delete();
+
             }
 
             Log::info('Generated order ID:', ['invoice' => $order->invoice_number]);

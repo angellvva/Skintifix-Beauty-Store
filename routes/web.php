@@ -17,6 +17,7 @@ use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminProductController;
+use App\Http\Controllers\MidtransController;
 
 // ROUTE PASSWORD RESET
 // Route untuk menampilkan form forgot password
@@ -170,5 +171,8 @@ Route::middleware(['auth', 'is_user'])->group(function () {
         return view('payment-success');
     })->name('payment.success');
     // Route::get('/payment/success', [CheckoutController::class, 'paymentSuccess'])->name('payment.success');
+
+    //Route callback midtrans
+    Route::post('/midtrans/callback', [MidtransController::class, 'handleCallback']);
 
 });
