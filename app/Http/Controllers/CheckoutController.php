@@ -84,9 +84,9 @@ class CheckoutController extends Controller
 
         DB::beginTransaction();
         try {
-            $recipient_name = $request->input('recipient_name', 'default recipient'); // default value jika tidak ada input
+            $recipient_name = $request->input('name'); // default value jika tidak ada input
             $recipient_phone = $request->input('recipient_phone', Auth::user()->phone);  // Ganti default_phone_number jika tidak ada input
-            $recipient_address = "SS";
+            $recipient_address = $request->input('address');
             // dd($recipient_phone);
             $order = Order::create([
                 'invoice_number' => 'INV-' . date('Ymd') . '-' . strtoupper(Str::random(6)),
@@ -94,6 +94,8 @@ class CheckoutController extends Controller
                 'recipient_name' => $recipient_name,
                 'recipient_phone' => $recipient_phone,
                 'recipient_address' => $recipient_address,
+                'subtotal' => $subtotal,
+                'shipping_price' => $shippingCost,
                 'total_amount' => $totalAmount,
                 'status' => 'pending',
                 'payment_url' => null,  // URL pembayaran akan diset setelah transaksi Midtrans selesai

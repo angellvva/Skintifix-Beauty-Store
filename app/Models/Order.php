@@ -15,6 +15,8 @@ class Order extends Model
         'recipient_name',
         'recipient_phone',
         'recipient_address',
+        'subtotal',
+        'shipping_price',
         'total_amount',
         'status',
         'payment_url',

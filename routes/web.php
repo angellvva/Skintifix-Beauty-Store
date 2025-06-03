@@ -169,6 +169,6 @@ Route::middleware(['auth', 'is_user'])->group(function () {
     Route::get('/payment/success', function () {
         return view('payment-success');
     })->name('payment.success');
-    Route::get('/payment/success', [CheckoutController::class, 'paymentSuccess'])->name('payment.success');
+    // Route::get('/payment/success', [CheckoutController::class, 'paymentSuccess'])->name('payment.success');
 
 });
