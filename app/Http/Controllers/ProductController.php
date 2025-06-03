@@ -37,16 +37,26 @@ class ProductController extends Controller
 
     public function categoryCatalog($category, Request $request)
     {
+        $categoryModel = ProductCategory::where('name', $category)->firstOrFail();
+        $categoryDescription = $categoryModel->description;
+
         $search = $request->query('search');
         $status = $request->query('status', 'all');
         $sort = $request->query('sort', 'newest');
 
-        $categoryModel = ProductCategory::where('name', $category)->first();
-        $categoryDescription = optional($categoryModel)->description;
-
         $productsQuery = Product::with('category')
-            ->where('category_id', $categoryModel?->id);
+            ->where('category_id', $categoryModel->id);
 
+        $product = Product::with('reviews.user')->findOrFail($categoryModel->id);
+        $isInWishlist = false;
+        $userId = Auth::id();
+
+        if ($userId) {
+            $isInWishlist = \App\Models\Wishlist::where('user_id', $userId)
+                ->where('product_id', $product->id)
+                ->exists();
+        }
+        
         if ($search) {
             $productsQuery->where('name', 'like', '%' . $search . '%');
         }
@@ -68,12 +78,17 @@ class ProductController extends Controller
                 break;
         }
 
-        // Pastikan produk dengan stok > 0 selalu ditampilkan dulu
+        // Tampilkan stok > 0 terlebih dahulu
         $productsQuery->orderByRaw('stock = 0');
 
         $products = $productsQuery->paginate(10)->withQueryString();
 
-        return view('category-catalog', compact('products', 'category', 'categoryDescription'));
+        return view('category-catalog', [
+            'products' => $products,
+            'category' => $categoryModel->name,
+            'categoryDescription' => $categoryDescription,
+            'isInWishlist' => $isInWishlist
+        ]);
     }
 
     public function search(Request $request)

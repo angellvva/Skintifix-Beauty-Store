@@ -128,6 +128,11 @@
             z-index: 2;
         }
 
+        .btn-wishlist-heart i {
+            font-size: 20px;
+            color: #e965a7;
+        }
+        
         .wishlist-button {
             position: absolute;
             top: 10px;
@@ -261,13 +266,6 @@
 
             <div class="product-grid">
                 @forelse ($products as $product)
-                    @php
-                        $isInWishlist = session('id')
-                            ? \App\Models\Wishlist::where('user_id', session('id'))
-                                ->where('product_id', $product->id)
-                                ->exists()
-                            : false;
-                    @endphp
                     <div class="product-card" onclick="window.location='{{ route('product.detail', $product->id) }}'">
                         @if ($product->stock == 0)
                             <div class="product-out-overlay">
@@ -280,11 +278,15 @@
                         <div class="category-label">{{ $category }}</div>
 
                         <!-- Wishlist Heart Button -->
-                        <form action="{{ route('wishlist.toggle', $product->id) }}" method="POST" class="wishlist-button"
-                            onclick="event.stopPropagation();">
+                        <form action="{{ route('wishlist.toggle', $product->id) }}" method="POST"
+                            style="position: absolute; top: 10px; right: 10px; z-index: 20;">
                             @csrf
-                            <button type="submit" class="wishlist-button" title="Add to wishlist">
-                                <i class="{{ $isInWishlist ? 'fas' : 'far' }} fa-heart"></i>
+                            <button type="submit" style="background: none; border: none; cursor: pointer;">
+                                @if ($product->isInWishlist ?? false)
+                                    <i class="fas fa-heart" style="color: #e965a7; font-size: 20px;"></i>
+                                @else
+                                    <i class="far fa-heart" style="color: #e965a7; font-size: 20px;"></i>
+                                @endif
                             </button>
                         </form>
 
