@@ -187,45 +187,44 @@
                 <div class="wishlist-grid">
                     @foreach ($wishlistProducts as $item)
                         <div class="card wishlist-card border-0 shadow-sm p-3 position-relative">
-                            @if ($item->stock == 0)
-                                <div class="product-out-overlay">
-                                    <div class="product-out-label">Out of Stock</div>
-                                </div>
-                            @endif
+                            <a href="{{ route('product.detail', $item->id) }}"
+                                style="text-decoration: none; color: inherit;">
+                                @if ($item->stock == 0)
+                                    <div class="product-out-overlay">
+                                        <div class="product-out-label">Out of Stock</div>
+                                    </div>
+                                @endif
 
-                            <img src="{{ $item->image }}" class="card-img-top wishlist-img mx-auto d-block"
-                                alt="{{ $item->name }}">
+                                <img src="{{ $item->image }}" class="card-img-top wishlist-img mx-auto d-block"
+                                    alt="{{ $item->name }}">
 
-                            <div class="card-body text-center">
-                                <h5 class="product-name">{{ $item->name }}</h5>
-                                <p class="fw-bold" style="color: #e965a7;">
-                                    Rp{{ number_format($item->price, 0, ',', '.') }}
-                                </p>
-                                <small class="text-muted d-block mb-2">Stock: {{ $item->stock }}</small>
-                                <div class="d-flex justify-content-center gap-2 position-relative" style="z-index: 40;">
-                                    <a href="{{ route('product.detail', $item->id) }}" class="btn btn-sm btn-outline-pink"
-                                        title="View Product Detail">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                    @if ($item->stock > 0)
-                                        <form action="{{ route('cart.add', $item->id) }}" method="POST">
+                                <div class="card-body text-center">
+                                    <h5 class="product-name">{{ $item->name }}</h5>
+                                    <p class="fw-bold" style="color: #e965a7;">
+                                        Rp{{ number_format($item->price, 0, ',', '.') }}
+                                    </p>
+                                    <small class="text-muted d-block mb-2">Stock: {{ $item->stock }}</small>
+                                    <div class="d-flex justify-content-center gap-2 position-relative" style="z-index: 40;">
+                                        @if ($item->stock > 0)
+                                            <form action="{{ route('cart.add', $item->id) }}" method="POST">
+                                                @csrf
+                                                <button type="submit" class="btn-cart-pink" title="Add to cart">
+                                                    <i class="fas fa-shopping-cart"></i>
+                                                </button>
+                                            </form>
+                                        @endif
+                                        <form method="POST" action="{{ route('wishlist.remove') }}"
+                                            onsubmit="return confirm('Remove this item from your wishlist?');">
                                             @csrf
-                                            <button type="submit" class="btn-cart-pink" title="Add to cart">
-                                                <i class="fas fa-shopping-cart"></i>
+                                            <input type="hidden" name="product_id" value="{{ $item->id }}">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm"
+                                                title="Remove from Wishlist">
+                                                <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </form>
-                                    @endif
-                                    <form method="POST" action="{{ route('wishlist.remove') }}"
-                                        onsubmit="return confirm('Remove this item from your wishlist?');">
-                                        @csrf
-                                        <input type="hidden" name="product_id" value="{{ $item->id }}">
-                                        <button type="submit" class="btn btn-outline-danger btn-sm"
-                                            title="Remove from Wishlist">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </form>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     @endforeach
                 </div>
