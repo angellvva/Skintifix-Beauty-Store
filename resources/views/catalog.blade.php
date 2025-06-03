@@ -7,7 +7,6 @@
         .product-section {
             background-color: #fff0f6;
             padding: 50px 20px;
-            min-height: 100vh;
         }
 
         .product-section h2 {
@@ -38,18 +37,6 @@
             overflow: hidden;
         }
 
-        .product-card {
-            background-color: #fff;
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            text-align: center;
-            position: relative;
-            transition: transform 0.2s ease;
-            cursor: pointer;
-            overflow: hidden;
-        }
-
         .product-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
@@ -57,16 +44,6 @@
 
         .product-card img {
             height: 160px;
-            object-fit: contain;
-            margin-bottom: 15px;
-        }
-
-        .product-card:hover {
-            box-shadow: 0 0 24px rgba(0, 0, 0, 0.15);
-        }
-
-        .product-card img {
-            max-height: 150px;
             object-fit: contain;
             margin-bottom: 15px;
         }
@@ -145,6 +122,7 @@
             align-items: center;
             border-radius: inherit;
             z-index: 30;
+            pointer-events: none;
         }
 
         .product-out-label {
@@ -169,6 +147,39 @@
         .btn-prev-next:hover {
             color: white;
             background-color: #da5195;
+        }
+
+        .btn-wishlist-heart {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 40;
+            /* Lebih tinggi dari overlay */
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            pointer-events: auto;
+            /* Tetap bisa diklik */
+        }
+
+        .btn-wishlist-heart i {
+            font-size: 20px;
+            color: #e965a7;
+        }
+
+        .product-category-label {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background-color: #e965a7;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 12px;
+            z-index: 50;
+            /* Lebih tinggi dari .product-out-overlay */
         }
     </style>
 
@@ -200,13 +211,13 @@
 
                         <!-- Heart Wishlist Button - Top Right -->
                         <form action="{{ route('wishlist.toggle', $product->id) }}" method="POST"
-                            style="position: absolute; top: 10px; right: 10px; z-index: 20;">
+                            class="btn-wishlist-form">
                             @csrf
-                            <button type="submit" style="background: none; border: none; cursor: pointer;">
+                            <button type="submit" class="btn-wishlist-heart" title="Add to Wishlist">
                                 @if ($product->isInWishlist ?? false)
-                                    <i class="fas fa-heart" style="color: #e965a7; font-size: 20px;"></i>
+                                    <i class="fas fa-heart"></i>
                                 @else
-                                    <i class="far fa-heart" style="color: #e965a7; font-size: 20px;"></i>
+                                    <i class="far fa-heart"></i>
                                 @endif
                             </button>
                         </form>

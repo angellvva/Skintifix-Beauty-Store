@@ -6,6 +6,13 @@
             background-color: #fff0f6;
         }
 
+        .product-section h2 {
+            color: #e965a7;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
         .btn-outline-pink {
             color: #e965a7;
             border: 2px solid #e965a7;
@@ -16,6 +23,7 @@
         .btn-outline-pink.active {
             background-color: #e965a7;
             color: white;
+            border: 2px solid #e965a7;
         }
 
         .btn-outline-pink i {
@@ -29,12 +37,8 @@
 
     <div class="product-section">
         <div class="container py-5">
-            <h2 class="fw-bold mb-4" style="color: #e965a7;">Your Shopping Cart</h2>
-            <div class="mb-4">
-                <button type="button" id="toggle-checkboxes" class="btn btn-outline-pink rounded-pill shadow-sm">
-                    <i class="far fa-circle me-2"></i><span>Select All Items</span>
-                </button>
-            </div>
+            <h2>Your Shopping Cart</h2>
+
             @if (session('success'))
                 <div id="cart-notification" class="alert alert-success"
                     style="position: fixed; top: 120px; right: 313px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 8px; padding: 10px 20px 10px 15px; z-index: 9999; box-shadow: 0 2px 8px rgba(0,0,0,0.1); opacity: 1; display: flex; align-items: center; justify-content: space-between; min-width: 250px;">
@@ -136,10 +140,12 @@
                     <input type="hidden" name="selected_items" id="selected-items-input" value="">
 
                     <div class="d-flex justify-content-between">
-                        <a href="{{ route('catalog') }}" class="btn btn-outline-secondary rounded-pill px-4 shadow-sm"
-                            style="border-color: #e965a7; color: #e965a7; background-color: white;">
-                            &lsaquo; Continue Shopping
-                        </a>
+                        <div>
+                            <button type="button" id="toggle-checkboxes"
+                                class="btn btn-outline-pink rounded-pill px-4 shadow-sm">
+                                <i class="far fa-circle me-2"></i><span>Select All Items</span>
+                            </button>
+                        </div>
                         <button type="submit" class="btn rounded-pill px-4 shadow-sm"
                             style="background-color: #e965a7; color: #fff;">
                             Checkout
@@ -279,6 +285,30 @@
 
         document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
             cb.addEventListener('change', updateTotals);
+        });
+
+        document.querySelectorAll('input[name="selected_items[]"]').forEach(cb => {
+            cb.addEventListener('change', () => {
+                const checkboxes = document.querySelectorAll('input[name="selected_items[]"]');
+                const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+
+                const icon = toggleBtn.querySelector('i');
+                const label = toggleBtn.querySelector('span');
+
+                if (allChecked) {
+                    icon.className = 'fas fa-check-circle me-2';
+                    label.textContent = 'Deselect All Items';
+                    toggleBtn.classList.add('active');
+                    allSelected = true;
+                } else {
+                    icon.className = 'far fa-check-circle me-2';
+                    label.textContent = 'Select All Items';
+                    toggleBtn.classList.remove('active');
+                    allSelected = false;
+                }
+
+                updateTotals(); // pastikan total juga diperbarui
+            });
         });
 
         // Hitung ulang saat halaman load
