@@ -117,7 +117,6 @@
                             <span id="total-cost">Rp{{ number_format($total, 0, ',', '.') }}</span>
                         </div>
 
-                        <!-- Submit button within form -->
                         <button type="submit" form="checkout-form" class="btn w-100 rounded-pill shadow-sm"
                             style="background-color: #e965a7; color: white;">
                             <i class="fas fa-lock me-2"></i>Proceed to Payment

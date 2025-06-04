@@ -257,7 +257,7 @@
                                         <div class="card h-100"
                                             onclick="window.location='{{ route('product.detail', $item->product->id) }}'">
                                             <div class="card-body shadow-sm position-relative">
-                                                <img src="{{ Str::startsWith($item->product->image, ['http://', 'https://']) ? $item->product->image : asset($item->image) }}"
+                                                <img src="{{ Str::startsWith($item->product->image, ['http://', 'https://']) ? $item->product->image : asset($item->product->image) }}"
                                                     alt="{{ $item->product->name }}" class="img-fluid">
 
                                                 <!-- Left: Category label -->

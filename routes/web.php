@@ -174,5 +174,4 @@ Route::middleware(['auth', 'is_user'])->group(function () {
 
     //Route callback midtrans
     Route::post('/midtrans/callback', [MidtransController::class, 'handleCallback']);
-
 });

@@ -132,35 +132,42 @@ class CheckoutController extends Controller
             Log::info('Generated order ID:', ['invoice' => $order->invoice_number]);
 
             $params = [
-                'transaction_details' => [
-                    'order_id' => $order->invoice_number ?? 'INV-'.Str::uuid(),
-                    'gross_amount' => (int) $totalAmount,
+            'transaction_details' => [
+                'order_id' => $order->invoice_number ?? 'INV-'.Str::uuid(),
+                'gross_amount' => (int) $totalAmount,
+            ],
+            'customer_details' => [
+                'first_name' => $request->name,
+                'last_name' => '',
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'billing_address' => [
+                    'address' => $request->address,
+                    'postal_code' => $request->postal_code,
+                    'region' => $request->region,
+                    'country' => $request->country,
                 ],
-                'customer_details' => [
-                    'first_name' => $request->name,
-                    'last_name' => '',
-                    'phone' => $request->phone,
-                    'email' => $request->email,
-                    'billing_address' => [
-                        'address' => $request->address,
-                        'postal_code' => $request->postal_code,
-                        'region' => $request->region,
-                        'country' => $request->country,
-                    ],
-                ],
-                'item_details' => $cartItems->map(function ($item) {
+            ],
+            'item_details' => array_merge(
+                $cartItems->map(function ($item) {
                     return [
                         'id' => $item->cart_id,
-                        'price' => $item->price,
-                        'quantity' => $item->quantity,
+                        'price' => (int) $item->price,
+                        'quantity' => (int) $item->quantity,
                         'name' => $item->name,
                     ];
                 })->toArray(),
-
-                'callbacks'=> [
-                    'finish'=>route('payment.success'),
-                ],
-            ];
+                [[
+                    'id' => 'SHIPPING',
+                    'price' => (int) $shippingCost,
+                    'quantity' => 1,
+                    'name' => 'Shipping Cost'
+                ]]
+            ),
+            'callbacks'=> [
+                'finish'=>route('payment.success'),
+            ],
+        ];
 
             $snapUrl = Snap::createTransaction($params)->redirect_url;
 
