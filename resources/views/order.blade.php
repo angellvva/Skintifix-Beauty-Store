@@ -6,6 +6,13 @@
             background-color: #fff0f6;
         }
 
+        .order-section h2 {
+            color: #e965a7;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
         .order-img {
             width: 100%;
             border: 1px solid #dee2e6;
@@ -51,11 +58,9 @@
 
     <div class="order-section">
         <div class="container py-5">
-            <div class="row g-3">
-                <div class="col-md-7">
-                    <h2 class="fw-bold mb-4" style="color: #e965a7;">My Order</h2>
-                </div>
-                <div class="col-md-4">
+            <h2>My Order</h2>
+            <div class="row g-3 d-flex justify-content-center">
+                <div class="col-md-11 mb-4">
                     <form id="filterForm" method="GET" action="{{ url()->current() }}">
                         <div class="input-group">
                             <span class="input-group-text" id="basic-addon1">
@@ -144,9 +149,6 @@
                             <a href="{{ route('order.detail', ['order_id' => $order->id]) }}"
                                 class="btn btn-sm btn-pink">Order
                                 Detail</a>
-                            <a href="{{ route('catalog') }}" class="btn btn-sm btn-pink2">Buy
-                                again
-                            </a>
                         </div>
                     </div>
                 @endforeach

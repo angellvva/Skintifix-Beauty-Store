@@ -123,18 +123,19 @@
         <div class="logo">Skintifix <span style="color: #000000;">Beauty Store</span></div>
         <h2>Forget Password</h2>
         <p class="gray-text">Enter your email address and set your new password.</p>
-        
+
         <form method="POST" action="{{ route('send.otp') }}">
             @csrf
             <label>Email</label>
             <input type="email" name="email" required>
             <button type="submit">Send OTP</button>
         </form>
+
         <!-- Back to Login Button -->
         <form action="{{ route('login') }}" method="GET">
-            <button type="submit" style="background-color: #f1f1f1; color: #333; border: 1px solid #ddd; margin-top: 20px;">
+            <button type="submit" style="background-color: #f1f1f1; color: #333; border: 1px solid #ddd;">
                 Back to Login
-        </button>
+            </button>
 </body>
 
 </html>

@@ -164,8 +164,13 @@ Route::middleware(['auth', 'is_user'])->group(function () {
     Route::get('/order/cancel/{order_id}', [OrderController::class, 'cancel'])->name('order.cancel'); // Cancel order
 
     // Route buat payment-success
-    Route::get('/payment/success', function () {
-        return view('payment-success');
+    // Route::get('/payment/success', function () {
+    //     return view('payment-success');
+    // })->name('payment.success');
+
+    Route::get('/payment/success', function (\Illuminate\Http\Request $request) {
+        $orderId = $request->query('order_id');
+        return view('payment-success', compact('orderId'));
     })->name('payment.success');
     // Route::get('/payment/success', [CheckoutController::class, 'paymentSuccess'])->name('payment.success');
 

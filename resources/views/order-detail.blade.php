@@ -92,6 +92,13 @@
             background-color: #fff0f6;
         }
 
+        .order-detail-section h2 {
+            color: #e965a7;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
         table {
             width: 100%;
             table-layout: fixed;
@@ -114,11 +121,26 @@
             width: 100%;
             border: 1px solid #dee2e6;
         }
+
+        .badge-pending:hover {
+            background-color: #6c757d;
+            color: white !important;
+        }
+
+        .badge-failed:hover {
+            background-color: #dc3545;
+            color: white !important;
+        }
+
+        .badge-paid:hover {
+            background-color: #28a745;
+            color: white !important;
+        }
     </style>
 
     <div class="order-detail-section">
         <div class="container py-5">
-            <h2 class="fw-bold mb-4" style="color: #e965a7;">Order Details</h2>
+            <h2>Order Details</h2>
 
             @if ($order->status == 'failed')
                 isinya failed
@@ -170,14 +192,22 @@
                             <tr>
                                 <td><b style="color:#e965a7;">SKINTIFIX-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</b>
                                 </td>
-                                <td>{{ ucwords($order->payment->payment_method) }}<br>
-                                    <span @class([
-                                        'badge rounded-pill border px-3 py-1',
-                                        'border-danger text-danger' => $order->payment->payment_status == 'failed',
-                                        'border-success text-success' => $order->payment->payment_status == 'paid',
-                                    ])>
-                                        {{ ucfirst($order->payment->payment_status) }}
-                                    </span>
+                                <td>
+                                    {{ ucwords($order->payment->payment_method) }}<br>
+                                    <a href="{{ route('payment.success', ['order_id' => $order->id]) }}"
+                                        style="text-decoration: none">
+                                        <span @class([
+                                            'badge rounded-pill border px-3 py-1',
+                                            'border-secondary text-secondary badge-pending' =>
+                                                $order->payment->payment_status == 'pending',
+                                            'border-danger text-danger badge-failed' =>
+                                                $order->payment->payment_status == 'failed',
+                                            'border-success text-success badge-paid' =>
+                                                $order->payment->payment_status == 'paid',
+                                        ])>
+                                            {{ ucfirst($order->payment->payment_status) }}
+                                        </span>
+                                    </a>
                                 </td>
                                 <td>
                                     @if ($order->shipping_price == 20000)
@@ -189,9 +219,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    {{ \Carbon\Carbon::parse($order->created_at)->format('d M Y') }}<br>
-                                    <p class="m-0" style="color:gray;">
-                                        {{ \Carbon\Carbon::parse($order->created_at)->format('H:i') }}</p>
+                                    {{ \Carbon\Carbon::parse($order->created_at)->format('d M Y') }}
                                 </td>
                                 <td>
                                     {{ \Carbon\Carbon::parse($order->created_at)->addDays(1)->format('d M Y') }}<br>
