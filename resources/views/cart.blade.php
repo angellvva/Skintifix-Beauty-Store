@@ -39,16 +39,6 @@
         <div class="container py-5">
             <h2>Your Shopping Cart</h2>
 
-            @if (session('success'))
-                <div id="cart-notification" class="alert alert-success"
-                    style="position: fixed; top: 120px; right: 313px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 8px; padding: 10px 20px 10px 15px; z-index: 9999; box-shadow: 0 2px 8px rgba(0,0,0,0.1); opacity: 1; display: flex; align-items: center; justify-content: space-between; min-width: 250px;">
-                    <span>{{ session('success') }}</span>
-                    <button id="close-notification"
-                        style="background: transparent; border: none; color: #155724; font-weight: bold; font-size: 20px; line-height: 1; cursor: pointer; padding: 0 5px; margin-left: 15px;"
-                        aria-label="Close notification">&times;</button>
-                </div>
-            @endif
-
             {{-- Floating toast for unselected checkout --}}
             <div id="select-item-toast" class="alert alert-danger"
                 style="position: fixed; top: 120px; right: 253px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 8px; padding: 10px 20px 10px 15px; z-index: 9999; box-shadow: 0 2px 8px rgba(0,0,0,0.1); opacity: 0; display: none; transition: opacity 0.5s ease; min-width: 250px; display: flex; align-items: center; justify-content: space-between;">
@@ -197,16 +187,6 @@
     </script>
 
     <script>
-        // Close success notification
-        document.getElementById('close-notification')?.addEventListener('click', () => {
-            const notification = document.getElementById('cart-notification');
-            if (notification) {
-                notification.style.transition = 'opacity 0.5s ease';
-                notification.style.opacity = 0;
-                setTimeout(() => notification.style.display = 'none', 500);
-            }
-        });
-
         // Close select item toast
         document.getElementById('close-toast')?.addEventListener('click', () => {
             const toast = document.getElementById('select-item-toast');
