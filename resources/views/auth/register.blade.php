@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css" />
     <style>
         body {
             margin: 0;
@@ -14,16 +15,17 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-image: url('{{ asset('images/background/flower.jpg') }}'); /* Update with the correct image path */
-            background-size: cover;  /* Ensures the image covers the entire background */
-            background-position: center; /* Center the image */
-            background-repeat: no-repeat; /* Prevents the image from repeating */
+            background-image: url('{{ asset('images/background/flower.jpg') }}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             background-attachment: fixed;
         }
 
         .register-modal {
-            background-color: rgba(255, 255, 255, 0.9); 
-            width: 380px;
+            background-color: rgba(255, 255, 255, 0.9);
+            width: 600px;
+            /* Lebih lebar */
             padding: 40px;
             border-radius: 12px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -56,10 +58,7 @@
             box-sizing: border-box;
         }
 
-        .register-modal input[type="text"]:focus,
-        .register-modal input[type="email"]:focus,
-        .register-modal input[type="password"]:focus,
-        .register-modal input[type="tel"]:focus {
+        .register-modal input:focus {
             border-color: #e965a7;
             outline: none;
         }
@@ -75,7 +74,6 @@
             cursor: pointer;
             font-size: 16px;
             transition: background-color 0.3s ease;
-            box-sizing: border-box;
             margin-top: 14px;
         }
 
@@ -113,6 +111,7 @@
         .register-modal .gray-text {
             color: gray;
         }
+
         .error-message {
             color: red;
             font-size: 13px;
@@ -126,203 +125,190 @@
             box-sizing: border-box;
         }
 
-        /* Styling untuk form dan elemen lainnya */
-        .register-modal input[type="password"] {
-            width: 100%;
-            padding: 12px;
-            margin: 6px 0;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            box-sizing: border-box;
-        }
-
-        .register-modal input[type="password"]:focus {
-            border-color: #e965a7;
-            outline: none;
-        }
-
-        /* Flex container for Address */
         .address-container {
-            margin-bottom: 0; /* Remove margin below the Address field */
+            margin-bottom: 0;
         }
 
-        /* Flex container for Postal Code, City, and Country (inline) */
         .postal-city-country-container {
             display: flex;
             justify-content: space-between;
             gap: 10px;
         }
 
-        /* Styling for Postal Code */
         .postal-code-container {
-            width: 30%; /* Smaller width for Postal Code */
+            width: 30%;
         }
 
-        /* Styling for City and Country */
-        .city-container, .country-container {
-            width: 32%; /* Both City and Country take equal width */
+        .city-container,
+        .country-container {
+            width: 32%;
         }
 
-        /* Common styling for input fields */
-        .register-modal input[type="text"],
-        .register-modal input[type="email"],
-        .register-modal input[type="password"],
-        .register-modal input[type="tel"] {
-            width: 100%;
-            padding: 12px;
-            margin: 6px 0;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            box-sizing: border-box;
+        .name-phone-container,
+        .password-container {
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+        }
+
+        .name-field,
+        .phone-field,
+        .password-field,
+        .confirm-password-field {
+            width: 50%;
         }
     </style>
 </head>
+
 <body>
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const form = document.getElementById('registerForm');
-        const name = document.querySelector('input[name="name"]');
-        const phone = document.querySelector('input[name="phone"]');
-        const email = document.querySelector('input[name="email"]');
-        const address = document.querySelector('input[name="address"]');
-        const password = document.querySelector('input[name="password"]');
-        const confirmPassword = document.querySelector('input[name="password_confirmation"]');
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.getElementById("registerForm");
+            const name = document.querySelector('input[name="name"]');
+            const phone = document.querySelector('input[name="phone"]');
+            const email = document.querySelector('input[name="email"]');
+            const address = document.querySelector('input[name="address"]');
+            const password = document.querySelector('input[name="password"]');
+            const confirmPassword = document.querySelector('input[name="password_confirmation"]');
 
-        form.addEventListener('submit', function(event) {
-            let valid = true;
+            form.addEventListener("submit", function(event) {
+                let valid = true;
 
-            // Cek jika password dan confirm password tidak cocok
-            if (password.value !== confirmPassword.value) {
-                document.getElementById('confirm-password-error').textContent = "The password and confirm password do not match.";
-                document.getElementById('confirm-password-error').style.display = 'block';
-                valid = false;
-            } else {
-                document.getElementById('confirm-password-error').style.display = 'none';
-            }
+                if (password.value !== confirmPassword.value) {
+                    document.getElementById("confirm-password-error").textContent =
+                        "The password and confirm password do not match.";
+                    document.getElementById("confirm-password-error").style.display = "block";
+                    valid = false;
+                } else {
+                    document.getElementById("confirm-password-error").style.display = "none";
+                }
 
-            // Cek jika password kurang dari 8 karakter
-            if (password.value.length < 8) {
-                document.getElementById('password-error').textContent = "Password must be at least 8 characters.";
-                document.getElementById('password-error').style.display = 'block';
-                valid = false;
-            } else {
-                document.getElementById('password-error').style.display = 'none';
-            }
+                if (password.value.length < 8) {
+                    document.getElementById("password-error").textContent =
+                        "Password must be at least 8 characters.";
+                    document.getElementById("password-error").style.display = "block";
+                    valid = false;
+                } else {
+                    document.getElementById("password-error").style.display = "none";
+                }
 
-            // Validasi nama (hanya boleh huruf dan spasi)
-            const namePattern = /^[a-zA-Z\s]+$/;
-            if (!namePattern.test(name.value)) {
-                document.getElementById('name-error').textContent = "Name must be only letters and spaces.";
-                document.getElementById('name-error').style.display = 'block';
-                valid = false;
-            } else {
-                document.getElementById('name-error').style.display = 'none';
-            }
+                const namePattern = /^[a-zA-Z\s]+$/;
+                if (!namePattern.test(name.value)) {
+                    document.getElementById("name-error").textContent =
+                        "Name must be only letters and spaces.";
+                    document.getElementById("name-error").style.display = "block";
+                    valid = false;
+                } else {
+                    document.getElementById("name-error").style.display = "none";
+                }
 
-            // Validasi nomor telepon (hanya angka)
-            const phonePattern = /^[0-9]{10,15}$/;
-            if (!phonePattern.test(phone.value)) {
-                document.getElementById('phone-error').textContent = "Phone number must be a valid number with 10-15 digits.";
-                document.getElementById('phone-error').style.display = 'block';
-                valid = false;
-            } else {
-                document.getElementById('phone-error').style.display = 'none';
-            }
+                const phonePattern = /^[0-9]{10,15}$/;
+                if (!phonePattern.test(phone.value)) {
+                    document.getElementById("phone-error").textContent =
+                        "Phone number must be a valid number with 10-15 digits.";
+                    document.getElementById("phone-error").style.display = "block";
+                    valid = false;
+                } else {
+                    document.getElementById("phone-error").style.display = "none";
+                }
 
-            // Validasi email
-            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            if (!emailPattern.test(email.value)) {
-                document.getElementById('email-error').textContent = "Please enter a valid email.";
-                document.getElementById('email-error').style.display = 'block';
-                valid = false;
-            } else {
-                document.getElementById('email-error').style.display = 'none';
-            }
+                const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                if (!emailPattern.test(email.value)) {
+                    document.getElementById("email-error").textContent = "Please enter a valid email.";
+                    document.getElementById("email-error").style.display = "block";
+                    valid = false;
+                } else {
+                    document.getElementById("email-error").style.display = "none";
+                }
 
-            // Validasi alamat (membolehkan angka dan karakter alfanumerik, termasuk spasi dan koma)
-            // Validasi alamat (membolehkan huruf, angka, spasi, koma, titik, dan karakter lainnya yang sering ada di alamat)
-            const addressPattern = /^[a-zA-Z0-9\s,.\-]+$/;
-            if (!addressPattern.test(address.value)) {
-                document.getElementById('address-error').textContent = "Address must be a valid string.";
-                document.getElementById('address-error').style.display = 'block';
-                valid = false;
-            } else {
-                document.getElementById('address-error').style.display = 'none';
-            }
+                const addressPattern = /^[a-zA-Z0-9\s,.\-]+$/;
+                if (!addressPattern.test(address.value)) {
+                    document.getElementById("address-error").textContent =
+                        "Address must be a valid string.";
+                    document.getElementById("address-error").style.display = "block";
+                    valid = false;
+                } else {
+                    document.getElementById("address-error").style.display = "none";
+                }
 
-            // Jika ada error, jangan kirim form
-            if (!valid) {
-                event.preventDefault();
-            }
+                if (!valid) {
+                    event.preventDefault();
+                }
+            });
         });
-    });
-</script>
+    </script>
 
     <div class="register-modal">
-        <!-- Logo -->
         <div class="logo">Skintifix <span style="color: #000000;">Beauty Store</span></div>
         <h2>Account Register</h2>
         <p class="gray-text">Enter your information to create an account</p>
 
-        <!-- Form untuk registrasi -->
-       <form action="{{ route('register.submit') }}" method="POST" id="registerForm">
-        @csrf
-        <label for="name">Name</label>
-        <input type="text" name="name" placeholder="Enter your name" required>
-        <div class="error-message" id="name-error" style="display:none;"></div>
+        <form action="{{ route('register.submit') }}" method="POST" id="registerForm">
+            @csrf
 
-        <label for="phone">Phone Number</label>
-        <input type="tel" name="phone" placeholder="Phone number" required pattern="[0-9]{10,15}">
-        <div class="error-message" id="phone-error" style="display:none;"></div>
+            <div class="name-phone-container">
+                <div class="name-field">
+                    <label for="name">Name</label>
+                    <input type="text" name="name" required />
+                    <div class="error-message" id="name-error" style="display:none;"></div>
+                </div>
 
-        <label for="email">Email</label>
-        <input type="email" name="email" placeholder="name@example.com" required>
-        <div class="error-message" id="email-error" style="display:none;"></div>
+                <div class="phone-field">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" name="phone" required pattern="[0-9]{10,15}" />
+                    <div class="error-message" id="phone-error" style="display:none;"></div>
+                </div>
+            </div>
 
-        <!-- Address, Postal Code, City, and Country Inline Fields -->
-        <div class="address-container">
-            <div class="left-side">
+            <label for="email">Email</label>
+            <input type="email" name="email" placeholder="name@example.com" required />
+            <div class="error-message" id="email-error" style="display:none;"></div>
+
+            <div class="address-container">
                 <label for="address">Address</label>
-                <input type="text" name="address" placeholder="Your address" required>
+                <input type="text" name="address" required />
                 <div class="error-message" id="address-error" style="display:none;"></div>
             </div>
-        </div>
 
-        <!-- Postal Code, City, and Country section inline -->
-        <div class="postal-city-country-container">
-            <div class="postal-code-container">
-                <label for="postal_code">Postal Code</label>
-                <input type="text" name="postal_code" placeholder="Ex:123742" required>
-                <div class="error-message" id="postal-code-error" style="display:none;"></div>
+            <div class="postal-city-country-container">
+                <div class="postal-code-container">
+                    <label for="postal_code">Postal Code</label>
+                    <input type="text" name="postal_code" placeholder="e.g. 12345" required />
+                    <div class="error-message" id="postal-code-error" style="display:none;"></div>
+                </div>
+
+                <div class="city-container">
+                    <label for="city">City</label>
+                    <input type="text" name="city" required />
+                </div>
+
+                <div class="country-container">
+                    <label for="country">Country</label>
+                    <input type="text" name="country" required />
+                </div>
             </div>
 
-            <div class="city-container">
-                <label for="city">City</label>
-                <input type="text" name="city" placeholder="City" required>
+            <div class="password-container">
+                <div class="password-field">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" required minlength="8"
+                        placeholder="Password (min 8 characters)" />
+                    <div class="error-message" id="password-error" style="display:none;"></div>
+                </div>
+
+                <div class="confirm-password-field">
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" name="password_confirmation" placeholder="Confirm your password" required />
+                    <div class="error-message" id="confirm-password-error" style="display:none;"></div>
+                </div>
             </div>
 
-            <div class="country-container">
-                <label for="country">Country</label>
-                <input type="text" name="country" placeholder="Country" required>
-            </div>
-        </div>
+            <button type="submit">Register</button>
+        </form>
 
-        <label for="password">Password</label>
-        <input type="password" name="password" required minlength="8" placeholder="Password (min 8 characters)">
-        <div class="error-message" id="password-error" style="display:none;"></div>
-
-        <label for="confirm-password">Confirm Password</label>
-        <input type="password" name="password_confirmation" placeholder="Confirm your password" required>
-        <div class="error-message" id="confirm-password-error" style="display:none;"></div>
-
-        <button type="submit">Register</button>
-    </form>
-
-        <!-- Link untuk kembali ke halaman login jika sudah punya akun -->
-        <p class="bottom-link gray-text" style="margin-top: 20px; margin-bottom: 14px;">Already have an account? <a href="{{ route('login') }}"><b>Login here</b></a></p>
+        <p class="bottom-link gray-text">Already have an account? <a href="{{ route('login') }}"><b>Login here</b></a>
+        </p>
     </div>
 </body>
+
 </html>

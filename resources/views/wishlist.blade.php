@@ -233,7 +233,7 @@
                     <div class="table-responsive text-center py-5">
                         <i class="fas fa-heart fa-4x mb-4" style="color: #e965a7;"></i>
                         <h4 class="mb-3" style="color: #e965a7;">Your wishlist is empty.</h4>
-                        <p class="text-muted mb-4">Save your favorite items here for later...</p>
+                        <p class="text-muted mb-4">Save your favorite items here for later.</p>
                         <a href="{{ route('catalog') }}" class="btn rounded-pill px-4 shadow-sm"
                             style="background-color: #e965a7; color: white;">
                             Browse Products
