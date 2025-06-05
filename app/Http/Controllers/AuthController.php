@@ -46,14 +46,42 @@ class AuthController extends Controller
     {
         $request->validate(['otp' => 'required']);
 
-        if (
-            Session::get('otp_code') == $request->otp &&
-            now()->lessThan(Session::get('otp_expires_at'))
-        ) {
-            return redirect()->route('password.reset.form')->with('email', Session::get('otp_email'));
+        if (!Session::has('otp_code') || !Session::has('otp_expires_at')) {
+            return back()->withErrors(['otp' => 'OTP session expired. Please request a new OTP.']);
         }
 
-        return back()->withErrors(['otp' => 'Invalid or expired OTP']);
+        if (Session::get('otp_code') != $request->otp) {
+            return back()->withErrors(['otp' => 'Invalid OTP. Please try again.']);
+        }
+
+        if (now()->greaterThan(Session::get('otp_expires_at'))) {
+            return back()->withErrors(['otp' => 'OTP has expired. Please request a new OTP.']);
+        }
+
+        return redirect()->route('password.reset.form')->with('email', Session::get('otp_email'));
+    }
+
+    // Resend OTP
+    public function resendOtp()
+    {
+        if (!Session::has('otp_email')) {
+            return redirect()->route('forget.password.form')->withErrors(['email' => 'Email session expired. Please try again.']);
+        }
+
+        $email = Session::get('otp_email');
+        $otp = rand(100000, 999999);
+
+        Session::put('otp_code', $otp);
+        Session::put('otp_expires_at', now()->addMinutes(10));
+
+        Mail::raw("Your new OTP code is: $otp", function ($message) use ($email) {
+            $message->to($email)->subject('Your New OTP Code');
+        });
+
+        return redirect()->route('verify.otp.form')->with([
+            'email' => $email,
+            'status' => 'A new OTP has been sent to your email.'
+        ]);
     }
 
     // Menampilkan form reset password
@@ -91,20 +119,20 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
-    // Menangani proses registrasi
+    //Menangani proses registrasi
     public function register(Request $request)
     {
         // Validasi data yang dimasukkan
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|digits_between:10,15',
-            'email' => 'required|string|email|max:255|unique:users',
-            'address' => 'required|string|max:255',
-            'postal_code' => 'required|string|max:10',
-            'city' => 'required|string|max:100', 
-            'country' => 'required|string|max:100',
-            'password' => 'required|string|confirmed|min:8',
-        ]);
+        'name' => 'required|string|max:255',
+        'phone' => 'required|string|digits_between:10,15',
+        'email' => 'required|string|email|max:255|unique:users',
+        'address' => 'required|string|min:5|max:255',
+        'postal_code' => 'required|string|max:10',
+        'city' => 'required|string|max:100',
+        'country' => 'required|string|max:100',
+        'password' => 'required|string|confirmed|min:8',
+    ]);
 
         // Concatenate address, city, postal code, and country
         $full_address = $validated['address'] . ', ' . $validated['postal_code'] . ', ' . $validated['city'] . ', ' . $validated['country'];
@@ -123,6 +151,7 @@ class AuthController extends Controller
         // Redirect setelah registrasi berhasil
         return redirect()->route('login')->with('status', 'Registration successful! Please login.');
     }
+    
 
     public function login(Request $request)
 {

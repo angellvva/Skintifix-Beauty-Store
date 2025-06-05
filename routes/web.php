@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Order;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
@@ -14,11 +13,11 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\MidtransController;
-use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminProductController;
+use App\Http\Controllers\MidtransController;
+use App\Http\Controllers\PasswordController;
 
 // ROUTE FORGET PASSWORD OTP
 Route::get('/forget-password', [AuthController::class, 'showForgetPasswordForm'])->name('forget.form');
@@ -29,6 +28,7 @@ Route::post('/verify-otp', [AuthController::class, 'verifyOtp'])->name('verify.o
 
 Route::get('/reset-password-form', [AuthController::class, 'showResetPasswordForm'])->name('password.reset.form');
 Route::post('/password/update', [AuthController::class, 'resetPassword'])->name('password.update');
+Route::get('/resend-otp', [AuthController::class, 'resendOtp'])->name('resend.otp');
 
 // Route untuk menangani pengaturan ulang password
 Route::post('/reset-password', [PasswordController::class, 'reset'])
@@ -165,15 +165,8 @@ Route::middleware(['auth', 'is_user'])->group(function () {
     Route::get('/order/cancel/{order_id}', [OrderController::class, 'cancel'])->name('order.cancel'); // Cancel order
 
     // Route buat payment-success
-    // Route::get('/payment/success', function () {
-    //     return view('payment-success');
-    // })->name('payment.success');
-
-    Route::get('/payment/success', function (\Illuminate\Http\Request $request) {
-        $orderId = $request->query('order_id');
-        $order = Order::with('payment', 'orderItems.product')->findOrFail($orderId);
-
-        return view('payment-success', compact('order'));
+    Route::get('/payment/success', function () {
+        return view('payment-success');
     })->name('payment.success');
     // Route::get('/payment/success', [CheckoutController::class, 'paymentSuccess'])->name('payment.success');
 

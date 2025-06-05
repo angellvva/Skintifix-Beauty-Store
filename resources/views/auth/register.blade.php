@@ -162,81 +162,81 @@
 
 <body>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const form = document.getElementById("registerForm");
-            const name = document.querySelector('input[name="name"]');
-            const phone = document.querySelector('input[name="phone"]');
-            const email = document.querySelector('input[name="email"]');
-            const address = document.querySelector('input[name="address"]');
+    document.addEventListener("DOMContentLoaded", function() {
+        const form = document.getElementById("registerForm");
+        
+        form.addEventListener("submit", function(event) {
+            event.preventDefault(); // Mencegah reload halaman
+            let valid = true;
+
+            // Reset error messages
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.style.display = 'none';
+            });
+
+            // Validasi Password
             const password = document.querySelector('input[name="password"]');
             const confirmPassword = document.querySelector('input[name="password_confirmation"]');
+            
+            if (password.value.length < 8) {
+                document.getElementById("password-error").textContent =
+                    "Password must be at least 8 characters.";
+                document.getElementById("password-error").style.display = "block";
+                valid = false;
+            }
 
-            form.addEventListener("submit", function(event) {
-                let valid = true;
+            if (password.value !== confirmPassword.value) {
+                document.getElementById("confirm-password-error").textContent =
+                    "The password and confirm password do not match.";
+                document.getElementById("confirm-password-error").style.display = "block";
+                valid = false;
+            }
 
-                if (password.value !== confirmPassword.value) {
-                    document.getElementById("confirm-password-error").textContent =
-                        "The password and confirm password do not match.";
-                    document.getElementById("confirm-password-error").style.display = "block";
-                    valid = false;
-                } else {
-                    document.getElementById("confirm-password-error").style.display = "none";
-                }
+            // Validasi Nama (hanya huruf dan spasi)
+            const name = document.querySelector('input[name="name"]');
+            const namePattern = /^[a-zA-Z\s]+$/;
+            if (!namePattern.test(name.value)) {
+                document.getElementById("name-error").textContent =
+                    "Name must be only letters and spaces.";
+                document.getElementById("name-error").style.display = "block";
+                valid = false;
+            }
 
-                if (password.value.length < 8) {
-                    document.getElementById("password-error").textContent =
-                        "Password must be at least 8 characters.";
-                    document.getElementById("password-error").style.display = "block";
-                    valid = false;
-                } else {
-                    document.getElementById("password-error").style.display = "none";
-                }
+            // Validasi Nomor Telepon
+            const phone = document.querySelector('input[name="phone"]');
+            const phonePattern = /^[0-9]{10,15}$/;
+            if (!phonePattern.test(phone.value)) {
+                document.getElementById("phone-error").textContent =
+                    "Phone number must be a valid number with 10-15 digits.";
+                document.getElementById("phone-error").style.display = "block";
+                valid = false;
+            }
 
-                const namePattern = /^[a-zA-Z\s]+$/;
-                if (!namePattern.test(name.value)) {
-                    document.getElementById("name-error").textContent =
-                        "Name must be only letters and spaces.";
-                    document.getElementById("name-error").style.display = "block";
-                    valid = false;
-                } else {
-                    document.getElementById("name-error").style.display = "none";
-                }
+            // Validasi Email
+            const email = document.querySelector('input[name="email"]');
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email.value)) {
+                document.getElementById("email-error").textContent = "Please enter a valid email.";
+                document.getElementById("email-error").style.display = "block";
+                valid = false;
+            }
 
-                const phonePattern = /^[0-9]{10,15}$/;
-                if (!phonePattern.test(phone.value)) {
-                    document.getElementById("phone-error").textContent =
-                        "Phone number must be a valid number with 10-15 digits.";
-                    document.getElementById("phone-error").style.display = "block";
-                    valid = false;
-                } else {
-                    document.getElementById("phone-error").style.display = "none";
-                }
+            // Validasi Alamat (minimal 5 karakter)
+            const address = document.querySelector('input[name="address"]');
+            if (address.value.length < 5) {
+                document.getElementById("address-error").textContent =
+                    "Address must be at least 5 characters.";
+                document.getElementById("address-error").style.display = "block";
+                valid = false;
+            }
 
-                const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                if (!emailPattern.test(email.value)) {
-                    document.getElementById("email-error").textContent = "Please enter a valid email.";
-                    document.getElementById("email-error").style.display = "block";
-                    valid = false;
-                } else {
-                    document.getElementById("email-error").style.display = "none";
-                }
-
-                const addressPattern = /^[a-zA-Z0-9\s,.\-]+$/;
-                if (!addressPattern.test(address.value)) {
-                    document.getElementById("address-error").textContent =
-                        "Address must be a valid string.";
-                    document.getElementById("address-error").style.display = "block";
-                    valid = false;
-                } else {
-                    document.getElementById("address-error").style.display = "none";
-                }
-
-                if (!valid) {
-                    event.preventDefault();
-                }
-            });
+            // Jika semua validasi lolos, submit form
+            if (valid) {
+                form.submit();
+            }
         });
-    </script>
+    });
+</script>
 
     <div class="register-modal">
         <div class="logo">Skintifix <span style="color: #000000;">Beauty Store</span></div>

@@ -21,7 +21,7 @@
             background-repeat: no-repeat;
         }
 
-        .forget-password-modal {
+        .login-modal {
             background-color: rgba(255, 255, 255, 0.9);
             width: 380px;
             padding: 40px;
@@ -30,19 +30,19 @@
             text-align: center;
         }
 
-        .forget-password-modal h2 {
+        .login-modal h2 {
             font-size: 24px;
             color: #080808;
             margin-bottom: 10px;
         }
 
-        .forget-password-modal p {
+        .login-modal p {
             font-size: 14px;
             color: #090909;
             margin-bottom: 20px;
         }
 
-        .forget-password-modal input[type="text"] {
+        .login-modal input[type="text"] {
             width: 100%;
             padding: 12px;
             margin: 6px 0;
@@ -53,12 +53,12 @@
             box-sizing: border-box;
         }
 
-        .forget-password-modal input[type="text"]:focus {
+        .login-modal input[type="text"]:focus {
             border-color: #e965a7;
             outline: none;
         }
 
-        .forget-password-modal button {
+        .login-modal button {
             width: 100%;
             padding: 12px;
             background-color: #e965a7;
@@ -73,7 +73,7 @@
             margin-top: 14px;
         }
 
-        .forget-password-modal button:hover {
+        .login-modal button:hover {
             background-color: #c84d85;
         }
 
@@ -84,13 +84,13 @@
             margin-bottom: 20px;
         }
 
-        .forget-password-modal label {
+        .login-modal label {
             text-align: left;
             display: block;
             margin-top: 6px;
         }
 
-        .forget-password-modal .gray-text {
+        .login-modal .gray-text {
             color: gray;
         }
 
@@ -115,18 +115,50 @@
                 transform: translateY(0);
             }
         }
-        /* Gaya countdown timer */
+        
+        /* Gaya timer */
         .timer {
             font-size: 16px;
-            color: red;
+            color: #e965a7;
             margin-top: 20px;
+            font-weight: bold;
+        }
+        
+        .otp-expired {
+            color: red;
+            font-weight: bold;
+        }
+        
+        /* New styles matching the login page */
+        .login-modal p a {
+            color: #e965a7;
+            text-decoration: none;
+        }
+        
+        .login-modal p a:hover {
+            text-decoration: underline;
+        }
+        
+        .create-account-text {
+            margin-top: 20px;
+            margin-bottom: 14px;
+        }
+        .back-to-login {
+            margin-top: 15px;
+        }
+        
+        .back-to-login a {
+            color: #e965a7;
+            text-decoration: none;
+        }
+        
+        .back-to-login a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
-
 <body>
-
-    <div class="forget-password-modal">
+    <div class="login-modal">
         <!-- Logo -->
         <div class="logo">Skintifix <span style="color: #000000;">Beauty Store</span></div>
 
@@ -138,38 +170,45 @@
             <input type="hidden" name="email" value="{{ session('email') }}">
 
             <label for="otp">Enter OTP</label>
-            <input type="text" name="otp" required placeholder="Enter OTP">
+            <input type="text" name="otp" required placeholder="Enter OTP">  
+
+            @if ($errors->any())
+                <div class="error-message">
+                    {{ $errors->first() }}
+                </div>
+            @endif
+
             <div id="timer" class="timer"></div>
             <button type="submit">Verify</button>
         </form>
 
-        <!-- Back to Login Button -->
-        <form action="{{ route('login') }}" method="GET">
-            <button type="submit" style="background-color: #f1f1f1; color: #333; border: 1px solid #ddd; margin-top: 20px;">
-                Back to Login
-            </button>
-        </form>
+        <p class="gray-text create-account-text">Didn't receive OTP? <a href="{{ route('resend.otp') }}"><b>Resend OTP</b></a></p>
+        <div class="back-to-login">
+            <a href="{{ route('login') }}">Back to Login</a>
+        </div>
     </div>
     <script>
         // Timer countdown selama 1 menit (60 detik)
-        let countdown = 60; // Set waktu countdown dalam detik
+        let timeLeft = 60; // Set waktu countdown dalam detik
         const timerElement = document.getElementById('timer');
-
+        
         function updateTimer() {
-            if (countdown <= 0) {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            
+            if (timeLeft <= 0) {
                 timerElement.innerHTML = 'OTP Expired!';
-                clearInterval(timerInterval); // Menghentikan interval ketika waktu habis
+                timerElement.className = 'timer otp-expired';
+                clearInterval(timerInterval);
             } else {
-                timerElement.innerHTML = `Time left: ${countdown} seconds`;
+                timerElement.innerHTML = `Time left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                timeLeft--;
             }
         }
-
+        
         // Menjalankan countdown setiap detik
-        const timerInterval = setInterval(function () {
-            countdown--;
-            updateTimer();
-        }, 1000); // Update setiap detik
+        const timerInterval = setInterval(updateTimer, 1000);
+        updateTimer(); // Panggil sekali untuk inisialisasi
     </script>
 </body>
-
 </html>
