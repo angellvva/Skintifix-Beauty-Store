@@ -1,9 +1,10 @@
-<!-- views/login.php -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Account Sign In</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forget Password</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
         body {
@@ -15,16 +16,12 @@
             align-items: center;
             height: 100vh;
             background-image: url('{{ asset('images/background/flower.jpg') }}');
-            /* Update with the correct image path */
             background-size: cover;
-            /* Ensures the image covers the entire background */
             background-position: center;
-            /* Center the image */
             background-repeat: no-repeat;
-            /* Prevents the image from repeating */
         }
 
-        .login-modal {
+        .forget-password-modal {
             background-color: rgba(255, 255, 255, 0.9);
             width: 380px;
             padding: 40px;
@@ -33,26 +30,19 @@
             text-align: center;
         }
 
-        .login-modal img {
-            width: 50px;
-            height: 50px;
-            margin-bottom: 20px;
-        }
-
-        .login-modal h2 {
+        .forget-password-modal h2 {
             font-size: 24px;
             color: #080808;
             margin-bottom: 10px;
         }
 
-        .login-modal p {
+        .forget-password-modal p {
             font-size: 14px;
             color: #090909;
             margin-bottom: 20px;
         }
 
-        .login-modal input[type="text"],
-        .login-modal input[type="password"] {
+        .forget-password-modal input[type="text"] {
             width: 100%;
             padding: 12px;
             margin: 6px 0;
@@ -63,13 +53,12 @@
             box-sizing: border-box;
         }
 
-        .login-modal input[type="text"]:focus,
-        .login-modal input[type="password"]:focus {
+        .forget-password-modal input[type="text"]:focus {
             border-color: #e965a7;
             outline: none;
         }
 
-        .login-modal button {
+        .forget-password-modal button {
             width: 100%;
             padding: 12px;
             background-color: #e965a7;
@@ -84,34 +73,24 @@
             margin-top: 14px;
         }
 
-        .login-modal button:hover {
-            background-color: #e965a7;
-        }
-
-        .login-modal p a {
-            color: #e965a7;
-            text-decoration: none;
-        }
-
-        .login-modal p a:hover {
-            text-decoration: underline;
+        .forget-password-modal button:hover {
+            background-color: #c84d85;
         }
 
         .logo {
             font-size: 36px;
             font-weight: bold;
             color: #e965a7;
-            /* Pink color for Skintifix */
             margin-bottom: 20px;
         }
 
-        .login-modal label {
+        .forget-password-modal label {
             text-align: left;
             display: block;
             margin-top: 6px;
         }
 
-        .login-modal .gray-text {
+        .forget-password-modal .gray-text {
             color: gray;
         }
 
@@ -136,43 +115,61 @@
                 transform: translateY(0);
             }
         }
+        /* Gaya countdown timer */
+        .timer {
+            font-size: 16px;
+            color: red;
+            margin-top: 20px;
+        }
     </style>
 </head>
 
 <body>
 
-    <div class="login-modal">
-        <!-- Icon for Account Login / Signup -->
+    <div class="forget-password-modal">
+        <!-- Logo -->
         <div class="logo">Skintifix <span style="color: #000000;">Beauty Store</span></div>
-        <h2>Account Sign In</h2>
-        <p class="gray-text">Welcome back! Please sign in below to access your account and view your previous order
-            history and earned points.</p>
 
-        <form action="{{ route('login.action') }}" method="POST">
+        <h2>Forget Password</h2>
+        <p class="gray-text">Enter your email address and verify your OTP.</p>
+
+        <form method="POST" action="{{ route('verify.otp') }}">
             @csrf
-            <label for="email">Email</label>
-            <input type="text" name="email" value="{{ old('email') }}" placeholder="name@example.com" required>
-            @if ($errors->has('email'))
-                <div class="error-message">{{ $errors->first('email') }}</div>
-            @endif
+            <input type="hidden" name="email" value="{{ session('email') }}">
 
-            <label for="password">Password</label>
-            <input type="password" name="password" required>
-            @if ($errors->has('password'))
-                <div class="error-message">{{ $errors->first('password') }}</div>
-            @endif
-
-            <button type="submit">Sign In</button>
+            <label for="otp">Enter OTP</label>
+            <input type="text" name="otp" required placeholder="Enter OTP">
+            <div id="timer" class="timer"></div>
+            <button type="submit">Verify</button>
         </form>
 
-        <p><a href="{{ route('forget.form') }}">Forgot your password?</a></p>
-
-
-        <p class="gray-text" style="margin-top: 20px; margin-bottom: 14px;">New to Skintifix Beauty Store? <a
-                href="{{ route('register') }}"><b>Create your account</b></a> <br>and start earning rewards today!</br>
-        </p>
+        <!-- Back to Login Button -->
+        <form action="{{ route('login') }}" method="GET">
+            <button type="submit" style="background-color: #f1f1f1; color: #333; border: 1px solid #ddd; margin-top: 20px;">
+                Back to Login
+            </button>
+        </form>
     </div>
+    <script>
+        // Timer countdown selama 1 menit (60 detik)
+        let countdown = 60; // Set waktu countdown dalam detik
+        const timerElement = document.getElementById('timer');
 
+        function updateTimer() {
+            if (countdown <= 0) {
+                timerElement.innerHTML = 'OTP Expired!';
+                clearInterval(timerInterval); // Menghentikan interval ketika waktu habis
+            } else {
+                timerElement.innerHTML = `Time left: ${countdown} seconds`;
+            }
+        }
+
+        // Menjalankan countdown setiap detik
+        const timerInterval = setInterval(function () {
+            countdown--;
+            updateTimer();
+        }, 1000); // Update setiap detik
+    </script>
 </body>
 
 </html>

@@ -13,24 +13,21 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\MidtransController;
+use App\Http\Controllers\PasswordController;
 
-// ROUTE PASSWORD RESET
-// Route untuk menampilkan form forgot password
-Route::get('/forget-password', [PasswordController::class, 'showForgetPasswordForm'])
-    ->name('forget-password');
+// ROUTE FORGET PASSWORD OTP
+Route::get('/forget-password', [AuthController::class, 'showForgetPasswordForm'])->name('forget.form');
+Route::post('/send-otp', [AuthController::class, 'sendOtp'])->name('send.otp');
 
-// Route untuk mengirim permintaan reset password
-Route::post('/forget-password', [PasswordController::class, 'sendResetLinkEmail'])
-    ->name('password.email');
+Route::get('/verify-otp', [AuthController::class, 'showVerifyOtpForm'])->name('verify.otp.form');
+Route::post('/verify-otp', [AuthController::class, 'verifyOtp'])->name('verify.otp');
 
-// Route untuk menampilkan form reset password
-Route::get('/reset-password/{token}', [PasswordController::class, 'showResetForm'])
-    ->name('password.reset');
+Route::get('/reset-password-form', [AuthController::class, 'showResetPasswordForm'])->name('password.reset.form');
+Route::post('/password/update', [AuthController::class, 'resetPassword'])->name('password.update');
 
 // Route untuk menangani pengaturan ulang password
 Route::post('/reset-password', [PasswordController::class, 'reset'])

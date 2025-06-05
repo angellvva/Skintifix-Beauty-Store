@@ -1,9 +1,10 @@
-<!-- views/login.php -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Account Sign In</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forget Password</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
         body {
@@ -15,16 +16,12 @@
             align-items: center;
             height: 100vh;
             background-image: url('{{ asset('images/background/flower.jpg') }}');
-            /* Update with the correct image path */
             background-size: cover;
-            /* Ensures the image covers the entire background */
             background-position: center;
-            /* Center the image */
             background-repeat: no-repeat;
-            /* Prevents the image from repeating */
         }
 
-        .login-modal {
+        .forget-password-modal {
             background-color: rgba(255, 255, 255, 0.9);
             width: 380px;
             padding: 40px;
@@ -33,26 +30,19 @@
             text-align: center;
         }
 
-        .login-modal img {
-            width: 50px;
-            height: 50px;
-            margin-bottom: 20px;
-        }
-
-        .login-modal h2 {
+        .forget-password-modal h2 {
             font-size: 24px;
             color: #080808;
             margin-bottom: 10px;
         }
 
-        .login-modal p {
+        .forget-password-modal p {
             font-size: 14px;
             color: #090909;
             margin-bottom: 20px;
         }
 
-        .login-modal input[type="text"],
-        .login-modal input[type="password"] {
+        .forget-password-modal input[type="password"] {
             width: 100%;
             padding: 12px;
             margin: 6px 0;
@@ -63,13 +53,12 @@
             box-sizing: border-box;
         }
 
-        .login-modal input[type="text"]:focus,
-        .login-modal input[type="password"]:focus {
+        .forget-password-modal input[type="password"]:focus {
             border-color: #e965a7;
             outline: none;
         }
 
-        .login-modal button {
+        .forget-password-modal button {
             width: 100%;
             padding: 12px;
             background-color: #e965a7;
@@ -84,34 +73,24 @@
             margin-top: 14px;
         }
 
-        .login-modal button:hover {
-            background-color: #e965a7;
-        }
-
-        .login-modal p a {
-            color: #e965a7;
-            text-decoration: none;
-        }
-
-        .login-modal p a:hover {
-            text-decoration: underline;
+        .forget-password-modal button:hover {
+            background-color: #c84d85;
         }
 
         .logo {
             font-size: 36px;
             font-weight: bold;
             color: #e965a7;
-            /* Pink color for Skintifix */
             margin-bottom: 20px;
         }
 
-        .login-modal label {
+        .forget-password-modal label {
             text-align: left;
             display: block;
             margin-top: 6px;
         }
 
-        .login-modal .gray-text {
+        .forget-password-modal .gray-text {
             color: gray;
         }
 
@@ -124,55 +103,48 @@
             border-radius: 4px;
             margin-top: 10px;
         }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(6px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
     </style>
 </head>
 
 <body>
+    @if (session('status'))
+        <div class="alert alert-success">
+            {{ session('status') }}
+        </div>
+    @endif
 
-    <div class="login-modal">
-        <!-- Icon for Account Login / Signup -->
+    <div class="forget-password-modal">
+        <!-- Logo -->
         <div class="logo">Skintifix <span style="color: #000000;">Beauty Store</span></div>
-        <h2>Account Sign In</h2>
-        <p class="gray-text">Welcome back! Please sign in below to access your account and view your previous order
-            history and earned points.</p>
 
-        <form action="{{ route('login.action') }}" method="POST">
+        <h2>Reset Password</h2>
+        <p class="gray-text">Enter your new password below.</p>
+
+        <!-- Reset Password Form -->
+        <form method="POST" action="{{ route('password.update') }}">
             @csrf
-            <label for="email">Email</label>
-            <input type="text" name="email" value="{{ old('email') }}" placeholder="name@example.com" required>
-            @if ($errors->has('email'))
-                <div class="error-message">{{ $errors->first('email') }}</div>
-            @endif
+            <input type="hidden" name="email" value="{{ session('email') }}">
 
-            <label for="password">Password</label>
+            <!-- New Password Input -->
+            <label for="password">New Password</label>
             <input type="password" name="password" required>
+
+            <!-- Display error message for password -->
             @if ($errors->has('password'))
                 <div class="error-message">{{ $errors->first('password') }}</div>
             @endif
 
-            <button type="submit">Sign In</button>
+            <!-- Confirm Password Input -->
+            <label for="password_confirmation">Confirm Password</label>
+            <input type="password" name="password_confirmation" required>
+
+            <!-- Display error message for password confirmation -->
+            @if ($errors->has('password_confirmation'))
+                <div class="error-message">{{ $errors->first('password_confirmation') }}</div>
+            @endif
+
+            <button type="submit">Reset Password</button>
         </form>
-
-        <p><a href="{{ route('forget.form') }}">Forgot your password?</a></p>
-
-
-        <p class="gray-text" style="margin-top: 20px; margin-bottom: 14px;">New to Skintifix Beauty Store? <a
-                href="{{ route('register') }}"><b>Create your account</b></a> <br>and start earning rewards today!</br>
-        </p>
     </div>
-
 </body>
-
 </html>

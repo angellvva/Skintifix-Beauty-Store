@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forgot Password</title>
+    <title>Forget Password</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
         body {
@@ -16,16 +16,12 @@
             align-items: center;
             height: 100vh;
             background-image: url('{{ asset('images/background/flower.jpg') }}');
-            /* Update with the correct image path */
             background-size: cover;
-            /* Ensures the image covers the entire background */
             background-position: center;
-            /* Center the image */
             background-repeat: no-repeat;
-            /* Prevents the image from repeating */
         }
 
-        .forgot-password-modal {
+        .forget-password-modal {
             background-color: rgba(255, 255, 255, 0.9);
             width: 380px;
             padding: 40px;
@@ -34,21 +30,19 @@
             text-align: center;
         }
 
-        .forgot-password-modal h2 {
+        .forget-password-modal h2 {
             font-size: 24px;
             color: #080808;
             margin-bottom: 10px;
         }
 
-        .forgot-password-modal p {
+        .forget-password-modal p {
             font-size: 14px;
             color: #090909;
             margin-bottom: 20px;
         }
 
-        .forgot-password-modal input[type="email"],
-        .forgot-password-modal input[type="text"],
-        .forgot-password-modal input[type="password"] {
+        .forget-password-modal input[type="email"] {
             width: 100%;
             padding: 12px;
             margin: 6px 0;
@@ -59,14 +53,12 @@
             box-sizing: border-box;
         }
 
-        .forgot-password-modal input[type="email"]:focus,
-        .forgot-password-modal input[type="text"]:focus,
-        .forgot-password-modal input[type="password"]:focus {
+        .forget-password-modal input[type="email"]:focus {
             border-color: #e965a7;
             outline: none;
         }
 
-        .forgot-password-modal button {
+        .forget-password-modal button {
             width: 100%;
             padding: 12px;
             background-color: #e965a7;
@@ -81,17 +73,8 @@
             margin-top: 14px;
         }
 
-        .forgot-password-modal button:hover {
+        .forget-password-modal button:hover {
             background-color: #c84d85;
-        }
-
-        .forgot-password-modal p a {
-            color: #e965a7;
-            text-decoration: none;
-        }
-
-        .forgot-password-modal p a:hover {
-            text-decoration: underline;
         }
 
         .logo {
@@ -101,13 +84,13 @@
             margin-bottom: 20px;
         }
 
-        .forgot-password-modal label {
+        .forget-password-modal label {
             text-align: left;
             display: block;
             margin-top: 6px;
         }
 
-        .forgot-password-modal .gray-text {
+        .forget-password-modal .gray-text {
             color: gray;
         }
 
@@ -120,46 +103,38 @@
             border-radius: 4px;
             margin-top: 10px;
         }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 
 <body>
-
-    <div class="forgot-password-modal">
-        <!-- Logo -->
+    <div class="forget-password-modal">
         <div class="logo">Skintifix <span style="color: #000000;">Beauty Store</span></div>
-
-        <h2>Forgot Password</h2>
-
+        <h2>Forget Password</h2>
         <p class="gray-text">Enter your email address and set your new password.</p>
-
-        <!-- Form untuk reset password -->
-        <form method="POST" action="{{ route('password.update') }}">
+        
+        <form method="POST" action="{{ route('send.otp') }}">
             @csrf
-            <label for="email">Email</label>
-            <input type="email" name="email" placeholder="name@example.com" required>
-            @if ($errors->has('email'))
-                <div class="error-message">{{ $errors->first('email') }}</div>
-            @endif
-
-            <label for="password">New Password</label>
-            <input type="password" name="password" placeholder="" required>
-            @if ($errors->has('password'))
-                <div class="error-message">{{ $errors->first('password') }}</div>
-            @endif
-
-            <label for="confirm-password">Confirm New Password</label>
-            <input type="password" name="password_confirmation" placeholder="" required>
-            @if ($errors->has('password_confirmation'))
-                <div class="error-message">{{ $errors->first('password_confirmation') }}</div>
-            @endif
-
-            <button type="submit">Reset Password</button>
+            <label>Email</label>
+            <input type="email" name="email" required>
+            <button type="submit">Send OTP</button>
         </form>
-
-        <p><a href="{{ route('login') }}"><b>Back to Login</b></a></p>
-    </div>
-
+        <!-- Back to Login Button -->
+        <form action="{{ route('login') }}" method="GET">
+            <button type="submit" style="background-color: #f1f1f1; color: #333; border: 1px solid #ddd; margin-top: 20px;">
+                Back to Login
+        </button>
 </body>
 
 </html>
