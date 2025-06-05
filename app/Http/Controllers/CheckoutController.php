@@ -126,48 +126,47 @@ class CheckoutController extends Controller
 
                 // hapus produk dari cart
                 DB::table('carts')->whereIn('id', $selectedItemIds)->delete();
-
             }
 
             Log::info('Generated order ID:', ['invoice' => $order->invoice_number]);
 
             $params = [
-            'transaction_details' => [
-                'order_id' => $order->invoice_number ?? 'INV-'.Str::uuid(),
-                'gross_amount' => (int) $totalAmount,
-            ],
-            'customer_details' => [
-                'first_name' => $request->name,
-                'last_name' => '',
-                'phone' => $request->phone,
-                'email' => $request->email,
-                'billing_address' => [
-                    'address' => $request->address,
-                    'postal_code' => $request->postal_code,
-                    'region' => $request->region,
-                    'country' => $request->country,
+                'transaction_details' => [
+                    'order_id' => $order->invoice_number ?? 'INV-' . Str::uuid(),
+                    'gross_amount' => (int) $totalAmount,
                 ],
-            ],
-            'item_details' => array_merge(
-                $cartItems->map(function ($item) {
-                    return [
-                        'id' => $item->cart_id,
-                        'price' => (int) $item->price,
-                        'quantity' => (int) $item->quantity,
-                        'name' => $item->name,
-                    ];
-                })->toArray(),
-                [[
-                    'id' => 'SHIPPING',
-                    'price' => (int) $shippingCost,
-                    'quantity' => 1,
-                    'name' => 'Shipping Cost'
-                ]]
-            ),
-            'callbacks'=> [
-                'finish'=>route('payment.success'),
-            ],
-        ];
+                'customer_details' => [
+                    'first_name' => $request->name,
+                    'last_name' => '',
+                    'phone' => $request->phone,
+                    'email' => $request->email,
+                    'billing_address' => [
+                        'address' => $request->address,
+                        'postal_code' => $request->postal_code,
+                        'region' => $request->region,
+                        'country' => $request->country,
+                    ],
+                ],
+                'item_details' => array_merge(
+                    $cartItems->map(function ($item) {
+                        return [
+                            'id' => $item->cart_id,
+                            'price' => (int) $item->price,
+                            'quantity' => (int) $item->quantity,
+                            'name' => $item->name,
+                        ];
+                    })->toArray(),
+                    [[
+                        'id' => 'SHIPPING',
+                        'price' => (int) $shippingCost,
+                        'quantity' => 1,
+                        'name' => 'Shipping Cost'
+                    ]]
+                ),
+                'callbacks' => [
+                    'finish' => route('payment.success'),
+                ],
+            ];
 
             $snapUrl = Snap::createTransaction($params)->redirect_url;
 
@@ -179,7 +178,6 @@ class CheckoutController extends Controller
             session()->forget('cart');
 
             return redirect($snapUrl);
-
         } catch (\Exception $e) {
             // Rollback jika terjadi error
             DB::rollBack();
@@ -193,7 +191,7 @@ class CheckoutController extends Controller
         $orderId = $request->get('order_id');
         $order = Order::where('invoice_number', $orderId)->first();
 
-        if(!$order){
+        if (!$order) {
             return redirect()->route('catalog')->with('error', 'Order not found.');
         }
 

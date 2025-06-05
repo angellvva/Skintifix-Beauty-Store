@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Order;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
@@ -13,11 +14,11 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\MidtransController;
+use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminProductController;
-use App\Http\Controllers\MidtransController;
-use App\Http\Controllers\PasswordController;
 
 // ROUTE FORGET PASSWORD OTP
 Route::get('/forget-password', [AuthController::class, 'showForgetPasswordForm'])->name('forget.form');
@@ -170,7 +171,9 @@ Route::middleware(['auth', 'is_user'])->group(function () {
 
     Route::get('/payment/success', function (\Illuminate\Http\Request $request) {
         $orderId = $request->query('order_id');
-        return view('payment-success', compact('orderId'));
+        $order = Order::with('payment', 'orderItems.product')->findOrFail($orderId);
+
+        return view('payment-success', compact('order'));
     })->name('payment.success');
     // Route::get('/payment/success', [CheckoutController::class, 'paymentSuccess'])->name('payment.success');
 
