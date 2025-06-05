@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Review;
 use App\Models\Product;
 use App\Models\OrderItem;
+use App\Models\Wishlist;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;  // Added Auth import
@@ -48,14 +49,10 @@ class ProductController extends Controller
             ->where('category_id', $categoryModel->id);
 
         $product = Product::with('reviews.user')->findOrFail($categoryModel->id);
-        $isInWishlist = false;
+
         $userId = Auth::id();
 
-        if ($userId) {
-            $isInWishlist = \App\Models\Wishlist::where('user_id', $userId)
-                ->where('product_id', $product->id)
-                ->exists();
-        }
+        $wishlistProductIds = $userId ? Wishlist::where('user_id', $userId)->pluck('product_id')->toArray() : [];
         
         if ($search) {
             $productsQuery->where('name', 'like', '%' . $search . '%');
@@ -83,11 +80,14 @@ class ProductController extends Controller
 
         $products = $productsQuery->paginate(10)->withQueryString();
 
+        foreach ($products as $product) {
+            $product->isInWishlist = in_array($product->id, $wishlistProductIds);
+        }
+        
         return view('category-catalog', [
             'products' => $products,
             'category' => $categoryModel->name,
             'categoryDescription' => $categoryDescription,
-            'isInWishlist' => $isInWishlist
         ]);
     }
 

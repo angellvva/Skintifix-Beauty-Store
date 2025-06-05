@@ -281,11 +281,11 @@
                         <form action="{{ route('wishlist.toggle', $product->id) }}" method="POST"
                             style="position: absolute; top: 10px; right: 10px; z-index: 20;">
                             @csrf
-                            <button type="submit" style="background: none; border: none; cursor: pointer;">
+                            <button type="submit" class="btn-wishlist-heart" style="background: none; border: none; cursor: pointer;">
                                 @if ($product->isInWishlist ?? false)
-                                    <i class="fas fa-heart" style="color: #e965a7; font-size: 20px;"></i>
+                                    <i class="fas fa-heart"></i>
                                 @else
-                                    <i class="far fa-heart" style="color: #e965a7; font-size: 20px;"></i>
+                                    <i class="far fa-heart"></i>
                                 @endif
                             </button>
                         </form>
