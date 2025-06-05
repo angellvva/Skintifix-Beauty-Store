@@ -140,7 +140,6 @@
 </head>
 
 <body>
-
     <div class="login-modal">
         <!-- Icon for Account Login / Signup -->
         <div class="logo">Skintifix <span style="color: #000000;">Beauty Store</span></div>
@@ -152,12 +151,16 @@
             @csrf
             <label for="email">Email</label>
             <input type="text" name="email" value="{{ old('email') }}" placeholder="name@example.com" required>
+            
+            <!-- Only show email validation errors here -->
             @if ($errors->has('email'))
                 <div class="error-message">{{ $errors->first('email') }}</div>
             @endif
 
             <label for="password">Password</label>
             <input type="password" name="password" required>
+            
+            <!-- Only show password validation errors here -->
             @if ($errors->has('password'))
                 <div class="error-message">{{ $errors->first('password') }}</div>
             @endif
@@ -167,12 +170,11 @@
 
         <p><a href="{{ route('forget.form') }}">Forgot your password?</a></p>
 
-
-        <p class="gray-text" style="margin-top: 20px; margin-bottom: 14px;">New to Skintifix Beauty Store? <a
-                href="{{ route('register') }}"><b>Create your account</b></a> <br>and start earning rewards today!</br>
+        <p class="gray-text" style="margin-top: 20px; margin-bottom: 14px;">
+            New to Skintifix Beauty Store? 
+            <a href="{{ route('register') }}"><b>Create your account</b></a><br>
+            and start earning rewards today!
         </p>
     </div>
-
 </body>
-
 </html>

@@ -236,8 +236,8 @@
             }
         });
     });
-</script>
-
+    </script>
+    
     <div class="register-modal">
         <div class="logo">Skintifix <span style="color: #000000;">Beauty Store</span></div>
         <h2>Account Register</h2>
@@ -310,5 +310,4 @@
         </p>
     </div>
 </body>
-
 </html>

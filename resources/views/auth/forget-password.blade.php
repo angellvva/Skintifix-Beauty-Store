@@ -157,7 +157,7 @@
         <form method="POST" action="{{ route('send.otp') }}">
             @csrf
             <label>Email</label>
-            <input type="email" name="email" required>
+            <input type="email" name="email" value="{{ old('email') }}" placeholder="name@example.com" required>
             <button type="submit">Send OTP</button>
         </form>
 
@@ -165,5 +165,4 @@
             <a href="{{ route('login') }}">Back to Login</a>
         </div>
 </body>
-
 </html>

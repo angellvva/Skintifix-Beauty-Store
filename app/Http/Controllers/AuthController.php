@@ -11,10 +11,43 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        // Check if email exists FIRST
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return back()->withErrors([
+                'email' => 'No email registered in the database',
+            ])->withInput($request->only('email'));
+        }
+
+        // Now attempt login (without letting Laravel set default errors)
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            return back()->withErrors([
+                'password' => 'Password does not match', // Your custom message
+            ])->withInput($request->only('email'));
+        }
+
+        // Success
+        return redirect()->intended('/');
+    }
+
     // Menampilkan form lupa password
     public function showForgetPasswordForm()
     {
         return view('auth.forget-password');
+    }
+
+    // Menampilkan form reset password
+    public function showResetPasswordForm()
+    {
+        return view('auth.reset-password');
     }
 
     // Mengirim OTP ke email
@@ -84,12 +117,6 @@ class AuthController extends Controller
         ]);
     }
 
-    // Menampilkan form reset password
-    public function showResetPasswordForm()
-    {
-        return view('auth.reset-password');
-    }
-
     // Proses reset password
     public function resetPassword(Request $request)
     {
@@ -151,50 +178,13 @@ class AuthController extends Controller
         // Redirect setelah registrasi berhasil
         return redirect()->route('login')->with('status', 'Registration successful! Please login.');
     }
-    
 
-    public function login(Request $request)
-{
-    // Validasi email dan password
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-    ]);
+    public function logout(Request $request)
+    {
+        Auth::logout();  // Logout pengguna
+        $request->session()->invalidate();  // Hapus session
+        $request->session()->regenerateToken();  // Regenerasi token CSRF
 
-    // Ambil kredensial email dan password
-    $credentials = $request->only('email', 'password');
-
-    // Cek apakah login berhasil menggunakan Auth::attempt
-    if (Auth::attempt($credentials)) {
-        // Jika berhasil login, redirect ke halaman yang dituju
-        return redirect()->intended('/');
+        return redirect()->route('login');  // Kembali ke halaman login
     }
-
-    // Debugging: Cek apakah email ada di database
-    $user = User::where('email', $request->email)->first();
-    if (!$user) {
-        return back()->withErrors(['email' => 'Email tidak ditemukan']);
-    }
-
-    // Debugging: Cek apakah password yang dimasukkan cocok dengan yang ada di database
-    if (Hash::check($request->password, $user->password)) {
-        // Jika password cocok, lanjutkan login
-        Auth::loginUsingId($user->id);
-        return redirect()->intended('/');
-    }
-
-    // Jika password salah
-    return back()->withErrors(['password' => 'Password yang Anda masukkan salah.']);
-}
-
-
-public function logout(Request $request)
-{
-    Auth::logout();  // Logout pengguna
-    $request->session()->invalidate();  // Hapus session
-    $request->session()->regenerateToken();  // Regenerasi token CSRF
-
-    return redirect()->route('login');  // Kembali ke halaman login
-}
-
 }
