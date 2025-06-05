@@ -51,7 +51,8 @@
                             <div class="mb-3">
                                 <select name="shipping_method" id="shipping-method-select" class="form-select" required>
                                     <option value="" disabled selected hidden>Select a shipping method</option>
-                                    <option value="standard" data-cost="20000">Standard (3 days) - Rp20.000</option>
+                                    <option value="standard" data-cost="20000" selected>Standard (3 days) - Rp20.000
+                                    </option>
                                     <option value="express" data-cost="40000">Express (1 day) - Rp40.000</option>
                                 </select>
                                 <div class="invalid-feedback">Please select a shipping method.</div>
@@ -79,7 +80,7 @@
 
                             @php
                                 $subtotal = $cartItems->sum(fn($item) => $item->price * $item->quantity);
-                                $shipping = 0;
+                                $shipping = 20000;
                                 $total = $subtotal + $shipping;
                             @endphp
 
