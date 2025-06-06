@@ -164,11 +164,12 @@ Route::middleware(['auth', 'is_user'])->group(function () {
     Route::get('/order/cancel/{order_id}', [OrderController::class, 'cancel'])->name('order.cancel'); // Cancel order
 
     // Route buat payment-success
-    Route::get('/payment/success', function () {
-        return view('payment-success');
-    })->name('payment.success');
-    // Route::get('/payment/success', [CheckoutController::class, 'paymentSuccess'])->name('payment.success');
+    // Route::get('/payment/success', function () {
+    //     return view('payment-success');
+    // })->name('payment.success');
+    Route::get('/payment/success', [CheckoutController::class, 'paymentSuccess'])->name('payment.success');
 
     //Route callback midtrans
-    Route::post('/midtrans/callback', [MidtransController::class, 'handleCallback']);
+    Route::get('/payment/return', [CheckoutController::class, 'handleReturn'])->name('payment.return');
+    // Route::post('/midtrans/callback', [MidtransController::class, 'handleCallback']);
 });

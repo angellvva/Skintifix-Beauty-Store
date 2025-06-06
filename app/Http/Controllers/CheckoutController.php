@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Payments;
+use Midtrans\Transaction;
 
 
 class CheckoutController extends Controller
@@ -101,6 +102,9 @@ class CheckoutController extends Controller
                 'status' => 'pending',
                 'payment_url' => null,  // URL pembayaran akan diset setelah transaksi Midtrans selesai
             ]);
+            // dd($order);
+            Log::info('Order created with invoice_number: ' . $order->invoice_number); // Log untuk memastikan invoice_number terisi
+
 
             Payments::create([
                 'order_id' => $order->id,
@@ -133,7 +137,7 @@ class CheckoutController extends Controller
 
             $params = [
             'transaction_details' => [
-                'order_id' => $order->invoice_number ?? 'INV-'.Str::uuid(),
+                'order_id' => $order->invoice_number,
                 'gross_amount' => (int) $totalAmount,
             ],
             'customer_details' => [
@@ -169,10 +173,14 @@ class CheckoutController extends Controller
             ],
         ];
 
+        Log::info('Sending transaction to Midtrans with order_id: ' . $order->invoice_number); // Log untuk memastikan order_id yang dikirim ke Midtrans
+
             $snapUrl = Snap::createTransaction($params)->redirect_url;
 
             $order->payment_url = $snapUrl;
             $order->save();
+
+            // Log::info()
 
             DB::commit();
 
@@ -189,14 +197,56 @@ class CheckoutController extends Controller
     }
 
     public function paymentSuccess(Request $request)
-    {
-        $orderId = $request->get('order_id');
-        $order = Order::where('invoice_number', $orderId)->first();
+{
+    $orderId = $request->get('order_id'); // Dapatkan order_id dari URL
+    $order = Order::where('invoice_number', $orderId)->first(); // Cek apakah order ada
 
-        if(!$order){
-            return redirect()->route('catalog')->with('error', 'Order not found.');
+    if (!$order) {
+        return redirect()->route('catalog')->with('error', 'Order not found.'); // Kalau order tidak ditemukan
+    }
+
+    // Konfigurasi Midtrans
+    Config::$serverKey = config('midtrans.server_key');
+    Config::$isProduction = config('midtrans.is_production');
+
+    try {
+        $status = Transaction::status($order->invoice_number); // Mengecek status transaksi di Midtrans
+
+        // Update status order berdasarkan response dari Midtrans
+        if ($status->transaction_status === 'settlement' || $status->transaction_status === 'capture') {
+            $order->status = 'paid';
+        } elseif ($status->transaction_status === 'pending') {
+            $order->status = 'pending';
+        } elseif ($status->transaction_status === 'expire') {
+            $order->status = 'expired';
+        } elseif ($status->transaction_status === 'cancel') {
+            $order->status = 'cancelled';
+        } else {
+            $order->status = $status->transaction_status;
         }
 
-        return view('payment-success', compact('order'));
+        $order->save(); // Simpan perubahan status ke database
+        $payment = Payments::where('order_id', $order->id)->first();
+        if ($payment) {
+            $payment->payment_status = $status->transaction_status;  // Update payment_status
+            $payment->payment_date = now();  // Set payment_date
+            $payment->payment_method = $status->payment_type; // Bisa menambahkan payment_type di sini sesuai dengan data dari Midtrans
+            $payment->save();  // Simpan perubahan status di tabel payments
+        }
+                Log::info('Midtrans Response:', ['status' => $status]);
+
+
+
+
+    } catch (\Exception $e) {
+        \Log::error('Failed to check payment status: ' . $e->getMessage()); // Jika gagal memeriksa status Midtrans
     }
+
+    // Mengarahkan ke halaman payment-success dan mengirimkan data order ke view
+    return view('payment-success', [
+        'order' => $order, // Mengirim data order
+        'status_message' => 'Payment status updated.'
+    ]);
+}
+
 }

@@ -23,19 +23,23 @@
                     <div class="mb-3 text-center">
                         <p class="fs-5 mb-1"><strong>Order Number:</strong></p>
                         <p class="fs-4 fw-semibold">
-                            {{-- {{ $order->invoice_number }}                 --}}
+                            {{ $order->invoice_number }}                
                         </p>
                     </div>
 
                     <div class="mb-3 text-center">
                         <p class="fs-5 mb-1"><strong>Total Amount:</strong></p>
-                        {{-- Rp {{ number_format($order->total_amount, 0, ',', '.') }} --}}
+                        Rp {{ number_format($order->total_amount, 0, ',', '.') }}
                     </div>
 
                     <div class="mb-4 text-center">
                         <p class="fs-5 mb-1"><strong>Payment Status:</strong></p>
-                        {{-- {{ ucfirst($order->status) }} --}}
+                            {{ ucfirst($order->status) }}
                     </div>
+
+                    @if (isset($status_message))
+                        <p class="text-center text-muted fst-italic">{{ $status_message }}</p>
+                    @endif
 
                     <p class="text-center text-muted fst-italic">
                         Payment status has been updated automatically.

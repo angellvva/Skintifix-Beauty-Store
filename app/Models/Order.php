@@ -11,6 +11,7 @@ class Order extends Model
     use Hasfactory;
     protected $fillable = [
         'order_id',
+        'invoice_number',
         'user_id',
         'recipient_name',
         'recipient_phone',
