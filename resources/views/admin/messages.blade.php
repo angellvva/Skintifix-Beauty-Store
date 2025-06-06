@@ -89,7 +89,7 @@
                                 <td class="fw-bold">{{ $msg->name }}</td>
                                 <td>{{ $msg->email }}</td>
                                 <td>{{ Str::limit($msg->message, 50) }}</td>
-                                <td>{{ \Carbon\Carbon::parse($msg->created_at)->format('d M Y H:i') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($msg->created_at)->format('d-m-Y H:i') }}</td>
                             </tr>
                         @endforeach
                     </tbody>
