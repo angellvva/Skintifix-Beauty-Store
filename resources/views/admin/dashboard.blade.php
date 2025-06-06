@@ -108,7 +108,7 @@
                                     @foreach ($recentOrders as $order)
                                         <tr>
                                             <td>SKINTIFIX-{{ str_pad($order->id, 4, '0', STR_PAD_LEFT) }}</td>
-                                            <td>{{ $order->order_date }}</td>
+                                            <td>{{ date('d-m-Y H:i:s', strtotime($order->order_date)) }}</td>
                                             <td>{{ $order->customer_name }}</td>
                                             <td>Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
                                         </tr>

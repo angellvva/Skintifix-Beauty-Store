@@ -28,6 +28,7 @@ Route::post('/verify-otp', [AuthController::class, 'verifyOtp'])->name('verify.o
 
 Route::get('/reset-password-form', [AuthController::class, 'showResetPasswordForm'])->name('password.reset.form');
 Route::post('/password/update', [AuthController::class, 'resetPassword'])->name('password.update');
+Route::get('/resend-otp', [AuthController::class, 'resendOtp'])->name('resend.otp');
 
 // Route untuk menangani pengaturan ulang password
 Route::post('/reset-password', [PasswordController::class, 'reset'])

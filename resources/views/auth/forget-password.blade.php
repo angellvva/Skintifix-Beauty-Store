@@ -115,6 +115,36 @@
                 transform: translateY(0);
             }
         }
+        .back-to-login {
+            margin-top: 15px;
+        }
+        
+        .back-to-login a {
+            color: #e965a7;
+            text-decoration: none;
+        }
+        
+        .back-to-login a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Additional OTP specific styles */
+        .timer {
+            font-size: 16px;
+            color: #e965a7;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        
+        .otp-expired {
+            color: red;
+            font-weight: bold;
+        }
+        
+        .resend-otp-text {
+            margin-top: 20px;
+            margin-bottom: 14px;
+        }
     </style>
 </head>
 
@@ -123,18 +153,16 @@
         <div class="logo">Skintifix <span style="color: #000000;">Beauty Store</span></div>
         <h2>Forget Password</h2>
         <p class="gray-text">Enter your email address and set your new password.</p>
-        
+
         <form method="POST" action="{{ route('send.otp') }}">
             @csrf
             <label>Email</label>
-            <input type="email" name="email" required>
+            <input type="email" name="email" value="{{ old('email') }}" placeholder="name@example.com" required>
             <button type="submit">Send OTP</button>
         </form>
-        <!-- Back to Login Button -->
-        <form action="{{ route('login') }}" method="GET">
-            <button type="submit" style="background-color: #f1f1f1; color: #333; border: 1px solid #ddd; margin-top: 20px;">
-                Back to Login
-        </button>
-</body>
 
+        <div class="back-to-login">
+            <a href="{{ route('login') }}">Back to Login</a>
+        </div>
+</body>
 </html>

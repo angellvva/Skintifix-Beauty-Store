@@ -10,14 +10,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class OrderItem extends Model
 {
     //
-        use HasFactory;
+    use HasFactory;
 
-        protected $fillable = [
-            'order_id',
-            'product_id',
-            'quantity',
-            'price',
-        ];
+    protected $fillable = [
+        'order_id',
+        'product_id',
+        'quantity',
+        'price',
+    ];
 
     public function product(): BelongsTo
     {
@@ -28,7 +28,7 @@ class OrderItem extends Model
     {
         return $this->belongsTo(ProductCategory::class, 'category_id');
     }
-    
+
     public function showOrTrack($order_id)
     {
         // Find the order by its ID, with related items and products, and address
@@ -39,6 +39,4 @@ class OrderItem extends Model
 
         return view('order-detail', compact('order', 'isTracking')); // Pass order data and tracking flag
     }
-
-
 }
