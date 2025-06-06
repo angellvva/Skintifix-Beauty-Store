@@ -116,7 +116,7 @@
                                 <td>{{ $customer->orders->count() }}</td>
                                 <td>Rp {{ number_format($customer->orders->sum('total_amount'), 0, ',', '.') }}</td>
                                 <td>
-                                    {{ $customer->orders->sortByDesc('created_at')->first()->created_at->format('d M Y') }}
+                                    {{ $customer->orders->sortByDesc('created_at')->first()->created_at->format('d-m-Y') }}
                                 </td>
                             </tr>
                         @endforeach
