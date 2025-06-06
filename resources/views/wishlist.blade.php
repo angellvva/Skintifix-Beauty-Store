@@ -151,8 +151,8 @@
                 <div id="cart-notification" class="alert alert-success"
                     style="
                         position: fixed;
-                        top: 120px;
-                        right: 313px;
+                        top: 90px;
+                        right: 10px;
                         background-color: #d4edda;  /* hijau muda */
                         color: #155724;             /* hijau gelap */
                         border: 1px solid #c3e6cb; /* border hijau */

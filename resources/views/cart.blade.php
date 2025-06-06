@@ -41,7 +41,7 @@
 
             {{-- Floating toast for unselected checkout --}}
             <div id="select-item-toast" class="alert alert-danger"
-                style="position: fixed; top: 120px; right: 253px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 8px; padding: 10px 20px 10px 15px; z-index: 9999; box-shadow: 0 2px 8px rgba(0,0,0,0.1); opacity: 0; display: none; transition: opacity 0.5s ease; min-width: 250px; display: flex; align-items: center; justify-content: space-between;">
+                style="position: fixed; top: 120px; right: 105px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 8px; padding: 10px 20px 10px 15px; z-index: 9999; box-shadow: 0 2px 8px rgba(0,0,0,0.1); opacity: 0; display: none; transition: opacity 0.5s ease; min-width: 250px; display: flex; align-items: center; justify-content: space-between;">
                 <span>Please select at least one item to checkout.</span>
                 <button id="close-toast"
                     style="background: transparent; border: none; color: #721c24; font-weight: bold; font-size: 20px; line-height: 1; cursor: pointer; padding: 0 5px; margin-left: 15px;"

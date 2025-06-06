@@ -8,8 +8,8 @@
                 <div id="cart-notification" class="alert alert-success"
                     style="
                         position: fixed;
-                        top: 110px;
-                        right: 205px;
+                        top: 140px;
+                        right: 120px;
                         background-color: #d4edda;
                         color: #155724;
                         border: 1px solid #c3e6cb;

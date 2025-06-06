@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         .brand-name {
@@ -9,8 +10,10 @@
             font-weight: bold;
         }
 
-        .dropdown:hover .dropdown-menu {
-            display: block;
+        @media (min-width: 992px) {
+            .dropdown:hover .dropdown-menu {
+                display: block;
+            }
         }
 
         .dropdown-menu {
@@ -60,8 +63,8 @@
 
                         <!-- Toggle Button for Mobile -->
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#navbarContent">
-                            <i class="fas fa-bars"></i>
+                            data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
                         </button>
 
                         <!-- Navigation Links -->
@@ -173,7 +176,6 @@
             </div>
         </div>
     </header>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.getElementById('searchInput');
