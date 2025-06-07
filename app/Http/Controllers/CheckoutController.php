@@ -65,6 +65,16 @@ class CheckoutController extends Controller
 
         $selectedItemIds = $request->input('selected_items', []);
 
+        // Validasi form input
+        if (
+            !$request->filled('name') ||
+            !$request->filled('recipient_phone') ||
+            !$request->filled('address') ||
+            !$request->filled('shipping_method')
+        ) {
+            return redirect()->back()->with('form_incomplete', true);
+        }
+
         $cartItems = collect(DB::table('carts')
             ->join('products', 'carts.product_id', '=', 'products.id')
             ->whereIn('carts.id', $selectedItemIds)

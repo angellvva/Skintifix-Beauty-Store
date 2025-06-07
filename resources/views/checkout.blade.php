@@ -193,6 +193,38 @@
 
         toggleBtn.classList.add('active');
         toggleRecipientFields(true);
+
+        document.getElementById('checkout-form').addEventListener('submit', function(e) {
+        const name = document.getElementById('name').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const address = document.getElementById('address').value.trim();
+        const shipping = document.getElementById('shipping-method-select').value;
+
+        if (!name || !phone || !address || !shipping) {
+            e.preventDefault();
+            showFormAlert();
+        }
+    });
+
+    function showFormAlert() {
+        const alertBox = document.getElementById('form-alert');
+        alertBox.style.display = 'block';
+        setTimeout(() => {
+            alertBox.style.opacity = '1';
+        }, 10);
+        setTimeout(() => {
+            hideFormAlert();
+        }, 5000);
+    }
+
+    function hideFormAlert() {
+        const alertBox = document.getElementById('form-alert');
+        alertBox.style.opacity = '0';
+        setTimeout(() => {
+            alertBox.style.display = 'none';
+        }, 400);
+    }
+
     </script>
 
     <style>
@@ -228,4 +260,36 @@
             transform: rotate(360deg);
         }
     </style>
+
+    <!-- Floating toast for incompleted form -->
+    <div id="form-alert" class="position-fixed" style="
+        top: 120px;
+        right: 105px;
+        z-index: 9999;
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1 px solid #f5c6cb;
+        border-radius: 8px;
+        padding: 10px 20px 10px 15px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        opacity: 0; 
+        display: none; 
+        transition: opacity 0.5s ease; 
+        min-width: 250px; 
+        display: flex; 
+        align-items: center;
+    ">
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-start">
+                <div>
+                    <strong style="color: #721c24;">Incomplete Form</strong>
+                    <p class="mb-0" style="font-size: 14px; color: #721c24;">
+                        Please fill in all the required fields before proceeding to payment.
+                    </p>
+                </div>
+            </div>
+            <button onclick="hideFormAlert()" style="background: none; border: none; font-size: 20px; color: #721c24;">×</button>
+        </div>
+    </div>
+
 @endsection
