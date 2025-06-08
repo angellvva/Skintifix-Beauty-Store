@@ -2,7 +2,6 @@
 
 @section('content')
     <div class="container my-4">
-        <h1>TEST PAGE - ADMIN ORDER SHOW</h1>
         <div class="mb-4 d-flex align-items-center">
             <a href="{{ route('admin.orders') }}" class="btn btn-light me-3">
                 <i class="fas fa-arrow-left"></i>
@@ -100,7 +99,6 @@
                 <div class="card">
                     <div class="card-header fw-semibold">Payment Information</div>
                     <div class="card-body">
-                        <pre>{{ dd($order->payment) }}</pre>
                         <p><strong>Status:</strong>
                             @if (isset($order->payment) && $order->payment->payment_status == 'paid')
                                 <span class="badge rounded-pill border border-success text-success">Paid</span>
