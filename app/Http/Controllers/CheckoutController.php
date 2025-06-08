@@ -224,13 +224,13 @@ class CheckoutController extends Controller
 
         // Update status order berdasarkan response dari Midtrans
         if ($status->transaction_status === 'settlement' || $status->transaction_status === 'capture') {
-            $order->status = 'paid';
+            $order->status = 'pending';
         } elseif ($status->transaction_status === 'pending') {
             $order->status = 'pending';
         } elseif ($status->transaction_status === 'expire') {
-            $order->status = 'expired';
+            $order->status = 'failed';
         } elseif ($status->transaction_status === 'cancel') {
-            $order->status = 'cancelled';
+            $order->status = 'failed';
         } else {
             $order->status = $status->transaction_status;
         }
