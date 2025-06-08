@@ -43,6 +43,9 @@
                             <div class="mb-3">
                                 <label for="payment_status" class="form-label">Payment Status</label>
                                 <select name="payment_status" id="payment_status" class="form-select">
+                                    <option value="pending"
+                                        {{ optional($order->payment)->payment_status === 'pending' ? 'selected' : '' }}>Pending
+                                    </option>
                                     <option value="paid"
                                         {{ optional($order->payment)->payment_status === 'paid' ? 'selected' : '' }}>Paid
                                     </option>

@@ -31,7 +31,7 @@ class AdminOrderController extends Controller
     {
         $request->validate([
             'status' => 'required|in:pending,processing,completed',
-            'payment_status' => 'nullable|in:paid,failed',
+            'payment_status' => 'nullable|in:pending,paid,failed',
         ]);
 
         $order = Order::with('payment')->findOrFail($id);
@@ -84,7 +84,7 @@ class AdminOrderController extends Controller
         'totalCompleted'
         ));
     }
-    
+
     public function updateStatus()
     {
         $orders = Order::whereIn('status', ['pending', 'processing'])->get();
