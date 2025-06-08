@@ -34,7 +34,11 @@
 
                     <div class="mb-4 text-center">
                         <p class="fs-5 mb-1"><strong>Payment Status:</strong></p>
-                            {{ ucfirst($order->status) }}
+                        @if ($order->payment)
+                            {{ ucfirst($order->payment->payment_status) }}
+                        @else
+                            Not Available
+                        @endif                    
                     </div>
 
                     @if (isset($status_message))

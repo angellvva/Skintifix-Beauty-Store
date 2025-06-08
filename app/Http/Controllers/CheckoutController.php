@@ -208,7 +208,7 @@ class CheckoutController extends Controller
     public function paymentSuccess(Request $request)
 {
     $orderId = $request->get('order_id'); // Dapatkan order_id dari URL
-    $order = Order::where('invoice_number', $orderId)->first(); // Cek apakah order ada
+    $order = Order::with('payment')->where('invoice_number', $orderId)->first(); // Cek apakah order ada
 
 
     if (!$order) {
@@ -225,6 +225,7 @@ class CheckoutController extends Controller
         // Update status order berdasarkan response dari Midtrans
         if ($status->transaction_status === 'settlement' || $status->transaction_status === 'capture') {
             $order->status = 'pending';
+            $order->payment_confirmed_at = now(); // buat keperluan cronjob
         } elseif ($status->transaction_status === 'pending') {
             $order->status = 'pending';
         } elseif ($status->transaction_status === 'expire') {
