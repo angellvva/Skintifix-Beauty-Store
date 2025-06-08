@@ -35,7 +35,11 @@
                     <div class="mb-4 text-center">
                         <p class="fs-5 mb-1"><strong>Payment Status:</strong></p>
                         @if ($order->payment)
-                            {{ ucfirst($order->payment->payment_status) }}
+                            @php
+                                $status = $order->payment->payment_status;
+                                $displayStatus = $status === 'settlement' ? 'Paid' : ucfirst($status);
+                            @endphp
+                            {{ $displayStatus }} 
                         @else
                             Not Available
                         @endif                    

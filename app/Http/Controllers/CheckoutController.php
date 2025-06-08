@@ -133,11 +133,6 @@ class CheckoutController extends Controller
                     'subtotal' => $item->price * $item->quantity,
                 ]);
 
-                // ngurangi stok produk di db
-                DB::table('products')
-                    ->where('id', $item->product_id)
-                    ->decrement('stock', $item->quantity);
-
                 // hapus produk dari cart
                 DB::table('carts')->whereIn('id', $selectedItemIds)->delete();
             }
@@ -239,12 +234,40 @@ class CheckoutController extends Controller
         $order->save(); // Simpan perubahan status ke database
         $payment = Payments::where('order_id', $order->id)->first();
         if ($payment) {
-            $payment->payment_status = $status->transaction_status;  // Update payment_status
+            $payment->payment_status = $this->mapMidtransStatus($status->transaction_status);
             $payment->payment_date = now();  // Set payment_date
-            $payment->payment_method = $status->payment_type; // Bisa menambahkan payment_type di sini sesuai dengan data dari Midtrans
+        
+            if (isset($status->payment_type)) {
+                $payment->payment_method = $status->payment_type;
+            } elseif (isset($status->va_numbers[0]->bank)) {
+                $payment->payment_method = $status->va_numbers[0]->bank;
+            } elseif (isset($status->permata_va_number)) {
+                $payment->payment_method = 'permata';
+            } elseif (isset($status->bill_key)) {
+                $payment->payment_method = 'mandiri';
+            } else {
+                $payment->payment_method = 'unknown';
+            }
+            
             $payment->save();  // Simpan perubahan status di tabel payments
+
+            // Kurangi stok hanya jika pembayaran berhasil (paid)
+if ($payment->payment_status === 'paid') {
+    foreach ($order->orderItems as $item) {
+        DB::table('products')
+            ->where('id', $item->product_id)
+            ->decrement('stock', $item->quantity);
+    }
+}
+
         }
-                Log::info('Midtrans Response:', ['status' => $status]);
+
+        Log::info('MIDTRANS STATUS OBJECT', [
+            'order_id' => $order->invoice_number,
+            'transaction_status' => $status->transaction_status,
+            'payment_type' => $status->payment_type ?? null,
+            'raw_status' => (array) $status
+        ]);
 
 
 
@@ -259,5 +282,14 @@ class CheckoutController extends Controller
         'status_message' => 'Payment status updated.'
     ]);
 }
+
+    private function mapMidtransStatus($transactionStatus)
+    {
+        return match ($transactionStatus) {
+            'settlement', 'capture' => 'paid',
+            'expire', 'cancel' => 'failed',
+            default => $transactionStatus, // 'pending', 'deny', dll tetap sama
+        };
+    }
 
 }
