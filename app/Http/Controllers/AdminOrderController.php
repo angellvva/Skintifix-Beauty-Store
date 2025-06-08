@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
@@ -82,5 +83,30 @@ class AdminOrderController extends Controller
         'totalProcessing',
         'totalCompleted'
         ));
+    }
+
+    public function updateStatus()
+    {
+        $orders = Order::whereIn('status', ['pending', 'processing'])->get();
+
+        foreach ($orders as $order) {
+            $orderDate = Carbon::parse($order->order_date);
+            $now = Carbon::now();
+            $diffDays = $orderDate->diffInDays($now);
+
+            // RULES
+            if ($order->shipping_price == 20000 && $diffDays >= 3) {
+                $order->status = 'completed';
+                $order->save();
+            } elseif ($order->shipping_price == 40000 && $diffDays >= 1) {
+                $order->status = 'completed';
+                $order->save();
+            } else {
+                // Belum cukup hari → tetap pending
+            }
+        }
+
+        // Redirect ke halaman orders + notifikasi success
+        return redirect()->route('admin.orders')->with('success', 'Order statuses updated successfully!');
     }
 }

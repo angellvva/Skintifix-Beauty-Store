@@ -2,11 +2,18 @@
 
 @section('content')
     <div class="container my-4">
-        <div class="row mb-4">
-            <div class="col-12">
+        <div class="row mb-4 align-items-center">
+            <div class="col">
                 <h2 class="fw-bold" style="color: #e965a7;">Orders</h2>
                 <p class="text-muted m-0">Track and process customer orders efficiently</p>
             </div>
+
+            @if(session('success'))
+                <div id="success-alert" class="col-auto alert alert-success alert-dismissible fade show mb-0" role="alert" style="white-space: nowrap;">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
         </div>
 
         <!-- Status Summary Cards -->
@@ -83,6 +90,14 @@
         <!-- Order Table -->
         <div class="card">
             <div class="card-body table-responsive">
+                <!-- Button Update Status -->
+                <div class="mb-3 d-flex justify-content-between align-items-center">
+                    <div></div>
+                    <a href="{{ route('orders.updateStatus') }}" class="btn btn-pink d-flex align-items-center" style="gap: 0.5rem;">
+                        <i class="fas fa-sync-alt"></i> Update Status
+                    </a>
+                </div>
+
                 <form method="GET" id="filterForm">
                     <div class="row g-3 mb-3 align-items-center">
                         <div class="col-md-5">
@@ -349,3 +364,20 @@
         }
     </style>
 @endpush
+
+@push('scripts')
+<script>
+    // Auto hide alert
+    document.addEventListener('DOMContentLoaded', function () {
+        const alert = document.getElementById('success-alert');
+        if (alert) {
+            setTimeout(() => {
+                // Bootstrap 5 dismiss
+                let alertInstance = bootstrap.Alert.getOrCreateInstance(alert);
+                alertInstance.close();
+            }, 1800);
+        }
+    });
+</script>
+@endpush
+
