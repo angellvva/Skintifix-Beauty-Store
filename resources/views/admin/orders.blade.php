@@ -180,7 +180,7 @@
                                     @endif
                                 </td>
                                 <td class="d-flex gap-1">
-                                    <a href="{{ route('orders.show', $order->id) }}" class="btn btn-sm btn-pink"
+                                    <a href="{{ route('admin.orders.show', $order->id) }}" class="btn btn-sm btn-pink"
                                         title="View">
                                         <i class="fas fa-eye"></i>
                                     </a>
