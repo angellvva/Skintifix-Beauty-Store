@@ -92,6 +92,9 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
     // route admin order
     Route::get('/admin/orders', [AdminOrderController::class, 'orders'])->name('admin.orders');
 
+    // route admin order update status
+    Route::get('/admin/orders/update-status', [AdminOrderController::class, 'updateStatus'])->name('orders.updateStatus');
+
     // route admin customer
     Route::get('/admin/customers', [AdminController::class, 'customers'])->name('admin.customers');
     // route admin messages

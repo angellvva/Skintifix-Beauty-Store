@@ -10,8 +10,8 @@
                 Order SKINTIFIX-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}
                 <span
                     class="badge rounded-pill ms-2 px-3 py-1 border
-                @if ($order->status == 'pending') border-warning text-warning
-                @elseif($order->status == 'processing') border-primary text-primary
+                @if ($order->status == 'pending') border-secondary text-secondary
+                @elseif($order->status == 'processing') border-warning text-warning
                 @elseif($order->status == 'completed') border-success text-success
                 @else border-secondary text-secondary @endif">
                     {{ ucfirst($order->status) }}
