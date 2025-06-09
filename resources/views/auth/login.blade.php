@@ -1,6 +1,7 @@
 <!-- views/login.php -->
 <!DOCTYPE html>
 <html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <head>
     <title>Account Sign In</title>
@@ -15,13 +16,9 @@
             align-items: center;
             height: 100vh;
             background-image: url('{{ asset('images/background/flower.jpg') }}');
-            /* Update with the correct image path */
             background-size: cover;
-            /* Ensures the image covers the entire background */
             background-position: center;
-            /* Center the image */
             background-repeat: no-repeat;
-            /* Prevents the image from repeating */
         }
 
         .login-modal {
@@ -31,11 +28,13 @@
             border-radius: 12px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
+            animation: fadeInUp 0.5s ease-in-out;
         }
 
-        .login-modal img {
-            width: 50px;
-            height: 50px;
+        .logo {
+            font-size: 36px;
+            font-weight: bold;
+            color: #e965a7;
             margin-bottom: 20px;
         }
 
@@ -49,6 +48,10 @@
             font-size: 14px;
             color: #090909;
             margin-bottom: 20px;
+        }
+
+        .gray-text {
+            color: gray;
         }
 
         .login-modal input[type="text"],
@@ -85,7 +88,15 @@
         }
 
         .login-modal button:hover {
-            background-color: #e965a7;
+            background-color: #d95498;
+        }
+
+        .login-modal label {
+            text-align: left;
+            display: block;
+            margin-top: 6px;
+            margin-bottom: 4px;
+            font-weight: 500;
         }
 
         .login-modal p a {
@@ -95,24 +106,6 @@
 
         .login-modal p a:hover {
             text-decoration: underline;
-        }
-
-        .logo {
-            font-size: 36px;
-            font-weight: bold;
-            color: #e965a7;
-            /* Pink color for Skintifix */
-            margin-bottom: 20px;
-        }
-
-        .login-modal label {
-            text-align: left;
-            display: block;
-            margin-top: 6px;
-        }
-
-        .login-modal .gray-text {
-            color: gray;
         }
 
         .error-message {
@@ -134,6 +127,42 @@
             to {
                 opacity: 1;
                 transform: translateY(0);
+            }
+        }
+
+        /* ✅ Responsive adjustments */
+        @media (max-width: 480px) {
+            .login-modal {
+                width: 90%;
+                padding: 24px 16px;
+            }
+
+            .logo {
+                font-size: 28px;
+            }
+
+            .login-modal h2 {
+                font-size: 20px;
+            }
+
+            .login-modal p {
+                font-size: 13px;
+            }
+
+            .login-modal input[type="text"],
+            .login-modal input[type="password"] {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .login-modal button {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .login-modal .error-message {
+                font-size: 12px;
+                padding: 6px;
             }
         }
     </style>
