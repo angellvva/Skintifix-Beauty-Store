@@ -87,10 +87,24 @@
     .shadow-top {
         box-shadow: 0 -4px 6px -2px rgba(0, 0, 0, 0.1);
     }
+
+    @media (max-width: 768px) {
+        .sidebar {
+            left: -300px; /* hidden */
+        }
+
+        .sidebar.show {
+            left: 0; /* shown when toggled */
+        }
+
+        .main-content {
+            margin-left: 0;
+        }
+    }
 </style>
 
 <!-- SIDEBAR HTML -->
-<div class="sidebar">
+<div class="sidebar" id="sidebar">
     <div class="justify-content-start align-items-center mb-2 px-3 logo">
         <a href="{{ route('admin.dashboard') }}" class="text-decoration-none align-items-center">
             <span><b>Skintifix</b> Beauty Store</span>

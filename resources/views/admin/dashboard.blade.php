@@ -360,33 +360,42 @@
                     label: 'Total Sales',
                     data: {!! json_encode($salesCounts) !!},
                     borderColor: '#e965a7',
-                    backgroundColor: '#e965a7',
+                    backgroundColor: 'rgba(233, 101, 167, 0.2)',
                     tension: 0.4,
                     pointRadius: 4,
-                    pointHoverRadius: 6
+                    pointHoverRadius: 6,
+                    fill: true,
                 }]
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: window.innerWidth > 768,
+                layout: {
+                    padding: {
+                        top: 20,
+                        bottom: 20,
+                        left: 10,
+                        right: 10
+                    }
+                },
                 scales: {
                     y: {
                         beginAtZero: true,
-                        min: 0,
-                        max: 20,
-                        ticks: {
-                            stepSize: 1,
-                            callback: function(value) {
-                                return value;
-                            }
-                        },
                         title: {
                             display: true,
                             text: 'Number of Orders',
                             color: '#e965a7',
                             font: {
-                                size: 16,
+                                size: 14,
                                 weight: 'bold'
                             }
+                        },
+                        ticks: {
+                            stepSize: 1,
+                            color: '#000'
+                        },
+                        grid: {
+                            color: '#eee'
                         }
                     },
                     x: {
@@ -395,9 +404,17 @@
                             text: 'Date',
                             color: '#e965a7',
                             font: {
-                                size: 16,
+                                size: 14,
                                 weight: 'bold'
                             }
+                        },
+                        ticks: {
+                            color: '#000',
+                            maxRotation: 45,
+                            minRotation: 20
+                        },
+                        grid: {
+                            display: false
                         }
                     }
                 }

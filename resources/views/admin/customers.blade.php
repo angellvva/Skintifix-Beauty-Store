@@ -12,29 +12,10 @@
             background-color: #da5195;
         }
 
-        table {
-            width: 100%;
-            table-layout: fixed;
-            border-collapse: collapse;
-        }
-
-        tbody td {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
         .table-responsive {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             border: 1px solid #dee2e6;
-        }
-
-        .table th,
-        .table td {
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
         }
 
         .btn-reset,
@@ -116,9 +97,7 @@
                                     <td>{{ $customer->email }}</td>
                                     <td>{{ $customer->orders->count() }}</td>
                                     <td>Rp {{ number_format($customer->orders->sum('total_amount'), 0, ',', '.') }}</td>
-                                    <td>
-                                        {{ $customer->orders->sortByDesc('created_at')->first()->created_at->format('d-m-Y') }}
-                                    </td>
+                                    <td>{{ $customer->orders->sortByDesc('created_at')->first()->created_at->format('d-m-Y') }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -134,19 +113,15 @@
                         @if ($customers->total() == 0)
                             Showing 0 entries
                         @else
-                            Showing {{ $customers->firstItem() }} to {{ $customers->lastItem() }} of
-                            {{ $customers->total() }}
-                            entries
+                            Showing {{ $customers->firstItem() }} to {{ $customers->lastItem() }} of {{ $customers->total() }} entries
                         @endif
                     </div>
 
-                    {{-- Pagination links --}}
                     <div class="d-flex justify-content-end">
                         @if ($customers->onFirstPage())
                             <button class="btn btn-secondary me-1" disabled>Prev</button>
                         @else
-                            <a href="{{ $customers->previousPageUrl() }}" class="btn btn-prev-next me-1"
-                                style="margin-right: 4px;">Prev</a>
+                            <a href="{{ $customers->previousPageUrl() }}" class="btn btn-prev-next me-1">Prev</a>
                         @endif
 
                         @if ($customers->hasMorePages())
@@ -158,4 +133,4 @@
                 </div>
             </div>
         </div>
-    @endsection
+@endsection

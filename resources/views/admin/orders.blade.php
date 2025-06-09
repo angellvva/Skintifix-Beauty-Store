@@ -89,7 +89,7 @@
 
         <!-- Order Table -->
         <div class="card">
-            <div class="card-body table-responsive">
+            <div class="card-body">
                 <!-- Button Update Status -->
                 <div class="mb-3 d-flex justify-content-between align-items-center">
                     <div></div>
@@ -103,31 +103,22 @@
                         <div class="col-md-5">
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-search"></i></span>
-                                <input type="text" name="search" class="form-control" placeholder="Search order ID..."
-                                    value="{{ request('search') }}" />
+                                <input type="text" name="search" class="form-control" placeholder="Search order ID..." value="{{ request('search') }}" />
                                 <button type="submit" class="btn btn-search" title="Search Filter">Search</button>
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <select name="status" class="form-select"
-                                onchange="document.getElementById('filterForm').submit()">
-                                <option value="all" {{ request('status', 'all') == 'all' ? 'selected' : '' }}>All Status
-                                </option>
-                                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending
-                                </option>
-                                <option value="processing" {{ request('status') == 'processing' ? 'selected' : '' }}>
-                                    Processing</option>
-                                <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed
-                                </option>
+                            <select name="status" class="form-select" onchange="document.getElementById('filterForm').submit()">
+                                <option value="all" {{ request('status', 'all') == 'all' ? 'selected' : '' }}>All Status</option>
+                                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                                <option value="processing" {{ request('status') == 'processing' ? 'selected' : '' }}>Processing</option>
+                                <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed</option>
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <select name="sort" class="form-select"
-                                onchange="document.getElementById('filterForm').submit()">
-                                <option value="desc" {{ request('sort', 'desc') == 'desc' ? 'selected' : '' }}>Newest
-                                    First</option>
-                                <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Oldest First
-                                </option>
+                            <select name="sort" class="form-select" onchange="document.getElementById('filterForm').submit()">
+                                <option value="desc" {{ request('sort', 'desc') == 'desc' ? 'selected' : '' }}>Newest First</option>
+                                <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Oldest First</option>
                             </select>
                         </div>
                         <div class="col-md-1">
@@ -138,62 +129,53 @@
                     </div>
                 </form>
 
-                <table class="table align-middle">
-                    <thead>
-                        <tr>
-                            <th>Order ID</th>
-                            <th>Customer</th>
-                            <th>Date</th>
-                            <th>Products</th>
-                            <th>Total</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($orders as $order)
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
                             <tr>
-                                <td class="fw-bold">SKINTIFIX-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</td>
-                                <td>{{ $order->user->name }}</td>
-                                <td>{{ \Carbon\Carbon::parse($order->order_date)->format('d-m-Y') }}</td>
-
-                                @if ($order->orderItems->sum('quantity') <= 1)
-                                    <td>{{ $order->orderItems->sum('quantity') }} item</td>
-                                @else
-                                    <td>{{ $order->orderItems->sum('quantity') }} items</td>
-                                @endif
-
-                                <td>Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
-                                <td>
-                                    @if ($order->status)
-                                        <span
-                                            class="badge rounded-pill px-3 py-1 border
-                                            @if ($order->status == 'pending') border-secondary text-secondary
-                                            @elseif($order->status == 'processing') border-warning text-warning
-                                            @elseif($order->status == 'completed') border-success text-success
-                                            @else border-secondary text-secondary @endif">
-                                            {{ ucfirst($order->status) }}
-                                        </span>
-                                    @else
-                                        <span
-                                            class="badge rounded-pill border border-secondary text-secondary px-3 py-1">Unknown</span>
-                                    @endif
-                                </td>
-                                <td class="d-flex gap-1">
-                                    <a href="{{ route('admin.orders.show', $order->id) }}" class="btn btn-sm btn-pink"
-                                        title="View">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                    <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-sm btn-pink"
-                                        title="Edit">
-                                        <i class="fas fa-pen"></i>
-                                    </a>
-                                </td>
-
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Date</th>
+                                <th>Products</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Actions</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach ($orders as $order)
+                                <tr>
+                                    <td class="fw-bold">SKINTIFIX-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</td>
+                                    <td>{{ $order->user->name }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($order->order_date)->format('d-m-Y') }}</td>
+                                    <td>{{ $order->orderItems->sum('quantity') }} {{ $order->orderItems->sum('quantity') <= 1 ? 'item' : 'items' }}</td>
+                                    <td>Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
+                                    <td>
+                                        @if ($order->status)
+                                            <span class="badge rounded-pill px-3 py-1 border
+                                                @if ($order->status == 'pending') border-secondary text-secondary
+                                                @elseif($order->status == 'processing') border-warning text-warning
+                                                @elseif($order->status == 'completed') border-success text-success
+                                                @else border-secondary text-secondary @endif">
+                                                {{ ucfirst($order->status) }}
+                                            </span>
+                                        @else
+                                            <span class="badge rounded-pill border border-secondary text-secondary px-3 py-1">Unknown</span>
+                                        @endif
+                                    </td>
+                                    <td class="d-flex gap-1">
+                                        <a href="{{ route('admin.orders.show', $order->id) }}" class="btn btn-sm btn-pink" title="View">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-sm btn-pink" title="Edit">
+                                            <i class="fas fa-pen"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
 
                 @if ($orders->isEmpty())
                     <p class="text-muted text-center">No orders found.</p>
@@ -204,21 +186,15 @@
                         @if ($orders->total() == 0)
                             Showing 0 entries
                         @else
-                            Showing {{ $orders->firstItem() }} to {{ $orders->lastItem() }} of
-                            {{ $orders->total() }}
-                            entries
+                            Showing {{ $orders->firstItem() }} to {{ $orders->lastItem() }} of {{ $orders->total() }} entries
                         @endif
                     </div>
-
-                    {{-- Pagination links --}}
                     <div class="d-flex justify-content-end">
                         @if ($orders->onFirstPage())
                             <button class="btn btn-secondary me-1" disabled>Prev</button>
                         @else
-                            <a href="{{ $orders->previousPageUrl() }}" class="btn btn-prev-next me-1"
-                                style="margin-right: 4px;">Prev</a>
+                            <a href="{{ $orders->previousPageUrl() }}" class="btn btn-prev-next me-1">Prev</a>
                         @endif
-
                         @if ($orders->hasMorePages())
                             <a href="{{ $orders->nextPageUrl() }}" class="btn btn-prev-next ms-1">Next</a>
                         @else
