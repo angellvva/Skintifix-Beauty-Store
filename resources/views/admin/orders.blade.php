@@ -282,40 +282,6 @@
             background-color: #da5195;
         }
 
-        table {
-            width: 100%;
-            table-layout: fixed;
-            border-collapse: collapse;
-        }
-
-        thead th:nth-child(1) {
-            width: 15%;
-        }
-
-        thead th:nth-child(2) {
-            width: 20%;
-        }
-
-        thead th:nth-child(3) {
-            width: 15%;
-        }
-
-        thead th:nth-child(4) {
-            width: 15%;
-        }
-
-        thead th:nth-child(5) {
-            width: 15%;
-        }
-
-        thead th:nth-child(6) {
-            width: 10%;
-        }
-
-        thead th:nth-child(7) {
-            width: 10%;
-        }
-
         /* Untuk bagian tombol action */
         td.d-flex.gap-1 {
             flex-wrap: nowrap !important;
@@ -361,6 +327,31 @@
             td:nth-child(7) {
                 min-width: 120px;
             }
+        } */
+
+        table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+        }
+
+        tbody td {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border: 1px solid #dee2e6;
+        }
+
+        .table th,
+        .table td {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
         }
     </style>
 @endpush

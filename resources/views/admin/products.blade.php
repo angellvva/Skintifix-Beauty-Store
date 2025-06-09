@@ -33,40 +33,75 @@
             background-color: #da5195;
         }
 
+        /* Untuk bagian tombol action */
+        td.d-flex.gap-1 {
+            flex-wrap: nowrap !important;
+            /* Pastikan tombol tidak pindah ke bawah */
+            gap: 0.25rem;
+        }
+
+        /* Membuat kolom tidak wrap ke bawah */
+        .table thead th {
+            white-space: nowrap;
+        }
+
+        /* Memastikan scroll horizontal jika layar kecil */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Agar teks dalam table tidak kepotong */
+        .table td {
+            white-space: nowrap;
+        }
+
+        /* Responsif di layar kecil */
+        @media (max-width: 768px) {
+            table {
+                min-width: 700px;
+                /* cukup lebar untuk semua kolom */
+            }
+
+            .table-responsive {
+                border: 1px solid #dee2e6;
+            }
+
+            thead th:nth-child(6),
+            /* Status */
+            thead th:nth-child(7) {
+                /* Actions */
+                min-width: 120px;
+            }
+
+            td:nth-child(6),
+            td:nth-child(7) {
+                min-width: 120px;
+            }
+        } */
+
         table {
             width: 100%;
-            table-layout: fixed;
             border-collapse: collapse;
-        }
-
-        thead th:nth-child(1) {
-            width: 45%;
-        }
-
-        thead th:nth-child(2) {
-            width: 15%;
-        }
-
-        thead th:nth-child(3) {
-            width: 10%;
-        }
-
-        thead th:nth-child(4) {
-            width: 10%;
-        }
-
-        thead th:nth-child(5) {
-            width: 10%;
-        }
-
-        thead th:nth-child(6) {
-            width: 10%;
         }
 
         tbody td {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border: 1px solid #dee2e6;
+        }
+
+        .table th,
+        .table td {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
         }
 
         .btn-reset,
