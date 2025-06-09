@@ -9,24 +9,24 @@
             </div>
         </div>
 
-        <form action="{{ route('admin.dashboard') }}" method="GET" class="row g-3 align-items-end mb-4">
-            <div class="col-md-1">
+        <form action="{{ route('admin.dashboard') }}" method="GET" class="row g-3 align-items-end flex-wrap mb-4">
+            <div class="col-md-1 col-12">
                 <label for="start_date" class="form-label fw-bold">Start Date</label>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 col-12">
                 <input type="date" id="start_date" name="start_date" class="form-control"
                     value="{{ request('start_date') }}">
             </div>
-            <div class="col-md-1">
+            <div class="col-md-1 col-12 mt-2 mt-md-0">
                 <label for="end_date" class="form-label fw-bold">End Date</label>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 col-12 mt-2 mt-md-0">
                 <input type="date" id="end_date" name="end_date" class="form-control" value="{{ request('end_date') }}">
             </div>
-            <div class="col-md-1">
+            <div class="col-md-1 col-12 mt-2 mt-md-0">
                 <button type="submit" class="btn btn-filter w-100">Filter</button>
             </div>
-            <div class="col-md-1">
+            <div class="col-md-1 col-12 mt-2 mt-md-0">
                 <a href="{{ route('admin.dashboard') }}" class="btn btn-reset" title="Reset Filter">
                     <i class="bi bi-arrow-clockwise"></i> Reset
                 </a>
@@ -35,7 +35,7 @@
 
         <div class="row">
             <!-- Total Orders -->
-            <div class="col-lg-4 mb-4">
+            <div class="col-lg-4 col-md-6 col-12 mb-4">
                 <a href="{{ route('admin.orders') }}" class="text-decoration-none text-white">
                     <div class="card stat-card gradient-pink text-white rounded-4 h-100">
                         <div class="card-body d-flex justify-content-between align-items-center">
@@ -52,7 +52,7 @@
             </div>
 
             <!-- Total Revenue -->
-            <div class="col-lg-4 mb-4">
+            <div class="col-lg-4 col-md-6 col-12 mb-4">
                 <a href="{{ route('admin.orders') }}" class="text-decoration-none text-white">
                     <div class="card stat-card gradient-pink text-white rounded-4 h-100">
                         <div class="card-body d-flex justify-content-between align-items-center">
@@ -69,7 +69,7 @@
             </div>
 
             <!-- Total Products -->
-            <div class="col-lg-4 mb-4">
+            <div class="col-lg-4 col-md-6 col-12 mb-4">
                 <a href="{{ route('admin.products') }}" class="text-decoration-none text-white">
                     <div class="card stat-card gradient-pink text-white rounded-4 h-100">
                         <div class="card-body d-flex justify-content-between align-items-center">
@@ -167,7 +167,7 @@
                             </div>
 
                             {{-- Pagination links --}}
-                            <div class="d-flex justify-content-end">
+                            <div class="d-flex justify-content-end flex-wrap gap-2">
                                 @if ($lowStockProducts->onFirstPage())
                                     <button class="btn btn-secondary me-1" disabled>Prev</button>
                                 @else
@@ -222,14 +222,14 @@
                                     @endforeach
                                 </tbody>
                             </table>
-
+                        </div>
                             @if ($topSellingProducts->isEmpty())
                                 <p class="text-muted text-center">No products found.</p>
                             @endif
 
                             <a href="{{ route('admin.products') }}" class="btn btn-sm btn-pink mt-2">View All
                                 Products</a>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -313,13 +313,20 @@
             background-color: #da5195;
         }
 
-        table {
+        .table-responsive table {
             width: 100%;
-            table-layout: fixed;
             border-collapse: collapse;
         }
 
-        .topselling th:nth-child(1) {
+        .topselling th,
+        .topselling td {
+            min-width: 100px; /* NEW → avoid too narrow */
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        /* .topselling th:nth-child(1) {
             width: 40%;
         }
 
@@ -337,7 +344,7 @@
 
         .topselling th:nth-child(5) {
             width: 10%;
-        }
+        } */
     </style>
 @endpush
 

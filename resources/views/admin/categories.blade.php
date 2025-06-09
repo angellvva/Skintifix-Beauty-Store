@@ -2,11 +2,7 @@
 
 @section('content')
     <style>
-        table {
-            width: 100%;
-            table-layout: fixed;
-            border-collapse: collapse;
-        }
+       
 
         thead th:nth-child(1) {
             width: 20%;
@@ -30,14 +26,28 @@
             color: white;
             background-color: #e965a7;
         }
+
+        .table-responsive table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th,
+        .table td {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            min-width: 100px;
+        }
     </style>
     @if (session('success'))
         <div id="category-notification" class="alert alert-success"
             style="
                 transition: opacity 0.3s ease;
                 position: fixed;
-                top: 50px;
-                right: 275px;
+                top: 1 rem;
+                right: 1 rem;
+                left: auto;
                 background-color: #d4edda;
                 color: #155724;
                 border: 1px solid #c3e6cb;
@@ -74,12 +84,12 @@
         </div>
         <div class="row">
             <!-- Left side: Table -->
-            <div class="col-md-8">
+            <div class="col-md-8 col-12">
                 <div class="card">
                     <div class="card-body">
                         {{-- Search Form --}}
                         <form method="GET" action="{{ url()->current() }}">
-                            <div class="row g-3 mb-3 align-items-center">
+                            <div class="row g-3 mb-3 align-items-center flex-wrap">
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bi bi-search"></i></span>
@@ -97,44 +107,46 @@
                             </div>
                         </form>
 
-                        <table class="table align-middle">
-                            <thead class="table">
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                    <th>Products</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($categories as $category)
+                        <div class="table-responsive">
+                            <table class="table align-middle">
+                                <thead class="table">
                                     <tr>
-                                        <td class="fw-bold">{{ $category->name }}</td>
-                                        <td>{{ Str::limit($category->description, 50) }}</td>
-                                        <td>{{ $category->products_count }}</td>
-                                        <td>
-                                            <div class="d-flex gap-1 align-items-center">
-                                                {{-- Edit Button --}}
-                                                <a href="{{ route('categories.edit', ['id' => $category->id]) }}"
-                                                    class="btn btn-sm btn-outline-pink">
-                                                    <i class="fas fa-pen" title="Edit Category"></i>
-                                                </a>
-                                                {{-- Delete Button --}}
-                                                <form method="POST" action="{{ route('category.remove') }}"
-                                                    class="m-0 delete-category-form" style="display:inline-block;"
-                                                    onsubmit="return confirm('Are you sure you want to delete this category?');">
-                                                    @csrf
-                                                    <input type="hidden" name="category_id" value="{{ $category->id }}">
-                                                    <button type="submit" class="btn btn-sm btn-outline-red">
-                                                        <i class="fas fa-trash" title="Delete Category"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Products</th>
+                                        <th>Actions</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach ($categories as $category)
+                                        <tr>
+                                            <td class="fw-bold">{{ $category->name }}</td>
+                                            <td>{{ Str::limit($category->description, 50) }}</td>
+                                            <td>{{ $category->products_count }}</td>
+                                            <td>
+                                                <div class="d-flex gap-1 align-items-center">
+                                                    {{-- Edit Button --}}
+                                                    <a href="{{ route('categories.edit', ['id' => $category->id]) }}"
+                                                        class="btn btn-sm btn-outline-pink">
+                                                        <i class="fas fa-pen" title="Edit Category"></i>
+                                                    </a>
+                                                    {{-- Delete Button --}}
+                                                    <form method="POST" action="{{ route('category.remove') }}"
+                                                        class="m-0 delete-category-form" style="display:inline-block;"
+                                                        onsubmit="return confirm('Are you sure you want to delete this category?');">
+                                                        @csrf
+                                                        <input type="hidden" name="category_id" value="{{ $category->id }}">
+                                                        <button type="submit" class="btn btn-sm btn-outline-red">
+                                                            <i class="fas fa-trash" title="Delete Category"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
 
                         @if ($categories->isEmpty())
                             <p class="text-muted text-center">No categories found.</p>
@@ -172,7 +184,7 @@
             </div>
 
             <!-- Right side: Form -->
-            <div class="col-md-4">
+            <div class="col-md-4 col-12">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="fw-bold mb-3">Add New Category</h5>
