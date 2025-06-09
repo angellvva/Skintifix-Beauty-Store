@@ -365,7 +365,7 @@
                     y: {
                         beginAtZero: true,
                         min: 0,
-                        max: 10,
+                        max: 20,
                         ticks: {
                             stepSize: 1,
                             callback: function(value) {

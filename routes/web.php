@@ -100,8 +100,10 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
     // route admin messages
     Route::get('/admin/messages', [AdminController::class, 'messages'])->name('admin.messages');
 
-    //Order view admin
-    Route::get('/orders/{id}', [AdminOrderController::class, 'show'])->name('orders.show');
+    // Order detail (show)
+    Route::get('/admin/orders/{id}', [AdminOrderController::class, 'show'])->name('admin.orders.show');
+
+
 
     // Route untuk edit order
     Route::get('/orders/{id}/edit', [AdminOrderController::class, 'edit'])->name('orders.edit');
