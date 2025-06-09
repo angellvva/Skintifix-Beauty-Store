@@ -58,10 +58,7 @@
 
         /* Responsif di layar kecil */
         @media (max-width: 768px) {
-            table {
-                min-width: 700px;
-                /* cukup lebar untuk semua kolom */
-            }
+        
 
             .table-responsive {
                 border: 1px solid #dee2e6;
@@ -109,8 +106,12 @@
             border: 1px solid #dee2e6;
             color: black;
             background-color: white;
-            width: 100%;
+            /* width: 100%; */
             box-sizing: border-box;
+             white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
         }
 
         .btn-search,
@@ -122,7 +123,7 @@
     </style>
     <div class="container my-4">
         <div class="row mb-4">
-            <div class="col-12 d-flex align-items-center justify-content-between">
+            <div class="col-12 d-flex flex-wrap align-items-center justify-content-between">
                 <div>
                     <h2 class="fw-bold" style="color: #e965a7;">Products</h2>
                     <p class="text-muted m-0">Manage and monitor all products available in your store</p>
@@ -251,7 +252,7 @@
                     </div>
 
                     {{-- Pagination links --}}
-                    <div class="d-flex justify-content-end">
+                    <div class="d-flex justify-content-end flex-wrap gap-2 mt-2">
                         @if ($products->onFirstPage())
                             <button class="btn btn-secondary me-1" disabled>Prev</button>
                         @else
