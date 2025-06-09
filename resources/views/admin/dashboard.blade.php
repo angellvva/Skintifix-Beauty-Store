@@ -243,7 +243,10 @@
                     </div>
                     <div class="card-body">
                         <div class="card-body">
-                            <canvas id="salesChart" height="60"></canvas>
+                            <div style="position: relative; height: 300px; width: 100%;">
+                                <canvas id="salesChart"></canvas>
+                            </div>
+                         
                         </div>
                     </div>
                 </div>
@@ -369,18 +372,13 @@
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: window.innerWidth > 768,
-                layout: {
-                    padding: {
-                        top: 20,
-                        bottom: 20,
-                        left: 10,
-                        right: 10
-                    }
-                },
+                maintainAspectRatio: false,
                 scales: {
                     y: {
                         beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        },
                         title: {
                             display: true,
                             text: 'Number of Orders',
@@ -389,13 +387,6 @@
                                 size: 14,
                                 weight: 'bold'
                             }
-                        },
-                        ticks: {
-                            stepSize: 1,
-                            color: '#000'
-                        },
-                        grid: {
-                            color: '#eee'
                         }
                     },
                     x: {
@@ -407,14 +398,6 @@
                                 size: 14,
                                 weight: 'bold'
                             }
-                        },
-                        ticks: {
-                            color: '#000',
-                            maxRotation: 45,
-                            minRotation: 20
-                        },
-                        grid: {
-                            display: false
                         }
                     }
                 }
