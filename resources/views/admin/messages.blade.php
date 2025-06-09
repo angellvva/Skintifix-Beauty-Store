@@ -2,7 +2,13 @@
 
 @section('content')
     <style>
-        table {
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border: 1px solid #dee2e6;
+            margin-bottom: 1rem;
+        }
+        .table {
             width: 100%;
             table-layout: fixed;
             border-collapse: collapse;
@@ -23,6 +29,13 @@
             border: 1px solid #dee2e6;
             color: white;
             background-color: #e965a7;
+        }
+
+        .table th,
+        .table td {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
         }
     </style>
 
@@ -66,14 +79,16 @@
                             </div>
                         </div>
 
-                        <div class="col-md-1">
-                            <a href="{{ url()->current() }}" class="btn btn-reset">
+                        <div class="col-md-1 d-flex align-items-end">
+                            <a href="{{ url()->current() }}" class="btn btn-reset w-100 text-center">
                                 <i class="bi bi-arrow-clockwise"></i> Reset
                             </a>
                         </div>
                     </div>
                 </form>
 
+
+                <div class= "table-responsive">
                 <table class="table align-middle">
                     <thead>
                         <tr>
@@ -94,6 +109,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                </div>
 
                 @if ($messages->isEmpty())
                     <p class="text-muted text-center">No messages found.</p>

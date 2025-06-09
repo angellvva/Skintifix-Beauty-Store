@@ -29,6 +29,7 @@
 
         .table-responsive table {
             width: 100%;
+            border: 1px solid #dee2e6;
             border-collapse: collapse;
         }
 

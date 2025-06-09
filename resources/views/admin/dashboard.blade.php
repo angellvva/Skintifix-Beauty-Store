@@ -328,26 +328,6 @@
             text-overflow: ellipsis;
             overflow: hidden;
         }
-
-        /* .topselling th:nth-child(1) {
-            width: 40%;
-        }
-
-        .topselling th:nth-child(2) {
-            width: 20%;
-        }
-
-        .topselling th:nth-child(3) {
-            width: 15%;
-        }
-
-        .topselling th:nth-child(4) {
-            width: 10%;
-        }
-
-        .topselling th:nth-child(5) {
-            width: 10%;
-        } */
     </style>
 @endpush
 
