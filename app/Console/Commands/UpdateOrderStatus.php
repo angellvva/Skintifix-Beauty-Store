@@ -3,26 +3,15 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Carbon\Carbon;
+use App\Models\Order;
 
 class UpdateOrderStatus extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'orders:update-status';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Update order status based on time and shipping method';
 
-    /**
-     * Execute the console command.
-     */
     public function handle()
     {
         $now = Carbon::now();
@@ -38,7 +27,7 @@ class UpdateOrderStatus extends Command
                 $order->status = 'processing';
                 $order->save();
             } elseif ($order->status === 'processing') {
-                $required = $order->shipping_method === 'express' ? 2 : 4; // 1+1, 1+3
+                $required = $order->shipping_method === 'express' ? 2 : 4;
                 if ($days >= $required) {
                     $order->status = 'completed';
                     $order->save();

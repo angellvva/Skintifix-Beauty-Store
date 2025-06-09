@@ -142,183 +142,183 @@
         <div class="container py-5">
             <h2>Order Details</h2>
 
-            @if ($order->status == 'failed')
-                isinya failed
-            @else
-                <div class="p-4 mb-4"
-                    style="background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                    <h5 class="fw-bold ps-2" style="color:#e965a7;">Recipient & Shipping Information</h5>
-                    <table class="table customer-info-table">
-                        <thead>
-                            <tr>
-                                <th>Recipient Details</th>
-                                <th>Contact Information</th>
-                                <th>Shipping Address</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <p class="fw-bold m-0">{{ $order->recipient_name }}</p>
-                                </td>
-                                <td>
-                                    <p class="m-0">
-                                        <span><i class="fas fa-phone me-2"
-                                                style="color:#e965a7;"></i></span>{{ $order->recipient_phone }}
-                                    </p>
-                                </td>
-                                <td>{{ $order->recipient_address }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="p-4 mb-4"
+                style="background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <h5 class="fw-bold ps-2" style="color:#e965a7;">Recipient & Shipping Information</h5>
+                <table class="table customer-info-table">
+                    <thead>
+                        <tr>
+                            <th>Recipient Details</th>
+                            <th>Contact Information</th>
+                            <th>Shipping Address</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <p class="fw-bold m-0">{{ $order->recipient_name }}</p>
+                            </td>
+                            <td>
+                                <p class="m-0">
+                                    <span><i class="fas fa-phone me-2"
+                                            style="color:#e965a7;"></i></span>{{ $order->recipient_phone }}
+                                </p>
+                            </td>
+                            <td>{{ $order->recipient_address }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-                <div class="p-4 mb-4"
-                    style="background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                    <h5 class="fw-bold ps-2" style="color:#e965a7;">Order Details</h5>
-                    <table class="table order-details-table">
-                        <thead>
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Payment Method</th>
-                                <th>Shipping Method</th>
-                                <th>Order Date</th>
-                                <th>Shipping Date</th>
-                                <th>Delivery Date</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><b style="color:#e965a7;">SKINTIFIX-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</b>
-                                </td>
-                                <td>
-                                    {{ ucwords($order->payment->payment_method) }}<br>
-                                    <a href="{{ route('payment.success', ['order_id' => $order->id]) }}"
-                                        style="text-decoration: none">
-                                        <span @class([
-                                            'badge rounded-pill border px-3 py-1',
-                                            'border-secondary text-secondary badge-pending' =>
-                                                $order->payment->payment_status == 'pending',
-                                            'border-danger text-danger badge-failed' =>
-                                                $order->payment->payment_status == 'failed',
-                                            'border-success text-success badge-paid' =>
-                                                $order->payment->payment_status == 'paid',
-                                        ])>
-                                            {{ ucfirst($order->payment->payment_status) }}
-                                        </span>
-                                    </a>
-                                </td>
-                                <td>
-                                    @if ($order->shipping_price == 20000)
-                                        Standard Delivery<br>
-                                        <p class="m-0" style="color:gray;">3 business days</p>
-                                    @else
-                                        Express Delivery<br>
-                                        <p class="m-0" style="color:gray;">1 business day</p>
-                                    @endif
-                                </td>
-                                <td>
-                                    {{ \Carbon\Carbon::parse($order->created_at)->format('d M Y') }}
-                                </td>
-                                <td>
-                                    {{ \Carbon\Carbon::parse($order->created_at)->addDays(1)->format('d M Y') }}<br>
-                                </td>
-                                <td>
-                                    @if ($order->shipping_price == 20000)
-                                        {{ \Carbon\Carbon::parse($order->created_at)->addDays(4)->format('d M Y') }}<br>
-                                    @else
-                                        {{ \Carbon\Carbon::parse($order->created_at)->addDays(2)->format('d M Y') }}<br>
-                                    @endif
-
-                                </td>
-                                <td>
-                                    <div @class([
+            <div class="p-4 mb-4"
+                style="background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <h5 class="fw-bold ps-2" style="color:#e965a7;">Order Details</h5>
+                <table class="table order-details-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Payment Method</th>
+                            <th>Shipping Method</th>
+                            <th>Order Date</th>
+                            <th>Shipping Date</th>
+                            <th>Delivery Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b style="color:#e965a7;">SKINTIFIX-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</b>
+                            </td>
+                            <td>
+                                @if (!empty($order->payment->payment_method))
+                                    {{ ucwords($order->payment->payment_method) }}
+                                @else
+                                    Not Available
+                                @endif
+                                <br>
+                                <a href="{{ $order->payment_url }}" style="text-decoration: none">
+                                    <span @class([
                                         'badge rounded-pill border px-3 py-1',
-                                        'border-danger text-danger' => $order->status == 'failed',
-                                        'border-secondary text-secondary' => $order->status == 'pending',
-                                        'border-warning text-warning' => $order->status == 'processing',
-                                        'border-success text-success' => $order->status == 'completed',
+                                        'border-secondary text-secondary badge-pending' =>
+                                            $order->payment->payment_status == 'pending',
+                                        'border-danger text-danger badge-failed' =>
+                                            $order->payment->payment_status == 'failed',
+                                        'border-success text-success badge-paid' =>
+                                            $order->payment->payment_status == 'paid',
                                     ])>
-                                        {{ ucfirst($order->status) }}
+                                        {{ ucfirst($order->payment->payment_status) }}
+                                    </span>
+                                </a>
+                            </td>
+                            <td>
+                                @if ($order->shipping_price == 20000)
+                                    Standard Delivery<br>
+                                    <p class="m-0" style="color:gray;">3 business days</p>
+                                @else
+                                    Express Delivery<br>
+                                    <p class="m-0" style="color:gray;">1 business day</p>
+                                @endif
+                            </td>
+                            <td>
+                                {{ \Carbon\Carbon::parse($order->created_at)->format('d M Y') }}
+                            </td>
+                            <td>
+                                {{ \Carbon\Carbon::parse($order->created_at)->addDays(1)->format('d M Y') }}<br>
+                            </td>
+                            <td>
+                                @if ($order->shipping_price == 20000)
+                                    {{ \Carbon\Carbon::parse($order->created_at)->addDays(4)->format('d M Y') }}<br>
+                                @else
+                                    {{ \Carbon\Carbon::parse($order->created_at)->addDays(2)->format('d M Y') }}<br>
+                                @endif
+
+                            </td>
+                            <td>
+                                <div @class([
+                                    'badge rounded-pill border px-3 py-1',
+                                    'border-danger text-danger' => $order->status == 'failed',
+                                    'border-secondary text-secondary' => $order->status == 'pending',
+                                    'border-warning text-warning' => $order->status == 'processing',
+                                    'border-success text-success' => $order->status == 'completed',
+                                ])>
+                                    {{ ucfirst($order->status) }}
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="p-4"
+                style="background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <h5 class="fw-bold ps-2" style="color:#e965a7;">Order Summary</h5>
+                <table class="table order-details-table">
+                    <tbody>
+                        @php
+                            $totalOrderPrice = 0;
+                        @endphp
+
+                        @foreach ($order->orderItems as $orderItem)
+                            @php
+                                $subtotal = $orderItem->product->price * $orderItem->quantity;
+                                $totalOrderPrice += $subtotal;
+                            @endphp
+
+                            <tr>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-1">
+                                            <img src="{{ $orderItem->product->image }}"
+                                                alt="{{ $orderItem->product->name }}" class="order-img">
+                                        </div>
+                                        <div class="col-md-9 p-0">
+                                            <p class="fw-bold mb-1">{{ $orderItem->product->name }}</p>
+                                            <p class="mb-0">Amount: {{ $orderItem->quantity }}</p>
+                                        </div>
+                                        <div class="col-md-2" style="text-align: right;">
+                                            Rp{{ number_format($subtotal, 0, ',', '.') }}
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
-                        </tbody>
-                    </table>
-                </div>
+                        @endforeach
+                    </tbody>
+                </table>
 
-                <div class="p-4"
-                    style="background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                    <h5 class="fw-bold ps-2" style="color:#e965a7;">Order Summary</h5>
-                    <table class="table order-details-table">
-                        <tbody>
-                            @php
-                                $totalOrderPrice = 0;
-                            @endphp
-
-                            @foreach ($order->orderItems as $orderItem)
-                                @php
-                                    $subtotal = $orderItem->product->price * $orderItem->quantity;
-                                    $totalOrderPrice += $subtotal;
-                                @endphp
-
-                                <tr>
-                                    <td>
-                                        <div class="row">
-                                            <div class="col-md-1">
-                                                <img src="{{ $orderItem->product->image }}"
-                                                    alt="{{ $orderItem->product->name }}" class="order-img">
-                                            </div>
-                                            <div class="col-md-9 p-0">
-                                                <p class="fw-bold mb-1">{{ $orderItem->product->name }}</p>
-                                                <p class="mb-0">Amount: {{ $orderItem->quantity }}</p>
-                                            </div>
-                                            <div class="col-md-2" style="text-align: right;">
-                                                Rp{{ number_format($subtotal, 0, ',', '.') }}
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-
-                    <div class="row align-items-center">
-                        <div class="col-md-10 text-end">
-                            Subtotal (<span>{{ count($order->orderItems) }}</span>
-                            @if (count($order->orderItems) > 1)
-                                items)
-                            @else
-                                item)
-                            @endif
-                        </div>
-                        <div class="col-md-2" style="text-align: right;">
-                            <p class="m-0 fw-bold">Rp{{ number_format($totalOrderPrice, 0, ',', '.') }}</p>
-                        </div>
+                <div class="row align-items-center">
+                    <div class="col-md-10 text-end">
+                        Subtotal (<span>{{ count($order->orderItems) }}</span>
+                        @if (count($order->orderItems) > 1)
+                            items)
+                        @else
+                            item)
+                        @endif
                     </div>
-
-                    <div class="row align-items-center">
-                        <div class="col-md-10 text-end">
-                            Shipping
-                        </div>
-                        <div class="col-md-2" style="text-align: right;">
-                            <p class="m-0 fw-bold">Rp{{ number_format($order->shipping_price, 0, ',', '.') }}</p>
-                        </div>
-                    </div>
-
-                    <br>
-
-                    <div class="row align-items-center">
-                        <div class="col-md-10 text-end">
-                            Total Amount
-                        </div>
-                        <div class="col-md-2" style="text-align: right; color:#e965a7;">
-                            <h4 class="m-0 fw-bold">Rp{{ number_format($order->total_amount, 0, ',', '.') }}</h4>
-                        </div>
+                    <div class="col-md-2" style="text-align: right;">
+                        <p class="m-0 fw-bold">Rp{{ number_format($totalOrderPrice, 0, ',', '.') }}</p>
                     </div>
                 </div>
-            @endif
+
+                <div class="row align-items-center">
+                    <div class="col-md-10 text-end">
+                        Shipping
+                    </div>
+                    <div class="col-md-2" style="text-align: right;">
+                        <p class="m-0 fw-bold">Rp{{ number_format($order->shipping_price, 0, ',', '.') }}</p>
+                    </div>
+                </div>
+
+                <br>
+
+                <div class="row align-items-center">
+                    <div class="col-md-10 text-end">
+                        Total Amount
+                    </div>
+                    <div class="col-md-2" style="text-align: right; color:#e965a7;">
+                        <h4 class="m-0 fw-bold">Rp{{ number_format($order->total_amount, 0, ',', '.') }}</h4>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

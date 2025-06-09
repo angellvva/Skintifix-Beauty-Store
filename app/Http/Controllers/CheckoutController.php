@@ -133,11 +133,6 @@ class CheckoutController extends Controller
                     'subtotal' => $item->price * $item->quantity,
                 ]);
 
-                // ngurangi stok produk di db
-                DB::table('products')
-                    ->where('id', $item->product_id)
-                    ->decrement('stock', $item->quantity);
-
                 // hapus produk dari cart
                 DB::table('carts')->whereIn('id', $selectedItemIds)->delete();
             }
@@ -145,45 +140,45 @@ class CheckoutController extends Controller
             Log::info('Generated order ID:', ['invoice' => $order->invoice_number]);
 
             $params = [
-            'transaction_details' => [
-                'order_id' => $order->invoice_number,
-                'gross_amount' => (int) $totalAmount,
-            ],
-            'customer_details' => [
-                'first_name' => $request->name,
-                'last_name' => '',
-                'phone' => $request->phone,
-                'email' => $request->email,
-                'billing_address' => [
-                    'address' => $request->address,
-                    'postal_code' => $request->postal_code,
-                    'region' => $request->region,
-                    'country' => $request->country,
+                'transaction_details' => [
+                    'order_id' => $order->invoice_number,
+                    'gross_amount' => (int) $totalAmount,
                 ],
-            ],
-            'item_details' => array_merge(
-                $cartItems->map(function ($item) {
-                    return [
-                        'id' => $item->cart_id,
-                        'price' => (int) $item->price,
-                        'quantity' => (int) $item->quantity,
-                        'name' => $item->name,
-                    ];
-                })->toArray(),
-                [[
-                    'id' => 'SHIPPING',
-                    'price' => (int) $shippingCost,
-                    'quantity' => 1,
-                    'name' => 'Shipping Cost'
-                ]]
-            ),
-            'callbacks' => [
-                'finish' => route('payment.success'), 
-            ], 
-        ];
+                'customer_details' => [
+                    'first_name' => $request->name,
+                    'last_name' => '',
+                    'phone' => $request->phone,
+                    'email' => $request->email,
+                    'billing_address' => [
+                        'address' => $request->address,
+                        'postal_code' => $request->postal_code,
+                        'region' => $request->region,
+                        'country' => $request->country,
+                    ],
+                ],
+                'item_details' => array_merge(
+                    $cartItems->map(function ($item) {
+                        return [
+                            'id' => $item->cart_id,
+                            'price' => (int) $item->price,
+                            'quantity' => (int) $item->quantity,
+                            'name' => $item->name,
+                        ];
+                    })->toArray(),
+                    [[
+                        'id' => 'SHIPPING',
+                        'price' => (int) $shippingCost,
+                        'quantity' => 1,
+                        'name' => 'Shipping Cost'
+                    ]]
+                ),
+                'callbacks' => [
+                    'finish' => route('payment.success'),
+                ],
+            ];
 
 
-        Log::info('Sending transaction to Midtrans with order_id: ' . $order->invoice_number); // Log untuk memastikan order_id yang dikirim ke Midtrans
+            Log::info('Sending transaction to Midtrans with order_id: ' . $order->invoice_number); // Log untuk memastikan order_id yang dikirim ke Midtrans
 
             $snapUrl = Snap::createTransaction($params)->redirect_url;
 
@@ -206,58 +201,89 @@ class CheckoutController extends Controller
     }
 
     public function paymentSuccess(Request $request)
-{
-    $orderId = $request->get('order_id'); // Dapatkan order_id dari URL
-    $order = Order::with('payment')->where('invoice_number', $orderId)->first(); // Cek apakah order ada
+    {
+        $orderId = $request->get('order_id'); // Dapatkan order_id dari URL
+        $order = Order::with('payment')->where('invoice_number', $orderId)->first(); // Cek apakah order ada
 
 
-    if (!$order) {
-        return redirect()->route('catalog')->with('error', 'Order not found.'); // Kalau order tidak ditemukan
-    }
-
-    // Konfigurasi Midtrans
-    Config::$serverKey = config('midtrans.server_key');
-    Config::$isProduction = config('midtrans.is_production');
-
-    try {
-        $status = Transaction::status($order->invoice_number); // Mengecek status transaksi di Midtrans
-
-        // Update status order berdasarkan response dari Midtrans
-        if ($status->transaction_status === 'settlement' || $status->transaction_status === 'capture') {
-            $order->status = 'pending';
-            $order->payment_confirmed_at = now(); // buat keperluan cronjob
-        } elseif ($status->transaction_status === 'pending') {
-            $order->status = 'pending';
-        } elseif ($status->transaction_status === 'expire') {
-            $order->status = 'failed';
-        } elseif ($status->transaction_status === 'cancel') {
-            $order->status = 'failed';
-        } else {
-            $order->status = $status->transaction_status;
+        if (!$order) {
+            return redirect()->route('catalog')->with('error', 'Order not found.'); // Kalau order tidak ditemukan
         }
 
-        $order->save(); // Simpan perubahan status ke database
-        $payment = Payments::where('order_id', $order->id)->first();
-        if ($payment) {
-            $payment->payment_status = $status->transaction_status;  // Update payment_status
-            $payment->payment_date = now();  // Set payment_date
-            $payment->payment_method = $status->payment_type; // Bisa menambahkan payment_type di sini sesuai dengan data dari Midtrans
-            $payment->save();  // Simpan perubahan status di tabel payments
+        // Konfigurasi Midtrans
+        Config::$serverKey = config('midtrans.server_key');
+        Config::$isProduction = config('midtrans.is_production');
+
+        try {
+            $status = Transaction::status($order->invoice_number); // Mengecek status transaksi di Midtrans
+
+            // Update status order berdasarkan response dari Midtrans
+            if ($status->transaction_status === 'settlement' || $status->transaction_status === 'capture') {
+                $order->status = 'pending';
+                $order->payment_confirmed_at = now(); // buat keperluan cronjob
+            } elseif ($status->transaction_status === 'pending') {
+                $order->status = 'pending';
+            } elseif ($status->transaction_status === 'expire') {
+                $order->status = 'failed';
+            } elseif ($status->transaction_status === 'cancel') {
+                $order->status = 'failed';
+            } else {
+                $order->status = $status->transaction_status;
+            }
+
+            $order->save(); // Simpan perubahan status ke database
+            $payment = Payments::where('order_id', $order->id)->first();
+            if ($payment) {
+                $payment->payment_status = $this->mapMidtransStatus($status->transaction_status);
+                $payment->payment_date = now();  // Set payment_date
+
+                if (isset($status->payment_type)) {
+                    $payment->payment_method = $status->payment_type;
+                } elseif (isset($status->va_numbers[0]->bank)) {
+                    $payment->payment_method = $status->va_numbers[0]->bank;
+                } elseif (isset($status->permata_va_number)) {
+                    $payment->payment_method = 'permata';
+                } elseif (isset($status->bill_key)) {
+                    $payment->payment_method = 'mandiri';
+                } else {
+                    $payment->payment_method = 'unknown';
+                }
+
+                $payment->save();  // Simpan perubahan status di tabel payments
+
+                // Kurangi stok hanya jika pembayaran berhasil (paid)
+                if ($payment->payment_status === 'paid') {
+                    foreach ($order->orderItems as $item) {
+                        DB::table('products')
+                            ->where('id', $item->product_id)
+                            ->decrement('stock', $item->quantity);
+                    }
+                }
+            }
+
+            Log::info('MIDTRANS STATUS OBJECT', [
+                'order_id' => $order->invoice_number,
+                'transaction_status' => $status->transaction_status,
+                'payment_type' => $status->payment_type ?? null,
+                'raw_status' => (array) $status
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Failed to check payment status: ' . $e->getMessage()); // Jika gagal memeriksa status Midtrans
         }
-                Log::info('Midtrans Response:', ['status' => $status]);
 
-
-
-
-    } catch (\Exception $e) {
-        \Log::error('Failed to check payment status: ' . $e->getMessage()); // Jika gagal memeriksa status Midtrans
+        // Mengarahkan ke halaman payment-success dan mengirimkan data order ke view
+        return view('payment-success', [
+            'order' => $order, // Mengirim data order
+            'status_message' => 'Payment status updated.'
+        ]);
     }
 
-    // Mengarahkan ke halaman payment-success dan mengirimkan data order ke view
-    return view('payment-success', [
-        'order' => $order, // Mengirim data order
-        'status_message' => 'Payment status updated.'
-    ]);
-}
-
+    private function mapMidtransStatus($transactionStatus)
+    {
+        return match ($transactionStatus) {
+            'settlement', 'capture' => 'paid',
+            'expire', 'cancel' => 'failed',
+            default => $transactionStatus, // 'pending', 'deny', dll tetap sama
+        };
+    }
 }

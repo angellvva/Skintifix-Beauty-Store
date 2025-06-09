@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use App\Models\Payments;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,7 +22,12 @@ class Order extends Model
         'total_amount',
         'status',
         'payment_url',
-        'order_date'
+        'order_date',
+        'payment_confirmed_at',
+    ];
+
+    protected $casts = [
+        'payment_confirmed_at' => 'datetime',
     ];
 
     public $timestamps = true;
@@ -46,5 +52,4 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
-
 }

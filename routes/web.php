@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Order;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
@@ -13,11 +14,11 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\MidtransController;
+use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminProductController;
-use App\Http\Controllers\MidtransController;
-use App\Http\Controllers\PasswordController;
 
 // ROUTE FORGET PASSWORD OTP
 Route::get('/forget-password', [AuthController::class, 'showForgetPasswordForm'])->name('forget.form');
