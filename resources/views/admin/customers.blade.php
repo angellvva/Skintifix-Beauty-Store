@@ -60,7 +60,7 @@
                             </div>
                         </div>
                       
-                        <div class="col-md-3 col-12 mt-2 mt-md-0">
+                        <div class="col-md-3 col-12 d-flex align-items-center">
                             <select name="status" class="form-select"
                                 onchange="document.getElementById('filterForm').submit()">
                                 <option value="highest_spend" {{ request('status') == 'highest_spend' ? 'selected' : '' }}>
@@ -71,7 +71,7 @@
                                 </option>
                             </select>
                         </div>
-                        <div class="col-md-1 col-12 mt-2 mt-md-0">
+                        <div class="col-md-1 col-12 d-flex align-items-center">
                             <a href="{{ url()->current() }}" class="btn btn-reset " title="Reset Filter">
                                 <i class="bi bi-arrow-clockwise"></i> Reset
                             </a>
