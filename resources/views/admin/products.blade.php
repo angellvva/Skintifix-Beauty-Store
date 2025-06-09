@@ -80,8 +80,9 @@
             }
         } */
 
-        table {
+        .table {
             width: 100%;
+            table-layout: fixed;
             border-collapse: collapse;
         }
 
@@ -95,6 +96,7 @@
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             border: 1px solid #dee2e6;
+            margin-bottom: 1rem;
         }
 
         .table th,
@@ -175,65 +177,67 @@
                                     Stock</option>
                             </select>
                         </div>
-                        <div class="col-md-1">
-                            <a href="{{ url()->current() }}" class="btn btn-reset" title="Reset Filter">
+                        <div class="col-md-1 d-flex align-items-end">
+                            <a href="{{ url()->current() }}" class="btn btn-reset w-100 text-center" title="Reset Filter">
                                 <i class="bi bi-arrow-clockwise"></i> Reset
                             </a>
                         </div>
                     </div>
                 </form>
 
-                <table class="table align-middle">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Category</th>
-                            <th>Price</th>
-                            <th>Stock</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($products as $product)
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
                             <tr>
-                                <td class="fw-bold">{{ $product->name }}</td>
-                                <td>{{ $product->category->name }}</td>
-                                <td>Rp {{ number_format($product->price, 0, ',', '.') }}</td>
-                                <td>{{ $product->stock }}</td>
-                                <td>
-                                    <div
-                                        class="badge rounded-pill px-3 py-1 border
-                                        @if ($product->stock >= 20) border-success
-                                        @elseif ($product->stock > 0) border-warning
-                                        @else border-danger @endif">
-
-                                        @if ($product->stock >= 20)
-                                            <span class="text-success">In Stock</span>
-                                        @elseif($product->stock > 0)
-                                            <span class="text-warning">Low Stock</span>
-                                        @else
-                                            <span class="text-danger">Out of Stock</span>
-                                        @endif
-                                    </div>
-                                </td>
-                                <td>
-                                    <a href="{{ route('products.edit', $product->id) }}" class="btn btn-sm btn-edit me-2">
-                                        <i class="fas fa-pen" title="Edit Product"></i>
-                                    </a>
-                                    <form action="{{ route('admin.delete-product') }}" method="POST" class="d-inline"
-                                        onsubmit="return confirm('Are you sure you want to delete this product?');">
-                                        @csrf
-                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Product">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </td>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Status</th>
+                                <th>Actions</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach ($products as $product)
+                                <tr>
+                                    <td class="fw-bold">{{ $product->name }}</td>
+                                    <td>{{ $product->category->name }}</td>
+                                    <td>Rp {{ number_format($product->price, 0, ',', '.') }}</td>
+                                    <td>{{ $product->stock }}</td>
+                                    <td>
+                                        <div
+                                            class="badge rounded-pill px-3 py-1 border
+                                            @if ($product->stock >= 20) border-success
+                                            @elseif ($product->stock > 0) border-warning
+                                            @else border-danger @endif">
+
+                                            @if ($product->stock >= 20)
+                                                <span class="text-success">In Stock</span>
+                                            @elseif($product->stock > 0)
+                                                <span class="text-warning">Low Stock</span>
+                                            @else
+                                                <span class="text-danger">Out of Stock</span>
+                                            @endif
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('products.edit', $product->id) }}" class="btn btn-sm btn-edit me-2">
+                                            <i class="fas fa-pen" title="Edit Product"></i>
+                                        </a>
+                                        <form action="{{ route('admin.delete-product') }}" method="POST" class="d-inline"
+                                            onsubmit="return confirm('Are you sure you want to delete this product?');">
+                                            @csrf
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Product">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
 
                 @if ($products->isEmpty())
                     <p class="text-muted text-center">No products found.</p>
