@@ -137,7 +137,7 @@
                                                         onsubmit="return confirm('Are you sure you want to delete this category?');">
                                                         @csrf
                                                         <input type="hidden" name="category_id" value="{{ $category->id }}">
-                                                        <button type="submit" class="btn btn-sm btn-outline-red">
+                                                        <button type="submit" class="btn btn-sm btn-outline-danger">
                                                             <i class="fas fa-trash" title="Delete Category"></i>
                                                         </button>
                                                     </form>
@@ -229,19 +229,8 @@
             background-color: white;
         }
 
-        .btn-outline-red {
-            border: 1px solid red;
-            color: red;
-            background-color: white;
-        }
-
         .btn-outline-pink:hover {
             background-color: #e965a7;
-            color: white;
-        }
-
-        .btn-outline-red:hover {
-            background-color: red;
             color: white;
         }
 
