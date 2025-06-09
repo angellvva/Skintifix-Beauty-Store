@@ -7,6 +7,7 @@
     <title>Forget Password</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
+        /* ---------- BASE STYLE ---------- */
         body {
             margin: 0;
             padding: 0;
@@ -28,6 +29,18 @@
             border-radius: 12px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
+            animation: fadeInUp 0.5s ease-in-out;
+        }
+
+        .logo {
+            font-size: 36px;
+            font-weight: bold;
+            color: #e965a7;
+            margin-bottom: 10px;
+        }
+
+        .logo span {
+            color: #000;
         }
 
         .login-modal h2 {
@@ -40,6 +53,10 @@
             font-size: 14px;
             color: #090909;
             margin-bottom: 20px;
+        }
+
+        .gray-text {
+            color: gray;
         }
 
         .login-modal input[type="text"] {
@@ -77,21 +94,21 @@
             background-color: #c84d85;
         }
 
-        .logo {
-            font-size: 36px;
-            font-weight: bold;
-            color: #e965a7;
-            margin-bottom: 20px;
-        }
-
         .login-modal label {
             text-align: left;
             display: block;
             margin-top: 6px;
+            margin-bottom: 4px;
+            font-weight: 500;
         }
 
-        .login-modal .gray-text {
-            color: gray;
+        .login-modal p a {
+            color: #e965a7;
+            text-decoration: none;
+        }
+
+        .login-modal p a:hover {
+            text-decoration: underline;
         }
 
         .error-message {
@@ -104,56 +121,133 @@
             margin-top: 10px;
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(6px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .back-to-login {
+            margin-top: 15px;
         }
-        
-        /* Gaya timer */
+
+        .back-to-login a {
+            color: #e965a7;
+            text-decoration: none;
+        }
+
+        .back-to-login a:hover {
+            text-decoration: underline;
+        }
+
+        .create-account-text {
+            margin-top: 20px;
+            margin-bottom: 14px;
+        }
+
+        /* Timer Styles */
         .timer {
             font-size: 16px;
             color: #e965a7;
             margin-top: 20px;
             font-weight: bold;
         }
-        
+
         .otp-expired {
             color: red;
             font-weight: bold;
         }
-        
-        /* New styles matching the login page */
-        .login-modal p a {
-            color: #e965a7;
-            text-decoration: none;
+
+        /* ---------- ANIMATION ---------- */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        
-        .login-modal p a:hover {
-            text-decoration: underline;
+
+        /* ---------- RESPONSIVE TABLET (≤768px) ---------- */
+        @media (max-width: 768px) {
+            .login-modal {
+                width: 90%;
+                padding: 28px 20px;
+            }
+
+            .logo {
+                font-size: 28px;
+            }
+
+            .login-modal h2 {
+                font-size: 20px;
+                margin-bottom: 8px;
+            }
+
+            .login-modal p,
+            .gray-text {
+                font-size: 13px;
+                margin-bottom: 16px;
+            }
+
+            .login-modal input[type="text"] {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .login-modal button {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .timer {
+                font-size: 14px;
+            }
+
+            .error-message {
+                font-size: 12px;
+                padding: 6px;
+            }
         }
-        
-        .create-account-text {
-            margin-top: 20px;
-            margin-bottom: 14px;
-        }
-        .back-to-login {
-            margin-top: 15px;
-        }
-        
-        .back-to-login a {
-            color: #e965a7;
-            text-decoration: none;
-        }
-        
-        .back-to-login a:hover {
-            text-decoration: underline;
+
+        /* ---------- RESPONSIVE MOBILE (≤480px) ---------- */
+        @media (max-width: 480px) {
+            body {
+                padding: 16px;
+            }
+
+            .login-modal {
+                width: 100%;
+                max-width: 340px;
+                padding: 20px 16px;
+            }
+
+            .logo {
+                font-size: 24px;
+            }
+
+            .login-modal h2 {
+                font-size: 18px;
+            }
+
+            .login-modal p,
+            .gray-text {
+                font-size: 12px;
+            }
+
+            .login-modal input[type="text"] {
+                font-size: 13px;
+                padding: 9px;
+            }
+
+            .login-modal button {
+                font-size: 13px;
+                padding: 9px;
+            }
+
+            .timer {
+                font-size: 13px;
+            }
+
+            .error-message {
+                font-size: 11px;
+            }
         }
     </style>
 </head>

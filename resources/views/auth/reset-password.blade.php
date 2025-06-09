@@ -7,6 +7,7 @@
     <title>Forget Password</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
+        /* ---------- BASE STYLE ---------- */
         body {
             margin: 0;
             padding: 0;
@@ -28,6 +29,18 @@
             border-radius: 12px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
+            animation: fadeInUp 0.5s ease-in-out;
+        }
+
+        .logo {
+            font-size: 36px;
+            font-weight: bold;
+            color: #e965a7;
+            margin-bottom: 20px;
+        }
+
+        .logo span {
+            color: #000;
         }
 
         .forget-password-modal h2 {
@@ -40,6 +53,10 @@
             font-size: 14px;
             color: #090909;
             margin-bottom: 20px;
+        }
+
+        .forget-password-modal .gray-text {
+            color: gray;
         }
 
         .forget-password-modal input[type="password"] {
@@ -77,21 +94,12 @@
             background-color: #c84d85;
         }
 
-        .logo {
-            font-size: 36px;
-            font-weight: bold;
-            color: #e965a7;
-            margin-bottom: 20px;
-        }
-
         .forget-password-modal label {
             text-align: left;
             display: block;
             margin-top: 6px;
-        }
-
-        .forget-password-modal .gray-text {
-            color: gray;
+            margin-bottom: 4px;
+            font-weight: 500;
         }
 
         .error-message {
@@ -102,6 +110,96 @@
             border-left: 4px solid #ff4d4d;
             border-radius: 4px;
             margin-top: 10px;
+        }
+
+        /* ---------- ANIMATION ---------- */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ---------- RESPONSIVE TABLET (≤768px) ---------- */
+        @media (max-width: 768px) {
+            .forget-password-modal {
+                width: 90%;
+                padding: 28px 20px;
+            }
+
+            .logo {
+                font-size: 28px;
+            }
+
+            .forget-password-modal h2 {
+                font-size: 20px;
+                margin-bottom: 8px;
+            }
+
+            .forget-password-modal p,
+            .forget-password-modal .gray-text {
+                font-size: 13px;
+                margin-bottom: 16px;
+            }
+
+            .forget-password-modal input[type="password"] {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .forget-password-modal button {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .error-message {
+                font-size: 12px;
+                padding: 6px;
+            }
+        }
+
+        /* ---------- RESPONSIVE MOBILE (≤480px) ---------- */
+        @media (max-width: 480px) {
+            body {
+                padding: 16px;
+            }
+
+            .forget-password-modal {
+                width: 100%;
+                max-width: 340px;
+                padding: 20px 16px;
+            }
+
+            .logo {
+                font-size: 24px;
+            }
+
+            .forget-password-modal h2 {
+                font-size: 18px;
+            }
+
+            .forget-password-modal p,
+            .forget-password-modal .gray-text {
+                font-size: 12px;
+            }
+
+            .forget-password-modal input[type="password"] {
+                font-size: 13px;
+                padding: 9px;
+            }
+
+            .forget-password-modal button {
+                font-size: 13px;
+                padding: 9px;
+            }
+
+            .error-message {
+                font-size: 11px;
+            }
         }
     </style>
 </head>

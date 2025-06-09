@@ -2,312 +2,298 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Register</title>
-    <link rel="stylesheet" href="css/style.css" />
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-image: url('{{ asset('images/background/flower.jpg') }}');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #f8f8f8;
+    }
 
-        .register-modal {
-            background-color: rgba(255, 255, 255, 0.9);
-            width: 600px;
-            /* Lebih lebar */
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
+    .register-scroll-container {
+      width: 100%;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 20px 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      background-image: url('{{ asset('images/background/flower.jpg') }}');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
 
-        .register-modal h2 {
-            font-size: 24px;
-            color: #080808;
-            margin-bottom: 10px;
-        }
+    .register-modal {
+      background-color: rgba(255, 255, 255, 0.9);
+      width: 600px;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
 
-        .register-modal p {
-            font-size: 14px;
-            color: #090909;
-            margin-bottom: 20px;
-        }
+    .logo {
+      font-size: 36px;
+      font-weight: bold;
+      color: #e965a7;
+      margin-bottom: 20px;
+    }
 
-        .register-modal input[type="text"],
-        .register-modal input[type="email"],
-        .register-modal input[type="password"],
-        .register-modal input[type="tel"] {
-            width: 100%;
-            padding: 12px;
-            margin: 6px 0;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            box-sizing: border-box;
-        }
+    .logo span {
+      color: #000;
+    }
 
-        .register-modal input:focus {
-            border-color: #e965a7;
-            outline: none;
-        }
+    .register-modal h2 {
+      font-size: 24px;
+      color: #080808;
+      margin-bottom: 10px;
+    }
 
-        .register-modal button {
-            width: 100%;
-            padding: 12px;
-            background-color: #e965a7;
-            border: none;
-            color: #fff;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-            margin-top: 14px;
-        }
+    .register-modal p {
+      font-size: 14px;
+      color: #090909;
+      margin-bottom: 20px;
+    }
 
-        .register-modal button:hover {
-            background-color: #c84d85;
-        }
+    .register-modal label {
+      text-align: left;
+      display: block;
+      margin-top: 6px;
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
 
-        .register-modal p a {
-            color: #e965a7;
-            text-decoration: none;
-        }
+    .register-modal input[type="text"],
+    .register-modal input[type="email"],
+    .register-modal input[type="password"],
+    .register-modal input[type="tel"] {
+      width: 100%;
+      padding: 12px;
+      margin: 6px 0;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+    }
 
-        .register-modal p a:hover {
-            text-decoration: underline;
-        }
+    .register-modal input:focus {
+      border-color: #e965a7;
+      outline: none;
+    }
 
-        .logo {
-            font-size: 36px;
-            font-weight: bold;
-            color: #e965a7;
-            margin-bottom: 20px;
-        }
+    .register-modal button {
+      width: 100%;
+      padding: 12px;
+      background-color: #e965a7;
+      border: none;
+      color: #fff;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+      margin-top: 14px;
+    }
 
-        .bottom-link {
-            font-size: 14px;
-            margin-top: 20px;
-        }
+    .register-modal button:hover {
+      background-color: #c84d85;
+    }
 
-        .register-modal label {
-            text-align: left;
-            display: block;
-            margin-top: 6px;
-        }
+    .register-modal p a {
+      color: #e965a7;
+      text-decoration: none;
+    }
 
-        .register-modal .gray-text {
-            color: gray;
-        }
+    .register-modal p a:hover {
+      text-decoration: underline;
+    }
 
-        .error-message {
-            color: red;
-            font-size: 13px;
-            background-color: #ffe6e6;
-            padding: 6px 10px;
-            border-left: 4px solid #ff4d4d;
-            border-radius: 4px;
-            display: block;
-            margin-top: 5px;
-            max-width: 100%;
-            box-sizing: border-box;
-        }
+    .bottom-link {
+      font-size: 14px;
+      margin-top: 20px;
+    }
 
-        .address-container {
-            margin-bottom: 0;
-        }
+    .register-modal .gray-text {
+      color: gray;
+    }
 
-        .postal-city-country-container {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-        }
+    .name-phone-container,
+    .password-container {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
 
-        .postal-code-container {
-            width: 30%;
-        }
+    .name-field,
+    .phone-field,
+    .password-field,
+    .confirm-password-field {
+      width: 48%;
+    }
 
-        .city-container,
-        .country-container {
-            width: 32%;
-        }
+    .postal-city-country-container {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: nowrap;
+    }
 
-        .name-phone-container,
-        .password-container {
-            display: flex;
-            gap: 10px;
-            justify-content: space-between;
-        }
+    .postal-code-container,
+    .city-container,
+    .country-container {
+      flex: 1;
+    }
 
-        .name-field,
-        .phone-field,
-        .password-field,
-        .confirm-password-field {
-            width: 50%;
-        }
-    </style>
+    .address-container {
+      margin-bottom: 0;
+    }
+
+    @media (max-width: 767px) {
+      .register-modal {
+        width: 90%;
+        padding: 28px 20px;
+      }
+
+      .logo {
+        font-size: 28px;
+      }
+
+      .register-modal h2 {
+        font-size: 20px;
+      }
+
+      .register-modal p {
+        font-size: 13px;
+      }
+
+      .register-modal input {
+        font-size: 14px;
+        padding: 10px;
+      }
+
+      .register-modal button {
+        font-size: 14px;
+        padding: 10px;
+      }
+
+      .name-phone-container,
+      .password-container,
+      .postal-city-country-container {
+        flex-direction: column;
+      }
+
+      .name-field,
+      .phone-field,
+      .password-field,
+      .confirm-password-field,
+      .postal-code-container,
+      .city-container,
+      .country-container {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .register-modal {
+        max-width: 360px;
+        padding: 20px 16px;
+      }
+
+      .logo {
+        font-size: 24px;
+      }
+
+      .register-modal h2 {
+        font-size: 18px;
+      }
+
+      .register-modal p {
+        font-size: 12px;
+      }
+
+      .register-modal input {
+        font-size: 13px;
+        padding: 9px;
+      }
+
+      .register-modal button {
+        font-size: 13px;
+        padding: 9px;
+      }
+    }
+  </style>
 </head>
 
 <body>
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const form = document.getElementById("registerForm");
-        
-        form.addEventListener("submit", function(event) {
-            event.preventDefault(); // Mencegah reload halaman
-            let valid = true;
-
-            // Reset error messages
-            document.querySelectorAll('.error-message').forEach(el => {
-                el.style.display = 'none';
-            });
-
-            // Validasi Password
-            const password = document.querySelector('input[name="password"]');
-            const confirmPassword = document.querySelector('input[name="password_confirmation"]');
-            
-            if (password.value.length < 8) {
-                document.getElementById("password-error").textContent =
-                    "Password must be at least 8 characters.";
-                document.getElementById("password-error").style.display = "block";
-                valid = false;
-            }
-
-            if (password.value !== confirmPassword.value) {
-                document.getElementById("confirm-password-error").textContent =
-                    "The password and confirm password do not match.";
-                document.getElementById("confirm-password-error").style.display = "block";
-                valid = false;
-            }
-
-            // Validasi Nama (hanya huruf dan spasi)
-            const name = document.querySelector('input[name="name"]');
-            const namePattern = /^[a-zA-Z\s]+$/;
-            if (!namePattern.test(name.value)) {
-                document.getElementById("name-error").textContent =
-                    "Name must be only letters and spaces.";
-                document.getElementById("name-error").style.display = "block";
-                valid = false;
-            }
-
-            // Validasi Nomor Telepon
-            const phone = document.querySelector('input[name="phone"]');
-            const phonePattern = /^[0-9]{10,15}$/;
-            if (!phonePattern.test(phone.value)) {
-                document.getElementById("phone-error").textContent =
-                    "Phone number must be a valid number with 10-15 digits.";
-                document.getElementById("phone-error").style.display = "block";
-                valid = false;
-            }
-
-            // Validasi Email
-            const email = document.querySelector('input[name="email"]');
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailPattern.test(email.value)) {
-                document.getElementById("email-error").textContent = "Please enter a valid email.";
-                document.getElementById("email-error").style.display = "block";
-                valid = false;
-            }
-
-            // Validasi Alamat (minimal 5 karakter)
-            const address = document.querySelector('input[name="address"]');
-            if (address.value.length < 5) {
-                document.getElementById("address-error").textContent =
-                    "Address must be at least 5 characters.";
-                document.getElementById("address-error").style.display = "block";
-                valid = false;
-            }
-
-            // Jika semua validasi lolos, submit form
-            if (valid) {
-                form.submit();
-            }
-        });
-    });
-    </script>
-    
+  <div class="register-scroll-container">
     <div class="register-modal">
-        <div class="logo">Skintifix <span style="color: #000000;">Beauty Store</span></div>
-        <h2>Account Register</h2>
-        <p class="gray-text">Enter your information to create an account</p>
+      <div class="logo">Skintifix <span>Beauty Store</span></div>
+      <h2>Account Register</h2>
+      <p class="gray-text">Enter your information to create an account</p>
 
-        <form action="{{ route('register.submit') }}" method="POST" id="registerForm">
-            @csrf
+      <form action="{{ route('register.submit') }}" method="POST">
+        @csrf
 
-            <div class="name-phone-container">
-                <div class="name-field">
-                    <label for="name">Name</label>
-                    <input type="text" name="name" required />
-                    <div class="error-message" id="name-error" style="display:none;"></div>
-                </div>
+        <div class="name-phone-container">
+          <div class="name-field">
+            <label for="name">Name</label>
+            <input type="text" name="name" required />
+          </div>
+          <div class="phone-field">
+            <label for="phone">Phone Number</label>
+            <input type="tel" name="phone" required pattern="[0-9]{10,15}" />
+          </div>
+        </div>
 
-                <div class="phone-field">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" name="phone" required pattern="[0-9]{10,15}" />
-                    <div class="error-message" id="phone-error" style="display:none;"></div>
-                </div>
-            </div>
+        <label for="email">Email</label>
+        <input type="email" name="email" placeholder="name@example.com" required />
 
-            <label for="email">Email</label>
-            <input type="email" name="email" placeholder="name@example.com" required />
-            <div class="error-message" id="email-error" style="display:none;"></div>
+        <div class="address-container">
+          <label for="address">Address</label>
+          <input type="text" name="address" required />
+        </div>
 
-            <div class="address-container">
-                <label for="address">Address</label>
-                <input type="text" name="address" required />
-                <div class="error-message" id="address-error" style="display:none;"></div>
-            </div>
+        <div class="postal-city-country-container">
+          <div class="postal-code-container">
+            <label for="postal_code">Postal Code</label>
+            <input type="text" name="postal_code" placeholder="e.g. 12345" required />
+          </div>
+          <div class="city-container">
+            <label for="city">City</label>
+            <input type="text" name="city" required />
+          </div>
+          <div class="country-container">
+            <label for="country">Country</label>
+            <input type="text" name="country" required />
+          </div>
+        </div>
 
-            <div class="postal-city-country-container">
-                <div class="postal-code-container">
-                    <label for="postal_code">Postal Code</label>
-                    <input type="text" name="postal_code" placeholder="e.g. 12345" required />
-                    <div class="error-message" id="postal-code-error" style="display:none;"></div>
-                </div>
+        <div class="password-container">
+          <div class="password-field">
+            <label for="password">Password</label>
+            <input type="password" name="password" placeholder="Password (min 8 characters)" required />
+          </div>
+          <div class="confirm-password-field">
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password" name="password_confirmation" placeholder="Confirm your password" required />
+          </div>
+        </div>
 
-                <div class="city-container">
-                    <label for="city">City</label>
-                    <input type="text" name="city" required />
-                </div>
+        <button type="submit">Register</button>
+      </form>
 
-                <div class="country-container">
-                    <label for="country">Country</label>
-                    <input type="text" name="country" required />
-                </div>
-            </div>
-
-            <div class="password-container">
-                <div class="password-field">
-                    <label for="password">Password</label>
-                    <input type="password" name="password" required minlength="8"
-                        placeholder="Password (min 8 characters)" />
-                    <div class="error-message" id="password-error" style="display:none;"></div>
-                </div>
-
-                <div class="confirm-password-field">
-                    <label for="confirm-password">Confirm Password</label>
-                    <input type="password" name="password_confirmation" placeholder="Confirm your password" required />
-                    <div class="error-message" id="confirm-password-error" style="display:none;"></div>
-                </div>
-            </div>
-
-            <button type="submit">Register</button>
-        </form>
-
-        <p class="bottom-link gray-text">Already have an account? <a href="{{ route('login') }}"><b>Login here</b></a>
-        </p>
+      <p class="bottom-link gray-text">
+        Already have an account? <a href="{{ route('login') }}"><b>Login here</b></a>
+      </p>
     </div>
+  </div>
 </body>
+
 </html>

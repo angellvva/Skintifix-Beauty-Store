@@ -1,12 +1,13 @@
 <!-- views/login.php -->
 <!DOCTYPE html>
 <html>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <head>
     <title>Account Sign In</title>
     <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <style>
+        /* ---------- BASE STYLE ---------- */
         body {
             margin: 0;
             padding: 0;
@@ -118,23 +119,23 @@
             margin-top: 10px;
         }
 
+        /* Animation */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
                 transform: translateY(6px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
 
-        /* ✅ Responsive adjustments */
-        @media (max-width: 480px) {
+        /* ---------- RESPONSIVE TABLET (≤768px) ---------- */
+        @media (max-width: 768px) {
             .login-modal {
                 width: 90%;
-                padding: 24px 16px;
+                padding: 28px 20px;
             }
 
             .logo {
@@ -143,10 +144,13 @@
 
             .login-modal h2 {
                 font-size: 20px;
+                margin-bottom: 8px;
             }
 
-            .login-modal p {
+            .login-modal p,
+            .login-modal .gray-text {
                 font-size: 13px;
+                margin-bottom: 16px;
             }
 
             .login-modal input[type="text"],
@@ -160,9 +164,50 @@
                 padding: 10px;
             }
 
-            .login-modal .error-message {
+            .error-message {
                 font-size: 12px;
                 padding: 6px;
+            }
+        }
+
+        /* ---------- RESPONSIVE MOBILE (≤480px) ---------- */
+        @media (max-width: 480px) {
+            body {
+                padding: 16px;
+            }
+
+            .login-modal {
+                width: 100%;
+                max-width: 340px;
+                padding: 20px 16px;
+            }
+
+            .logo {
+                font-size: 24px;
+            }
+
+            .login-modal h2 {
+                font-size: 18px;
+            }
+
+            .login-modal p,
+            .login-modal .gray-text {
+                font-size: 12px;
+            }
+
+            .login-modal input[type="text"],
+            .login-modal input[type="password"] {
+                font-size: 13px;
+                padding: 9px;
+            }
+
+            .login-modal button {
+                font-size: 13px;
+                padding: 9px;
+            }
+
+            .error-message {
+                font-size: 11px;
             }
         }
     </style>
