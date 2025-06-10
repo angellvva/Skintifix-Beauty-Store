@@ -31,7 +31,7 @@
             background-color: #e965a7;
         }
 
-        .table th:not(.no-wrap),
+        .table th,
         .table td:not(.no-wrap) {
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -94,7 +94,7 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Email</th>
-                                <th class="no-wrap">Message</th>
+                                <th>Message</th>
                                 <th>Created At</th>
                             </tr>
                         </thead>
