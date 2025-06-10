@@ -8,6 +8,7 @@
             border: 1px solid #dee2e6;
             margin-bottom: 1rem;
         }
+
         .table {
             width: 100%;
             table-layout: fixed;
@@ -31,8 +32,8 @@
             background-color: #e965a7;
         }
 
-        .table th,
-        .table td {
+        .table th:not(.no-wrap),
+        .table td:not(.no-wrap) {
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;
@@ -89,26 +90,26 @@
 
 
                 <div class= "table-responsive">
-                <table class="table align-middle">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Message</th>
-                            <th>Created At</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($messages as $msg)
+                    <table class="table align-middle">
+                        <thead>
                             <tr>
-                                <td class="fw-bold">{{ $msg->name }}</td>
-                                <td>{{ $msg->email }}</td>
-                                <td>{{ Str::limit($msg->message, 50) }}</td>
-                                <td>{{ \Carbon\Carbon::parse($msg->created_at)->format('d-m-Y H:i') }}</td>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th class="no-wrap">Message</th>
+                                <th>Created At</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach ($messages as $msg)
+                                <tr>
+                                    <td class="fw-bold">{{ $msg->name }}</td>
+                                    <td>{{ $msg->email }}</td>
+                                    <td class="no-wrap" style="white-space: normal;">{{ $msg->message, 50 }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($msg->created_at)->format('d-m-Y H:i') }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
 
                 @if ($messages->isEmpty())
