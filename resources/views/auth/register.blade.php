@@ -219,6 +219,9 @@
             .register-modal {
                 max-width: 360px;
                 padding: 20px 16px;
+                margin-bottom: 40px;
+                margin-left: 16px;
+                margin-right: 16px;
             }
 
             .logo {
@@ -241,6 +244,11 @@
             .register-modal button {
                 font-size: 13px;
                 padding: 9px;
+            }
+
+            .register-scroll-container {
+                align-items: flex-start;
+                padding-top: 40px;
             }
         }
     </style>
