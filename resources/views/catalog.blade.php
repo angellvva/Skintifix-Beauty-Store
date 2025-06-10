@@ -1,3 +1,261 @@
 @extends ('base.base')
 
+@php use Illuminate\Support\Str; @endphp
+
 @section('content')
+    <style>
+        .product-section {
+            background-color: #fff0f6;
+            padding: 50px 20px;
+        }
+
+        .product-section h2 {
+            color: #e965a7;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .product-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            justify-content: center;
+        }
+
+        .product-card {
+            background-color: #fff;
+            border-radius: 12px;
+            width: calc(25% - 24px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-card img {
+            height: 160px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+
+        .product-name {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #333;
+
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .product-stock {
+            color: #888;
+            font-size: 14px;
+        }
+
+        .product-price {
+            font-size: 16px;
+            color: #e965a7;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .product-description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        @media (max-width: 992px) {
+            .product-card {
+                width: calc(50% - 24px);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .product-card {
+                width: 100%;
+            }
+        }
+
+        .product-category-label {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #e965a7;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 12px;
+            z-index: 10;
+        }
+
+        .product-out-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: inherit;
+            z-index: 30;
+            pointer-events: none;
+        }
+
+        .product-out-label {
+            background-color: #e965a7;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .btn-prev-next {
+            color: white;
+            background-color: #e965a7;
+        }
+
+        .btn-prev-next:hover {
+            color: white;
+            background-color: #da5195;
+        }
+
+        .btn-wishlist-heart {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 40;
+            /* Lebih tinggi dari overlay */
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            pointer-events: auto;
+            /* Tetap bisa diklik */
+        }
+
+        .btn-wishlist-heart i {
+            font-size: 20px;
+            color: #e965a7;
+        }
+
+        .product-category-label {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background-color: #e965a7;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 12px;
+            z-index: 50;
+            /* Lebih tinggi dari .product-out-overlay */
+        }
+    </style>
+
+    <div class="product-section">
+        <div class="container">
+            <h2>All Products</h2>
+
+            <div class="product-grid">
+                @forelse ($products as $product)
+                    <div class="product-card position-relative" style="cursor: pointer;">
+                        <a href="{{ route('product.detail', $product->id) }}" style="text-decoration: none; color: inherit;">
+                            <img src="{{ Str::startsWith($product->image, ['http://', 'https://']) ? $product->image : asset($product->image) }}"
+                                alt="{{ $product->name }}">
+
+                            <!-- Category Label - Moved to Top Left -->
+                            <div class="product-category-label" style="left: 15px; right: auto;">
+                                {{ $product->category->name }}
+                            </div>
+
+                            <!-- Overlay jika habis -->
+                            @if ($product->stock == 0)
+                                <div class="product-out-overlay">
+                                    <div class="product-out-label">
+                                        Out of Stock
+                                    </div>
+                                </div>
+                            @endif
+                        </a>
+
+                        <!-- Heart Wishlist Button - Top Right -->
+                        <form action="{{ route('wishlist.toggle', $product->id) }}" method="POST"
+                            class="btn-wishlist-form">
+                            @csrf
+                            <button type="submit" class="btn-wishlist-heart" title="Add to Wishlist">
+                                @if ($product->isInWishlist ?? false)
+                                    <i class="fas fa-heart"></i>
+                                @else
+                                    <i class="far fa-heart"></i>
+                                @endif
+                            </button>
+                        </form>
+
+                        <div class="product-name">{{ $product->name }}</div>
+                        <div class="product-stock">Stock: {{ $product->stock }}</div>
+                        <div class="product-price">Rp{{ number_format($product->price, 0, ',', '.') }}</div>
+                        <div class="product-description">{{ $product->description }}</div>
+                    </div>
+                @empty
+                    <p style="text-align: center; width: 100%; color: #888;">No products found.</p>
+                @endforelse
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap ms-3 me-3">
+                <div class="">
+                    @if ($products->total() == 0)
+                        Showing 0 entries
+                    @else
+                        Showing {{ $products->firstItem() }} to {{ $products->lastItem() }} of
+                        {{ $products->total() }} entries
+                    @endif
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    @if ($products->onFirstPage())
+                        <button class="btn btn-secondary me-1" disabled>Prev</button>
+                    @else
+                        <a href="{{ $products->previousPageUrl() }}" class="btn btn-prev-next me-1">Prev</a>
+                    @endif
+
+                    @if ($products->hasMorePages())
+                        <a href="{{ $products->nextPageUrl() }}" class="btn btn-prev-next ms-1">Next</a>
+                    @else
+                        <button class="btn btn-secondary ms-1" disabled>Next</button>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection

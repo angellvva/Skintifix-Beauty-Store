@@ -4,12 +4,38 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    //
-    public function product_category():BelongsTo
+    // Nama tabel jika tidak sesuai konvensi Laravel
+    use SoftDeletes;
+    
+    protected $table = 'products';
+
+    // Kolom yang boleh diisi secara mass-assignment
+    protected $fillable = [
+        'name',
+        'description',
+        'image',
+        'price',
+        'stock',
+        'category_id',
+    ];
+    
+    public function category():BelongsTo
     {
         return $this->belongsTo(ProductCategory::class, 'category_id');
     }
+
+    public function order_items():HasMany
+    {
+        return $this->hasMany(OrderItem::class, 'product_id');
+    }
+
+    public function reviews()
+{
+    return $this->hasMany(Review::class);
+}
 }

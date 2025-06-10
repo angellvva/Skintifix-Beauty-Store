@@ -1,0 +1,347 @@
+@extends('base.base')
+
+@section('head')
+    <!-- Add Toastr CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+@endsection
+
+@section('content')
+    <style>
+        .product-section {
+            background-color: #fff0f6;
+            padding: 50px 20px;
+        }
+
+        .product-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .product-header h2 {
+            color: #e965a7;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .product-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0 auto 30px auto;
+            max-width: 1100px;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 0 20px;
+        }
+
+        .product-search input {
+            padding: 8px 12px;
+            border: 1px solid #e965a7;
+            border-radius: 20px;
+            width: 220px;
+        }
+
+        .product-filters select {
+            padding: 8px 12px;
+            border-radius: 20px;
+            border: 1px solid #e965a7;
+            color: #e965a7;
+            background-color: #fff;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+        }
+
+        .product-card {
+            background-color: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            position: relative;
+            transition: transform 0.2s ease;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-card img {
+            height: 160px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .product-price {
+            color: #e965a7;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        .product-stock {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .product-description {
+            color: #666;
+            font-size: 14px;
+            height: 38px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .category-label {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #e965a7;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .btn-wishlist-heart i {
+            font-size: 20px;
+            color: #e965a7;
+        }
+        
+        .wishlist-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .wishlist-button i {
+            font-size: 18px;
+            color: #e965a7;
+        }
+
+        .btn-search,
+        .btn-search:hover {
+            border: 1px solid #dee2e6;
+            color: white;
+            background-color: #e965a7;
+        }
+
+        .btn-reset,
+        .btn-reset:hover {
+            border: 1px solid #dee2e6;
+            color: black;
+            background-color: white;
+            white-space: nowrap;
+            width: auto;
+            padding: 0.375rem 0.75rem;
+        }
+
+        .product-out-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: inherit;
+            z-index: 30;
+            pointer-events: none;
+        }
+
+        .product-out-label {
+            background-color: #e965a7;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .category-label {
+            z-index: 40;
+            /* Lebih tinggi dari overlay */
+        }
+
+        .wishlist-button {
+            z-index: 40;
+            /* Lebih tinggi dari overlay */
+            pointer-events: auto;
+            /* Pastikan tombol tetap bisa diklik */
+        }
+    </style>
+
+    <div class="product-section">
+        <div class="container px-4">
+            <div class="product-header">
+                <h2>{{ $category }}</h2>
+                @php
+                    $fallbackDescription =
+                        'Explore our selection of high-quality ' .
+                        strtolower($category) .
+                        ' products crafted to fit your needs.';
+                @endphp
+
+                <p style="color: gray;">
+                    {{ !empty($categoryDescription) ? $categoryDescription : $fallbackDescription }}
+                </p>
+            </div>
+
+            <div class="mb-4">
+                <form method="GET" id="filterForm">
+                    <div class="row g-3 mb-3 align-items-center">
+                        <div class="col-md-5">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                <input type="text" name="search" class="form-control"
+                                    placeholder="Search {{ strtolower($category) }}..." value="{{ request('search') }}" />
+                                <button type="submit" class="btn btn-search" title="Search Filter">Search</button>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" name="sort"
+                                onchange="document.getElementById('filterForm').submit()">
+                                <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest</option>
+                                <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Price: Low
+                                    to High</option>
+                                <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Price:
+                                    High to Low</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" name="status"
+                                onchange="document.getElementById('filterForm').submit()">
+                                <option value="all" {{ request('status') == 'all' ? 'selected' : '' }}>All Status
+                                </option>
+                                <option value="in_stock" {{ request('status') == 'in_stock' ? 'selected' : '' }}>In Stock
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-1">
+                            <a href="{{ url()->current() }}" class="btn btn-reset">
+                                <i class="bi bi-arrow-clockwise"></i> Reset
+                            </a>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+
+            <div class="product-grid">
+                @forelse ($products as $product)
+                    <div class="product-card" onclick="window.location='{{ route('product.detail', $product->id) }}'">
+                        @if ($product->stock == 0)
+                            <div class="product-out-overlay">
+                                <div class="product-out-label">
+                                    Out of Stock
+                                </div>
+                            </div>
+                        @endif
+
+                        <div class="category-label">{{ $category }}</div>
+
+                        <!-- Wishlist Heart Button -->
+                        <form action="{{ route('wishlist.toggle', $product->id) }}" method="POST"
+                            style="position: absolute; top: 10px; right: 10px; z-index: 20;">
+                            @csrf
+                            <button type="submit" class="btn-wishlist-heart" style="background: none; border: none; cursor: pointer;">
+                                @if ($product->isInWishlist ?? false)
+                                    <i class="fas fa-heart"></i>
+                                @else
+                                    <i class="far fa-heart"></i>
+                                @endif
+                            </button>
+                        </form>
+
+                        <img src="{{ Str::startsWith($product->image, ['http://', 'https://']) ? $product->image : asset($product->image) }}"
+                            alt="{{ $product->name }}">
+                        <div class="product-name">{{ $product->name }}</div>
+                        <div class="product-price">Rp{{ number_format($product->price, 0, ',', '.') }}</div>
+                        <div class="product-stock">Stock: {{ $product->stock }}</div>
+                        <div class="product-description">{{ $product->description }}</div>
+                    </div>
+                @empty
+                    <p style="text-align: center; width: 100%; color: #888;">No products found.</p>
+                @endforelse
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap">
+                <div class="mb-0">
+                    @if ($products->total() == 0)
+                        Showing 0 entries
+                    @else
+                        Showing {{ $products->firstItem() }} to {{ $products->lastItem() }} of {{ $products->total() }}
+                        entries
+                    @endif
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    @if ($products->onFirstPage())
+                        <button class="btn btn-secondary me-1" disabled>Prev</button>
+                    @else
+                        <a href="{{ $products->previousPageUrl() }}" class="btn btn-prev-next me-1">Prev</a>
+                    @endif
+
+                    @if ($products->hasMorePages())
+                        <a href="{{ $products->nextPageUrl() }}" class="btn btn-prev-next ms-1">Next</a>
+                    @else
+                        <button class="btn btn-secondary ms-1" disabled>Next</button>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('scripts')
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <!-- Flash Toast -->
+    <script>
+        @if (session('success'))
+            toastr.success("{{ session('success') }}");
+        @endif
+
+        @if (session('error'))
+            toastr.error("{{ session('error') }}");
+        @endif
+    </script>
+@endsection

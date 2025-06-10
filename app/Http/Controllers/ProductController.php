@@ -1,0 +1,124 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Review;
+use App\Models\Product;
+use App\Models\OrderItem;
+use App\Models\Wishlist;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;  // Added Auth import
+use App\Models\ProductCategory;
+
+class ProductController extends Controller
+{
+    public function detail($id)
+    {
+        $product = Product::with('reviews.user')->findOrFail($id);
+
+        $isInWishlist = false;
+
+        $userId = Auth::id();  // Use Auth here
+
+        if ($userId) {
+            $isInWishlist = \App\Models\Wishlist::where('user_id', $userId)
+                ->where('product_id', $product->id)
+                ->exists();
+        }
+
+        $isBestSeller = OrderItem::where('product_id', $product->id)
+            ->where('quantity', '>', 1)
+            ->exists();
+
+        $isNewArrival = $product->created_at->gt(now()->subDays(30));
+
+        return view('product-detail', compact('product', 'isBestSeller', 'isNewArrival', 'isInWishlist'));
+    }
+
+    public function categoryCatalog($category, Request $request)
+    {
+        $categoryModel = ProductCategory::where('name', $category)->firstOrFail();
+        $categoryDescription = $categoryModel->description;
+
+        $search = $request->query('search');
+        $status = $request->query('status', 'all');
+        $sort = $request->query('sort', 'newest');
+
+        $productsQuery = Product::with('category')
+            ->where('category_id', $categoryModel->id);
+
+        $product = Product::with('reviews.user')->findOrFail($categoryModel->id);
+
+        $userId = Auth::id();
+
+        $wishlistProductIds = $userId ? Wishlist::where('user_id', $userId)->pluck('product_id')->toArray() : [];
+        
+        if ($search) {
+            $productsQuery->where('name', 'like', '%' . $search . '%');
+        }
+
+        if ($status === 'in_stock') {
+            $productsQuery->where('stock', '>', 0);
+        }
+
+        switch ($sort) {
+            case 'price_asc':
+                $productsQuery->orderBy('price', 'asc');
+                break;
+            case 'price_desc':
+                $productsQuery->orderBy('price', 'desc');
+                break;
+            case 'newest':
+            default:
+                $productsQuery->orderBy('created_at', 'desc');
+                break;
+        }
+
+        // Tampilkan stok > 0 terlebih dahulu
+        $productsQuery->orderByRaw('stock = 0');
+
+        $products = $productsQuery->paginate(10)->withQueryString();
+
+        foreach ($products as $product) {
+            $product->isInWishlist = in_array($product->id, $wishlistProductIds);
+        }
+        
+        return view('category-catalog', [
+            'products' => $products,
+            'category' => $categoryModel->name,
+            'categoryDescription' => $categoryDescription,
+        ]);
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->q;
+        $category = $request->category;
+
+        $products = Product::with('category')
+            ->where(function ($q) use ($query) {
+                $q->where('name', 'like', "%{$query}%")
+                    ->orWhere('description', 'like', "%{$query}%");
+            })
+            ->when($category, function ($q) use ($category) {
+                $q->whereHas('category', function ($c) use ($category) {
+                    $c->where('name', $category);
+                });
+            })
+            ->limit(10)
+            ->get();
+
+        $result = $products->map(function ($product) {
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'description' => Str::limit($product->description, 60),
+                'category' => $product->category->name ?? 'Uncategorized',
+                'image' => $product->image
+            ];
+        });
+
+        return response()->json($result);
+    }
+}

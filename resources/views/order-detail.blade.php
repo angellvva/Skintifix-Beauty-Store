@@ -1,0 +1,324 @@
+@extends('base.base')
+
+@section('content')
+    <style>
+        .order-detail-card {
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            background-color: white;
+            width: 100%;
+            position: relative;
+        }
+
+        .back-icon {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 2;
+            border: 1px solid #e965a7;
+            color: #e965a7;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .back-icon:hover {
+            background-color: #e965a7;
+            color: white;
+        }
+
+        .order-product-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .order-product-item {
+            display: flex;
+            gap: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .order-product-item img {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+
+        .order-product-item-details {
+            flex: 1;
+        }
+
+        .order-product-item-details p {
+            margin: 5px 0;
+        }
+
+        .fas.fa-star {
+            color: #ddd;
+        }
+
+        .fas.fa-star.active {
+            color: #ffc107;
+        }
+
+        .order-summary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: space-between;
+        }
+
+        .order-summary .summary-block {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .order-summary .summary-block p {
+            margin: 4px 0;
+        }
+
+        .order-total {
+            font-size: 18px;
+            margin-bottom: 12px;
+            text-align: right;
+        }
+
+        .order-detail-section {
+            background-color: #fff0f6;
+        }
+
+        .order-detail-section h2 {
+            color: #e965a7;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+        }
+
+        .customer-info-table th:nth-child(1) {
+            width: 20%;
+        }
+
+        .customer-info-table th:nth-child(2) {
+            width: 25%;
+        }
+
+        .customer-info-table th:nth-child(3) {
+            width: 55%;
+        }
+
+        .order-img {
+            width: 100%;
+            border: 1px solid #dee2e6;
+        }
+
+        .badge-pending:hover {
+            background-color: #6c757d;
+            color: white !important;
+        }
+
+        .badge-failed:hover {
+            background-color: #dc3545;
+            color: white !important;
+        }
+
+        .badge-paid:hover {
+            background-color: #28a745;
+            color: white !important;
+        }
+    </style>
+
+    <div class="order-detail-section">
+        <div class="container py-5">
+            <h2>Order Details</h2>
+
+            <div class="p-4 mb-4"
+                style="background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <h5 class="fw-bold ps-2" style="color:#e965a7;">Recipient & Shipping Information</h5>
+                <table class="table customer-info-table">
+                    <thead>
+                        <tr>
+                            <th>Recipient Details</th>
+                            <th>Contact Information</th>
+                            <th>Shipping Address</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <p class="fw-bold m-0">{{ $order->recipient_name }}</p>
+                            </td>
+                            <td>
+                                <p class="m-0">
+                                    <span><i class="fas fa-phone me-2"
+                                            style="color:#e965a7;"></i></span>{{ $order->recipient_phone }}
+                                </p>
+                            </td>
+                            <td>{{ $order->recipient_address }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="p-4 mb-4"
+                style="background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <h5 class="fw-bold ps-2" style="color:#e965a7;">Order Details</h5>
+                <table class="table order-details-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Payment Method</th>
+                            <th>Shipping Method</th>
+                            <th>Order Date</th>
+                            <th>Shipping Date</th>
+                            <th>Delivery Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b style="color:#e965a7;">SKINTIFIX-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</b>
+                            </td>
+                            <td>
+                                @if (!empty($order->payment->payment_method))
+                                    {{ ucwords($order->payment->payment_method) }}
+                                @else
+                                    Not Available
+                                @endif
+                                <br>
+                                <a href="{{ $order->payment_url }}" style="text-decoration: none">
+                                    <span @class([
+                                        'badge rounded-pill border px-3 py-1',
+                                        'border-secondary text-secondary badge-pending' =>
+                                            $order->payment->payment_status == 'pending',
+                                        'border-danger text-danger badge-failed' =>
+                                            $order->payment->payment_status == 'failed',
+                                        'border-success text-success badge-paid' =>
+                                            $order->payment->payment_status == 'paid',
+                                    ])>
+                                        {{ ucfirst($order->payment->payment_status) }}
+                                    </span>
+                                </a>
+                            </td>
+                            <td>
+                                @if ($order->shipping_price == 20000)
+                                    Standard Delivery<br>
+                                    <p class="m-0" style="color:gray;">3 business days</p>
+                                @else
+                                    Express Delivery<br>
+                                    <p class="m-0" style="color:gray;">1 business day</p>
+                                @endif
+                            </td>
+                            <td>
+                                {{ \Carbon\Carbon::parse($order->created_at)->format('d M Y') }}
+                            </td>
+                            <td>
+                                {{ \Carbon\Carbon::parse($order->created_at)->addDays(1)->format('d M Y') }}<br>
+                            </td>
+                            <td>
+                                @if ($order->shipping_price == 20000)
+                                    {{ \Carbon\Carbon::parse($order->created_at)->addDays(4)->format('d M Y') }}<br>
+                                @else
+                                    {{ \Carbon\Carbon::parse($order->created_at)->addDays(2)->format('d M Y') }}<br>
+                                @endif
+
+                            </td>
+                            <td>
+                                <div @class([
+                                    'badge rounded-pill border px-3 py-1',
+                                    'border-danger text-danger' => $order->status == 'failed',
+                                    'border-secondary text-secondary' => $order->status == 'pending',
+                                    'border-warning text-warning' => $order->status == 'processing',
+                                    'border-success text-success' => $order->status == 'completed',
+                                ])>
+                                    {{ ucfirst($order->status) }}
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="p-4"
+                style="background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <h5 class="fw-bold ps-2" style="color:#e965a7;">Order Summary</h5>
+                <table class="table order-details-table">
+                    <tbody>
+                        @php
+                            $totalOrderPrice = 0;
+                        @endphp
+
+                        @foreach ($order->orderItems as $orderItem)
+                            @php
+                                $subtotal = $orderItem->product->price * $orderItem->quantity;
+                                $totalOrderPrice += $subtotal;
+                            @endphp
+
+                            <tr>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-1">
+                                            <img src="{{ $orderItem->product->image }}"
+                                                alt="{{ $orderItem->product->name }}" class="order-img">
+                                        </div>
+                                        <div class="col-md-9 p-0">
+                                            <p class="fw-bold mb-1">{{ $orderItem->product->name }}</p>
+                                            <p class="mb-0">Amount: {{ $orderItem->quantity }}</p>
+                                        </div>
+                                        <div class="col-md-2" style="text-align: right;">
+                                            Rp{{ number_format($subtotal, 0, ',', '.') }}
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+                <div class="row align-items-center">
+                    <div class="col-md-10 text-end">
+                        Subtotal (<span>{{ count($order->orderItems) }}</span>
+                        @if (count($order->orderItems) > 1)
+                            items)
+                        @else
+                            item)
+                        @endif
+                    </div>
+                    <div class="col-md-2" style="text-align: right;">
+                        <p class="m-0 fw-bold">Rp{{ number_format($totalOrderPrice, 0, ',', '.') }}</p>
+                    </div>
+                </div>
+
+                <div class="row align-items-center">
+                    <div class="col-md-10 text-end">
+                        Shipping
+                    </div>
+                    <div class="col-md-2" style="text-align: right;">
+                        <p class="m-0 fw-bold">Rp{{ number_format($order->shipping_price, 0, ',', '.') }}</p>
+                    </div>
+                </div>
+
+                <br>
+
+                <div class="row align-items-center">
+                    <div class="col-md-10 text-end">
+                        Total Amount
+                    </div>
+                    <div class="col-md-2" style="text-align: right; color:#e965a7;">
+                        <h4 class="m-0 fw-bold">Rp{{ number_format($order->total_amount, 0, ',', '.') }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
