@@ -7,7 +7,7 @@
     <title>Forget Password</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
-    /* ---------- BASE STYLE ---------- */
+        /* ---------- BASE STYLE ---------- */
         body {
             margin: 0;
             padding: 0;
@@ -149,6 +149,7 @@
                 opacity: 0;
                 transform: translateY(6px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -257,7 +258,8 @@
         </form>
 
         <div class="back-to-login">
-            <a href="{{ route('login') }}">Back to Login</a>
+            <p><a href="{{ route('login') }}">Back to Login</a></p>
         </div>
 </body>
+
 </html>
