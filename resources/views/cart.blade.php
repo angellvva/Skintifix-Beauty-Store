@@ -33,6 +33,33 @@
         .btn-outline-pink.active i {
             transform: rotate(360deg);
         }
+
+        @media (max-width: 768px) {
+            .table-responsive-mobile {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            table {
+                min-width: 600px;
+            }
+
+            .product-section h2 {
+                font-size: 20px;
+            }
+
+            .btn-outline-pink span {
+                font-size: 14px;
+            }
+
+            .form-control-sm {
+                font-size: 14px;
+            }
+
+            .btn {
+                font-size: 14px;
+            }
+        }
     </style>
 
     <div class="product-section">
@@ -49,78 +76,83 @@
             </div>
 
             @if (isset($cartItems) && $cartItems->count() > 0)
-                <table class="table align-middle mb-0 shadow-sm border rounded">
-                    <thead class="table-light">
-                        <tr style="text-align: center;">
-                            <th style="text-align:start;" scope="col">Product</th>
-                            <th scope="col">Price</th>
-                            <th scope="col" style="width: 140px;">Amount</th>
-                            <th scope="col">Subtotal</th>
-                            <th scope="col" style="width: 100px;">Action</th>
-                            <th scope="col" style="width: 100px;">Checkout</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php $total = 0; @endphp
-                        @foreach ($cartItems as $item)
-                            @php
-                                $subtotal = $item->product->price * $item->quantity;
-                                $total += $subtotal;
-                            @endphp
-                            <tr>
-                                <td style="max-width: 600px; white-space: normal;">
-                                    <div class="d-flex align-items-center gap-3" style="margin-right: 10px;">
-                                        <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}"
-                                            class="rounded"
-                                            style="width: 80px; height: 80px; object-fit: cover; margin-left: 10px;">
-                                        <div>
-                                            <h5 class="mb-1 fw-semibold" style="color: #e965a7;">{{ $item->product->name }}
-                                            </h5>
-                                            <small class="text-muted">{{ $item->product->description ?? '' }}</small>
+                <div class="table-responsive-mobile">
+                    <table class="table align-middle mb-0 shadow-sm border rounded">
+                        <thead class="table-light">
+                            <tr style="text-align: center;">
+                                <th style="text-align:start;" scope="col">Product</th>
+                                <th scope="col">Price</th>
+                                <th scope="col" style="width: 140px;">Amount</th>
+                                <th scope="col">Subtotal</th>
+                                <th scope="col" style="width: 100px;">Action</th>
+                                <th scope="col" style="width: 100px;">Checkout</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php $total = 0; @endphp
+                            @foreach ($cartItems as $item)
+                                @php
+                                    $subtotal = $item->product->price * $item->quantity;
+                                    $total += $subtotal;
+                                @endphp
+                                <tr>
+                                    <td style="max-width: 600px; white-space: normal;">
+                                        <div class="d-flex align-items-center gap-3" style="margin-right: 10px;">
+                                            <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}"
+                                                class="rounded"
+                                                style="width: 80px; height: 80px; object-fit: cover; margin-left: 10px;">
+                                            <div>
+                                                <h5 class="mb-1 fw-semibold" style="color: #e965a7;">
+                                                    {{ $item->product->name }}
+                                                </h5>
+                                                <small class="text-muted">{{ $item->product->description ?? '' }}</small>
+                                            </div>
                                         </div>
+                                    </td>
+                                    <td class="align-middle text-center price">Rp
+                                        {{ number_format($item->product->price, 0, ',', '.') }}
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        {{-- Form update quantity --}}
+                                        <input type="number" name="quantity" value="{{ $item->quantity }}" min="1"
+                                            class="form-control form-control-sm quantity-input"
+                                            data-cart-id="{{ $item->id }}"
+                                            style="max-width: 70px; display:inline-block;">
+                                    </td>
+                                    <td class="align-middle text-center fw-semibold subtotal">Rp
+                                        {{ number_format($subtotal, 0, ',', '.') }}</td>
+                                    <td class="align-middle text-center">
+                                        {{-- Form hapus item --}}
+                                        <form action="{{ route('cart.remove', $item->id) }}" method="POST"
+                                            onsubmit="return confirm('Are you sure you want to remove this item?');"
+                                            style="display:inline-block;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-outline-danger btn-sm"
+                                                title="Hapus produk">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        <input type="checkbox" name="selected_items[]" value="{{ $item->id }}" checked>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="6">
+                                    <div class="d-flex justify-content-end pe-3">
+                                        <span class="fw-bold me-2" style="color: #e965a7;">Total:</span>
+                                        <span class="fw-bold" id="total-display">Rp
+                                            {{ number_format($total, 0, ',', '.') }}</span>
                                     </div>
                                 </td>
-                                <td class="align-middle text-center price">Rp
-                                    {{ number_format($item->product->price, 0, ',', '.') }}
-                                </td>
-                                <td class="align-middle text-center">
-                                    {{-- Form update quantity --}}
-                                    <input type="number" name="quantity" value="{{ $item->quantity }}" min="1"
-                                        class="form-control form-control-sm quantity-input"
-                                        data-cart-id="{{ $item->id }}" style="max-width: 70px; display:inline-block;">
-                                </td>
-                                <td class="align-middle text-center fw-semibold subtotal">Rp
-                                    {{ number_format($subtotal, 0, ',', '.') }}</td>
-                                <td class="align-middle text-center">
-                                    {{-- Form hapus item --}}
-                                    <form action="{{ route('cart.remove', $item->id) }}" method="POST"
-                                        onsubmit="return confirm('Are you sure you want to remove this item?');"
-                                        style="display:inline-block;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-outline-danger btn-sm" title="Hapus produk">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <input type="checkbox" name="selected_items[]" value="{{ $item->id }}" checked>
-                                </td>
                             </tr>
-                        @endforeach
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="6">
-                                <div class="d-flex justify-content-end pe-3">
-                                    <span class="fw-bold me-2" style="color: #e965a7;">Total:</span>
-                                    <span class="fw-bold" id="total-display">Rp
-                                        {{ number_format($total, 0, ',', '.') }}</span>
-                                </div>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
+                        </tfoot>
+                    </table>
+                </div>
 
                 {{-- Form checkout terpisah --}}
                 <form id="checkout-form" action="{{ route('checkout') }}" method="GET" class="mt-4">
