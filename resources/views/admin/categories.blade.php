@@ -2,8 +2,6 @@
 
 @section('content')
     <style>
-       
-
         thead th:nth-child(1) {
             width: 20%;
         }
@@ -136,7 +134,8 @@
                                                         class="m-0 delete-category-form" style="display:inline-block;"
                                                         onsubmit="return confirm('Are you sure you want to delete this category?');">
                                                         @csrf
-                                                        <input type="hidden" name="category_id" value="{{ $category->id }}">
+                                                        <input type="hidden" name="category_id"
+                                                            value="{{ $category->id }}">
                                                         <button type="submit" class="btn btn-sm btn-outline-danger">
                                                             <i class="fas fa-trash" title="Delete Category"></i>
                                                         </button>

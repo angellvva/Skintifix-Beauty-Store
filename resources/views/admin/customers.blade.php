@@ -12,10 +12,10 @@
             background-color: #da5195;
         }
 
-        .table-responsive {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
+        .table-responsive table {
+            width: 100%;
             border: 1px solid #dee2e6;
+            border-collapse: collapse;
         }
 
         .btn-reset,
@@ -59,7 +59,7 @@
                                 <button type="submit" class="btn btn-search" title="Search Filter">Search</button>
                             </div>
                         </div>
-                      
+
                         <div class="col-md-3 col-12 d-flex align-items-center">
                             <select name="status" class="form-select"
                                 onchange="document.getElementById('filterForm').submit()">
@@ -97,7 +97,8 @@
                                     <td>{{ $customer->email }}</td>
                                     <td>{{ $customer->orders->count() }}</td>
                                     <td>Rp {{ number_format($customer->orders->sum('total_amount'), 0, ',', '.') }}</td>
-                                    <td>{{ $customer->orders->sortByDesc('created_at')->first()->created_at->format('d-m-Y') }}</td>
+                                    <td>{{ $customer->orders->sortByDesc('created_at')->first()->created_at->format('d-m-Y') }}
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -113,7 +114,8 @@
                         @if ($customers->total() == 0)
                             Showing 0 entries
                         @else
-                            Showing {{ $customers->firstItem() }} to {{ $customers->lastItem() }} of {{ $customers->total() }} entries
+                            Showing {{ $customers->firstItem() }} to {{ $customers->lastItem() }} of
+                            {{ $customers->total() }} entries
                         @endif
                     </div>
 
@@ -133,4 +135,4 @@
                 </div>
             </div>
         </div>
-@endsection
+    @endsection

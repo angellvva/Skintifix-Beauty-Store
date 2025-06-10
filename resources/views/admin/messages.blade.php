@@ -2,11 +2,10 @@
 
 @section('content')
     <style>
-        .table-responsive {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
+        .table-responsive table {
+            width: 100%;
             border: 1px solid #dee2e6;
-            margin-bottom: 1rem;
+            border-collapse: collapse;
         }
 
         .table {
@@ -91,7 +90,7 @@
 
                 <div class= "table-responsive">
                     <table class="table align-middle">
-                        <thead>
+                        <thead class="table">
                             <tr>
                                 <th>Name</th>
                                 <th>Email</th>
@@ -104,7 +103,7 @@
                                 <tr>
                                     <td class="fw-bold">{{ $msg->name }}</td>
                                     <td>{{ $msg->email }}</td>
-                                    <td class="no-wrap" style="white-space: normal;">{{ $msg->message, 50 }}</td>
+                                    <td class="no-wrap" style="white-space: normal;">{{ $msg->message }}</td>
                                     <td>{{ \Carbon\Carbon::parse($msg->created_at)->format('d-m-Y H:i') }}</td>
                                 </tr>
                             @endforeach

@@ -8,8 +8,9 @@
                 <p class="text-muted m-0">Track and process customer orders efficiently</p>
             </div>
 
-            @if(session('success'))
-                <div id="success-alert" class="col-auto alert alert-success alert-dismissible fade show mb-0" role="alert" style="white-space: nowrap;">
+            @if (session('success'))
+                <div id="success-alert" class="col-auto alert alert-success alert-dismissible fade show mb-0" role="alert"
+                    style="white-space: nowrap;">
                     {{ session('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
@@ -93,7 +94,8 @@
                 <!-- Button Update Status -->
                 <div class="mb-3 d-flex justify-content-between align-items-center">
                     <div></div>
-                    <a href="{{ route('orders.updateStatus') }}" class="btn btn-pink d-flex align-items-center" style="gap: 0.5rem;">
+                    <a href="{{ route('orders.updateStatus') }}" class="btn btn-pink d-flex align-items-center"
+                        style="gap: 0.5rem;">
                         <i class="fas fa-sync-alt"></i> Update Status
                     </a>
                 </div>
@@ -103,22 +105,31 @@
                         <div class="col-md-5">
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-search"></i></span>
-                                <input type="text" name="search" class="form-control" placeholder="Search order ID..." value="{{ request('search') }}" />
+                                <input type="text" name="search" class="form-control" placeholder="Search order ID..."
+                                    value="{{ request('search') }}" />
                                 <button type="submit" class="btn btn-search" title="Search Filter">Search</button>
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <select name="status" class="form-select" onchange="document.getElementById('filterForm').submit()">
-                                <option value="all" {{ request('status', 'all') == 'all' ? 'selected' : '' }}>All Status</option>
-                                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
-                                <option value="processing" {{ request('status') == 'processing' ? 'selected' : '' }}>Processing</option>
-                                <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed</option>
+                            <select name="status" class="form-select"
+                                onchange="document.getElementById('filterForm').submit()">
+                                <option value="all" {{ request('status', 'all') == 'all' ? 'selected' : '' }}>All Status
+                                </option>
+                                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending
+                                </option>
+                                <option value="processing" {{ request('status') == 'processing' ? 'selected' : '' }}>
+                                    Processing</option>
+                                <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>
+                                    Completed</option>
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <select name="sort" class="form-select" onchange="document.getElementById('filterForm').submit()">
-                                <option value="desc" {{ request('sort', 'desc') == 'desc' ? 'selected' : '' }}>Newest First</option>
-                                <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Oldest First</option>
+                            <select name="sort" class="form-select"
+                                onchange="document.getElementById('filterForm').submit()">
+                                <option value="desc" {{ request('sort', 'desc') == 'desc' ? 'selected' : '' }}>Newest
+                                    First</option>
+                                <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Oldest First
+                                </option>
                             </select>
                         </div>
                         <div class="col-md-1">
@@ -148,11 +159,13 @@
                                     <td class="fw-bold">SKINTIFIX-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</td>
                                     <td>{{ $order->user->name }}</td>
                                     <td>{{ \Carbon\Carbon::parse($order->order_date)->format('d-m-Y') }}</td>
-                                    <td>{{ $order->orderItems->sum('quantity') }} {{ $order->orderItems->sum('quantity') <= 1 ? 'item' : 'items' }}</td>
+                                    <td>{{ $order->orderItems->sum('quantity') }}
+                                        {{ $order->orderItems->sum('quantity') <= 1 ? 'item' : 'items' }}</td>
                                     <td>Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
                                     <td>
                                         @if ($order->status)
-                                            <span class="badge rounded-pill px-3 py-1 border
+                                            <span
+                                                class="badge rounded-pill px-3 py-1 border
                                                 @if ($order->status == 'pending') border-secondary text-secondary
                                                 @elseif($order->status == 'processing') border-warning text-warning
                                                 @elseif($order->status == 'completed') border-success text-success
@@ -160,14 +173,17 @@
                                                 {{ ucfirst($order->status) }}
                                             </span>
                                         @else
-                                            <span class="badge rounded-pill border border-secondary text-secondary px-3 py-1">Unknown</span>
+                                            <span
+                                                class="badge rounded-pill border border-secondary text-secondary px-3 py-1">Unknown</span>
                                         @endif
                                     </td>
                                     <td class="d-flex gap-1">
-                                        <a href="{{ route('admin.orders.show', $order->id) }}" class="btn btn-sm btn-pink" title="View">
+                                        <a href="{{ route('admin.orders.show', $order->id) }}" class="btn btn-sm btn-pink"
+                                            title="View">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-sm btn-pink" title="Edit">
+                                        <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-sm btn-pink"
+                                            title="Edit">
                                             <i class="fas fa-pen"></i>
                                         </a>
                                     </td>
@@ -186,7 +202,8 @@
                         @if ($orders->total() == 0)
                             Showing 0 entries
                         @else
-                            Showing {{ $orders->firstItem() }} to {{ $orders->lastItem() }} of {{ $orders->total() }} entries
+                            Showing {{ $orders->firstItem() }} to {{ $orders->lastItem() }} of {{ $orders->total() }}
+                            entries
                         @endif
                     </div>
                     <div class="d-flex justify-content-end">
@@ -276,6 +293,12 @@
             -webkit-overflow-scrolling: touch;
         }
 
+        .table-responsive table {
+            width: 100%;
+            border: 1px solid #dee2e6;
+            border-collapse: collapse;
+        }
+
         /* Agar teks dalam table tidak kepotong */
         .table td {
             white-space: nowrap;
@@ -286,10 +309,6 @@
             table {
                 min-width: 700px;
                 /* cukup lebar untuk semua kolom */
-            }
-
-            .table-responsive {
-                border: 1px solid #dee2e6;
             }
 
             thead th:nth-child(6),
@@ -303,7 +322,7 @@
             td:nth-child(7) {
                 min-width: 120px;
             }
-        } */
+        }
 
         table {
             width: 100%;
@@ -320,7 +339,6 @@
         .table-responsive {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
-            border: 1px solid #dee2e6;
         }
 
         .table th,
@@ -333,18 +351,17 @@
 @endpush
 
 @push('scripts')
-<script>
-    // Auto hide alert
-    document.addEventListener('DOMContentLoaded', function () {
-        const alert = document.getElementById('success-alert');
-        if (alert) {
-            setTimeout(() => {
-                // Bootstrap 5 dismiss
-                let alertInstance = bootstrap.Alert.getOrCreateInstance(alert);
-                alertInstance.close();
-            }, 1800);
-        }
-    });
-</script>
+    <script>
+        // Auto hide alert
+        document.addEventListener('DOMContentLoaded', function() {
+            const alert = document.getElementById('success-alert');
+            if (alert) {
+                setTimeout(() => {
+                    // Bootstrap 5 dismiss
+                    let alertInstance = bootstrap.Alert.getOrCreateInstance(alert);
+                    alertInstance.close();
+                }, 1800);
+            }
+        });
+    </script>
 @endpush
-

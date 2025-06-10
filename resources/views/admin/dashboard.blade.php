@@ -223,13 +223,13 @@
                                 </tbody>
                             </table>
                         </div>
-                            @if ($topSellingProducts->isEmpty())
-                                <p class="text-muted text-center">No products found.</p>
-                            @endif
+                        @if ($topSellingProducts->isEmpty())
+                            <p class="text-muted text-center">No products found.</p>
+                        @endif
 
-                            <a href="{{ route('admin.products') }}" class="btn btn-sm btn-pink mt-2">View All
-                                Products</a>
-                        
+                        <a href="{{ route('admin.products') }}" class="btn btn-sm btn-pink mt-2">View All
+                            Products</a>
+
                     </div>
                 </div>
             </div>
@@ -246,7 +246,7 @@
                             <div style="position: relative; height: 300px; width: 100%;">
                                 <canvas id="salesChart"></canvas>
                             </div>
-                         
+
                         </div>
                     </div>
                 </div>
@@ -318,12 +318,14 @@
 
         .table-responsive table {
             width: 100%;
+            border: 1px solid #dee2e6;
             border-collapse: collapse;
         }
 
         .topselling th,
         .topselling td {
-            min-width: 100px; /* NEW → avoid too narrow */
+            min-width: 100px;
+            /* NEW → avoid too narrow */
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;

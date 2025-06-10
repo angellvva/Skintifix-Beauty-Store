@@ -51,6 +51,12 @@
             -webkit-overflow-scrolling: touch;
         }
 
+        .table-responsive table {
+            width: 100%;
+            border: 1px solid #dee2e6;
+            border-collapse: collapse;
+        }
+
         /* Agar teks dalam table tidak kepotong */
         .table td {
             white-space: nowrap;
@@ -61,10 +67,6 @@
             table {
                 min-width: 700px;
                 /* cukup lebar untuk semua kolom */
-            }
-
-            .table-responsive {
-                border: 1px solid #dee2e6;
             }
 
             thead th:nth-child(6),
@@ -78,9 +80,9 @@
             td:nth-child(7) {
                 min-width: 120px;
             }
-        } */
+        }
 
-        .table {
+        */ .table {
             width: 100%;
             table-layout: fixed;
             border-collapse: collapse;
@@ -95,8 +97,6 @@
         .table-responsive {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
-            border: 1px solid #dee2e6;
-            margin-bottom: 1rem;
         }
 
         .table th,
@@ -221,14 +221,16 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a href="{{ route('products.edit', $product->id) }}" class="btn btn-sm btn-edit me-2">
+                                        <a href="{{ route('products.edit', $product->id) }}"
+                                            class="btn btn-sm btn-edit me-2">
                                             <i class="fas fa-pen" title="Edit Product"></i>
                                         </a>
                                         <form action="{{ route('admin.delete-product') }}" method="POST" class="d-inline"
                                             onsubmit="return confirm('Are you sure you want to delete this product?');">
                                             @csrf
                                             <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Product">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                title="Delete Product">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
