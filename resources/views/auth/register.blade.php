@@ -16,11 +16,12 @@
         .register-scroll-container {
             width: 100%;
             height: 100vh;
+            /* padding: 20px 0; */
             overflow-y: auto;
-            padding: 20px 0;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center;
+            /* align-items: flex-start; */
             background-image: url('{{ asset('images/background/flower.jpg') }}');
             background-size: cover;
             background-position: center;
