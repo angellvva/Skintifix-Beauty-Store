@@ -142,6 +142,43 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
+        @media (max-width: 768px) {
+            .wishlist-card {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .wishlist-grid {
+                flex-direction: column;
+                gap: 16px;
+                padding: 0 12px;
+            }
+
+            .product-name {
+                font-size: 16px;
+            }
+
+            .wishlist-img {
+                height: 140px;
+            }
+
+            .btn-cart-pink,
+            .btn-outline-pink,
+            .btn.btn-outline-danger {
+                width: 36px;
+                height: 36px;
+            }
+
+            .card-body {
+                padding: 10px;
+            }
+
+            .btn-cart-pink i,
+            .btn-outline-pink i {
+                font-size: 16px;
+            }
+        }
     </style>
     <div class="product-section">
         <div class="container py-5">
